@@ -1,0 +1,516 @@
+{
+  "reviewed": "2026-10-26",
+  "baseline": {
+    "ramGB": 6,
+    "ios": 16,
+    "freeStorageGB": 30,
+    "source": "baseline",
+    "note": "Reference requirements from Five Star Port. This community build may differ; confirm its current release requirements on Discord."
+  },
+  "sources": {
+    "baseline": {
+      "label": "Five Star Port: installation requirements",
+      "url": "https://fivestarport.site/iphone/",
+      "kind": "Project requirements"
+    },
+    "x": {
+      "label": "iFixit: iPhone X teardown",
+      "url": "https://www.ifixit.com/Teardown/iPhone+X+Teardown/98975",
+      "kind": "Hardware teardown"
+    },
+    "xr": {
+      "label": "iFixit: iPhone XR teardown",
+      "url": "https://documents.cdn.ifixit.com/pdf/ifixit/guide_114123_en.pdf",
+      "kind": "Hardware teardown"
+    },
+    "xs": {
+      "label": "iFixit: iPhone XS and XS Max teardown",
+      "url": "https://documents.cdn.ifixit.com/pdf/ifixit/guide_113021_en.pdf",
+      "kind": "Hardware teardown"
+    },
+    "11": {
+      "label": "iFixit: iPhone 11 specifications",
+      "url": "https://www.ifixit.com/Device/iPhone_11",
+      "kind": "Teardown team specifications"
+    },
+    "11pro": {
+      "label": "iFixit: iPhone 11 Pro Max teardown",
+      "url": "https://www.ifixit.com/Teardown/iPhone+11+Pro+Max+Teardown/126000",
+      "kind": "Hardware teardown"
+    },
+    "12": {
+      "label": "iFixit: iPhone 12 and 12 Pro teardown",
+      "url": "https://www.ifixit.com/Teardown/iPhone+12+and+12+Pro+Teardown/137669",
+      "kind": "Hardware teardown"
+    },
+    "13": {
+      "label": "MacRumors: direct analysis of Xcode 13 RAM data",
+      "url": "https://www.macrumors.com/2021/09/15/how-much-ram-in-iphone-13/",
+      "kind": "Original Xcode analysis"
+    },
+    "14": {
+      "label": "MacRumors: direct analysis of Xcode 14 RAM data",
+      "url": "https://www.macrumors.com/2022/09/08/iphone-14-ram-amounts/",
+      "kind": "Original Xcode analysis"
+    },
+    "15": {
+      "label": "MacRumors: direct analysis of Xcode 15 RAM data",
+      "url": "https://www.macrumors.com/2023/09/12/iphone-15-pro-models-have-8gb-ram/",
+      "kind": "Original Xcode analysis"
+    },
+    "16": {
+      "label": "MacRumors: direct analysis of Xcode 16 RAM data",
+      "url": "https://www.macrumors.com/2024/09/09/all-iphone-16-models-have-8gb-ram/",
+      "kind": "Original Xcode analysis"
+    },
+    "17": {
+      "label": "MacRumors: direct analysis of Xcode 26 RAM data",
+      "url": "https://www.macrumors.com/2025/09/09/iphone-17-pro-iphone-air-ram-amounts/",
+      "kind": "Original Xcode analysis"
+    },
+    "16e": {
+      "label": "MacRumors: original iPhone 16e RAM findings",
+      "url": "https://forums.macrumors.com/threads/iphone-16e-is-equipped-with-8gb-of-ram-for-apple-intelligence.2449750/",
+      "kind": "Original Xcode analysis"
+    },
+    "17e": {
+      "label": "TechInsights: iPhone 17e hardware teardown",
+      "url": "https://www.techinsights.com/ja/node/61808",
+      "kind": "Hardware teardown"
+    }
+  },
+  "models": [
+    {
+      "id": "iphone-x",
+      "name": "iPhone X",
+      "family": "X / XS / XR",
+      "chip": "A11 Bionic",
+      "cpu": 6,
+      "gpu": 3,
+      "neural": "Apple Neural Engine",
+      "ram": 3,
+      "appleSource": "https://www.apple.com/newsroom/2017/09/the-future-is-here-iphone-x/",
+      "ramSource": "x"
+    },
+    {
+      "id": "iphone-xr",
+      "name": "iPhone XR",
+      "family": "X / XS / XR",
+      "chip": "A12 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "8-core Neural Engine",
+      "ram": 3,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-15-pro-max%2Ciphone-XS-max%2Ciphone-XR",
+      "ramSource": "xr"
+    },
+    {
+      "id": "iphone-xs",
+      "name": "iPhone XS",
+      "family": "X / XS / XR",
+      "chip": "A12 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "8-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-15-pro-max%2Ciphone-XS-max%2Ciphone-XR",
+      "ramSource": "xs"
+    },
+    {
+      "id": "iphone-xs-max",
+      "name": "iPhone XS Max",
+      "family": "X / XS / XR",
+      "chip": "A12 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "8-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-15-pro-max%2Ciphone-XS-max%2Ciphone-XR",
+      "ramSource": "xs"
+    },
+    {
+      "id": "iphone-11",
+      "name": "iPhone 11",
+      "family": "11",
+      "chip": "A13 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "8-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-11%2Ciphone-11-pro%2Ciphone-11-pro-max",
+      "ramSource": "11"
+    },
+    {
+      "id": "iphone-11-pro",
+      "name": "iPhone 11 Pro",
+      "family": "11",
+      "chip": "A13 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "8-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-11%2Ciphone-11-pro%2Ciphone-11-pro-max",
+      "ramSource": "11pro"
+    },
+    {
+      "id": "iphone-11-pro-max",
+      "name": "iPhone 11 Pro Max",
+      "family": "11",
+      "chip": "A13 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "8-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-11%2Ciphone-11-pro%2Ciphone-11-pro-max",
+      "ramSource": "11pro"
+    },
+    {
+      "id": "iphone-12-mini",
+      "name": "iPhone 12 mini",
+      "family": "12",
+      "chip": "A14 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-12-pro%2Ciphone-12%2Ciphone-12-pro-max",
+      "ramSource": "12"
+    },
+    {
+      "id": "iphone-12",
+      "name": "iPhone 12",
+      "family": "12",
+      "chip": "A14 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-12-pro%2Ciphone-12%2Ciphone-12-pro-max",
+      "ramSource": "12"
+    },
+    {
+      "id": "iphone-12-pro",
+      "name": "iPhone 12 Pro",
+      "family": "12",
+      "chip": "A14 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-12-pro%2Ciphone-12%2Ciphone-12-pro-max",
+      "ramSource": "12"
+    },
+    {
+      "id": "iphone-12-pro-max",
+      "name": "iPhone 12 Pro Max",
+      "family": "12",
+      "chip": "A14 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/id/iphone/compare/?modelList=iphone-12-pro%2Ciphone-12%2Ciphone-12-pro-max",
+      "ramSource": "12"
+    },
+    {
+      "id": "iphone-13-mini",
+      "name": "iPhone 13 mini",
+      "family": "13",
+      "chip": "A15 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/uk/iphone/compare/?modelList=iphone-13-pro%2Ciphone-13%2Ciphone-13-mini",
+      "ramSource": "13"
+    },
+    {
+      "id": "iphone-13",
+      "name": "iPhone 13",
+      "family": "13",
+      "chip": "A15 Bionic",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 4,
+      "appleSource": "https://www.apple.com/uk/iphone/compare/?modelList=iphone-13-pro%2Ciphone-13%2Ciphone-13-mini",
+      "ramSource": "13"
+    },
+    {
+      "id": "iphone-13-pro",
+      "name": "iPhone 13 Pro",
+      "family": "13",
+      "chip": "A15 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/uk/iphone/compare/?modelList=iphone-13-pro%2Ciphone-13%2Ciphone-13-mini",
+      "ramSource": "13"
+    },
+    {
+      "id": "iphone-13-pro-max",
+      "name": "iPhone 13 Pro Max",
+      "family": "13",
+      "chip": "A15 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/uk/iphone/compare/?modelList=iphone-13-pro%2Ciphone-13%2Ciphone-13-mini",
+      "ramSource": "13"
+    },
+    {
+      "id": "iphone-14",
+      "name": "iPhone 14",
+      "family": "14",
+      "chip": "A15 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/newsroom/2022/09/apple-introduces-iphone-14-and-iphone-14-plus/",
+      "ramSource": "14"
+    },
+    {
+      "id": "iphone-14-plus",
+      "name": "iPhone 14 Plus",
+      "family": "14",
+      "chip": "A15 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/newsroom/2022/09/apple-introduces-iphone-14-and-iphone-14-plus/",
+      "ramSource": "14"
+    },
+    {
+      "id": "iphone-14-pro",
+      "name": "iPhone 14 Pro",
+      "family": "14",
+      "chip": "A16 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://support.apple.com/id-id/111849",
+      "ramSource": "14"
+    },
+    {
+      "id": "iphone-14-pro-max",
+      "name": "iPhone 14 Pro Max",
+      "family": "14",
+      "chip": "A16 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://support.apple.com/id-id/111849",
+      "ramSource": "14"
+    },
+    {
+      "id": "iphone-15",
+      "name": "iPhone 15",
+      "family": "15",
+      "chip": "A16 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/iphone/compare/?modelList=iphone-15%2Ciphone-15-plus",
+      "ramSource": "15"
+    },
+    {
+      "id": "iphone-15-plus",
+      "name": "iPhone 15 Plus",
+      "family": "15",
+      "chip": "A16 Bionic",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 6,
+      "appleSource": "https://www.apple.com/iphone/compare/?modelList=iphone-15%2Ciphone-15-plus",
+      "ramSource": "15"
+    },
+    {
+      "id": "iphone-15-pro",
+      "name": "iPhone 15 Pro",
+      "family": "15",
+      "chip": "A17 Pro",
+      "cpu": 6,
+      "gpu": 6,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://support.apple.com/en-us/111829",
+      "ramSource": "15"
+    },
+    {
+      "id": "iphone-15-pro-max",
+      "name": "iPhone 15 Pro Max",
+      "family": "15",
+      "chip": "A17 Pro",
+      "cpu": 6,
+      "gpu": 6,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://support.apple.com/en-us/111829",
+      "ramSource": "15"
+    },
+    {
+      "id": "iphone-16",
+      "name": "iPhone 16",
+      "family": "16",
+      "chip": "A18",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://www.apple.com/newsroom/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/",
+      "ramSource": "16"
+    },
+    {
+      "id": "iphone-16-plus",
+      "name": "iPhone 16 Plus",
+      "family": "16",
+      "chip": "A18",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://www.apple.com/newsroom/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/",
+      "ramSource": "16"
+    },
+    {
+      "id": "iphone-16-pro",
+      "name": "iPhone 16 Pro",
+      "family": "16",
+      "chip": "A18 Pro",
+      "cpu": 6,
+      "gpu": 6,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://support.apple.com/en-am/121031",
+      "ramSource": "16"
+    },
+    {
+      "id": "iphone-16-pro-max",
+      "name": "iPhone 16 Pro Max",
+      "family": "16",
+      "chip": "A18 Pro",
+      "cpu": 6,
+      "gpu": 6,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://support.apple.com/en-am/121031",
+      "ramSource": "16"
+    },
+    {
+      "id": "iphone-17",
+      "name": "iPhone 17",
+      "family": "17 / Air",
+      "chip": "A19",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://www.apple.com/iphone-17/specs/",
+      "ramSource": "17"
+    },
+    {
+      "id": "iphone-air",
+      "name": "iPhone Air",
+      "family": "17 / Air",
+      "chip": "A19 Pro",
+      "cpu": 6,
+      "gpu": 5,
+      "neural": "16-core Neural Engine",
+      "ram": 12,
+      "appleSource": "https://www.apple.com/iphone-air/specs/",
+      "ramSource": "17"
+    },
+    {
+      "id": "iphone-17-pro",
+      "name": "iPhone 17 Pro",
+      "family": "17 / Air",
+      "chip": "A19 Pro",
+      "cpu": 6,
+      "gpu": 6,
+      "neural": "16-core Neural Engine",
+      "ram": 12,
+      "appleSource": "https://support.apple.com/en-by/125090",
+      "ramSource": "17"
+    },
+    {
+      "id": "iphone-17-pro-max",
+      "name": "iPhone 17 Pro Max",
+      "family": "17 / Air",
+      "chip": "A19 Pro",
+      "cpu": 6,
+      "gpu": 6,
+      "neural": "16-core Neural Engine",
+      "ram": 12,
+      "appleSource": "https://support.apple.com/en-by/125090",
+      "ramSource": "17"
+    },
+    {
+      "id": "iphone-18-pro",
+      "name": "iPhone 18 Pro",
+      "family": "18",
+      "chip": "A20 Pro",
+      "cpu": 6,
+      "gpu": 7,
+      "neural": "Dual 16-core Neural Engine",
+      "ram": null,
+      "appleSource": "https://www.apple.com/iphone-18-pro/specs/",
+      "ramSource": null
+    },
+    {
+      "id": "iphone-18-pro-max",
+      "name": "iPhone 18 Pro Max",
+      "family": "18",
+      "chip": "A20 Pro",
+      "cpu": 6,
+      "gpu": 7,
+      "neural": "Dual 16-core Neural Engine",
+      "ram": null,
+      "appleSource": "https://www.apple.com/iphone-18-pro/specs/",
+      "ramSource": null
+    },
+    {
+      "id": "iphone-18-unspecified",
+      "name": "iPhone 18 (unspecified)",
+      "family": "18",
+      "chip": null,
+      "cpu": null,
+      "gpu": null,
+      "neural": null,
+      "ram": null,
+      "appleSource": "https://www.apple.com/iphone/",
+      "ramSource": null
+    },
+    {
+      "id": "iphone-16e",
+      "name": "iPhone 16e",
+      "family": "16",
+      "chip": "A18",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://support.apple.com/en-ie/122208",
+      "ramSource": "16e"
+    },
+    {
+      "id": "iphone-17e",
+      "name": "iPhone 17e",
+      "family": "17 / Air",
+      "chip": "A19",
+      "cpu": 6,
+      "gpu": 4,
+      "neural": "16-core Neural Engine",
+      "ram": 8,
+      "appleSource": "https://www.apple.com/uk/iphone-17e/specs/",
+      "ramSource": "17e"
+    }
+  ]
+}

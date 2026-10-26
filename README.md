@@ -53,3 +53,11 @@ Enter website opens a compact, accessible dialog. It asks for the discovery sour
 On Home, Android users get a small unsupported-device toast. iOS users get a welcome toast and a Subscribe prompt. Subscribe records local browser interest and displays thanks. It does not register an email address, subscribe a YouTube account, send push notifications, or connect to a mailing service. A real subscription destination or backend must be added separately.
 
 Answers are stored only in browser local storage. A one-time session payload drives the Home notifications; reload does not repeat them. If session storage is unavailable, a temporary device-only URL parameter drives the feedback and is removed immediately. No visitor answers are transmitted to a server. Closing the dialog leaves the visitor on Welcome. Skip introduction remains available.
+
+## Compatibility guide
+
+`compatibility.html` offers source-backed model profiles with a brief visual review animation. It is a lookup, not hardware detection or benchmarking. `compatibility-data.json` holds 36 profiles, reviewed on 26 October 2026, with per-profile Apple hardware links and RAM teardown or original Xcode-analysis sources. Unverified fields are null and remain visibly unverified, including the RAM in the iPhone 18 Pro profiles and the unspecified iPhone 18 entry. No speculative values or FPS estimates are generated.
+
+The configurable reference baseline comes from Five Star Port: 6 GB installed RAM, iOS 16+, and approximately 30 GB free storage. This is not a certification of the separate community build. RAM below 6 GB is Critical; exactly 6 GB is Minimum; above 6 GB indicates memory headroom only. This correctly distinguishes iPhone 12 (4 GB) from 12 Pro (6 GB), and iPhone 13/13 mini (4 GB) from 13 Pro (6 GB). Installed RAM is not app-available RAM.
+
+CPU, GPU, and Neural Engine cards are informational; no unsupported performance ranking is inferred from core count. Optional iOS/storage values are manually entered and evaluated separately. Missing values are not passed. `compatibility-rules.js` contains the pure assessment rules. Onboarding model preference may preselect an exact matching model; users can change it. The page is linked from the header, expanded menu, footer, and Welcome.

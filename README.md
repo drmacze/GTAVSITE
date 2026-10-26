@@ -4,7 +4,8 @@ A lightweight, English-language community website built with HTML, CSS, and Java
 
 ## Pages
 
-- `dist/index.html`: minimal Home with background artwork, introduction, and two calls to action.
+- `dist/index.html`: animated Welcome page with a brief introduction, entry button, Discord link, and direct links to other pages.
+- `dist/home.html`: Home with the background trailer and two calls to action.
 - `dist/news.html`: community news.
 - `dist/updates.html`: project updates.
 - `dist/community.html`: Discord information, member counts, and staff.
@@ -40,3 +41,7 @@ Home uses the supplied `dist/assets/los-santos-background.jpeg`. The supplied `d
 A configured trailer replaces the Home background. Use a direct media file rather than a YouTube or GitHub blob page. Video loops muted, offers pause and sound controls, respects reduced-motion preferences, and falls back to the artwork on errors. The supplied 84-second trailer is configured at `assets/trailer.mp4`, optimized to H.264/AAC with fast-start metadata for web playback.
 
 The website is independent and is not affiliated with Rockstar Games or Take-Two Interactive. No app or game files are hosted here.
+
+## Welcome page
+
+The site root opens the Welcome page. Internal Home links point to `home.html`, so navigating inside the site does not repeat the introduction. The Welcome page uses lightweight CSS entrance animations and a short exit transition. Skip introduction and direct section links are available. Reduced-motion preferences disable animation. With JavaScript disabled, the entry links still navigate normally. The Home trailer remains on `home.html`.

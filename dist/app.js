@@ -93,3 +93,6 @@ function showWelcomeNotifications(resultOverride=null){
   });prompt.content.append(subscribe);
 }
 showWelcomeNotifications();
+
+// Optional ambient soundtrack, offered only after a user gesture.
+{const musicScript=document.createElement("script");musicScript.src="music.js";document.head.append(musicScript);}

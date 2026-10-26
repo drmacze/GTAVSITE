@@ -31,21 +31,65 @@ async function loadDiscord(invite){document.querySelectorAll('.discord-link').fo
 async function init(){try{const response=await fetch('community.json',{cache:'no-cache'});if(!response.ok)throw Error('Community information unavailable');const config=await response.json();if($('#server-name')&&typeof config.name==='string'&&config.name.trim())$('#server-name').textContent=config.name;posts=(Array.isArray(config.posts)?config.posts:[]).filter(post=>post&&typeof post.title==='string'&&typeof post.summary==='string'&&['news','update'].includes(post.type)).sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0));renderPosts();renderStaff((Array.isArray(config.staff)?config.staff:[]).filter(person=>person&&typeof person.name==='string'&&person.name.trim()));prepareVideo(config);const invite=discordInvite(config.discordInvite);if(invite)await loadDiscord(invite)}catch{renderPosts()}}
 init();
 
-// Visitor notifications after the Welcome questions.
+// Timed, non-blocking notifications after the required welcome questions.
 function showWelcomeNotifications(resultOverride=null){
-if(document.body.dataset.page!=='home')return;
-let result=resultOverride;
-try{result=result||JSON.parse(sessionStorage.getItem('gtav-community-welcome')||'null');sessionStorage.removeItem('gtav-community-welcome')}catch{}
-const url=new URL(location.href);const fallback=url.searchParams.get('welcome');if(['android','ios'].includes(fallback)){result=result||{device:fallback};url.searchParams.delete('welcome');history.replaceState(null,'',url.pathname+url.search+url.hash)}
-if(!result||!['android','ios'].includes(result.device))return;
-const region=element('aside','toast-region');region.setAttribute('aria-label','Community notifications');document.body.append(region);
-function toast(message,kind='info'){const card=element('section','community-toast '+kind);const mark=element('span','toast-mark');mark.append(icon(kind==='warning'?'gamepad':'message-circle'));const content=element('div','toast-content');const status=element('p','toast-message',message);status.setAttribute('role','status');const close=element('button','toast-close');close.type='button';close.setAttribute('aria-label','Dismiss notification');close.append(icon('close'));close.addEventListener('click',()=>card.remove());content.append(status);card.append(mark,content,close);region.append(card);return {card,content,status}}
-if(result.device==='android'){toast('Your device is not supported.','warning');return}
-toast('Welcome to the community.');
-let subscribed=false;try{subscribed=localStorage.getItem('gtav-community-update-interest')==='true'}catch{}
-if(subscribed)return;
-const prompt=toast('Subscribe for project updates.');
-prompt.content.append(element('p','toast-note','Save your interest in this browser.'));
-const subscribe=element('button','toast-subscribe','Subscribe');subscribe.type='button';subscribe.addEventListener('click',()=>{try{localStorage.setItem('gtav-community-update-interest','true')}catch{}prompt.status.textContent='Thank you for your support.';prompt.content.querySelector('.toast-note')?.remove();subscribe.remove();prompt.card.classList.add('subscribed')});prompt.content.append(subscribe)
+  if(document.body.dataset.page!=='home')return;
+  let result=resultOverride;
+  try{result=result||JSON.parse(sessionStorage.getItem('gtav-community-welcome')||'null');sessionStorage.removeItem('gtav-community-welcome')}catch{}
+  const url=new URL(location.href);const fallback=url.searchParams.get('welcome');
+  if(['android','ios'].includes(fallback)){result=result||{device:fallback};url.searchParams.delete('welcome');history.replaceState(null,'',url.pathname+url.search+url.hash)}
+  if(!result||!['android','ios'].includes(result.device))return;
+  let region=document.querySelector('.toast-region');
+  if(!region){region=element('aside','toast-region');region.setAttribute('aria-label','Community notifications');document.body.append(region)}
+  function toast(message,kind='info',duration=8000){
+    const card=element('section','community-toast '+kind);const mark=element('span','toast-mark');
+    mark.append(icon(kind==='warning'?'warning':'check'));
+    const content=element('div','toast-content');const label=element('p','toast-label',kind==='warning'?'DEVICE NOTICE':'COMMUNITY');
+    const status=element('p','toast-message',message);status.setAttribute('role','status');status.setAttribute('aria-atomic','true');
+    const close=element('button','toast-close');close.type='button';close.setAttribute('aria-label','Dismiss notification');close.append(icon('close'));
+    const footer=element('div','toast-timer');const clock=element('span','',`Closing in ${Math.ceil(duration/1000)}s`);clock.setAttribute('aria-hidden','true');
+    footer.append(clock);const rail=element('div','toast-progress');rail.setAttribute('aria-hidden','true');const fill=element('span');rail.append(fill);
+    content.append(label,status);card.append(mark,content,close,footer,rail);region.append(card);
+    let remaining=duration,total=duration,last=performance.now(),dismissed=false;
+    const pauses=new Set();
+    function dismiss(){
+      if(dismissed)return;dismissed=true;clearInterval(timer);
+      if(card.contains(document.activeElement)){const nextCard=[...region.children].find(item=>item!==card);const focus=nextCard?.querySelector('button')||document.querySelector('.home-content h1');focus?.focus({preventScroll:true})}
+      card.classList.add('toast-leaving');
+      setTimeout(()=>{card.remove();if(!region.children.length)region.remove()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:220);
+    }
+    close.addEventListener('click',dismiss);
+    card.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')pauses.add('hover')});
+    card.addEventListener('pointerleave',()=>pauses.delete('hover'));
+    card.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')pauses.add('touch')});
+    ['pointerup','pointercancel'].forEach(type=>card.addEventListener(type,()=>pauses.delete('touch')));
+    card.addEventListener('focusin',()=>pauses.add('focus'));
+    card.addEventListener('focusout',()=>setTimeout(()=>{if(!card.contains(document.activeElement))pauses.delete('focus')},0));
+    const timer=setInterval(()=>{
+      const now=performance.now();const paused=pauses.size>0||document.hidden;
+      if(!paused)remaining-=Math.min(now-last,250);
+      last=now;fill.style.transform=`scaleX(${Math.max(0,remaining/total)})`;
+      clock.textContent=paused?'Timer paused':`Closing in ${Math.max(0,Math.ceil(remaining/1000))}s`;
+      if(remaining<=0)dismiss();
+    },100);
+    return {card,content,status,reset(ms){remaining=total=ms;last=performance.now();},mark};
+  }
+  if(result.device==='android'){
+    const notice=toast('Your device is not supported.','warning',10000);
+    notice.content.append(element('p','toast-note','You can still explore the project and join the community.'));return;
+  }
+  const welcome=toast('Welcome to the community.');
+  welcome.content.append(element('p','toast-note','Explore the latest releases and gameplay from the community.'));
+  let subscribed=false;try{subscribed=localStorage.getItem('gtav-community-update-interest')==='true'}catch{}
+  if(subscribed)return;
+  const prompt=toast('Stay connected to the project.','subscribe',20000);
+  prompt.content.append(element('p','toast-note','Save your interest in project updates in this browser.'));
+  const subscribe=element('button','toast-subscribe','Subscribe');subscribe.type='button';
+  subscribe.addEventListener('click',()=>{
+    try{localStorage.setItem('gtav-community-update-interest','true')}catch{}
+    prompt.status.textContent='Thank you for your support.';
+    prompt.content.querySelector('.toast-note').textContent='Your interest has been saved in this browser.';
+    prompt.card.classList.add('subscribed');prompt.mark.replaceChildren(icon('check'));subscribe.remove();prompt.reset(6000);
+  });prompt.content.append(subscribe);
 }
 showWelcomeNotifications();

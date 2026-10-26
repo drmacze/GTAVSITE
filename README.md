@@ -45,3 +45,11 @@ The website is independent and is not affiliated with Rockstar Games or Take-Two
 ## Welcome page
 
 The site root opens the Welcome page. Internal Home links point to `home.html`, so navigating inside the site does not repeat the introduction. The Welcome page uses lightweight CSS entrance animations and a short exit transition. Skip introduction and direct section links are available. Reduced-motion preferences disable animation. With JavaScript disabled, the entry links still navigate normally. The Home trailer remains on `home.html`.
+
+## Welcome questions and feedback
+
+Enter website opens a compact, accessible dialog. It asks for the discovery source (YouTube, TikTok, Browser, Friends, Other), then Android or iOS. Android users see the iOS-only notice and may continue browsing. iOS users choose an iPhone model from iPhone X through iPhone 18; this is a preference selection, not compatibility verification.
+
+On Home, Android users get a small unsupported-device toast. iOS users get a welcome toast and a Subscribe prompt. Subscribe records local browser interest and displays thanks. It does not register an email address, subscribe a YouTube account, send push notifications, or connect to a mailing service. A real subscription destination or backend must be added separately.
+
+Answers are stored only in browser local storage. A one-time session payload drives the Home notifications; reload does not repeat them. If session storage is unavailable, a temporary device-only URL parameter drives the feedback and is removed immediately. No visitor answers are transmitted to a server. Closing the dialog leaves the visitor on Welcome. Skip introduction remains available.

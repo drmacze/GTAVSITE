@@ -32,10 +32,10 @@ async function init(){try{const response=await fetch('community.json',{cache:'no
 init();
 
 // Visitor notifications after the Welcome questions.
-function showWelcomeNotifications(){
+function showWelcomeNotifications(resultOverride=null){
 if(document.body.dataset.page!=='home')return;
-let result=null;
-try{result=JSON.parse(sessionStorage.getItem('gtav-community-welcome')||'null');sessionStorage.removeItem('gtav-community-welcome')}catch{}
+let result=resultOverride;
+try{result=result||JSON.parse(sessionStorage.getItem('gtav-community-welcome')||'null');sessionStorage.removeItem('gtav-community-welcome')}catch{}
 const url=new URL(location.href);const fallback=url.searchParams.get('welcome');if(['android','ios'].includes(fallback)){result=result||{device:fallback};url.searchParams.delete('welcome');history.replaceState(null,'',url.pathname+url.search+url.hash)}
 if(!result||!['android','ios'].includes(result.device))return;
 const region=element('aside','toast-region');region.setAttribute('aria-label','Community notifications');document.body.append(region);

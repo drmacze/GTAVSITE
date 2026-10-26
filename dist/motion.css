@@ -1,0 +1,4 @@
+/* Native touch scrolling and native nested controls remain available. */
+html.lenis{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}dialog,[data-lenis-prevent]{overscroll-behavior:contain}
+html.motion-ready .home-content>* ,html.motion-ready .home-bottom,html.motion-ready .updates-heading,html.motion-ready .release-entry{animation:none}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}

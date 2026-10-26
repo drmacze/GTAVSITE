@@ -15,7 +15,7 @@ body[data-page=home] .header-actions .button:hover{background:#e8b65e;color:#141
 .home-hero .hero-overlay{background:linear-gradient(90deg,#10100ff0 0%,#10100fa3 36%,#10100f1a 75%),linear-gradient(180deg,#10100f4d 0%,transparent 30%,#10100f33 62%,#10100f 100%)}
 .home-content{flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;max-width:1320px;padding:170px 60px 95px;position:relative}
 .home-content .eyebrow{font-size:10px;font-weight:500;letter-spacing:1.8px;color:#d1c4aa;display:flex;align-items:center;gap:11px;margin-bottom:27px;animation:home-in .65s ease both}
-.home-content .eyebrow>span{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 15px #e8b65e44}
+.home-content .eyebrow>span[aria-hidden]{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 15px #e8b65e44}
 .home-content h1{font-size:clamp(58px,6.4vw,88px);line-height:1.05;letter-spacing:-3.8px;font-weight:600;max-width:850px;margin:0 0 27px;animation:home-in .65s .08s ease both;text-wrap:balance}
 .home-content h1>span{color:#ded7c9;font-weight:400;font-size:.78em;letter-spacing:-2.8px}
 .home-content>p{color:#bfb9ac;font-size:15px;line-height:1.85;max-width:450px;margin:0 0 31px;animation:home-in .65s .16s ease both}

@@ -1,6 +1,6 @@
 /* User-provided GTA V trailer audio. Playback starts only after a user gesture. */
 (()=>{
- if(document.body.classList.contains('welcome-page')||!document.querySelector('.site-footer'))return;
+ if(document.body.dataset.page!=='home'||document.body.classList.contains('welcome-page')||!document.querySelector('.site-footer'))return;
  const css=document.createElement('link');css.rel='stylesheet';css.href='music.css';document.head.append(css);
  const note='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 18V5l11-2v13M9 8l11-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="17" cy="16" rx="3" ry="2.5"/></svg>';
  const play='<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 3.5v13l10-6.5z"/></svg>';

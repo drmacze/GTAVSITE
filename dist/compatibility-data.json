@@ -5,13 +5,13 @@
     "ios": 16,
     "freeStorageGB": 30,
     "source": "baseline",
-    "note": "Reference requirements from Five Star Port. This community build may differ; confirm its current release requirements on Discord."
+    "note": "Site-level planning guidance, not verified release minimums. Confirm the current build requirements and installation instructions in our Discord server."
   },
   "sources": {
     "baseline": {
-      "label": "Five Star Port: installation requirements",
-      "url": "https://fivestarport.site/iphone/",
-      "kind": "Project requirements"
+      "label": "GTA V iOS: installation and planning guide",
+      "url": "guide.html#requirements",
+      "kind": "Site-level planning policy"
     },
     "x": {
       "label": "iFixit: iPhone X teardown",

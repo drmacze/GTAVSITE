@@ -37,6 +37,6 @@ Once an invite is provided, Discord links become join links. The Community page 
 
 Home uses the supplied `dist/assets/los-santos-background.jpeg`. The supplied `dist/assets/gtav-logo.jpeg` appears only as a small header mark. Its original black background remains; background extraction was rejected by the image service.
 
-A configured trailer replaces the Home background. Use a direct media file rather than a YouTube or GitHub blob page. Video loops muted, offers pause and sound controls, respects reduced-motion preferences, and falls back to the artwork on errors. No trailer URL has been supplied yet.
+A configured trailer replaces the Home background. Use a direct media file rather than a YouTube or GitHub blob page. Video loops muted, offers pause and sound controls, respects reduced-motion preferences, and falls back to the artwork on errors. The supplied 84-second trailer is configured at `assets/trailer.mp4`, optimized to H.264/AAC with fast-start metadata for web playback.
 
 The website is independent and is not affiliated with Rockstar Games or Take-Two Interactive. No app or game files are hosted here.

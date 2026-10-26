@@ -31,8 +31,10 @@ survey.addEventListener('close',()=>{if(!finished){survey.showModal();document.d
 
 const arrival=new URL(location.href);
 let completed=false;try{const saved=JSON.parse(localStorage.getItem('gtav-community-onboarding')||sessionStorage.getItem('gtav-community-onboarding')||'null');completed=Boolean(saved&&['youtube','tiktok','browser','friends','other'].includes(saved.source)&&['android','ios'].includes(saved.device)&&(saved.device==='android'||saved.model))}catch{}
-if(arrival.searchParams.get('intro')==='1'||!completed){
+if(arrival.searchParams.get('intro')==='1'){
  arrival.searchParams.delete('intro');history.replaceState(null,'',arrival.pathname+arrival.search+arrival.hash);
+}
+if(!completed){
  step='source';renderStep(false);survey.showModal();document.documentElement.classList.add('survey-open');title.focus();
 }
 

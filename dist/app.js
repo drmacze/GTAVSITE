@@ -94,5 +94,13 @@ function showWelcomeNotifications(resultOverride=null){
 }
 showWelcomeNotifications();
 
-// Optional ambient soundtrack, offered only after a user gesture.
+// User-provided trailer soundtrack, enabled by a user gesture.
 {const musicScript=document.createElement("script");musicScript.src="music.js";document.head.append(musicScript);}
+
+// Discourage casual content copying while preserving editable tools and forms.
+(()=>{const editable=target=>target instanceof Element&&!!target.closest('input,textarea,[contenteditable="true"]');
+document.addEventListener('contextmenu',event=>{if(!editable(event.target))event.preventDefault();});
+document.addEventListener('copy',event=>{if(!editable(event.target))event.preventDefault();});
+document.addEventListener('dragstart',event=>{if(event.target instanceof Element&&event.target.closest('img,video'))event.preventDefault();});
+document.querySelectorAll('img').forEach(image=>image.draggable=false);
+})();

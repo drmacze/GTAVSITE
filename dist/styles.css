@@ -11,3 +11,8 @@
 /* Six page links remain balanced in the expanded menu. */
 .drawer-nav{grid-template-columns:repeat(3,1fr)}@media(min-width:751px) and (max-width:1100px){.desktop-nav{gap:16px}.desktop-nav a{font-size:11px}.header-inner{gap:22px}.header-actions{gap:18px}}
 @media(min-width:1001px){.drawer-nav{grid-template-columns:repeat(4,1fr)}}@media(min-width:751px) and (max-width:1100px){.desktop-nav{display:none}}
+
+/* App-like viewport: vertical content remains accessible; lateral overflow and overscroll are contained. */
+html{overflow-x:clip;overscroll-behavior:none}body{max-width:100%;overflow-x:clip;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+img,video{-webkit-user-drag:none;-webkit-touch-callout:none}dialog,.menu-panel{overscroll-behavior:contain}

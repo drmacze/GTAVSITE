@@ -37,5 +37,8 @@ if(arrival.searchParams.get('intro')==='1'){
 if(!completed){
  step='source';renderStep(false);survey.showModal();document.documentElement.classList.add('survey-open');title.focus();
 }
+if(document.body.dataset.page==='home'&&!document.querySelector('script[data-home-music]')){
+ const music=document.createElement('script');music.src='music.js';music.dataset.homeMusic='true';document.head.append(music);
+}
 
 })();

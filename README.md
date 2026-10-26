@@ -1,40 +1,42 @@
-# GTA V iOS Community Hub
+# GTA V iOS Community
 
-A responsive English-language community website centered on Discord, styled after the supplied GTA V launcher reference. Built with HTML, CSS, and JavaScript. No build dependencies.
+A lightweight, English-language community website built with HTML, CSS, and JavaScript. No build dependencies.
+
+## Pages
+
+- `dist/index.html`: minimal Home with background artwork, introduction, and two calls to action.
+- `dist/news.html`: community news.
+- `dist/updates.html`: project updates.
+- `dist/community.html`: Discord information, member counts, and staff.
+- `dist/faq.html`: searchable frequently asked questions.
+
+The permanent left rail and oversized logo have been removed. Navigation uses a compact header and an animated full-width menu inspired by the reference Rockstar website. The native dialog supports focus containment, Escape, backdrop dismissal, focus return, and reduced-motion preferences.
 
 ## Run locally
 
-Run `python3 -m http.server 8080 --directory dist`, then open `http://localhost:8080`. Serve over HTTP; loading via `file://` will prevent the configuration request.
+Run `python3 -m http.server 8080 --directory dist`, then open `http://localhost:8080`. Use an HTTP server rather than `file://` so that content configuration can load.
 
-## Community content
+## Community configuration
 
 Edit `dist/community.json`:
 
 - `name`: community name.
-- `discordInvite`: full `https://discord.gg/...` or `https://discord.com/invite/...` URL. Empty until the server invite is supplied.
-- `trailerUrl`: direct HTTPS video URL or a relative path such as `assets/trailer.mp4`. An MP4 encoded with H.264 is suitable for broad browser support. YouTube and GitHub blob page URLs are not direct video files. Upload the trailer into `dist/assets/`, then set its relative path here, or provide a publicly accessible direct media URL.
+- `discordInvite`: full `https://discord.gg/...` or `https://discord.com/invite/...` URL.
+- `trailerUrl`: direct HTTPS video URL or relative file path such as `assets/trailer.mp4`.
 - `trailerPoster`: optional direct image URL or local relative image path.
-- `staff`: public profiles, each with `name`, `role`, optional `avatar`, and optional numeric `discordUserId`.
-- `posts`: announcements with `title`, `summary`, `type` (`news` or `update`), ISO `date`, and optional `url` to the full announcement.
+- `staff`: profiles with `name`, `role`, optional `avatar`, and optional numeric `discordUserId`.
+- `posts`: announcements with `title`, `summary`, `type` (`news` or `update`), ISO `date`, and optional `url`.
 
-Empty news, team, and Discord sections have honest empty states. No member counts, staff profiles, releases, or news have been invented.
+News and Updates display their respective post categories. Missing content has honest empty states; no member counts, profiles, or announcements are invented.
 
 ## Discord integration
 
-Once an invite is configured, the site connects Join Discord buttons and reads the public invite endpoint for approximate member and online counts, server name, description, and icon. Discord may rate-limit or restrict requests. The join link continues to work when counts are unavailable. No bot token is needed for this public information.
+Once an invite is provided, Discord links become join links. The Community page reads the public invite endpoint for approximate member and online counts, server name, description, and icon. Join links remain available when requests fail. Staff profiles currently come from configuration. Automatic staff role synchronization and channel announcement imports require a future server-side integration. Never put bot tokens or other secrets in `dist/`.
 
-Staff profiles currently come from the configuration file, not a live Discord role lookup. Automatic role-based staff lists and channel announcement synchronization require a future server-side integration. Keep bot tokens and other secrets out of `dist/`; every file there is public to website visitors. The JSON content format provides a boundary for that future integration.
+## Artwork and video
 
-## Video behavior
+Home uses the supplied `dist/assets/los-santos-background.jpeg`. The supplied `dist/assets/gtav-logo.jpeg` appears only as a small header mark. Its original black background remains; background extraction was rejected by the image service.
 
-The current background is the user-supplied Los Santos image at `dist/assets/los-santos-background.jpeg`. The user-supplied logo is at `dist/assets/gtav-logo.jpeg`. The logo retains its original black background because the image service rejected background extraction; replace it with a transparent PNG when supplied and update the HTML/CSS asset paths. No launcher screenshots are displayed. Until a trailer is supplied, the site uses the supplied background image. Configured video plays muted and loops, with pause and sound controls. Reduced-motion preferences disable autoplay. A failed video falls back to the static hero. Original launcher screenshots have been removed.
+A configured trailer replaces the Home background. Use a direct media file rather than a YouTube or GitHub blob page. Video loops muted, offers pause and sound controls, respects reduced-motion preferences, and falls back to the artwork on errors. No trailer URL has been supplied yet.
 
-## Features
-
-- Responsive navigation and community layout.
-- News and update category filters.
-- Searchable FAQ with native expandable answers.
-- Discord community statistics and staff directory.
-- Configurable background trailer with accessible playback controls.
-
-This project is independent and is not affiliated with Rockstar Games or Take-Two Interactive. It does not host game files or an IPA.
+The website is independent and is not affiliated with Rockstar Games or Take-Two Interactive. No app or game files are hosted here.

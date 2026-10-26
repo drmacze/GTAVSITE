@@ -1,6 +1,6 @@
 # GTA V iOS Community Hub
 
-A responsive English-language community website centered on Discord. Built with HTML, CSS, and JavaScript. No build dependencies.
+A responsive English-language community website centered on Discord, styled after the supplied GTA V launcher reference. Built with HTML, CSS, and JavaScript. No build dependencies.
 
 ## Run locally
 
@@ -27,7 +27,7 @@ Staff profiles currently come from the configuration file, not a live Discord ro
 
 ## Video behavior
 
-Until a trailer is supplied, the hero uses a dark green fallback background. Configured video plays muted and loops, with pause and sound controls. Reduced-motion preferences disable autoplay. A failed video falls back to the static hero. Original launcher screenshots have been removed.
+The current background is the user-supplied Los Santos image at `dist/assets/los-santos-background.jpeg`. The user-supplied logo is at `dist/assets/gtav-logo.jpeg`. The logo retains its original black background because the image service rejected background extraction; replace it with a transparent PNG when supplied and update the HTML/CSS asset paths. No launcher screenshots are displayed. Until a trailer is supplied, the site uses the supplied background image. Configured video plays muted and loops, with pause and sound controls. Reduced-motion preferences disable autoplay. A failed video falls back to the static hero. Original launcher screenshots have been removed.
 
 ## Features
 

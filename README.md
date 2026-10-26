@@ -1,29 +1,29 @@
 # GTAV / iOS
 
-Website komunitas GTA V Port dengan tema gelap dan aksen hijau limau. Dibangun dengan HTML, CSS, dan JavaScript tanpa dependensi build.
+An English-language GTA V Port community website with a dark theme and lime accents. Built with HTML, CSS, and JavaScript, with no build dependencies.
 
-## Menjalankan
+## Run locally
 
-Jalankan `python3 -m http.server 8080 --directory dist`, lalu buka `http://localhost:8080`.
+Run `python3 -m http.server 8080 --directory dist`, then open `http://localhost:8080`.
 
-## Fitur
+## Features
 
-- Layout responsif untuk desktop, tablet, dan iPhone.
-- Galeri launcher dengan empat tab, navigasi keyboard, dan dialog gambar layar penuh.
-- Checklist persiapan instalasi dan FAQ.
-- Screenshot lokal yang diberikan pengguna.
-- Tautan sumber proyek Five Star Port, tanpa menghosting IPA atau berkas game.
+- Responsive layouts for desktop, tablet, and iPhone.
+- Four-tab launcher gallery with keyboard navigation and fullscreen image dialogs.
+- Installation preparation checklist and FAQ.
+- Local screenshots supplied by the user.
+- Links to Five Star Port resources, without hosting IPA or game files.
 
-## Struktur
+## Structure
 
-- `dist/index.html`: halaman dan konten.
-- `dist/styles.css`: gaya responsif dan aksesibilitas.
-- `dist/app.js`: interaksi galeri, menu, dialog, dan checklist.
-- `dist/assets/`: screenshot pengguna.
-- `.openai/hosting.json`: konfigurasi deployment Sites.
+- `dist/index.html`: page structure and English content.
+- `dist/styles.css`: responsive styling and accessibility.
+- `dist/app.js`: gallery, menu, dialog, and checklist interactions.
+- `dist/assets/`: user-provided screenshots.
+- `.openai/hosting.json`: Sites deployment configuration.
 
-## Catatan
+## Notes
 
-Website ini tidak menjalankan GTA V di browser dan tidak mendeteksi perangkat atau berkas game. Label FPS dan informasi perangkat pada screenshot bukan hasil benchmark website. Proyek tidak berafiliasi dengan Rockstar Games atau Take-Two Interactive.
+This website does not run GTA V in the browser or detect devices or game files. FPS labels and device information in screenshots are not website benchmark results. This project is not affiliated with Rockstar Games or Take-Two Interactive.
 
-Panduan eksternal: https://fivestarport.site/
+External project guide: https://fivestarport.site/

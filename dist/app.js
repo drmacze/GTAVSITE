@@ -80,15 +80,15 @@ function showWelcomeNotifications(resultOverride=null){
   }
   const welcome=toast('Welcome to the community.');
   welcome.content.append(element('p','toast-note','Explore the latest releases and gameplay from the community.'));
-  let subscribed=false;try{subscribed=localStorage.getItem('gtav-community-update-interest')==='true'}catch{}
+  let subscribed=false;try{subscribed=window.sitePrivacy?.getPreference('gtav-community-update-interest')==='true'}catch{}
   if(subscribed)return;
   const prompt=toast('Stay connected to the project.','subscribe',20000);
-  prompt.content.append(element('p','toast-note','Save your interest in project updates in this browser.'));
+  prompt.content.append(element('p','toast-note',window.sitePrivacy?.allowsPreferences()?'Remember your interest in project updates on this device.':'Save your interest in project updates for this visit.'));
   const subscribe=element('button','toast-subscribe','Subscribe');subscribe.type='button';
   subscribe.addEventListener('click',()=>{
-    try{localStorage.setItem('gtav-community-update-interest','true')}catch{}
+    try{window.sitePrivacy?.setPreference('gtav-community-update-interest','true')}catch{}
     prompt.status.textContent='Thank you for your support.';
-    prompt.content.querySelector('.toast-note').textContent='Your interest has been saved in this browser.';
+    prompt.content.querySelector('.toast-note').textContent=window.sitePrivacy?.allowsPreferences()?'Your interest has been saved on this device.':'Your interest has been saved for this visit.';
     prompt.card.classList.add('subscribed');prompt.mark.replaceChildren(icon('check'));subscribe.remove();prompt.reset(6000);
   });prompt.content.append(subscribe);
 }

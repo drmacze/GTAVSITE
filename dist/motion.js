@@ -12,7 +12,7 @@
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
     const updateLock = () => {
-      const locked = document.documentElement.classList.contains('menu-open') || document.documentElement.classList.contains('survey-open');
+      const locked = document.documentElement.classList.contains('menu-open') || document.documentElement.classList.contains('survey-open') || document.documentElement.classList.contains('privacy-open');
       if (locked) lenis.stop(); else lenis.start();
     };
     const observer = new MutationObserver(updateLock);
@@ -29,7 +29,7 @@
         gsap.from('.home-content>*',{y:20,opacity:0,stagger:.09,duration:.8,ease:'power2.out'});
         gsap.to('.home-content',{y:35,opacity:.25,ease:'none',scrollTrigger:{trigger:'.home-hero',start:'top top',end:'bottom top',scrub:.5}});
       }
-      const targets = document.querySelectorAll('.technical-heading, .technical-section, .gameplay-heading, .gameplay-gallery, .section-heading, .updates-heading, .release-entry, .community-overview, .team-heading, .team-empty, .faq-intro, .faq-list, .guide-intro, .compatibility-intro');
+      const targets = document.querySelectorAll('.project-credits, .technical-heading, .technical-section, .gameplay-heading, .gameplay-gallery, .section-heading, .updates-heading, .release-entry, .community-overview, .team-heading, .team-empty, .faq-intro, .faq-list, .guide-intro, .compatibility-intro');
       targets.forEach(target => gsap.from(target,{y:22,opacity:0,duration:.65,ease:'power2.out',scrollTrigger:{trigger:target,start:'top 94%',once:true}}));
     }
     const refresh = () => ScrollTrigger.refresh();

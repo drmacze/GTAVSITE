@@ -19,7 +19,7 @@
     if (document.querySelector('link[data-ask-franklin]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'ask-franklin.css?v=20261027call';
+    link.href = 'ask-franklin.css?v=20261027profile';
     link.dataset.askFranklin = 'true';
     document.head.append(link);
   };

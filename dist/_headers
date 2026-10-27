@@ -13,6 +13,12 @@
 /push-client.js
   Cache-Control: no-cache, must-revalidate
 
+/profile.js
+  Cache-Control: no-cache, must-revalidate
+
+/profile.css
+  Cache-Control: no-cache, must-revalidate
+
 /admin-push.js
   Cache-Control: no-cache, must-revalidate
 

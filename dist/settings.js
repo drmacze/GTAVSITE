@@ -26,9 +26,9 @@
  window.addEventListener('gtav:haptic',e=>haptic(e.detail?.type||'tap'));
  function classifyHaptic(target){
   if(target.closest('.settings-switch'))return null;
-  if(target.closest('.ask-franklin-launcher,.menu-toggle,.settings-trigger'))return 'open';
+  if(target.closest('.ask-franklin-launcher,.menu-toggle,.settings-trigger,.push-trigger'))return 'open';
   if(target.closest('.ask-franklin-close,.menu-close,.menu-backdrop,.settings-close,.toast-close'))return 'close';
-  if(target.closest('#onboarding-next,.toast-subscribe,.ask-franklin-send'))return 'medium';
+  if(target.closest('#onboarding-next,.toast-subscribe,.ask-franklin-send,[data-push-enable]'))return 'medium';
   if(target.closest('.gameplay-next,.gameplay-prev,.gameplay-thumb,[data-filter],[data-mode-choice],[data-theme-choice],[data-color-choice]'))return 'selection';
   if(target.closest('summary,.faq-list details'))return 'soft';
   if(target.closest('button,a,input[type=radio],input[type=checkbox]'))return 'tap';
@@ -54,4 +54,16 @@
   sync();
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+/* Web Push / PWA bootstrap. */
+(()=>{
+ 'use strict';
+ const addLink=(rel,href)=>{if(document.head.querySelector(`link[rel="${rel}"]`))return;const l=document.createElement('link');l.rel=rel;l.href=href;document.head.append(l)};
+ const addMeta=(name,content)=>{if(document.head.querySelector(`meta[name="${name}"]`))return;const m=document.createElement('meta');m.name=name;m.content=content;document.head.append(m)};
+ const loadScript=src=>{if([...document.scripts].some(s=>s.src.includes(src.split('?')[0])))return;const s=document.createElement('script');s.src=src;s.defer=true;document.head.append(s)};
+ addLink('manifest','/manifest.webmanifest');addLink('apple-touch-icon','/assets/notification-logo.jpeg');addMeta('apple-mobile-web-app-capable','yes');addMeta('apple-mobile-web-app-title','GTA V IOS');
+ const admin=location.pathname.includes('release-publisher-8c2f71d4');
+ if(admin){loadScript('/admin-push.js?v=20261027push1');return}
+ const css=document.createElement('link');css.rel='stylesheet';css.href='/push-notifications.css?v=20261027push1';document.head.append(css);loadScript('/push-client.js?v=20261027push1');
 })();

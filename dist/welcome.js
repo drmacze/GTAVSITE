@@ -21,8 +21,9 @@
   }
 
   function enter() {
-    if (entering) return;
+    if (entering || window.__gtavWelcomeNavigating) return;
     entering = true;
+    window.__gtavWelcomeNavigating = true;
     document.body.setAttribute('aria-busy', 'true');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const returnTarget = safeReturnTarget();
@@ -34,12 +35,10 @@
     setTimeout(() => location.replace(next), reduced ? 0 : 80);
   }
 
-  // Desktop wheel/trackpad: a deliberate downward scroll immediately continues.
   window.addEventListener('wheel', event => {
     if (event.deltaY > 12) enter();
   }, {passive: true});
 
-  // iPhone/iPad: intercept the vertical gesture before Safari can turn it into overscroll/pull-to-refresh.
   window.addEventListener('touchstart', event => {
     if (event.touches?.length !== 1) {
       touchStartY = null;
@@ -49,7 +48,7 @@
   }, {passive: true});
 
   window.addEventListener('touchmove', event => {
-    if (entering || touchStartY == null || event.touches?.length !== 1) return;
+    if (entering || window.__gtavWelcomeNavigating || touchStartY == null || event.touches?.length !== 1) return;
     const currentY = event.touches[0].clientY;
     const distance = touchStartY - currentY;
     if (Math.abs(distance) > 6 && event.cancelable) event.preventDefault();
@@ -60,7 +59,7 @@
   }, {passive: false});
 
   window.addEventListener('touchend', event => {
-    if (entering || touchStartY == null) return;
+    if (entering || window.__gtavWelcomeNavigating || touchStartY == null) return;
     const endY = event.changedTouches?.[0]?.clientY ?? touchStartY;
     const distance = touchStartY - endY;
     touchStartY = null;
@@ -83,11 +82,10 @@
 
   window.addEventListener('pageshow', event => {
     entering = false;
+    window.__gtavWelcomeNavigating = false;
     touchStartY = null;
     document.body.classList.remove('leaving');
     document.body.removeAttribute('aria-busy');
-    // A restored Safari page can come from bfcache. The gesture code above stays active,
-    // while fresh network navigations are forced by no-store headers and versioned assets.
     if (event.persisted) {
       try { sessionStorage.setItem('gtav-welcome-seen', '1'); } catch {}
     }

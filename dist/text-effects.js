@@ -27,8 +27,8 @@
 })();
 
 // Ask Franklin load order:
-// UI -> moderation -> constrained local WebLLM orchestrator -> extended knowledge -> base site retrieval.
-// The local model never receives toxic/off-topic submissions before the deterministic guards.
+// UI -> moderation -> live site RAG -> constrained local WebLLM composer -> extended knowledge -> base retrieval.
+// FAQ/tutorial/project pages are the primary source of truth. The local model only rewrites trusted answers.
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   window.__askFranklinLoaderAdded=true;
   const loadBaseEngine=()=>{
@@ -59,14 +59,24 @@ if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
     ai.addEventListener('error',loadExtended,{once:true});
     document.head.append(ai);
   };
+  const loadSiteRAG=()=>{
+    if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}
+    window.__franklinSiteRAGLoaderAdded=true;
+    const rag=document.createElement('script');
+    rag.src='franklin-site-rag.js';
+    rag.defer=true;
+    rag.addEventListener('load',loadWebLLM,{once:true});
+    rag.addEventListener('error',loadWebLLM,{once:true});
+    document.head.append(rag);
+  };
   const loadModeration=()=>{
-    if(window.__franklinModerationLoaderAdded){loadWebLLM();return;}
+    if(window.__franklinModerationLoaderAdded){loadSiteRAG();return;}
     window.__franklinModerationLoaderAdded=true;
     const moderation=document.createElement('script');
     moderation.src='franklin-moderation.js';
     moderation.defer=true;
-    moderation.addEventListener('load',loadWebLLM,{once:true});
-    moderation.addEventListener('error',loadWebLLM,{once:true});
+    moderation.addEventListener('load',loadSiteRAG,{once:true});
+    moderation.addEventListener('error',loadSiteRAG,{once:true});
     document.head.append(moderation);
   };
   const script=document.createElement('script');

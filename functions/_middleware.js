@@ -1,1 +1,0 @@
-export async function onRequest({request,next}){const path=new URL(request.url).pathname;if(path.startsWith('/knowledge/')||path==='/developer-notes.html'||path.endsWith('/build_kb.py'))return new Response('Not found',{status:404,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});return next();}

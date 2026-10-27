@@ -1,9 +1,7 @@
 {
   "version": 1,
   "include": [
-    "/api/*",
-    "/knowledge/*",
-    "/developer-notes.html"
+    "/api/*"
   ],
   "exclude": []
 }

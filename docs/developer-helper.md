@@ -1,21 +1,11 @@
-# Private helper and user logs
+# Developer knowledge integration
 
-Complete XDE entries must never be committed again. The public JSON, Markdown, readable notes page and source generator were removed. The previous commits still contain them. **The GitHub repository must be made private, or its history cleaned by the owner, before claiming the knowledge source is confidential. Previously downloaded copies cannot be recalled.** Existing public deployment copies may likewise remain accessible until retired by their hosting provider.
+XDE's 50-entry source follows the original workflow: edit `scripts/build_kb.py`, run `python scripts/build_kb.py dist/knowledge`, then run `node tests/developer-kb.cjs`. The generator writes JSON for the helper and Markdown for human readers. It does not publish a notes HTML page.
 
-Developer retrieval is now a POST to `/api/helper`. The browser receives a focused troubleshooting answer only, not the corpus, source inventory, internal notes or private build details. No endpoint lists records. Responses intentionally reveal user-facing advice; this does not prevent someone collecting advice through repeated questions.
+The browser loads `knowledge/kb.json` and ranks log signatures, symptoms and titles. Troubleshooting replies preserve released, unreleased and still-open distinctions. No reply includes a link to the developer notes, JSON or Markdown. These files are ordinary site data, not confidential server-only storage; someone inspecting network requests can retrieve them. This is intentional per the owner's clarified requirement.
 
-## Cloudflare Pages configuration required
+Log attachments are read on the device. Their diagnostic excerpts use the same developer retrieval as chat questions. The helper falls back to a basic local log review when no reliable case matches or the knowledge cannot load. No private backend is required. No log upload/storage is performed for this flow. Native Share sends the original file only through the app the user chooses.
 
-`functions/api/helper.js` uses the existing `VISITS_DB` D1 binding for a per-IP 15-request/minute limit. Only a salted address hash and short-lived counter are stored, never the log/question. It needs private secrets `XDE_KB_PARTS` and `XDE_KB_0` through `XDE_KB_N`. Split the original JSON into ordered chunks of at most 4,000 characters and set the count. Use environment secret settings; never frontend variables. Deploy after setting secrets. No copies belong in `dist`, public Git history or source maps.
+The compact paperclip, content/extension/size validation and top-right notification remain. Bot log messages include an avatar and place the bubble in the main grid column to prevent narrow vertical text. Keep both elements if the chat layout is changed.
 
-The values have been stored as Sites runtime secrets, but this static Sites project does not execute Pages Functions. The separate Cloudflare Pages project needs its own secret configuration. Without the backend, analysis fails closed with a clear unavailable message. No fallback downloads the knowledge to the browser.
-
-## Log attachment
-
-Attach a log opens a file picker for non-empty `.log` and `.txt` files up to 512 KB. Selecting the file only reads it on the device. A diagnostic excerpt (up to 90,000 characters) is prepared and previewed. Common email/token patterns are redacted for analysis, but this is not comprehensive anonymization. Users must review personal information. Only pressing Analyze sends the excerpt to the same-origin helper endpoint. The endpoint processes the request in memory and does not store or log it; hosting-level network metadata may still be recorded by the platform.
-
-Share file uses the device's native share sheet with the **original file** and allows the user to choose Discord or another app. It does not silently send to a Discord channel, bot, staff member or webhook. On unsupported browsers, explain that the user can attach the file manually in Discord. No uploaded log is made public or assigned a download URL.
-
-## Verification
-
-Run `node tests/developer-kb.cjs` and syntax-check the browser scripts and server modules. Test configured analysis and unavailable analysis separately. Never use real user logs in automated tests or a public fixture.
+Run the regression tests and syntax checks. Tests cover signature matching, symptom matching, release caveats, unclear questions, and absence of notes links. Basic log summaries report captured values, not live device state or a confirmed crash cause.

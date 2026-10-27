@@ -6,8 +6,8 @@
   const STRIKE_KEY = 'ask-franklin-moderation-strikes';
   const MAX_STRIKES = 3;
 
-  // Keep this deliberately focused on harassment/profanity/spam. GTA terms such as
-  // gun, kill, heist, weapon, police, wanted and mission are intentionally NOT blocked.
+  // Focused on harassment/profanity/spam. GTA vocabulary such as gun, kill,
+  // heist, weapon, police, wanted and mission is intentionally NOT blocked.
   const STRONG = [
     'fuck','fucker','fucking','motherfucker','bitch','asshole','cunt','dickhead',
     'ngentot','kontol','memek','jembut','bangsat','bajingan','keparat'
@@ -49,10 +49,10 @@
 
   function repeatedSpam(text) {
     if (/(.)\1{10,}/i.test(text)) return true;
-    const words = canonical(text).split(' ').filter(Boolean);
-    if (words.length < 6) return false;
+    const list = canonical(text).split(' ').filter(Boolean);
+    if (list.length < 6) return false;
     const counts = new Map();
-    for (const word of words) counts.set(word, (counts.get(word) || 0) + 1);
+    for (const word of list) counts.set(word, (counts.get(word) || 0) + 1);
     return [...counts.values()].some(count => count >= 6);
   }
 
@@ -77,8 +77,8 @@
       severity = Math.max(severity, 2);
       reasons.push('profanity');
     }
-    // One mild word can be contextual; two or more, or a direct-address construction,
-    // is much more likely to be toxic.
+
+    // One mild word may be contextual. Direct abuse or repeated insults are blocked.
     const directed = /\b(you|u|lu|lo|kamu|anda)\b/i.test(text);
     if (mildHits.length >= 2 || (mildHits.length >= 1 && directed)) {
       severity = Math.max(severity, 1);
@@ -94,10 +94,11 @@
 
   function censor(raw) {
     let output = String(raw || '');
-    for (const re of PHRASES) output = output.replace(re, match => '•'.repeat(Math.min(10, Math.max(4, match.length))));
-    const all = [...STRONG, ...MILD].sort((a, b) => b.length - a.length);
-    for (const word of all) {
-      const re = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}\\b`, 'gi');
+    for (const re of PHRASES) {
+      output = output.replace(re, match => '•'.repeat(Math.min(10, Math.max(4, match.length))));
+    }
+    for (const word of [...STRONG, ...MILD].sort((a, b) => b.length - a.length)) {
+      const re = new RegExp('\\b' + word + '\\b', 'gi');
       output = output.replace(re, match => '•'.repeat(Math.min(8, Math.max(4, match.length))));
     }
     return output;
@@ -147,7 +148,7 @@
     const el = document.createElement('style');
     el.id = 'franklin-moderation-style';
     el.textContent = `
-      .franklin-moderated-message .bubble{opacity:.62;text-decoration:none;letter-spacing:.035em}
+      .franklin-moderated-message .bubble{opacity:.62;letter-spacing:.035em}
       .franklin-moderation-warning .bubble{border-inline-start:2px solid var(--site-accent);padding-inline-start:14px}
       .franklin-moderation-warning .mini-avatar{box-shadow:0 0 0 1px color-mix(in srgb,var(--site-accent) 55%,transparent)}
     `;
@@ -165,7 +166,8 @@
     event.preventDefault();
     event.stopImmediatePropagation();
     const strike = setStrikes(getStrikes() + 1);
-    appendUser(censor(raw));
+    const masked = censor(raw);
+    appendUser(masked === raw ? '•••• Message censored by moderation ••••' : masked);
     appendWarning(strike);
     if (input) {
       input.value = '';

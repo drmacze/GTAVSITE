@@ -26,8 +26,8 @@
   window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
 
-// Reliable loader for Ask Franklin. The extended free knowledge layer registers first,
-// then the base V2 engine remains available as a fallback for site retrieval and small talk.
+// Reliable loader for Ask Franklin. Moderation registers before all answer engines,
+// then the extended free knowledge layer and base site-retrieval engine load in order.
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   window.__askFranklinLoaderAdded=true;
   const loadBaseEngine=()=>{
@@ -48,11 +48,21 @@ if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
     extended.addEventListener('error',loadBaseEngine,{once:true});
     document.head.append(extended);
   };
+  const loadModeration=()=>{
+    if(window.__franklinModerationLoaderAdded){loadExtended();return;}
+    window.__franklinModerationLoaderAdded=true;
+    const moderation=document.createElement('script');
+    moderation.src='franklin-moderation.js';
+    moderation.defer=true;
+    moderation.addEventListener('load',loadExtended,{once:true});
+    moderation.addEventListener('error',loadExtended,{once:true});
+    document.head.append(moderation);
+  };
   const script=document.createElement('script');
   script.src='ask-franklin.js';
   script.defer=true;
-  script.addEventListener('load',loadExtended,{once:true});
-  script.addEventListener('error',loadExtended,{once:true});
+  script.addEventListener('load',loadModeration,{once:true});
+  script.addEventListener('error',loadModeration,{once:true});
   document.head.append(script);
 }
 

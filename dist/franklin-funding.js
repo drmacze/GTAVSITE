@@ -4,7 +4,7 @@
   window.__franklinFundingLoaded = true;
 
   const norm=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
-  const isFunding=q=>/\b(free|paid|pay|paying|payment|price|cost|fee|charge|charged|donate|donates|donated|donating|donation|donations|crypto|wallet|erc20|ethereum|sol|solana|btc|bitcoin|ltc|litecoin|tip|tips|tipping|fund|funding|support developer|support project|support you)\b/.test(norm(q));
+  const isFunding=q=>{const n=norm(q);if(window.FranklinDataset?.outside(q))return false;return (/\b(donat\w*|wallet|support developer|support project)\b/.test(n)&&/gta|project|developer|donat|wallet/.test(n))||(/\b(free|paid|pay|payment|price|cost|fee)\b/.test(n)&&(/gta|launcher|project|app|update/.test(n)||/^(is it free|is it paid|do i need to pay)$/.test(n)));};
   const wantsWallet=q=>/\b(donate|donates|donated|donating|donation|donations|crypto|wallet|erc20|ethereum|sol|solana|btc|bitcoin|ltc|litecoin|tip|tips|tipping|support developer|support project|support you)\b/.test(norm(q));
   function answer(q){
     const base="Nope — the GTA V iOS Project is completely free. You will NEVER be asked to pay for an update, to play the game, or to unlock project features. Donations are totally voluntary.";

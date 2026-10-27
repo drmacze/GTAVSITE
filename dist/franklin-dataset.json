@@ -1,0 +1,2629 @@
+{
+  "schema_version": 1,
+  "scope": [
+    "GTA V",
+    "GTA V iOS Project"
+  ],
+  "policy": {
+    "unsupported_claims": "ask-for-evidence",
+    "outside_scope": "polite-refusal",
+    "developer_records": "handled-first-by-original-XDE-matcher",
+    "not_exhaustive": true
+  },
+  "entries": [
+    {
+      "id": "project-install",
+      "topic": "installation",
+      "patterns": [
+        "how do i install it",
+        "how to install launcher",
+        "how can i download launcher",
+        "download launcher",
+        "install gta v ios",
+        "cara install",
+        "cara pasang",
+        "cara download launcher",
+        "sideload ipa"
+      ],
+      "keywords": [
+        "install",
+        "download",
+        "launcher",
+        "ipa",
+        "sideload",
+        "signing",
+        "setup"
+      ],
+      "answer": "Aight, for the iOS project, start with the Installation Guide. Follow the current signing and setup instructions there, and use game files from your own legitimate copy. Don't trust random downloads from strangers — release-specific details can change, so the Guide and Discord are the safest sources.",
+      "source": {
+        "href": "guide.html",
+        "label": "Installation Guide"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-compatibility",
+      "topic": "compatibility",
+      "patterns": [
+        "can my iphone run it",
+        "is my iphone supported",
+        "device compatibility",
+        "iphone support",
+        "bisa jalan di iphone",
+        "iphone kuat gak"
+      ],
+      "keywords": [
+        "iphone",
+        "device",
+        "supported",
+        "compatibility",
+        "chip",
+        "a12",
+        "a13",
+        "a14",
+        "a15",
+        "a16",
+        "a17"
+      ],
+      "answer": "Don't judge it by the iPhone name alone, homie. Use the Compatibility checker so the site can compare the device and configuration against the project's current guidance. Memory, chipset, resolution, and thermal headroom all matter.",
+      "source": {
+        "href": "compatibility.html",
+        "label": "Compatibility"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-memory-4gb",
+      "topic": "memory",
+      "patterns": [
+        "best settings for 4 gb",
+        "4gb ram",
+        "4 gb iphone",
+        "low memory",
+        "ram 4gb",
+        "memory pressure"
+      ],
+      "keywords": [
+        "4gb",
+        "4",
+        "gb",
+        "ram",
+        "memory",
+        "lowmem",
+        "headroom"
+      ],
+      "answer": "On a 4 GB iPhone, keep it conservative. Start with the lowest practical preset, keep low-memory mode enabled when the launcher offers it, use a low render resolution, avoid MSAA, and leave memory headroom. Four gigs can work in some builds, but it gives the system very little room when the game gets heavy.",
+      "source": {
+        "href": "guide.html#memory",
+        "label": "Memory Guide"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-lowmem",
+      "topic": "memory",
+      "patterns": [
+        "what is lowmem",
+        "lowmem setting",
+        "low memory mode"
+      ],
+      "keywords": [
+        "lowmem",
+        "low-memory",
+        "memory mode"
+      ],
+      "answer": "Low-memory mode is meant to reduce pressure on devices with limited RAM. If your device is close to the project's memory limits, keeping it enabled is usually the safer starting point. If your exported config does not include the field, the compatibility checker may show it as unknown rather than assume a value.",
+      "source": {
+        "href": "compatibility.html#performance-check",
+        "label": "Performance Check"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-memrestrict",
+      "topic": "memory",
+      "patterns": [
+        "what is memrestrict",
+        "memrestrict value",
+        "texture cache memory"
+      ],
+      "keywords": [
+        "memrestrict",
+        "texture",
+        "cache",
+        "memory"
+      ],
+      "answer": "On this site's checker, memrestrict is treated as the texture-cache value in MB and compared with installed memory as one part of the rule-based estimate. It is not the same thing as total GTA V RAM usage.",
+      "source": {
+        "href": "compatibility.html#performance-check",
+        "label": "Performance Check"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-performance",
+      "topic": "performance",
+      "patterns": [
+        "why is it lagging",
+        "how to get more fps",
+        "best performance settings",
+        "stutter",
+        "patah patah",
+        "low fps",
+        "phone gets hot"
+      ],
+      "keywords": [
+        "fps",
+        "lag",
+        "stutter",
+        "performance",
+        "thermal",
+        "heat",
+        "hot",
+        "panas"
+      ],
+      "answer": "For smoother play, lower render resolution before stacking expensive graphics options, avoid MSAA on tighter devices, keep shadows modest, and leave memory headroom. Heat matters too — once the phone starts throttling, chasing a higher FPS target can actually make the experience worse.",
+      "source": {
+        "href": "technicalities.html#performance-power",
+        "label": "Performance Notes"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-crash",
+      "topic": "troubleshooting",
+      "patterns": [
+        "why does it crash",
+        "game keeps crashing",
+        "force close",
+        "closes while loading",
+        "keluar sendiri",
+        "crash on startup"
+      ],
+      "keywords": [
+        "crash",
+        "force",
+        "close",
+        "startup",
+        "loading",
+        "error",
+        "freeze"
+      ],
+      "answer": "If it crashes, check signing validity, free storage, game-file completeness, launcher settings, and memory pressure first. On lower-memory devices, reduce graphics settings. If it still fails, bring your exact iPhone model, iOS version, project build, and any log or error message to Discord so the crew can diagnose the specific case.",
+      "source": {
+        "href": "guide.html#troubleshooting",
+        "label": "Troubleshooting"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-dxmt",
+      "topic": "rendering",
+      "patterns": [
+        "what is dxmt",
+        "how does gta v run on ios",
+        "d3d11 to metal",
+        "native arm64"
+      ],
+      "keywords": [
+        "dxmt",
+        "d3d11",
+        "metal",
+        "arm64",
+        "native",
+        "rendering",
+        "translation"
+      ],
+      "answer": "The project is documented as a native arm64 build with GTA V's D3D11 renderer translated to Metal through DXMT. That's different from simply running the old PC build through a full emulator.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-metalfx",
+      "topic": "graphics",
+      "patterns": [
+        "what is metalfx",
+        "should i use metalfx",
+        "metalfx upscaling"
+      ],
+      "keywords": [
+        "metalfx",
+        "upscale",
+        "upscaling",
+        "resolution",
+        "graphics"
+      ],
+      "answer": "MetalFX is used as an upscaling option in the project's graphics stack. It can let the game render internally at a lower resolution and upscale the result, which may improve performance depending on the device and settings. The best choice still depends on heat, target resolution, and image-quality preference.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-controller",
+      "topic": "controls",
+      "patterns": [
+        "can i use controller",
+        "gamepad support",
+        "touch controls",
+        "xinput controller"
+      ],
+      "keywords": [
+        "controller",
+        "gamepad",
+        "touch",
+        "xinput",
+        "controls",
+        "overlay"
+      ],
+      "answer": "The technical notes describe touch controls as a virtual XInput gamepad with different layouts for game contexts. A physical controller can be used as well, and the touch overlay can be hidden when a controller is active.",
+      "source": {
+        "href": "technicalities.html#controls-ux",
+        "label": "Controls Notes"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-save",
+      "topic": "save-data",
+      "patterns": [
+        "how do i backup saves",
+        "save data",
+        "will reinstall delete saves",
+        "backup progress"
+      ],
+      "keywords": [
+        "save",
+        "saves",
+        "backup",
+        "progress",
+        "reinstall",
+        "data"
+      ],
+      "answer": "Back up your saves before replacing, resigning, or reinstalling the app. Don't assume a reinstall will preserve everything. Check the update guide for the current workflow before deleting an existing installation.",
+      "source": {
+        "href": "guide.html#updates",
+        "label": "Updates & Saves"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-update",
+      "topic": "updates",
+      "patterns": [
+        "latest update",
+        "newest version",
+        "current version",
+        "update terbaru",
+        "release terbaru"
+      ],
+      "keywords": [
+        "latest",
+        "update",
+        "version",
+        "release",
+        "build"
+      ],
+      "answer": "For the current build, don't trust a version number from memory, bro. The Updates page is the source of truth on this site, and Discord is where release-specific notes and community reports show up first.",
+      "source": {
+        "href": "updates.html",
+        "label": "Updates"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "project-discord",
+      "topic": "community",
+      "patterns": [
+        "discord",
+        "where can i ask staff",
+        "community support",
+        "contact staff"
+      ],
+      "keywords": [
+        "discord",
+        "staff",
+        "community",
+        "support",
+        "help"
+      ],
+      "answer": "Yeah, that's the crew. If you need release-specific help, logs checked, or something I can't verify, Discord is the right place to ask staff and the community directly.",
+      "discord": true,
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-franklin",
+      "topic": "characters",
+      "patterns": [
+        "who is franklin",
+        "franklin clinton",
+        "tell me about franklin"
+      ],
+      "keywords": [
+        "franklin",
+        "clinton",
+        "character",
+        "protagonist"
+      ],
+      "answer": "Yo, that's me. Franklin Clinton is one of GTA V's three playable protagonists. He starts out doing repossession work in Los Santos, gets pulled into Michael's world, and eventually becomes part of the crew behind the game's major heists. His special ability slows time while driving, which makes high-speed control a whole lot cleaner.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-michael",
+      "topic": "characters",
+      "patterns": [
+        "who is michael",
+        "michael de santa",
+        "tell me about michael",
+        "siapa michael"
+      ],
+      "keywords": [
+        "michael",
+        "de santa",
+        "family",
+        "robber",
+        "retired"
+      ],
+      "answer": "Michael De Santa is a former bank robber living in Los Santos under a new identity. He has a troubled family life, a taste for expensive things, and eventually gets pulled back into major criminal jobs.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-trevor",
+      "topic": "characters",
+      "patterns": [
+        "who is trevor",
+        "trevor philips",
+        "tell me about trevor",
+        "siapa trevor"
+      ],
+      "keywords": [
+        "trevor",
+        "philips",
+        "sandy shores",
+        "pilot",
+        "criminal"
+      ],
+      "answer": "Trevor Philips is one of GTA V's three protagonists. He lives around Sandy Shores, is a skilled pilot, and is known for being unpredictable, aggressive, and fiercely loyal in his own way.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-protagonists",
+      "topic": "characters",
+      "patterns": [
+        "main characters",
+        "three protagonists",
+        "who are the protagonists",
+        "michael trevor franklin",
+        "who are the main characters",
+        "gta v protagonists",
+        "who can i play as"
+      ],
+      "keywords": [
+        "michael",
+        "franklin",
+        "trevor",
+        "protagonists",
+        "characters",
+        "playable"
+      ],
+      "answer": "The three main playable protagonists are Michael De Santa, Franklin Clinton, and Trevor Philips. Each one has a different background, personality, home base, and special ability.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-lamar",
+      "topic": "characters",
+      "patterns": [
+        "who is lamar",
+        "lamar davis",
+        "tell me about lamar",
+        "siapa lamar"
+      ],
+      "keywords": [
+        "lamar",
+        "davis",
+        "franklin",
+        "friend"
+      ],
+      "answer": "Lamar Davis is Franklin's longtime friend. He's loud, ambitious, and constantly dragging Franklin into street-level trouble around Los Santos.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-lester",
+      "topic": "characters",
+      "patterns": [
+        "who is lester",
+        "lester crest",
+        "tell me about lester",
+        "siapa lester"
+      ],
+      "keywords": [
+        "lester",
+        "crest",
+        "heist",
+        "planner",
+        "hacker"
+      ],
+      "answer": "Lester Crest is the crew's planner, hacker, and information guy. He helps organize several of the game's major heists and provides critical intel for complicated jobs.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-chop",
+      "topic": "characters",
+      "patterns": [
+        "who is chop",
+        "franklin dog",
+        "chop dog",
+        "what is chop",
+        "siapa chop"
+      ],
+      "keywords": [
+        "chop",
+        "dog",
+        "franklin",
+        "lamar"
+      ],
+      "answer": "Chop is the Rottweiler associated with Franklin and Lamar. He appears in missions and can spend time with Franklin during free roam.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-setting",
+      "topic": "world",
+      "patterns": [
+        "where is gta v set",
+        "what is los santos",
+        "gta v map",
+        "where is los santos",
+        "where does gta v take place",
+        "gta v berlatar dimana"
+      ],
+      "keywords": [
+        "los santos",
+        "blaine county",
+        "san andreas",
+        "setting",
+        "world"
+      ],
+      "answer": "GTA V is set in the fictional state of San Andreas, centered on Los Santos and the surrounding Blaine County. Los Santos is heavily inspired by Los Angeles and Southern California.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-mount-chiliad",
+      "topic": "world",
+      "patterns": [
+        "mount chiliad",
+        "highest mountain gta v"
+      ],
+      "keywords": [
+        "mount",
+        "chiliad",
+        "mountain",
+        "cable",
+        "car"
+      ],
+      "answer": "Mount Chiliad is the huge mountain in northern San Andreas and one of the map's most recognizable landmarks. You can reach the summit by trails, off-road vehicles, or the cable car.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-sandy-shores",
+      "topic": "world",
+      "patterns": [
+        "what is sandy shores",
+        "where is sandy shores"
+      ],
+      "keywords": [
+        "sandy shores",
+        "trevor",
+        "desert",
+        "blaine county"
+      ],
+      "answer": "Sandy Shores is a desert town in Blaine County and Trevor's main home area for much of the story. It's surrounded by dry terrain, airfields, trailers, and the Alamo Sea.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-paleto-bay",
+      "topic": "world",
+      "patterns": [
+        "paleto bay",
+        "where is paleto bay"
+      ],
+      "keywords": [
+        "paleto",
+        "bay",
+        "north",
+        "town"
+      ],
+      "answer": "Paleto Bay is a small town on the northwestern coast of the map. It becomes especially important during one of the story's major heist sequences.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-release",
+      "topic": "game-info",
+      "patterns": [
+        "when was gta v released",
+        "gta v release date",
+        "kapan gta v rilis"
+      ],
+      "keywords": [
+        "release",
+        "released",
+        "date",
+        "2013"
+      ],
+      "answer": "GTA V originally released on September 17, 2013. It later expanded to additional console generations and PC. The iOS project on this site is an independent community effort, not an official Rockstar mobile release.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-story",
+      "topic": "story",
+      "patterns": [
+        "what is gta v about",
+        "gta v story",
+        "storyline",
+        "plot without spoilers",
+        "what is gta v story about",
+        "tell me the story",
+        "gta v plot",
+        "story summary"
+      ],
+      "keywords": [
+        "story",
+        "plot",
+        "campaign",
+        "michael",
+        "franklin",
+        "trevor"
+      ],
+      "answer": "GTA V's story brings Michael, Franklin, and Trevor together through robberies, government pressure, rival criminals, and personal conflicts. The campaign builds toward a series of major heists and a final choice involving the three protagonists.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-heists",
+      "topic": "heists",
+      "patterns": [
+        "what are heists",
+        "gta v heists",
+        "how do heists work story mode"
+      ],
+      "keywords": [
+        "heist",
+        "heists",
+        "crew",
+        "approach",
+        "score"
+      ],
+      "answer": "Heists are GTA V's big multi-stage robbery missions. Story-mode heists usually involve setup work, choosing an approach, sometimes selecting crew members, and then carrying out the main score. Your choices can affect how the mission plays and how much money the crew takes home.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-switching",
+      "topic": "gameplay",
+      "patterns": [
+        "how to switch characters",
+        "switch character",
+        "change franklin michael trevor"
+      ],
+      "keywords": [
+        "switch",
+        "character",
+        "franklin",
+        "michael",
+        "trevor"
+      ],
+      "answer": "In story mode, GTA V lets you switch among Franklin, Michael, and Trevor when the story allows it. The exact control depends on platform and the iOS project's touch or controller layout, but the character-switch system itself is part of the core game.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-wanted",
+      "topic": "gameplay",
+      "patterns": [
+        "how wanted level works",
+        "wanted stars",
+        "police stars"
+      ],
+      "keywords": [
+        "wanted",
+        "stars",
+        "police",
+        "cops",
+        "lose"
+      ],
+      "answer": "The wanted level measures police attention from one to five stars. More stars bring a stronger response. To lose it, break line of sight, stay out of the search area, and avoid getting spotted again until the stars disappear.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-cheats",
+      "topic": "cheats",
+      "patterns": [
+        "gta v cheats",
+        "cheat codes",
+        "is there money cheat",
+        "cheat money",
+        "are there cheats",
+        "how to use cheats",
+        "cara pakai cheat gta v"
+      ],
+      "keywords": [
+        "cheats",
+        "cheat code",
+        "codes",
+        "story mode"
+      ],
+      "answer": "GTA V has built-in cheat codes for Story Mode. Cheats are mainly for messing around in free roam, and using them can affect achievements or normal progress behavior, so don't treat a cheat session like a clean progression run.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-money",
+      "topic": "economy",
+      "patterns": [
+        "how to make money story mode",
+        "get rich gta v",
+        "money in story mode"
+      ],
+      "keywords": [
+        "money",
+        "cash",
+        "rich",
+        "stocks",
+        "missions"
+      ],
+      "answer": "Story-mode money mainly comes from missions and heists. The stock market can also matter around certain assassination missions, but if you care about maximizing cash, that's one of those areas where mission order and timing matter a lot.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-stock-market",
+      "topic": "money",
+      "patterns": [
+        "stock market gta v",
+        "lcn bawsaq",
+        "stocks",
+        "lcn ba ws aq",
+        "how to make money stocks"
+      ],
+      "keywords": [
+        "stock market",
+        "lcn",
+        "bawsaq",
+        "stocks",
+        "money"
+      ],
+      "answer": "GTA V has stock-market systems such as LCN and BAWSAQ. Story events can affect prices, and some players use Lester's assassination missions strategically, but exact outcomes can depend on timing and game state.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-vehicles",
+      "topic": "vehicles",
+      "patterns": [
+        "cars in gta v",
+        "vehicle customization",
+        "how to modify cars",
+        "los santos customs"
+      ],
+      "keywords": [
+        "car",
+        "cars",
+        "vehicle",
+        "customize",
+        "customization",
+        "los",
+        "santos",
+        "customs"
+      ],
+      "answer": "Vehicles are a huge part of GTA V. Los Santos Customs handles many upgrades like performance parts, armor, paint, wheels, and cosmetic changes. Not every vehicle supports every modification, and story characters also have personal vehicles tied to them.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-garage",
+      "topic": "vehicles",
+      "patterns": [
+        "how do garages work",
+        "save cars",
+        "vehicle storage"
+      ],
+      "keywords": [
+        "garage",
+        "garages",
+        "save",
+        "car",
+        "vehicle",
+        "storage"
+      ],
+      "answer": "Garages let story characters store vehicles, but GTA V isn't a perfect permanent-car database. If a vehicle matters to you, put it in a proper garage and avoid assuming any random parked car will always survive every mission or game state.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-weapons",
+      "topic": "combat",
+      "patterns": [
+        "weapons gta v",
+        "where to buy guns",
+        "ammunation"
+      ],
+      "keywords": [
+        "weapon",
+        "weapons",
+        "gun",
+        "guns",
+        "ammo",
+        "ammunation"
+      ],
+      "answer": "Ammu-Nation is the main weapon shop in GTA V. As you progress, more weapons and upgrades become available. You can also pick up weapons during missions and exploration.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-special-abilities",
+      "topic": "gameplay",
+      "patterns": [
+        "special abilities",
+        "franklin ability",
+        "michael ability",
+        "trevor ability",
+        "kemampuan khusus karakter"
+      ],
+      "keywords": [
+        "special ability",
+        "franklin",
+        "michael",
+        "trevor",
+        "slow motion"
+      ],
+      "answer": "Each protagonist has a unique special ability: Franklin can slow time while driving, Michael can slow time during gunfights, and Trevor can enter a rage-like mode that increases his combat effectiveness.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-online",
+      "topic": "online",
+      "patterns": [
+        "what is gta online",
+        "does gta v ios have online",
+        "multiplayer",
+        "gta online ios"
+      ],
+      "keywords": [
+        "online",
+        "multiplayer",
+        "gta online",
+        "server"
+      ],
+      "answer": "GTA Online is the official multiplayer component tied to GTA V on supported Rockstar platforms. Don't assume every GTA Online feature works in this community iOS project. For project-specific online support, check the current technical notes or ask Discord because that can change by build.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-save-game",
+      "topic": "save",
+      "patterns": [
+        "how to save gta v",
+        "save game story mode",
+        "autosave",
+        "manual save",
+        "quick save story mode"
+      ],
+      "keywords": [
+        "save",
+        "quick save",
+        "story mode",
+        "progress"
+      ],
+      "answer": "Story Mode supports saving through safehouses and the in-game phone's quick-save option when the game allows it. Avoid quitting during active missions or saving states you haven't verified.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-first-person",
+      "topic": "gameplay",
+      "patterns": [
+        "first person mode",
+        "can gta v be first person",
+        "first person"
+      ],
+      "keywords": [
+        "first",
+        "person",
+        "camera",
+        "view"
+      ],
+      "answer": "Later versions of GTA V include a first-person camera mode. The iOS project's technical notes also mention first-person field-of-view settings in its launcher configuration.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-missions",
+      "topic": "missions",
+      "patterns": [
+        "how many missions",
+        "story missions",
+        "mission types",
+        "what missions are in gta v"
+      ],
+      "keywords": [
+        "mission",
+        "missions",
+        "story",
+        "side",
+        "strangers",
+        "freaks"
+      ],
+      "answer": "GTA V mixes main story missions with side activities, Strangers and Freaks encounters, random events, hobbies, and character-specific content. The exact number people quote depends on what they count, so I won't fake a single number without defining the category.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-ending",
+      "topic": "story",
+      "patterns": [
+        "how many endings",
+        "gta v endings",
+        "ending choices"
+      ],
+      "keywords": [
+        "ending",
+        "endings",
+        "choice",
+        "finale"
+      ],
+      "answer": "GTA V's story reaches a final choice involving Franklin and the other protagonists. There are multiple possible endings. I can explain them, but that's heavy spoiler territory — ask me specifically if you want the spoilers.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-spoiler-ending",
+      "topic": "story",
+      "patterns": [
+        "tell me the endings",
+        "spoil the ending",
+        "deathwish ending",
+        "ending a b c"
+      ],
+      "keywords": [
+        "deathwish",
+        "ending",
+        "option",
+        "kill",
+        "michael",
+        "trevor",
+        "spoiler"
+      ],
+      "answer": "Spoiler warning: the final choice can lead Franklin to kill Trevor, kill Michael, or choose the third route commonly called Deathwish, where the trio fights back against their enemies together.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-creator",
+      "topic": "game-info",
+      "patterns": [
+        "who made gta v",
+        "developer gta v",
+        "rockstar games"
+      ],
+      "keywords": [
+        "rockstar",
+        "developer",
+        "creator",
+        "games"
+      ],
+      "answer": "Grand Theft Auto V was developed by Rockstar North and published by Rockstar Games. This website and its iOS project are independent community work and are not official Rockstar releases.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-platforms",
+      "topic": "game-info",
+      "patterns": [
+        "what platforms is gta v on",
+        "gta v platforms",
+        "official ios gta v"
+      ],
+      "keywords": [
+        "platform",
+        "platforms",
+        "console",
+        "pc",
+        "ios",
+        "official"
+      ],
+      "answer": "GTA V has had official releases across multiple PlayStation and Xbox generations and PC. This community iOS project is not an official Rockstar iOS release.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "helper-scope",
+      "topic": "helper",
+      "patterns": [
+        "what can you do",
+        "what can i ask",
+        "help me",
+        "your knowledge"
+      ],
+      "keywords": [
+        "help",
+        "ask",
+        "know",
+        "knowledge",
+        "questions"
+      ],
+      "answer": "Ask me about GTA V characters, story, map, gameplay systems, vehicles, weapons, heists, cheats, or about this community iOS project — installation, compatibility, launcher settings, performance, controls, updates, and troubleshooting. If the answer depends on a specific build and I can't verify it, I'll send you to Discord instead of guessing.",
+      "provenance": "franklin-knowledge.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-overview",
+      "topic": "gta-general",
+      "patterns": [
+        "what is gta v",
+        "tell me about gta v",
+        "what kind of game is gta 5",
+        "grand theft auto v overview",
+        "apa itu gta v"
+      ],
+      "keywords": [
+        "gta v",
+        "grand theft auto",
+        "open world",
+        "action",
+        "adventure",
+        "story"
+      ],
+      "answer": "GTA V is an open-world action game set mainly in Los Santos and Blaine County. The story follows Michael, Franklin, and Trevor, and the game mixes missions, driving, shooting, exploration, side activities, and character switching.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-family",
+      "topic": "characters",
+      "patterns": [
+        "michael family",
+        "who is amanda",
+        "who is jimmy",
+        "who is tracey"
+      ],
+      "keywords": [
+        "amanda",
+        "jimmy",
+        "tracey",
+        "michael",
+        "family"
+      ],
+      "answer": "Michael's family includes his wife Amanda and their children Jimmy and Tracey. A lot of Michael's story revolves around the tension between his criminal past and his dysfunctional family life.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-vinewood",
+      "topic": "world",
+      "patterns": [
+        "what is vinewood",
+        "where is vinewood"
+      ],
+      "keywords": [
+        "vinewood",
+        "hollywood",
+        "los santos"
+      ],
+      "answer": "Vinewood is GTA V's parody of Hollywood. It's part of Los Santos and is associated with the entertainment industry, expensive neighborhoods, studios, and the Vinewood sign.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-vespucci",
+      "topic": "world",
+      "patterns": [
+        "what is vespucci beach",
+        "where is vespucci"
+      ],
+      "keywords": [
+        "vespucci",
+        "beach",
+        "los santos",
+        "coast"
+      ],
+      "answer": "Vespucci Beach is a coastal area of Los Santos inspired by Venice Beach. It's known for the boardwalk, beach, shops, pedestrians, and nearby canals.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-paleto",
+      "topic": "world",
+      "patterns": [
+        "what is paleto bay",
+        "where is paleto bay"
+      ],
+      "keywords": [
+        "paleto bay",
+        "north",
+        "blaine county"
+      ],
+      "answer": "Paleto Bay is a small town on the northern side of the map. It becomes important during the story and is the setting for the Paleto Score.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-chiliad",
+      "topic": "world",
+      "patterns": [
+        "what is mount chiliad",
+        "where is mount chiliad"
+      ],
+      "keywords": [
+        "mount chiliad",
+        "mountain",
+        "cable car",
+        "north"
+      ],
+      "answer": "Mount Chiliad is the largest mountain in GTA V. You can reach the summit by road, trail, aircraft, or cable car and explore the surrounding wilderness.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-zancudo",
+      "topic": "world",
+      "patterns": [
+        "what is fort zancudo",
+        "where is military base",
+        "gta v military base"
+      ],
+      "keywords": [
+        "fort zancudo",
+        "military",
+        "base",
+        "wanted"
+      ],
+      "answer": "Fort Zancudo is the military base in GTA V. Entering restricted areas can trigger a strong wanted response, so expect heavy resistance if you go in uninvited.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-airport",
+      "topic": "world",
+      "patterns": [
+        "where is airport",
+        "los santos airport",
+        "lsia"
+      ],
+      "keywords": [
+        "airport",
+        "lsia",
+        "aircraft",
+        "los santos"
+      ],
+      "answer": "Los Santos International Airport, usually called LSIA, is the main airport in the south of Los Santos. It's a major place for aircraft and airport-related activities.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-prologue",
+      "topic": "missions",
+      "patterns": [
+        "what is the prologue",
+        "first mission gta v",
+        "north yankton prologue"
+      ],
+      "keywords": [
+        "prologue",
+        "north yankton",
+        "first mission"
+      ],
+      "answer": "The Prologue is GTA V's opening mission in North Yankton. It shows a robbery involving Michael and Trevor years before the main Los Santos story.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-jewel-store",
+      "topic": "heists",
+      "patterns": [
+        "jewel store job",
+        "jewelry heist",
+        "first heist"
+      ],
+      "keywords": [
+        "jewel store",
+        "jewelry",
+        "heist",
+        "vangelico"
+      ],
+      "answer": "The Jewel Store Job is the first major heist planned with Lester. The crew targets Vangelico, and the player makes choices about the approach and crew members.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-merryweather-heist",
+      "topic": "heists",
+      "patterns": [
+        "merryweather heist",
+        "merryweather job"
+      ],
+      "keywords": [
+        "merryweather",
+        "heist",
+        "trevor"
+      ],
+      "answer": "The Merryweather Heist is a Trevor-led operation involving the private military company Merryweather. It has different setup paths, but it doesn't work like a normal profit-focused robbery.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-paleto-score",
+      "topic": "heists",
+      "patterns": [
+        "paleto score",
+        "paleto bank heist",
+        "paleto heist"
+      ],
+      "keywords": [
+        "paleto",
+        "score",
+        "bank",
+        "heist"
+      ],
+      "answer": "The Paleto Score is a major bank robbery in Paleto Bay. It's known for a heavy shootout and a much more direct, armored approach than some earlier heists.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-bureau-raid",
+      "topic": "heists",
+      "patterns": [
+        "bureau raid",
+        "fib raid",
+        "fib heist"
+      ],
+      "keywords": [
+        "bureau raid",
+        "fib",
+        "heist",
+        "raid"
+      ],
+      "answer": "The Bureau Raid targets the FIB building. The game offers different approaches, with setup choices affecting how the operation plays out.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-big-score",
+      "topic": "heists",
+      "patterns": [
+        "big score",
+        "union depository",
+        "final heist"
+      ],
+      "keywords": [
+        "big score",
+        "union depository",
+        "final heist",
+        "gold"
+      ],
+      "answer": "The Big Score is the campaign's largest heist, targeting the Union Depository. It serves as the biggest robbery payoff near the end of the story.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-endings",
+      "topic": "story",
+      "patterns": [
+        "how many endings",
+        "gta v endings",
+        "ending a b c",
+        "deathwish"
+      ],
+      "keywords": [
+        "ending",
+        "endings",
+        "deathwish",
+        "option a",
+        "option b",
+        "option c"
+      ],
+      "answer": "Near the end, Franklin is given three choices: kill Trevor, kill Michael, or choose the third option commonly known as Deathwish. The choice affects which protagonists remain available afterward.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-character-switching",
+      "topic": "gameplay",
+      "patterns": [
+        "how to switch characters",
+        "change character",
+        "switch michael franklin trevor",
+        "cara ganti karakter"
+      ],
+      "keywords": [
+        "switch",
+        "characters",
+        "michael",
+        "franklin",
+        "trevor"
+      ],
+      "answer": "GTA V lets you switch between Michael, Franklin, and Trevor once the story unlocks them. Character switching is used both in free roam and during certain missions.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-wanted-system",
+      "topic": "gameplay",
+      "patterns": [
+        "how does wanted level work",
+        "wanted stars",
+        "how to lose cops",
+        "police stars"
+      ],
+      "keywords": [
+        "wanted",
+        "stars",
+        "police",
+        "cops",
+        "escape"
+      ],
+      "answer": "The wanted system uses stars to represent police attention. Breaking line of sight, avoiding search areas, changing routes, and staying out of view can help you lose the police.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-cover-system",
+      "topic": "gameplay",
+      "patterns": [
+        "how to use cover",
+        "cover system",
+        "shoot from cover"
+      ],
+      "keywords": [
+        "cover",
+        "combat",
+        "shooting",
+        "gunfight"
+      ],
+      "answer": "GTA V has a cover system for gunfights. Using cover reduces exposure, lets you peek or blind-fire, and is especially useful during missions with heavy enemy fire.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-stealth",
+      "topic": "gameplay",
+      "patterns": [
+        "how stealth works",
+        "stealth mode",
+        "sneak gta v"
+      ],
+      "keywords": [
+        "stealth",
+        "sneak",
+        "quiet",
+        "detection"
+      ],
+      "answer": "Stealth mode reduces movement noise and helps with quieter takedowns. Some missions reward a more careful approach, although GTA V is not primarily a stealth game.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-health-armor",
+      "topic": "gameplay",
+      "patterns": [
+        "how health works",
+        "how armor works",
+        "body armor gta v",
+        "restore health"
+      ],
+      "keywords": [
+        "health",
+        "armor",
+        "body armor",
+        "damage"
+      ],
+      "answer": "Health recovers partially on its own, while body armor provides extra protection and must be replenished separately. Ammu-Nation and other sources can help you stock up before difficult missions.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-weapon-wheel",
+      "topic": "weapons",
+      "patterns": [
+        "weapon wheel",
+        "how to change weapons",
+        "switch guns"
+      ],
+      "keywords": [
+        "weapon wheel",
+        "weapons",
+        "guns",
+        "switch"
+      ],
+      "answer": "The weapon wheel groups firearms and tools by category. You can cycle through weapons in each slot and quickly switch loadouts during combat.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-ammunation",
+      "topic": "weapons",
+      "patterns": [
+        "what is ammunation",
+        "where buy guns",
+        "buy weapons gta v"
+      ],
+      "keywords": [
+        "ammunation",
+        "guns",
+        "weapons",
+        "ammo",
+        "armor"
+      ],
+      "answer": "Ammu-Nation is GTA V's weapon store chain. It sells weapons, ammunition, and body armor as more items become available through story progression.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-vehicle-customization",
+      "topic": "vehicles",
+      "patterns": [
+        "how to customize cars",
+        "los santos customs",
+        "upgrade car gta v"
+      ],
+      "keywords": [
+        "los santos customs",
+        "customize",
+        "vehicle",
+        "car",
+        "upgrade",
+        "paint"
+      ],
+      "answer": "Los Santos Customs lets you repair, repaint, and modify many vehicles. Available upgrades vary by vehicle and can include performance, wheels, armor, bodywork, and appearance changes.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-personal-vehicles",
+      "topic": "vehicles",
+      "patterns": [
+        "personal car gta v story",
+        "franklin car",
+        "michael car",
+        "trevor car"
+      ],
+      "keywords": [
+        "personal vehicle",
+        "car",
+        "franklin",
+        "michael",
+        "trevor"
+      ],
+      "answer": "Each protagonist has a signature personal vehicle in Story Mode. Those vehicles are tied to the character and behave differently from ordinary cars you steal or store.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-garages",
+      "topic": "vehicles",
+      "patterns": [
+        "how garages work",
+        "store cars",
+        "save vehicle garage"
+      ],
+      "keywords": [
+        "garage",
+        "store",
+        "vehicle",
+        "save car"
+      ],
+      "answer": "Garages can store vehicles, but Story Mode vehicle persistence can be less forgiving than GTA Online. If a car matters to you, store it carefully and avoid assuming every stolen vehicle will permanently return.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-impound",
+      "topic": "vehicles",
+      "patterns": [
+        "where is my car",
+        "impound lot",
+        "lost vehicle"
+      ],
+      "keywords": [
+        "impound",
+        "lost car",
+        "vehicle",
+        "police"
+      ],
+      "answer": "Some lost personal or recently used vehicles can appear at the impound lot. Vehicle persistence is not perfect, so rare or customized vehicles should be stored with care.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-aircraft",
+      "topic": "vehicles",
+      "patterns": [
+        "can you fly planes",
+        "aircraft gta v",
+        "helicopters gta v"
+      ],
+      "keywords": [
+        "plane",
+        "helicopter",
+        "aircraft",
+        "fly",
+        "airport"
+      ],
+      "answer": "GTA V includes planes and helicopters, and Trevor is especially skilled at flying. Aircraft can be found at airports, helipads, and other locations depending on story progress.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-boats",
+      "topic": "vehicles",
+      "patterns": [
+        "boats gta v",
+        "can you drive boats",
+        "water vehicles"
+      ],
+      "keywords": [
+        "boat",
+        "boats",
+        "water",
+        "jet ski"
+      ],
+      "answer": "You can use boats and other watercraft around the coastline, rivers, and lakes. GTA V's map supports plenty of travel by water as well as by road and air.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-radio",
+      "topic": "world",
+      "patterns": [
+        "gta v radio",
+        "how radio works",
+        "music stations gta v"
+      ],
+      "keywords": [
+        "radio",
+        "music",
+        "stations",
+        "vehicle"
+      ],
+      "answer": "Vehicles have multiple radio stations covering different music genres plus talk radio. The available stations and tracks can vary by game edition and platform.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-day-night",
+      "topic": "world",
+      "patterns": [
+        "day night cycle",
+        "weather gta v",
+        "does weather change"
+      ],
+      "keywords": [
+        "weather",
+        "day",
+        "night",
+        "cycle",
+        "rain"
+      ],
+      "answer": "GTA V has a full day-night cycle and dynamic weather. Lighting, traffic, pedestrian activity, and the overall mood of Los Santos change depending on time and conditions.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-random-events",
+      "topic": "missions",
+      "patterns": [
+        "random events",
+        "blue dot events",
+        "side events gta v"
+      ],
+      "keywords": [
+        "random events",
+        "side event",
+        "free roam"
+      ],
+      "answer": "Random events can appear while exploring the world. They include robberies, stranded people, crime scenes, and other short encounters that make free roam feel less predictable.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-strangers-freaks",
+      "topic": "missions",
+      "patterns": [
+        "strangers and freaks",
+        "side missions gta v",
+        "question mark missions"
+      ],
+      "keywords": [
+        "strangers",
+        "freaks",
+        "side missions",
+        "question mark"
+      ],
+      "answer": "Strangers and Freaks are optional mission chains tied to unusual characters around the map. Different protagonists have access to different side stories.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-properties",
+      "topic": "money",
+      "patterns": [
+        "buy property gta v",
+        "properties story mode",
+        "businesses story mode"
+      ],
+      "keywords": [
+        "property",
+        "properties",
+        "business",
+        "income",
+        "money"
+      ],
+      "answer": "Story Mode includes properties and businesses that can be purchased by specific protagonists. Some generate periodic income or unlock related side activities.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-money-story",
+      "topic": "money",
+      "patterns": [
+        "how to make money story mode",
+        "earn money gta v",
+        "best way to get money story"
+      ],
+      "keywords": [
+        "money",
+        "cash",
+        "story mode",
+        "heists",
+        "properties"
+      ],
+      "answer": "Most major Story Mode money comes from missions and heists. Side activities, properties, stock-market decisions, and careful heist crew choices can also affect your final cash.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-online-vs-story",
+      "topic": "multiplayer",
+      "patterns": [
+        "gta online vs story mode",
+        "difference gta online story",
+        "is gta online the same"
+      ],
+      "keywords": [
+        "gta online",
+        "story mode",
+        "multiplayer",
+        "difference"
+      ],
+      "answer": "Story Mode follows Michael, Franklin, and Trevor in a fixed campaign. GTA Online is a separate multiplayer experience with custom characters, businesses, missions, heists, and online progression.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-online-character",
+      "topic": "multiplayer",
+      "patterns": [
+        "who do you play as in gta online",
+        "online character",
+        "custom character gta online"
+      ],
+      "keywords": [
+        "gta online",
+        "character",
+        "custom",
+        "multiplayer"
+      ],
+      "answer": "In GTA Online you create your own character instead of playing the Story Mode trio as your main avatar. Online progression and content are separate from the Story Mode campaign.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-online-project-status",
+      "topic": "project-online",
+      "patterns": [
+        "does gta online work on ios",
+        "gta online ios project",
+        "can i play online on this port"
+      ],
+      "keywords": [
+        "gta online",
+        "ios project",
+        "multiplayer",
+        "online support"
+      ],
+      "answer": "Don't assume GTA Online support from the fact that Story Mode runs. Multiplayer support is build-specific and can change. Check the current Updates page and Discord for the project's latest online-status information.",
+      "source": {
+        "href": "updates.html",
+        "label": "Updates"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-storage",
+      "topic": "storage",
+      "patterns": [
+        "how much storage do i need",
+        "storage gta v ios",
+        "not enough storage",
+        "free space"
+      ],
+      "keywords": [
+        "storage",
+        "space",
+        "disk",
+        "free space",
+        "install"
+      ],
+      "answer": "GTA V is a large game, so keep substantially more free storage than the final game footprint. Installation, extraction, updates, shader or cache data, and temporary files can all need extra room. Use the current Guide for project-specific storage notes.",
+      "source": {
+        "href": "guide.html",
+        "label": "Installation Guide"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-black-screen",
+      "topic": "troubleshooting",
+      "patterns": [
+        "black screen",
+        "game opens black",
+        "black screen on startup",
+        "blank screen gta v ios"
+      ],
+      "keywords": [
+        "black screen",
+        "startup",
+        "display",
+        "rendering",
+        "crash"
+      ],
+      "answer": "A black screen can come from incomplete game files, rendering initialization, incompatible settings, or a build-specific issue. First verify the game files and launcher settings, then try conservative graphics settings. If it persists, bring your device, iOS version, build, and any log to Discord.",
+      "source": {
+        "href": "guide.html#troubleshooting",
+        "label": "Troubleshooting"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-stuck-loading",
+      "topic": "troubleshooting",
+      "patterns": [
+        "stuck loading",
+        "infinite loading",
+        "loading forever",
+        "stuck on loading screen"
+      ],
+      "keywords": [
+        "loading",
+        "stuck",
+        "infinite",
+        "startup",
+        "files"
+      ],
+      "answer": "If loading never finishes, verify that the required game files are complete and in the expected location, then check signing, free storage, launcher configuration, and memory pressure. Build-specific loading bugs are best checked against the latest update notes.",
+      "source": {
+        "href": "updates.html",
+        "label": "Updates"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-missing-textures",
+      "topic": "troubleshooting",
+      "patterns": [
+        "missing textures",
+        "textures not loading",
+        "world invisible",
+        "texture pop in"
+      ],
+      "keywords": [
+        "textures",
+        "missing",
+        "streaming",
+        "memory",
+        "graphics"
+      ],
+      "answer": "Missing or delayed textures usually point to asset streaming, memory pressure, storage speed, or an aggressive graphics configuration. Lower texture-related load and resolution first, then check whether the issue is listed for your build.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-audio-issues",
+      "topic": "troubleshooting",
+      "patterns": [
+        "no sound gta v ios",
+        "audio broken",
+        "sound not working",
+        "audio crackling"
+      ],
+      "keywords": [
+        "audio",
+        "sound",
+        "crackling",
+        "mute",
+        "volume"
+      ],
+      "answer": "For audio problems, first make sure the device and in-game volume are enabled and the app is not muted by system state. If sound is missing or distorted only in this project, compare your build with the latest known issues and report the device/build details on Discord.",
+      "source": {
+        "href": "updates.html",
+        "label": "Updates"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-touch-layout",
+      "topic": "controls",
+      "patterns": [
+        "edit touch controls",
+        "change touch layout",
+        "move buttons",
+        "touch overlay layout",
+        "cara edit tombol sentuh"
+      ],
+      "keywords": [
+        "touch",
+        "layout",
+        "overlay",
+        "buttons",
+        "controls"
+      ],
+      "answer": "The project documents touch input as a virtual XInput-style gamepad with editable layouts for different contexts. Use the launcher or in-game control configuration available in your build to adjust the overlay.",
+      "source": {
+        "href": "technicalities.html#controls-ux",
+        "label": "Controls Notes"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-controller-overlay",
+      "topic": "controls",
+      "patterns": [
+        "hide touch controls with controller",
+        "controller hides overlay",
+        "touch overlay with gamepad"
+      ],
+      "keywords": [
+        "controller",
+        "overlay",
+        "touch",
+        "gamepad"
+      ],
+      "answer": "The technical notes say a physical controller can hide the touch overlay, which gives you a cleaner screen when using a gamepad.",
+      "source": {
+        "href": "technicalities.html#controls-ux",
+        "label": "Controls Notes"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-fps-cap",
+      "topic": "performance",
+      "patterns": [
+        "30 fps or 40 fps",
+        "fps cap",
+        "should i use 30 fps",
+        "40 fps cap",
+        "pilih batas fps berapa"
+      ],
+      "keywords": [
+        "30 fps",
+        "40 fps",
+        "fps cap",
+        "performance",
+        "thermal"
+      ],
+      "answer": "A lower FPS cap can improve consistency and thermal headroom. If your device struggles to hold a higher target, a stable 30 FPS can feel better than an unstable 40 or uncapped target. Pick the cap your device can sustain without overheating.",
+      "source": {
+        "href": "technicalities.html#performance-power",
+        "label": "Performance Notes"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-resolution",
+      "topic": "graphics",
+      "patterns": [
+        "render resolution",
+        "best resolution",
+        "960x540",
+        "lower resolution"
+      ],
+      "keywords": [
+        "resolution",
+        "render",
+        "960",
+        "540",
+        "graphics",
+        "performance"
+      ],
+      "answer": "Render resolution is one of the biggest performance levers. Lowering it reduces pixel workload and can improve GPU headroom. On tighter devices, start low and only raise resolution after checking heat, memory, and frame pacing.",
+      "source": {
+        "href": "technicalities.html#performance-power",
+        "label": "Performance Notes"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-msaa",
+      "topic": "graphics",
+      "patterns": [
+        "should i use msaa",
+        "msaa off",
+        "msaa performance",
+        "what is msaa"
+      ],
+      "keywords": [
+        "msaa",
+        "anti aliasing",
+        "performance",
+        "graphics"
+      ],
+      "answer": "MSAA can be expensive on a mobile GPU. If performance or heat is a concern, keeping MSAA off is a sensible starting point and you can rely on other anti-aliasing or upscaling options provided by the build.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-shadows",
+      "topic": "graphics",
+      "patterns": [
+        "shadow quality",
+        "best shadow setting",
+        "shadows performance"
+      ],
+      "keywords": [
+        "shadows",
+        "shadow quality",
+        "graphics",
+        "performance"
+      ],
+      "answer": "Shadows can add meaningful GPU cost. On lower-end or thermally limited devices, keep shadow quality modest and spend your performance budget on resolution and stable frame pacing first.",
+      "source": {
+        "href": "technicalities.html#performance-power",
+        "label": "Performance Notes"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-metalfx-quality-performance",
+      "topic": "graphics",
+      "patterns": [
+        "metalfx quality or performance",
+        "which metalfx mode",
+        "metalfx settings"
+      ],
+      "keywords": [
+        "metalfx",
+        "quality",
+        "performance",
+        "upscaling"
+      ],
+      "answer": "If your build exposes multiple MetalFX modes, the right choice depends on device headroom and image-quality preference. A performance-oriented mode favors speed, while a quality-oriented mode usually preserves more detail. Test with the same scene and watch both FPS and heat.",
+      "source": {
+        "href": "technicalities.html",
+        "label": "Technicalities"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-thermal-throttling",
+      "topic": "performance",
+      "patterns": [
+        "thermal throttling",
+        "phone gets hot and fps drops",
+        "fps drops after playing",
+        "performance gets worse over time"
+      ],
+      "keywords": [
+        "thermal",
+        "throttling",
+        "heat",
+        "hot",
+        "fps",
+        "drops"
+      ],
+      "answer": "If performance starts strong and then drops after a few minutes, thermal throttling is a likely factor. Lower resolution or FPS cap, reduce expensive graphics options, remove unnecessary background load, and let the phone cool before comparing results.",
+      "source": {
+        "href": "technicalities.html#performance-power",
+        "label": "Performance Notes"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-signing-expired",
+      "topic": "installation",
+      "patterns": [
+        "app no longer opens",
+        "signing expired",
+        "certificate expired",
+        "ipa expired",
+        "aplikasi tidak bisa dibuka lagi"
+      ],
+      "keywords": [
+        "signing",
+        "certificate",
+        "expired",
+        "ipa",
+        "install"
+      ],
+      "answer": "If a sideloaded app suddenly stops opening, the signing certificate or provisioning period may have expired. Re-sign or reinstall it using your normal signing method, and back up important data first if your workflow could replace the app container.",
+      "source": {
+        "href": "guide.html",
+        "label": "Installation Guide"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-update-safely",
+      "topic": "updates",
+      "patterns": [
+        "how to update launcher",
+        "update without losing saves",
+        "install new build",
+        "upgrade gta v ios"
+      ],
+      "keywords": [
+        "update",
+        "build",
+        "save",
+        "backup",
+        "install"
+      ],
+      "answer": "Before updating, back up anything you care about, read the release notes, and follow the current installation method for that build. Don't assume every update preserves the same container or settings automatically.",
+      "source": {
+        "href": "updates.html",
+        "label": "Updates"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-save-location",
+      "topic": "save",
+      "patterns": [
+        "where are saves",
+        "save files location",
+        "backup save data",
+        "save data ios"
+      ],
+      "keywords": [
+        "save",
+        "backup",
+        "data",
+        "files",
+        "progress"
+      ],
+      "answer": "Save-file handling depends on how the app build and signing method store its container. The safe rule is to back up before reinstalling or replacing a build and follow the project's current guide instead of guessing a path.",
+      "source": {
+        "href": "guide.html#updates",
+        "label": "Updates & Saves"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-not-official",
+      "topic": "project",
+      "patterns": [
+        "is gta v ios official",
+        "is this from rockstar",
+        "official gta v ios",
+        "rockstar mobile port",
+        "apakah gta v ios resmi"
+      ],
+      "keywords": [
+        "official",
+        "rockstar",
+        "fan made",
+        "community",
+        "ios project"
+      ],
+      "answer": "No. This is an independent fan-made community project and is not an official Rockstar Games mobile release. GTA V and its trademarks belong to their respective owners.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-game-files",
+      "topic": "installation",
+      "patterns": [
+        "where get game files",
+        "download gta v files",
+        "game files needed",
+        "do i need own gta v"
+      ],
+      "keywords": [
+        "game files",
+        "download",
+        "own copy",
+        "installation",
+        "files"
+      ],
+      "answer": "Use game files from your own legitimate copy of GTA V and follow the project's guide for the expected structure. Ask Franklin should not point you to pirated game downloads.",
+      "source": {
+        "href": "guide.html",
+        "label": "Installation Guide"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-device-heating-safety",
+      "topic": "performance",
+      "patterns": [
+        "is heat dangerous",
+        "phone very hot",
+        "should i keep playing when hot"
+      ],
+      "keywords": [
+        "heat",
+        "hot",
+        "temperature",
+        "thermal",
+        "safety"
+      ],
+      "answer": "If the phone becomes uncomfortably hot, stop pushing it and let it cool. Heavy games can create sustained thermal load, and lowering FPS, resolution, brightness, or graphics settings is better than forcing maximum performance for long sessions.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-latest-build",
+      "topic": "updates",
+      "patterns": [
+        "what is latest build",
+        "latest version",
+        "newest gta v ios version",
+        "current version"
+      ],
+      "keywords": [
+        "latest",
+        "version",
+        "build",
+        "current",
+        "update"
+      ],
+      "answer": "I don't want to invent a version number. The Updates page and Discord are the source of truth for the current build and release-specific instructions.",
+      "source": {
+        "href": "updates.html",
+        "label": "Updates"
+      },
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "ios-discord-support",
+      "topic": "community",
+      "patterns": [
+        "where ask for help",
+        "how contact staff",
+        "discord support",
+        "community support"
+      ],
+      "keywords": [
+        "discord",
+        "staff",
+        "support",
+        "community",
+        "help"
+      ],
+      "answer": "For build-specific problems, logs, unusual device behavior, or anything I can't verify, the Discord staff and community are the best place to ask directly.",
+      "discord": true,
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-replay-missions",
+      "topic": "missions",
+      "patterns": [
+        "replay missions",
+        "can i replay mission",
+        "mission replay"
+      ],
+      "keywords": [
+        "replay",
+        "mission",
+        "missions",
+        "score"
+      ],
+      "answer": "You can replay many completed Story Mode missions from the pause menu. Replays are useful for improving mission medals, but they don't behave exactly like rewinding your live story progression.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-gold-medals",
+      "topic": "missions",
+      "patterns": [
+        "gold medal missions",
+        "how get gold medal",
+        "mission objectives"
+      ],
+      "keywords": [
+        "gold medal",
+        "mission",
+        "objectives",
+        "score"
+      ],
+      "answer": "Many missions have optional objectives that contribute to bronze, silver, or gold results. You can replay missions later to improve those scores.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-phone",
+      "topic": "gameplay",
+      "patterns": [
+        "how phone works gta v",
+        "in game phone",
+        "contacts phone gta v"
+      ],
+      "keywords": [
+        "phone",
+        "contacts",
+        "internet",
+        "quick save"
+      ],
+      "answer": "The in-game phone handles contacts, messages, internet access, quick save in Story Mode, and certain mission interactions. Different protagonists have their own contacts and phone activity.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-internet",
+      "topic": "world",
+      "patterns": [
+        "internet gta v",
+        "websites gta v",
+        "in game internet"
+      ],
+      "keywords": [
+        "internet",
+        "websites",
+        "phone",
+        "browser"
+      ],
+      "answer": "GTA V includes a fictional in-game internet with parody websites, shopping, property listings, vehicles, finance pages, and other services accessed through phones or computers.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-taxi",
+      "topic": "vehicles",
+      "patterns": [
+        "can i use taxi",
+        "taxi fast travel",
+        "skip taxi ride"
+      ],
+      "keywords": [
+        "taxi",
+        "fast travel",
+        "ride",
+        "skip"
+      ],
+      "answer": "In Story Mode, taxis can be used for transportation and some rides can be skipped to reach the destination faster, making them useful when you don't feel like driving across the map.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-submarine",
+      "topic": "vehicles",
+      "patterns": [
+        "submarine gta v",
+        "can you dive underwater",
+        "scuba gta v"
+      ],
+      "keywords": [
+        "submarine",
+        "underwater",
+        "diving",
+        "scuba",
+        "ocean"
+      ],
+      "answer": "GTA V supports underwater exploration with swimming, diving, and certain submersible equipment or vehicles. Some missions and collectibles take you below the surface.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-collectibles",
+      "topic": "world",
+      "patterns": [
+        "collectibles gta v",
+        "hidden items",
+        "spaceship parts",
+        "letter scraps"
+      ],
+      "keywords": [
+        "collectibles",
+        "spaceship parts",
+        "letter scraps",
+        "hidden"
+      ],
+      "answer": "Story Mode includes several collectible sets and hidden items around the map, including spaceship parts and letter scraps, plus other exploration-based objectives.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "gta-100-percent",
+      "topic": "progress",
+      "patterns": [
+        "100 percent completion",
+        "how to get 100 gta v",
+        "full completion"
+      ],
+      "keywords": [
+        "100 percent",
+        "completion",
+        "progress",
+        "story"
+      ],
+      "answer": "Reaching 100% completion requires more than finishing the main story. The game tracks a mix of story missions, side content, hobbies, random events, and other activities.",
+      "provenance": "franklin-knowledge-extra.json",
+      "answer_policy": "existing-project-content"
+    },
+    {
+      "id": "support-intake",
+      "topic": "support",
+      "patterns": [
+        "help with a problem",
+        "bantu masalah game",
+        "gta v tidak jalan"
+      ],
+      "keywords": [],
+      "answer": "Tell me what you were doing, what you expected, and what happened instead. If there is an error, copy its exact wording. Your selected OS and app build provide context; they do not prove the cause.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-missing-detail",
+      "topic": "support",
+      "patterns": [
+        "what information do you need",
+        "data apa yang dibutuhkan",
+        "what should i send with a crash report"
+      ],
+      "keywords": [],
+      "answer": "Include the device model, OS version, app build, the action immediately before the failure, and the relevant Logs files. Attach a log with the paperclip. If you do not know a detail, say so rather than guessing.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-how-logs",
+      "topic": "logs",
+      "patterns": [
+        "how do i attach a log",
+        "cara kirim log",
+        "upload crash log"
+      ],
+      "keywords": [],
+      "answer": "Use the paperclip beside Send, choose run.log, run.prev.log, or crash-*.txt, then press Send. Describe what happened before the failure. Review the file for personal information before sharing it.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-log-location",
+      "topic": "logs",
+      "patterns": [
+        "where can i find the logs",
+        "dimana file log",
+        "log folder location"
+      ],
+      "keywords": [],
+      "answer": "On iPhone or iPad: Files > On My iPhone/iPad > GTA V > Logs. On Mac: ~/Library/Logs/GTA5. Keep run.log, run.prev.log and crash-*.txt where available.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-invalid-file",
+      "topic": "logs",
+      "patterns": [
+        "my log upload was rejected",
+        "file log ditolak",
+        "unsupported file attachment"
+      ],
+      "keywords": [],
+      "answer": "Choose a non-empty GTA V .log or .txt file up to 512 KB. A screenshot, ZIP, IPA or settings file is not a diagnostic log. If a valid log is rejected, describe the filename and the notification you saw.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-no-log",
+      "topic": "logs",
+      "patterns": [
+        "i dont have a log",
+        "tidak punya log",
+        "there is no logs folder"
+      ],
+      "keywords": [],
+      "answer": "Tell me the device, selected app build, and whether the failure happens before opening the launcher, after Play, or during a mission. If you can reproduce it, check the Logs folder afterward. Without a log, I can narrow the questions but cannot confirm the cause.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-analyze-limits",
+      "topic": "support",
+      "patterns": [
+        "can you scan my phone",
+        "can you detect my ram",
+        "bisa scan hp saya"
+      ],
+      "keywords": [],
+      "answer": "I cannot perform a live hardware, memory or temperature scan. I can use the model you provide, your selected OS/build, and values recorded in an attached log. Logged values describe that session, not the current state of the phone.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-build-unknown",
+      "topic": "support",
+      "patterns": [
+        "i dont know my app version",
+        "tidak tahu versi aplikasi",
+        "how do i identify my build"
+      ],
+      "keywords": [],
+      "answer": "Choose “I’m not sure / another version” if needed. You can attach run.log or paste the GTA5 UUID from the beginning of the log. I will match only known prefixes in XDE’s supplied release list; an unmatched UUID stays unverified.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-update-recommendation",
+      "topic": "updates",
+      "patterns": [
+        "should i update",
+        "apakah harus update",
+        "which build should i install"
+      ],
+      "keywords": [],
+      "answer": "Check the Updates page and the community download instructions for the current release. Tell me your installed build and the issue you want to fix. A fix mentioned in a test build is not automatically available in a public release.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-memory-thermal",
+      "topic": "performance",
+      "patterns": [
+        "what does critical mean",
+        "critical fair serious meaning",
+        "arti fair serious critical"
+      ],
+      "keywords": [],
+      "answer": "In a log, fair, serious and critical can describe the recorded thermal state. They are not a guarantee of FPS or a complete compatibility verdict. Serious or critical heat calls for cooling and a more conservative workload. Please include the exact line so I can distinguish a thermal label from another warning.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-no-guaranteed-fps",
+      "topic": "performance",
+      "patterns": [
+        "can you guarantee 60 fps",
+        "pasti 60 fps",
+        "exact fps on my iphone"
+      ],
+      "keywords": [],
+      "answer": "I cannot guarantee an FPS number from the device name alone. Performance also depends on the build, signing memory allowance, settings, scene and temperature. Share the device and the problem you observe, or attach a log for evidence.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-settings-import",
+      "topic": "settings",
+      "patterns": [
+        "generate graphics json",
+        "buatkan setting otomatis",
+        "download best settings file"
+      ],
+      "keywords": [],
+      "answer": "The automatic graphics-settings generator is not offered here. You can use Check Performance to review a configuration, or ask about an individual setting. Any configuration assessment is an estimate, not a measured FPS benchmark.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-device-memory",
+      "topic": "helper",
+      "patterns": [
+        "why do you remember my os",
+        "os saya tersimpan",
+        "change saved operating system"
+      ],
+      "keywords": [],
+      "answer": "The OS and version you confirm are saved in this browser. A new chat asks for the app build again. Use Change, then Edit saved OS to update them, or Forget saved OS to remove the saved profile.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-disconnect-memory",
+      "topic": "helper",
+      "patterns": [
+        "what does disconnect delete",
+        "disconnect hapus apa",
+        "does disconnect forget os"
+      ],
+      "keywords": [],
+      "answer": "The red phone button deletes the chat session, draft, attachment and selected app build. Your confirmed OS profile remains saved in this browser until you use Forget saved OS. Swiping down only minimizes the conversation.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-language",
+      "topic": "helper",
+      "patterns": [
+        "can i ask in indonesian",
+        "boleh bahasa indonesia",
+        "do you understand bahasa indonesia"
+      ],
+      "keywords": [],
+      "answer": "Yes. You can describe GTA V or project issues in Indonesian or English. Keep error messages and filenames unchanged so I can match them accurately. My replies on this website are in English.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-accuracy",
+      "topic": "helper",
+      "patterns": [
+        "are your answers always correct",
+        "apakah jawabanmu pasti benar",
+        "can i trust the diagnosis"
+      ],
+      "keywords": [],
+      "answer": "A symptom or log-signature match is a starting point, not a confirmed diagnosis. I distinguish released fixes, test builds and unresolved issues. If the evidence is ambiguous, I should ask for details instead of selecting a cause.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-knowledge",
+      "topic": "helper",
+      "patterns": [
+        "what is your knowledge based on",
+        "sumber knowledge kamu",
+        "how do you know this"
+      ],
+      "keywords": [],
+      "answer": "Technical support uses the supplied XDE issue records and the project’s published pages. General GTA V answers use the local game knowledge pack. If the supplied information does not answer your question reliably, I will say what is missing.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-note-links",
+      "topic": "helper",
+      "patterns": [
+        "send developer knowledge notes",
+        "download xde knowledge",
+        "open xde notes"
+      ],
+      "keywords": [],
+      "answer": "I can explain the relevant support steps here, but I do not provide direct links to XDE’s knowledge notes in chat. Describe the issue or attach the log so I can use the relevant information.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "helper-scope-refusal",
+      "topic": "helper",
+      "patterns": [
+        "can you help outside gta v",
+        "can you answer other topics",
+        "bisa jawab selain gta"
+      ],
+      "keywords": [],
+      "answer": "I can only help with GTA V and the GTA V iOS Project. I cannot answer unrelated questions. You can ask about the game, installation, launcher settings, compatibility or troubleshooting.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-mission-detail",
+      "topic": "missions",
+      "patterns": [
+        "help me with a mission",
+        "bantu misi",
+        "stuck on a mission"
+      ],
+      "keywords": [],
+      "answer": "Which mission are you playing, which character are you using, and what is the current objective? Tell me whether you need gameplay guidance or the game is freezing/crashing. I can avoid story spoilers unless you ask for them.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-spoiler-consent",
+      "topic": "story",
+      "patterns": [
+        "no spoilers please",
+        "jangan spoiler",
+        "avoid spoilers"
+      ],
+      "keywords": [],
+      "answer": "Understood. I’ll keep story details out of the guidance. Tell me the mission name and the objective you are stuck on; if the next step would reveal a plot point, I should ask before explaining it.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-touch-detail",
+      "topic": "controls",
+      "patterns": [
+        "a button is missing",
+        "tombol tidak muncul",
+        "touch control not working"
+      ],
+      "keywords": [],
+      "answer": "Tell me the mission or menu and the exact button label the game requests. Also say whether you are on foot, in a vehicle, or using a controller. Touch layouts depend on context and app build.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-settings-detail",
+      "topic": "settings",
+      "patterns": [
+        "help with graphics settings",
+        "bantu setting grafik",
+        "which setting should i change"
+      ],
+      "keywords": [],
+      "answer": "What do you want to improve: stutter, sustained FPS, heat, or image quality? Share the device model, app build, and current resolution/FPS cap. Change one option at a time so the effect is easier to identify.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    },
+    {
+      "id": "support-download",
+      "topic": "community",
+      "patterns": [
+        "where do i download the app",
+        "download aplikasi dimana",
+        "where is the ipa download"
+      ],
+      "keywords": [],
+      "answer": "The community handles current app downloads and build-specific instructions. Use the project’s Discord link, and check the release notes before installing. I should not invent a download file or a version number.",
+      "provenance": "reviewed-helper-workflow",
+      "answer_policy": "clarify-or-explain-existing-workflow"
+    }
+  ]
+}

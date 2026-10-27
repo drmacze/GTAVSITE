@@ -7,4 +7,4 @@
 if(document.body?.dataset?.page){const s=document.createElement('script');s.src='lazy-helper.js?v=20261028lazy';s.defer=true;document.head.append(s);}
 (()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();
 // Shared rating badge is mounted only inside Franklin chat headers.
-if(document.body?.dataset?.page){const s=document.createElement("script");s.src="community-ratings.js?v=20261027stars";s.defer=true;document.head.append(s);}
+if(document.body?.dataset?.page){const s=document.createElement("script");s.src="community-ratings.js?v=20261028observerfix";s.defer=true;document.head.append(s);}

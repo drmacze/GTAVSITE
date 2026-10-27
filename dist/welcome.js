@@ -7,7 +7,8 @@
   function enter() {
     if (entering) return;
     entering = true;
-    document.body.classList.add('leaving');
+    // Keep Welcome visible until the next document commits; do not fade to a blank screen.
+    document.body.setAttribute('aria-busy', 'true');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     setTimeout(() => location.assign('home.html?intro=1'), reduced ? 0 : 250);
   }
@@ -39,6 +40,7 @@
   window.addEventListener('pageshow', () => {
     entering = false;
     document.body.classList.remove('leaving');
+    document.body.removeAttribute('aria-busy');
   });
 
   const signal = document.getElementById('visit-signal');

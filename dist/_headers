@@ -1,35 +1,50 @@
+/*
+  Content-Security-Policy: style-src 'self' 'unsafe-inline'; font-src 'self' data:
+
 /settings.js
-  Cache-Control: no-store
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /onboarding.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /text-effects.js
-  Cache-Control: no-store
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /welcome.js
   Cache-Control: no-store
 
 /app.js
-  Cache-Control: no-store
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /motion.css
-  Cache-Control: no-store
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /community.json
-  Cache-Control: no-store
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+/home.css
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+/gameplay.css
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+/credits.css
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+/styles.css
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /franklin-connect.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /push-client.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /profile.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /profile.css
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /admin-push.js
   Cache-Control: no-cache, must-revalidate
@@ -45,27 +60,36 @@
   Cache-Control: no-cache, must-revalidate
 
 /assets/notification-logo.jpeg
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=86400
+
+/assets/los-santos-background.jpeg
+  Cache-Control: public, max-age=86400
+
+/assets/gtav-logo.jpeg
+  Cache-Control: public, max-age=86400
+
+/assets/icons.svg
+  Cache-Control: public, max-age=86400
 
 /*.html
   Cache-Control: no-cache, must-revalidate
 
 /franklin-*.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /franklin-dataset.json
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /apple-touch-icon*
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=86400
   Content-Type: image/png
 
 /assets/apple-icon-*
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=86400
   Content-Type: image/png
 
 /assets/web-app-*
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=86400
   Content-Type: image/png
 
 /install.webmanifest
@@ -77,23 +101,23 @@
 
 /community-icon.png
   Content-Type: image/png
-  Cache-Control: no-store
+  Cache-Control: public, max-age=86400
 
 /app.webmanifest
   Content-Type: application/manifest+json
-  Cache-Control: no-store
+  Cache-Control: no-cache, must-revalidate
 
 /feedback*
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /community-ratings.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /rating-summary.css
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /music.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
 /music.css
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400

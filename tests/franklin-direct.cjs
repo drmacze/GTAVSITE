@@ -4,11 +4,12 @@ const read=path=>fs.readFileSync(path,'utf8');
 const html=read('dist/franklin.html');
 const css=read('dist/franklin-direct.css');
 const js=read('dist/franklin-direct.js');
-const redirects=read('dist/_redirects');
 const headers=read('dist/_headers');
 
 assert.match(html,/data-page="franklin-direct"/,'direct page must opt into the Franklin loader without normal onboarding');
 assert.doesNotMatch(html,/settings\.js|onboarding\.js/,'direct Franklin entry must not trigger the regular Welcome/onboarding gate');
+assert.match(html,/<base href="\/">/,'direct page must resolve dynamic Franklin assets from site root even on a trailing slash URL');
+assert.match(html,/rel="canonical" href="https:\/\/playgta5-1k8\.pages\.dev\/franklin"/,'direct page must declare one canonical share URL');
 assert.match(html,/<h1 id="franklin-direct-title">Franklin<\/h1>/,'popup header must be Franklin');
 assert.match(html,/Tanyakan apa pun tentang GTA V iOS\./,'popup footer prompt must describe GTA V iOS questions');
 assert.match(html,/class="franklin-swipe" role="slider"/,'continue control must be a real swipe slider');
@@ -27,9 +28,9 @@ assert.match(css,/touch-action:none/,'native scrolling must not steal the horizo
 assert.match(css,/\.franklin-swipe-knob/,'slider must render a dedicated circular knob');
 assert.match(css,/\.asset-loader\{display:none!important\}/,'legacy loader UI must stay hidden behind the new direct entry experience');
 
-assert.match(redirects,/^\/franklin \/franklin\.html 200/m,'clean /franklin URL must rewrite to the direct page');
-assert.match(redirects,/^\/franklin\/ \/franklin 301/m,'trailing slash must normalize so Franklin relative assets resolve from root');
+assert.equal(fs.existsSync('dist/_redirects'),false,'Franklin must not use custom redirect rules that can conflict with Cloudflare Pages pretty URLs');
 assert.match(headers,/\/franklin\n\s+Cache-Control: no-store/,'direct link must not serve stale HTML');
+assert.match(headers,/\/franklin\.html\n\s+Cache-Control: no-store/,'direct HTML file must not be stale');
 assert.match(headers,/\/franklin-direct\.js\n\s+Cache-Control: no-store/,'swipe controller must not be stale');
 
-console.log('PASS: Franklin direct link, swipe-only gate, clean routing, and loader handoff are protected.');
+console.log('PASS: Franklin direct link, swipe-only gate, redirect-loop protection, and loader handoff are protected.');

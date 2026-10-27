@@ -42,3 +42,14 @@ function start(){mountToast();if(!mountSettings()){const o=new MutationObserver(
 window.gtavPush={subscribe,unsubscribe,sync:syncState,isSubscribed:()=>!!subscription};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
+
+/* Shared launcher rating: visible beneath the GTA V iOS brand on every public page. */
+(()=>{
+ if(location.pathname.includes('release-publisher-8c2f71d4'))return;
+ const load=()=>{
+  if(!document.head.querySelector('link[href*="rating-summary.css"]')){const css=document.createElement('link');css.rel='stylesheet';css.href='/rating-summary.css?v=20261027global2';document.head.append(css)}
+  if([...document.scripts].some(script=>script.src.includes('/community-ratings.js')))return;
+  const script=document.createElement('script');script.src='/community-ratings.js?v=20261027global2';script.defer=true;document.head.append(script);
+ };
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();

@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "GTA V IOS Website",
+  "short_name": "GTA V IOS",
+  "description": "GTA V iOS community project updates and support.",
+  "start_url": "/home.html?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090909",
+  "theme_color": "#090909",
+  "icons": [
+    {
+      "src": "/assets/notification-logo.jpeg",
+      "sizes": "736x736",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,8 +1,26 @@
+/
+  Cache-Control: no-store, max-age=0
+
+/index.html
+  Cache-Control: no-store, max-age=0
+
+/home
+  Cache-Control: no-store, max-age=0
+
+/home.html
+  Cache-Control: no-store, max-age=0
+
+/welcome.js
+  Cache-Control: no-store, max-age=0
+
+/welcome.css
+  Cache-Control: no-store, max-age=0
+
 /settings.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, max-age=0
 
 /onboarding.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, max-age=0
 
 /text-effects.js
   Cache-Control: no-cache, must-revalidate

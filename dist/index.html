@@ -10,21 +10,36 @@
   <meta name="apple-mobile-web-app-title" content="GTA V IOS">
   <meta name="mobile-web-app-capable" content="yes">
   <title>Welcome | GTA V iOS Community</title>
-
-
-
+  <style id="welcome-ios-guard">html,body.welcome-page{overscroll-behavior:none}body.welcome-page{position:fixed;inset:0;width:100%;height:100%;overflow:hidden}.welcome-main{height:100svh!important;min-height:0!important;overflow:hidden}.welcome-stage{position:fixed!important;inset:0!important;top:0!important;height:100svh!important;min-height:0!important;touch-action:pan-x pinch-zoom!important}</style>
+  <script>
+  (()=>{
+    let startY=null,navigating=false;
+    const go=()=>{
+      if(navigating||window.__gtavWelcomeNavigating)return;
+      navigating=true;window.__gtavWelcomeNavigating=true;
+      let ret='';
+      try{const raw=new URL(location.href).searchParams.get('return');if(raw){const u=new URL(raw,location.origin);if(u.origin===location.origin&&!u.pathname.includes('release-publisher-8c2f71d4'))ret=u.pathname+u.search+u.hash}}catch{}
+      try{sessionStorage.setItem('gtav-onboarding-transit',String(Date.now()));sessionStorage.setItem('gtav-welcome-seen','1');if(ret)sessionStorage.setItem('gtav-onboarding-return',ret)}catch{}
+      location.replace('/home.html?intro=1'+(ret?'&return='+encodeURIComponent(ret):''));
+    };
+    window.__gtavWelcomeContinue=go;
+    addEventListener('touchstart',e=>{startY=e.touches?.length===1?e.touches[0].clientY:null},{passive:true});
+    addEventListener('touchmove',e=>{if(startY==null||e.touches?.length!==1)return;const d=startY-e.touches[0].clientY;if(Math.abs(d)>6&&e.cancelable)e.preventDefault();if(d>=28){startY=null;go()}},{passive:false});
+    addEventListener('touchend',e=>{if(startY==null)return;const d=startY-(e.changedTouches?.[0]?.clientY??startY);startY=null;if(d>=24)go()},{passive:true});
+    addEventListener('wheel',e=>{if(e.deltaY>12)go()},{passive:true});
+    addEventListener('keydown',e=>{if(['Enter','ArrowDown','PageDown','End',' '].includes(e.key)){e.preventDefault();go()}});
+  })();
+  </script>
 
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="welcome.css?v=20261028iosswipe4">
+  <link rel="stylesheet" href="welcome.css?v=20261028iosswipe5">
 
   <link rel="stylesheet" href="motion.css">
-
-
 
   <script defer src="motion.js"></script>
   <link rel="stylesheet" href="text-effects.css">
   <script defer src="text-effects.js?v=20261028lazy"></script>
-  <script defer src="welcome.js?v=20261028iosswipe4"></script>
+  <script defer src="welcome.js?v=20261028iosswipe5"></script>
   <noscript><meta http-equiv="refresh" content="5;url=home.html"></noscript>
 <link rel="stylesheet" href="settings-tones.css"><link rel="stylesheet" href="settings.css"><link rel="apple-touch-icon" sizes="180x180" href="/community-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/community-mark-192.png"><link rel="manifest" href="/app.webmanifest"><link rel="stylesheet" href="rating-summary.css?v=20261027stars"><script defer src="community-ratings.js?v=20261028observerfix"></script><link rel="stylesheet" href="loading.css"><script defer src="page-loading.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'"></head>
 <body class="welcome-page">
@@ -44,7 +59,7 @@
       </div>
 
       <div class="welcome-bottom">
-        <p class="welcome-hint">Swipe up to continue <span>or tap here</span></p>
+        <p class="welcome-hint" onclick="window.__gtavWelcomeContinue?.()">Swipe up to continue <span>or tap here</span></p>
 
         <div class="welcome-meta">
           <aside class="visit-signal" id="visit-signal" data-state="loading" aria-label="Community visit count">

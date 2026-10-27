@@ -4,13 +4,31 @@
   let entering = false;
   let interacted = false;
 
+  function safeReturnTarget() {
+    const params = new URL(location.href).searchParams;
+    const raw = params.get('return');
+    if (!raw) return '';
+    try {
+      const target = new URL(raw, location.origin);
+      if (target.origin !== location.origin) return '';
+      if (target.pathname.includes('release-publisher-8c2f71d4')) return '';
+      const value = target.pathname + target.search + target.hash;
+      try { sessionStorage.setItem('gtav-onboarding-return', value); } catch {}
+      return value;
+    } catch {
+      return '';
+    }
+  }
+
   function enter() {
     if (entering) return;
     entering = true;
     // Keep Welcome visible until the next document commits; do not fade to a blank screen.
     document.body.setAttribute('aria-busy', 'true');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setTimeout(() => location.assign('home.html?intro=1'), reduced ? 0 : 250);
+    const returnTarget = safeReturnTarget();
+    const next = 'home.html?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '');
+    setTimeout(() => location.assign(next), reduced ? 0 : 250);
   }
 
   function checkEnd() {

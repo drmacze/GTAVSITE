@@ -1,0 +1,335 @@
+{
+  "version": 2,
+  "entries": [
+    {
+      "id": "project-install",
+      "topic": "installation",
+      "patterns": ["how do i install it", "how to install launcher", "how can i download launcher", "download launcher", "install gta v ios", "cara install", "cara pasang", "cara download launcher", "sideload ipa"],
+      "keywords": ["install", "download", "launcher", "ipa", "sideload", "signing", "setup"],
+      "answer": "Aight, for the iOS project, start with the Installation Guide. Follow the current signing and setup instructions there, and use game files from your own legitimate copy. Don't trust random downloads from strangers — release-specific details can change, so the Guide and Discord are the safest sources.",
+      "source": {"href": "guide.html", "label": "Installation Guide"}
+    },
+    {
+      "id": "project-compatibility",
+      "topic": "compatibility",
+      "patterns": ["can my iphone run it", "is my iphone supported", "device compatibility", "iphone support", "bisa jalan di iphone", "iphone kuat gak"],
+      "keywords": ["iphone", "device", "supported", "compatibility", "chip", "a12", "a13", "a14", "a15", "a16", "a17"],
+      "answer": "Don't judge it by the iPhone name alone, homie. Use the Compatibility checker so the site can compare the device and configuration against the project's current guidance. Memory, chipset, resolution, and thermal headroom all matter.",
+      "source": {"href": "compatibility.html", "label": "Compatibility"}
+    },
+    {
+      "id": "project-memory-4gb",
+      "topic": "memory",
+      "patterns": ["best settings for 4 gb", "4gb ram", "4 gb iphone", "low memory", "ram 4gb", "memory pressure"],
+      "keywords": ["4gb", "4", "gb", "ram", "memory", "lowmem", "headroom"],
+      "answer": "On a 4 GB iPhone, keep it conservative. Start with the lowest practical preset, keep low-memory mode enabled when the launcher offers it, use a low render resolution, avoid MSAA, and leave memory headroom. Four gigs can work in some builds, but it gives the system very little room when the game gets heavy.",
+      "source": {"href": "guide.html#memory", "label": "Memory Guide"}
+    },
+    {
+      "id": "project-lowmem",
+      "topic": "memory",
+      "patterns": ["what is lowmem", "lowmem setting", "low memory mode"],
+      "keywords": ["lowmem", "low-memory", "memory mode"],
+      "answer": "Low-memory mode is meant to reduce pressure on devices with limited RAM. If your device is close to the project's memory limits, keeping it enabled is usually the safer starting point. If your exported config does not include the field, the compatibility checker may show it as unknown rather than assume a value.",
+      "source": {"href": "compatibility.html#performance-check", "label": "Performance Check"}
+    },
+    {
+      "id": "project-memrestrict",
+      "topic": "memory",
+      "patterns": ["what is memrestrict", "memrestrict value", "texture cache memory"],
+      "keywords": ["memrestrict", "texture", "cache", "memory"],
+      "answer": "On this site's checker, memrestrict is treated as the texture-cache value in MB and compared with installed memory as one part of the rule-based estimate. It is not the same thing as total GTA V RAM usage.",
+      "source": {"href": "compatibility.html#performance-check", "label": "Performance Check"}
+    },
+    {
+      "id": "project-performance",
+      "topic": "performance",
+      "patterns": ["why is it lagging", "how to get more fps", "best performance settings", "stutter", "patah patah", "low fps", "phone gets hot"],
+      "keywords": ["fps", "lag", "stutter", "performance", "thermal", "heat", "hot", "panas"],
+      "answer": "For smoother play, lower render resolution before stacking expensive graphics options, avoid MSAA on tighter devices, keep shadows modest, and leave memory headroom. Heat matters too — once the phone starts throttling, chasing a higher FPS target can actually make the experience worse.",
+      "source": {"href": "technicalities.html#performance-power", "label": "Performance Notes"}
+    },
+    {
+      "id": "project-crash",
+      "topic": "troubleshooting",
+      "patterns": ["why does it crash", "game keeps crashing", "force close", "closes while loading", "keluar sendiri", "crash on startup"],
+      "keywords": ["crash", "force", "close", "startup", "loading", "error", "freeze"],
+      "answer": "If it crashes, check signing validity, free storage, game-file completeness, launcher settings, and memory pressure first. On lower-memory devices, reduce graphics settings. If it still fails, bring your exact iPhone model, iOS version, project build, and any log or error message to Discord so the crew can diagnose the specific case.",
+      "source": {"href": "guide.html#troubleshooting", "label": "Troubleshooting"}
+    },
+    {
+      "id": "project-dxmt",
+      "topic": "rendering",
+      "patterns": ["what is dxmt", "how does gta v run on ios", "d3d11 to metal", "native arm64"],
+      "keywords": ["dxmt", "d3d11", "metal", "arm64", "native", "rendering", "translation"],
+      "answer": "The project is documented as a native arm64 build with GTA V's D3D11 renderer translated to Metal through DXMT. That's different from simply running the old PC build through a full emulator.",
+      "source": {"href": "technicalities.html", "label": "Technicalities"}
+    },
+    {
+      "id": "project-metalfx",
+      "topic": "graphics",
+      "patterns": ["what is metalfx", "should i use metalfx", "metalfx upscaling"],
+      "keywords": ["metalfx", "upscale", "upscaling", "resolution", "graphics"],
+      "answer": "MetalFX is used as an upscaling option in the project's graphics stack. It can let the game render internally at a lower resolution and upscale the result, which may improve performance depending on the device and settings. The best choice still depends on heat, target resolution, and image-quality preference.",
+      "source": {"href": "technicalities.html", "label": "Technicalities"}
+    },
+    {
+      "id": "project-controller",
+      "topic": "controls",
+      "patterns": ["can i use controller", "gamepad support", "touch controls", "xinput controller"],
+      "keywords": ["controller", "gamepad", "touch", "xinput", "controls", "overlay"],
+      "answer": "The technical notes describe touch controls as a virtual XInput gamepad with different layouts for game contexts. A physical controller can be used as well, and the touch overlay can be hidden when a controller is active.",
+      "source": {"href": "technicalities.html#controls-ux", "label": "Controls Notes"}
+    },
+    {
+      "id": "project-save",
+      "topic": "save-data",
+      "patterns": ["how do i backup saves", "save data", "will reinstall delete saves", "backup progress"],
+      "keywords": ["save", "saves", "backup", "progress", "reinstall", "data"],
+      "answer": "Back up your saves before replacing, resigning, or reinstalling the app. Don't assume a reinstall will preserve everything. Check the update guide for the current workflow before deleting an existing installation.",
+      "source": {"href": "guide.html#updates", "label": "Updates & Saves"}
+    },
+    {
+      "id": "project-update",
+      "topic": "updates",
+      "patterns": ["latest update", "newest version", "current version", "update terbaru", "release terbaru"],
+      "keywords": ["latest", "update", "version", "release", "build"],
+      "answer": "For the current build, don't trust a version number from memory, bro. The Updates page is the source of truth on this site, and Discord is where release-specific notes and community reports show up first.",
+      "source": {"href": "updates.html", "label": "Updates"}
+    },
+    {
+      "id": "project-discord",
+      "topic": "community",
+      "patterns": ["discord", "where can i ask staff", "community support", "contact staff"],
+      "keywords": ["discord", "staff", "community", "support", "help"],
+      "answer": "Yeah, that's the crew. If you need release-specific help, logs checked, or something I can't verify, Discord is the right place to ask staff and the community directly.",
+      "discord": true
+    },
+    {
+      "id": "gta-franklin",
+      "topic": "characters",
+      "patterns": ["who is franklin", "franklin clinton", "tell me about franklin"],
+      "keywords": ["franklin", "clinton", "character", "protagonist"],
+      "answer": "Yo, that's me. Franklin Clinton is one of GTA V's three playable protagonists. He starts out doing repossession work in Los Santos, gets pulled into Michael's world, and eventually becomes part of the crew behind the game's major heists. His special ability slows time while driving, which makes high-speed control a whole lot cleaner."
+    },
+    {
+      "id": "gta-michael",
+      "topic": "characters",
+      "patterns": ["who is michael", "michael de santa", "tell me about michael"],
+      "keywords": ["michael", "de", "santa", "character", "protagonist"],
+      "answer": "Michael De Santa is one of GTA V's three protagonists: a retired career criminal living under a deal in Los Santos with a complicated family life. His return to crime is one of the main things that sets the story in motion. His special ability slows time during gunfights."
+    },
+    {
+      "id": "gta-trevor",
+      "topic": "characters",
+      "patterns": ["who is trevor", "trevor philips", "tell me about trevor"],
+      "keywords": ["trevor", "philips", "character", "protagonist"],
+      "answer": "Trevor Philips is the wildest member of the trio, based mainly around Sandy Shores and Blaine County. He's Michael's old criminal partner and one of GTA V's three playable protagonists. His special ability increases the damage he deals while reducing the damage he takes."
+    },
+    {
+      "id": "gta-protagonists",
+      "topic": "characters",
+      "patterns": ["main characters", "three protagonists", "who are the protagonists", "michael trevor franklin"],
+      "keywords": ["characters", "protagonists", "franklin", "michael", "trevor"],
+      "answer": "GTA V has three main playable protagonists: Franklin Clinton, Michael De Santa, and Trevor Philips. You can switch between them through much of the game, and their stories overlap as the crew gets pulled into bigger jobs and heists."
+    },
+    {
+      "id": "gta-lamar",
+      "topic": "characters",
+      "patterns": ["who is lamar", "lamar davis"],
+      "keywords": ["lamar", "davis", "franklin", "friend"],
+      "answer": "Lamar Davis is Franklin's longtime friend and one of the loudest personalities in Los Santos. He works with Franklin early in the story, stays tied to the Families, and keeps finding ways to turn a simple plan into something way more complicated."
+    },
+    {
+      "id": "gta-lester",
+      "topic": "characters",
+      "patterns": ["who is lester", "lester crest"],
+      "keywords": ["lester", "crest", "heist", "planner"],
+      "answer": "Lester Crest is the crew's planner, hacker, and information guy. He plays a major role in organizing heists and giving the protagonists the intelligence they need for high-risk jobs."
+    },
+    {
+      "id": "gta-chop",
+      "topic": "characters",
+      "patterns": ["who is chop", "franklin dog", "chop dog"],
+      "keywords": ["chop", "dog", "franklin", "lamar"],
+      "answer": "Chop is the Rottweiler associated with Lamar and Franklin. He appears in story missions and can spend time with Franklin outside missions."
+    },
+    {
+      "id": "gta-setting",
+      "topic": "world",
+      "patterns": ["where is gta v set", "what is los santos", "gta v map", "where is los santos"],
+      "keywords": ["los", "santos", "blaine", "county", "map", "world", "location"],
+      "answer": "GTA V is set in the fictional state of San Andreas, centered on Los Santos and the surrounding Blaine County. Los Santos draws heavily from Los Angeles, while the wider map includes desert, mountains, coastline, small towns, highways, and rural areas."
+    },
+    {
+      "id": "gta-mount-chiliad",
+      "topic": "world",
+      "patterns": ["mount chiliad", "highest mountain gta v"],
+      "keywords": ["mount", "chiliad", "mountain", "cable", "car"],
+      "answer": "Mount Chiliad is the huge mountain in northern San Andreas and one of the map's most recognizable landmarks. You can reach the summit by trails, off-road vehicles, or the cable car."
+    },
+    {
+      "id": "gta-sandy-shores",
+      "topic": "world",
+      "patterns": ["what is sandy shores", "where is sandy shores"],
+      "keywords": ["sandy", "shores", "trevor", "desert", "blaine"],
+      "answer": "Sandy Shores is a desert town in Blaine County near the Alamo Sea. It's closely associated with Trevor and serves as his main home area for a big part of the story."
+    },
+    {
+      "id": "gta-paleto-bay",
+      "topic": "world",
+      "patterns": ["paleto bay", "where is paleto bay"],
+      "keywords": ["paleto", "bay", "north", "town"],
+      "answer": "Paleto Bay is a small town on the northwestern coast of the map. It becomes especially important during one of the story's major heist sequences."
+    },
+    {
+      "id": "gta-release",
+      "topic": "game-info",
+      "patterns": ["when was gta v released", "gta v release date", "kapan gta v rilis"],
+      "keywords": ["release", "released", "date", "2013"],
+      "answer": "GTA V originally released on September 17, 2013. It later expanded to additional console generations and PC. The iOS project on this site is an independent community effort, not an official Rockstar mobile release."
+    },
+    {
+      "id": "gta-story",
+      "topic": "story",
+      "patterns": ["what is gta v about", "gta v story", "storyline", "plot without spoilers"],
+      "keywords": ["story", "plot", "storyline", "about", "campaign"],
+      "answer": "Spoiler-light version: GTA V follows Franklin, Michael, and Trevor as their lives collide through crime, government pressure, personal conflicts, and increasingly ambitious heists across Los Santos and Blaine County. The three-character structure is the core of the campaign."
+    },
+    {
+      "id": "gta-heists",
+      "topic": "heists",
+      "patterns": ["what are heists", "gta v heists", "how do heists work story mode"],
+      "keywords": ["heist", "heists", "crew", "approach", "score"],
+      "answer": "Heists are GTA V's big multi-stage robbery missions. Story-mode heists usually involve setup work, choosing an approach, sometimes selecting crew members, and then carrying out the main score. Your choices can affect how the mission plays and how much money the crew takes home."
+    },
+    {
+      "id": "gta-switching",
+      "topic": "gameplay",
+      "patterns": ["how to switch characters", "switch character", "change franklin michael trevor"],
+      "keywords": ["switch", "character", "franklin", "michael", "trevor"],
+      "answer": "In story mode, GTA V lets you switch among Franklin, Michael, and Trevor when the story allows it. The exact control depends on platform and the iOS project's touch or controller layout, but the character-switch system itself is part of the core game."
+    },
+    {
+      "id": "gta-wanted",
+      "topic": "gameplay",
+      "patterns": ["how wanted level works", "wanted stars", "police stars"],
+      "keywords": ["wanted", "stars", "police", "cops", "lose"],
+      "answer": "The wanted level measures police attention from one to five stars. More stars bring a stronger response. To lose it, break line of sight, stay out of the search area, and avoid getting spotted again until the stars disappear."
+    },
+    {
+      "id": "gta-cheats",
+      "topic": "cheats",
+      "patterns": ["gta v cheats", "cheat codes", "is there money cheat", "cheat money"],
+      "keywords": ["cheat", "cheats", "code", "money", "invincibility", "weapons"],
+      "answer": "GTA V has story-mode cheat codes for things like weapons, vehicles, abilities, and wanted level changes, but there is no normal story-mode cheat that simply gives unlimited money. Using cheats can disable achievements or trophies for the current session, so save first if that matters to you."
+    },
+    {
+      "id": "gta-money",
+      "topic": "economy",
+      "patterns": ["how to make money story mode", "get rich gta v", "money in story mode"],
+      "keywords": ["money", "cash", "rich", "stocks", "missions"],
+      "answer": "Story-mode money mainly comes from missions and heists. The stock market can also matter around certain assassination missions, but if you care about maximizing cash, that's one of those areas where mission order and timing matter a lot."
+    },
+    {
+      "id": "gta-stock-market",
+      "topic": "economy",
+      "patterns": ["stock market gta v", "lcn bawsaq", "stocks"],
+      "keywords": ["stock", "market", "lcn", "bawsaq", "investment"],
+      "answer": "GTA V's story mode includes the LCN and BAWSAQ stock markets. Some story events can move prices, which is why players often pay attention to investments around Lester's assassination missions."
+    },
+    {
+      "id": "gta-vehicles",
+      "topic": "vehicles",
+      "patterns": ["cars in gta v", "vehicle customization", "how to modify cars", "los santos customs"],
+      "keywords": ["car", "cars", "vehicle", "customize", "customization", "los", "santos", "customs"],
+      "answer": "Vehicles are a huge part of GTA V. Los Santos Customs handles many upgrades like performance parts, armor, paint, wheels, and cosmetic changes. Not every vehicle supports every modification, and story characters also have personal vehicles tied to them."
+    },
+    {
+      "id": "gta-garage",
+      "topic": "vehicles",
+      "patterns": ["how do garages work", "save cars", "vehicle storage"],
+      "keywords": ["garage", "garages", "save", "car", "vehicle", "storage"],
+      "answer": "Garages let story characters store vehicles, but GTA V isn't a perfect permanent-car database. If a vehicle matters to you, put it in a proper garage and avoid assuming any random parked car will always survive every mission or game state."
+    },
+    {
+      "id": "gta-weapons",
+      "topic": "combat",
+      "patterns": ["weapons gta v", "where to buy guns", "ammunation"],
+      "keywords": ["weapon", "weapons", "gun", "guns", "ammo", "ammunation"],
+      "answer": "Ammu-Nation is the main weapon shop in GTA V. As you progress, more weapons and upgrades become available. You can also pick up weapons during missions and exploration."
+    },
+    {
+      "id": "gta-special-abilities",
+      "topic": "gameplay",
+      "patterns": ["special abilities", "franklin ability", "michael ability", "trevor ability"],
+      "keywords": ["special", "ability", "abilities", "franklin", "michael", "trevor"],
+      "answer": "Each protagonist has a unique special ability: Franklin slows time while driving, Michael slows time during gunfights, and Trevor enters a rage state that boosts his damage while reducing incoming damage."
+    },
+    {
+      "id": "gta-online",
+      "topic": "online",
+      "patterns": ["what is gta online", "does gta v ios have online", "multiplayer", "gta online ios"],
+      "keywords": ["online", "multiplayer", "gta online", "server"],
+      "answer": "GTA Online is the official multiplayer component tied to GTA V on supported Rockstar platforms. Don't assume every GTA Online feature works in this community iOS project. For project-specific online support, check the current technical notes or ask Discord because that can change by build.",
+      "source": {"href": "technicalities.html", "label": "Technicalities"}
+    },
+    {
+      "id": "gta-save-game",
+      "topic": "gameplay",
+      "patterns": ["how to save gta v", "save game story mode", "autosave"],
+      "keywords": ["save", "autosave", "story", "progress"],
+      "answer": "Story mode supports autosave and manual saving through the characters' safehouses or the in-game phone's quick-save feature when available. For the iOS project, also back up the underlying save data before reinstalling or changing signing setups."
+    },
+    {
+      "id": "gta-first-person",
+      "topic": "gameplay",
+      "patterns": ["first person mode", "can gta v be first person", "first person"],
+      "keywords": ["first", "person", "camera", "view"],
+      "answer": "Later versions of GTA V include a first-person camera mode. The iOS project's technical notes also mention first-person field-of-view settings in its launcher configuration.",
+      "source": {"href": "technicalities.html", "label": "Technicalities"}
+    },
+    {
+      "id": "gta-missions",
+      "topic": "missions",
+      "patterns": ["how many missions", "story missions", "mission types", "what missions are in gta v"],
+      "keywords": ["mission", "missions", "story", "side", "strangers", "freaks"],
+      "answer": "GTA V mixes main story missions with side activities, Strangers and Freaks encounters, random events, hobbies, and character-specific content. The exact number people quote depends on what they count, so I won't fake a single number without defining the category."
+    },
+    {
+      "id": "gta-ending",
+      "topic": "story",
+      "patterns": ["how many endings", "gta v endings", "ending choices"],
+      "keywords": ["ending", "endings", "choice", "finale"],
+      "answer": "GTA V's story reaches a final choice involving Franklin and the other protagonists. There are multiple possible endings. I can explain them, but that's heavy spoiler territory — ask me specifically if you want the spoilers."
+    },
+    {
+      "id": "gta-spoiler-ending",
+      "topic": "story",
+      "patterns": ["tell me the endings", "spoil the ending", "deathwish ending", "ending a b c"],
+      "keywords": ["deathwish", "ending", "option", "kill", "michael", "trevor", "spoiler"],
+      "answer": "Spoiler warning: the final choice can lead Franklin to kill Trevor, kill Michael, or choose the third route commonly called Deathwish, where the trio fights back against their enemies together."
+    },
+    {
+      "id": "gta-creator",
+      "topic": "game-info",
+      "patterns": ["who made gta v", "developer gta v", "rockstar games"],
+      "keywords": ["rockstar", "developer", "creator", "games"],
+      "answer": "Grand Theft Auto V was developed by Rockstar North and published by Rockstar Games. This website and its iOS project are independent community work and are not official Rockstar releases."
+    },
+    {
+      "id": "gta-platforms",
+      "topic": "game-info",
+      "patterns": ["what platforms is gta v on", "gta v platforms", "official ios gta v"],
+      "keywords": ["platform", "platforms", "console", "pc", "ios", "official"],
+      "answer": "GTA V has had official releases across multiple PlayStation and Xbox generations and PC. This community iOS project is not an official Rockstar iOS release."
+    },
+    {
+      "id": "helper-scope",
+      "topic": "helper",
+      "patterns": ["what can you do", "what can i ask", "help me", "your knowledge"],
+      "keywords": ["help", "ask", "know", "knowledge", "questions"],
+      "answer": "Ask me about GTA V characters, story, map, gameplay systems, vehicles, weapons, heists, cheats, or about this community iOS project — installation, compatibility, launcher settings, performance, controls, updates, and troubleshooting. If the answer depends on a specific build and I can't verify it, I'll send you to Discord instead of guessing."
+    }
+  ]
+}

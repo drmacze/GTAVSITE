@@ -70,3 +70,6 @@
 
 /community-ratings.js
   Cache-Control: no-cache, must-revalidate
+
+/rating-summary.css
+  Cache-Control: no-cache, must-revalidate

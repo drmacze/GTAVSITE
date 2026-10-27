@@ -67,7 +67,7 @@
 
   const notice = document.createElement('div');
   notice.className = 'ask-franklin-notice';
-  notice.textContent = 'Franklin bisa saja menjawab jawaban tidak akurat, lebih baik bergabung ke Discord.';
+  notice.textContent = 'Franklin may give inaccurate answers. For the most reliable help, join Discord.';
 
   const messages = document.createElement('div');
   messages.className = 'ask-franklin-messages';

@@ -6,9 +6,20 @@
 })();
 if(document.body?.dataset?.page){
   const s=document.createElement('script');s.src='lazy-helper.js?v=20261028lazy';s.defer=true;document.head.append(s);
-  const avatarStyle=document.createElement('style');avatarStyle.dataset.franklinAvatar='local';avatarStyle.textContent=".ask-franklin-launcher .ask-franklin-avatar{background:#111 url('/assets/avatars/franklin.jpg?v=20261028portrait2') center 18%/cover no-repeat!important}.ask-franklin-launcher .ask-franklin-avatar img,.ask-franklin-launcher .ask-franklin-fallback{opacity:0!important}";document.head.append(avatarStyle);
+  const avatarStyle=document.createElement('style');avatarStyle.dataset.franklinAvatar='local';avatarStyle.textContent=".ask-franklin-launcher .ask-franklin-avatar{background:#111 url('/assets/franklin-helper-new.jpg?v=20261028portrait3') center 18%/cover no-repeat!important}.ask-franklin-launcher .ask-franklin-avatar img,.ask-franklin-launcher .ask-franklin-fallback{opacity:0!important}";document.head.append(avatarStyle);
 }
 (()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();
+
+// Keep the expanded Franklin launcher visible long enough to be understood.
+(()=>{
+  if(document.body?.dataset?.page!=='home'||window.__franklinTimingGuard)return;window.__franklinTimingGuard=true;
+  const HOLD_MS=15000;let launcher=null,deadline=0,timer=0,restoring=false;
+  const collapse=()=>{if(!launcher||document.querySelector('.ask-franklin-panel.is-open'))return;launcher.classList.remove('is-dock-open');launcher.dataset.state='compact';launcher.setAttribute('aria-label','Expand Ask Franklin helper')};
+  const hold=()=>{if(!launcher)return;clearTimeout(timer);deadline=performance.now()+HOLD_MS;timer=setTimeout(collapse,HOLD_MS)};
+  const attach=node=>{if(launcher===node)return;launcher=node;hold();const observer=new MutationObserver(()=>{if(!launcher)return;const state=launcher.dataset.state;if(state==='compact'&&performance.now()<deadline){restoring=true;launcher.classList.add('is-dock-open');launcher.dataset.state='expanded';launcher.setAttribute('aria-label','Open Ask Franklin chat');queueMicrotask(()=>{restoring=false})}else if(state==='expanded'&&!restoring&&performance.now()>=deadline-50){hold()}});observer.observe(launcher,{attributes:true,attributeFilter:['class','data-state']})};
+  const existing=document.querySelector('.ask-franklin-launcher');if(existing)attach(existing);else{const observer=new MutationObserver(()=>{const node=document.querySelector('.ask-franklin-launcher');if(node){observer.disconnect();attach(node)}});observer.observe(document.body,{childList:true,subtree:true})}
+  addEventListener('pagehide',()=>clearTimeout(timer),{once:true});
+})();
 
 // Lightweight compact-state micro messages for the Home Franklin launcher.
 (()=>{

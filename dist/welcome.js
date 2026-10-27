@@ -4,12 +4,43 @@
   let entering = false;
   let interacted = false;
 
+  // Warm the next page while the welcome scene is visible. Using the
+  // extensionless Pages URL avoids the home.html -> /home redirect hop.
+  const warmHome = () => {
+    if (window.__gtavHomeWarmed) return;
+    window.__gtavHomeWarmed = true;
+    try {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = '/home?intro=1';
+      link.as = 'document';
+      document.head.append(link);
+    } catch {}
+    // A low-priority same-origin fetch also warms browsers that ignore
+    // document prefetch. It never blocks the welcome experience.
+    try {
+      fetch('/home?intro=1', {
+        method: 'GET',
+        credentials: 'same-origin',
+        cache: 'force-cache',
+        priority: 'low'
+      }).catch(() => {});
+    } catch {}
+  };
+
+  if (document.readyState === 'complete') {
+    setTimeout(warmHome, 0);
+  } else {
+    window.addEventListener('load', () => setTimeout(warmHome, 0), { once: true });
+  }
+
   function enter() {
     if (entering) return;
     entering = true;
-    document.body.classList.add('leaving');
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setTimeout(() => location.assign('home.html?intro=1'), reduced ? 0 : 250);
+    // Keep the welcome scene visible until the new document commits. The old
+    // fade-to-white transition made a normal navigation delay look like a
+    // frozen blank page on iOS in-app browsers.
+    location.assign('/home?intro=1');
   }
 
   function checkEnd() {
@@ -20,6 +51,7 @@
   ['wheel', 'touchstart'].forEach(type => {
     window.addEventListener(type, () => {
       interacted = true;
+      warmHome();
     }, {passive: true});
   });
 

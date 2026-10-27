@@ -5,17 +5,18 @@
   const nodes=[...document.querySelectorAll('[data-shine],[data-type]')];if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;observer.unobserve(entry.target);if(reduced.matches)return;if(entry.target.hasAttribute('data-type'))type(entry.target);else shine(entry.target);}),{threshold:.3});nodes.forEach(node=>observer.observe(node));}reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
 
-// Ask Franklin load order: UI -> moderation -> high-priority project facts -> live site RAG -> WebLLM -> extended knowledge -> base retrieval.
+// Ask Franklin load order: UI -> connection experience -> moderation -> project facts -> live site RAG -> WebLLM -> extended knowledge -> base retrieval.
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   window.__askFranklinLoaderAdded=true;
   const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.defer=true;s.addEventListener('load',next,{once:true});s.addEventListener('error',next,{once:true});document.head.append(s);};
-  const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027a',()=>{});};
-  const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027a',loadBase);};
-  const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027a',loadExtended);};
-  const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-site-rag.js?v=20261027a',loadWebLLM);};
-  const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027a',loadRAG);};
-  const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027a',loadFunding);};
-  add('ask-franklin.js?v=20261027a',loadModeration);
+  const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027b',()=>{});};
+  const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027b',loadBase);};
+  const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027b',loadExtended);};
+  const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-site-rag.js?v=20261027b',loadWebLLM);};
+  const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027b',loadRAG);};
+  const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027b',loadFunding);};
+  const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;add('franklin-connect.js?v=20261027b',loadModeration);};
+  add('ask-franklin.js?v=20261027b',loadConnect);
 }
 
 // Present the assistant like a contact: visible name is simply Franklin.

@@ -56,3 +56,11 @@
 
 /install
   Cache-Control: no-store
+
+/community-icon.png
+  Content-Type: image/png
+  Cache-Control: no-store
+
+/app.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: no-store

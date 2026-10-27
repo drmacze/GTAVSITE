@@ -50,3 +50,6 @@ html .menu-dialog{--accent:var(--site-accent)}
 html .drawer-nav a[aria-current=page] .menu-arrow,
 html .drawer-nav a:hover .menu-arrow,
 html .drawer-nav a:focus-visible .menu-arrow{color:var(--site-accent)}
+/* Navigation footer has two clear items, with consistent mobile typography. */
+.menu-bottom{align-items:center;flex-wrap:wrap}.menu-bottom>span{line-height:1.6}.menu-bottom>a{white-space:nowrap}.drawer-nav a{line-height:1.25}.menu-panel .drawer-nav{gap:0 24px}
+@media(max-width:750px){.menu-panel .drawer-nav a{font-size:clamp(23px,6.4vw,29px);padding:16px 0;gap:20px}.menu-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px}.menu-bottom>span{font-size:10px}.menu-bottom>a{font-size:11px}}

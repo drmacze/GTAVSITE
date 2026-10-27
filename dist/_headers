@@ -37,3 +37,15 @@
 
 /franklin-dataset.json
   Cache-Control: no-cache, must-revalidate
+
+/apple-touch-icon*
+  Cache-Control: no-cache, must-revalidate
+  Content-Type: image/png
+
+/assets/apple-icon-*
+  Cache-Control: no-cache, must-revalidate
+  Content-Type: image/png
+
+/assets/web-app-*
+  Cache-Control: no-cache, must-revalidate
+  Content-Type: image/png

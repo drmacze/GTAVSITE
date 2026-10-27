@@ -1,196 +1,73 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script src="settings.js"></script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-  <meta name="referrer" content="no-referrer">
-  <meta name="theme-color" content="#090909">
-  <title>Release Publisher</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="settings-tones.css">
-  <link rel="stylesheet" href="settings.css">
-  <style>
-    :root{color-scheme:dark}.publisher-shell{width:min(1120px,calc(100% - 28px));margin:0 auto;padding:40px 0 70px}.publisher-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:24px}.publisher-kicker{font-size:.7rem;font-weight:900;letter-spacing:.18em;color:var(--site-accent,#ffb511)}.publisher-top h1{font-size:clamp(2rem,6vw,4rem);margin:7px 0 0;letter-spacing:-.045em}.publisher-top p{margin:8px 0 0;color:var(--muted,#aaa)}.publisher-actions{display:flex;gap:8px;flex-wrap:wrap}.publisher-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:18px}.publisher-card{border:1px solid color-mix(in srgb,currentColor 12%,transparent);border-radius:22px;background:color-mix(in srgb,var(--surface,#141414) 95%,transparent);padding:22px}.publisher-card h2{margin:0 0 18px;font-size:1.05rem}.publisher-form{display:grid;gap:14px}.publisher-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.publisher-field{display:grid;gap:7px}.publisher-field label{font-size:.75rem;font-weight:800;letter-spacing:.045em;color:var(--muted,#aaa)}.publisher-field input,.publisher-field textarea,.publisher-field select,.publisher-token input{width:100%;box-sizing:border-box;border:1px solid color-mix(in srgb,currentColor 14%,transparent);background:color-mix(in srgb,var(--surface,#101010) 84%,#000);color:inherit;border-radius:12px;padding:12px 13px;font:inherit;outline:none}.publisher-field textarea{min-height:110px;resize:vertical;line-height:1.55}.publisher-field textarea.body{min-height:210px}.publisher-field input:focus,.publisher-field textarea:focus,.publisher-field select:focus,.publisher-token input:focus{border-color:color-mix(in srgb,var(--site-accent,#ffb511) 60%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--site-accent,#ffb511) 12%,transparent)}.publisher-submit{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:3px}.publisher-status{font-size:.8rem;color:var(--muted,#aaa)}.publisher-status.error{color:#ff6868}.publisher-status.success{color:#66d68b}.publisher-list{display:grid;gap:10px;max-height:740px;overflow:auto}.publisher-item{border:1px solid color-mix(in srgb,currentColor 10%,transparent);border-radius:15px;padding:14px}.publisher-item-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.publisher-item-new{font-size:.58rem;font-weight:900;letter-spacing:.12em;background:var(--site-accent,#ffb511);color:#090909;border-radius:999px;padding:4px 7px}.publisher-item-draft{font-size:.62rem;font-weight:800;letter-spacing:.08em;opacity:.6}.publisher-item time{font-size:.68rem;color:var(--muted,#999);margin-left:auto}.publisher-item h3{font-size:.96rem;margin:9px 0 4px}.publisher-item p{font-size:.78rem;line-height:1.45;color:var(--muted,#999);margin:0}.publisher-item-actions{display:flex;gap:7px;margin-top:11px}.publisher-mini{appearance:none;border:1px solid color-mix(in srgb,currentColor 14%,transparent);background:transparent;color:inherit;border-radius:9px;padding:7px 9px;font:800 .68rem/1 inherit;cursor:pointer}.publisher-mini.danger{color:#ff6b6b}.publisher-lock{min-height:100dvh;display:grid;place-items:center;padding:22px}.publisher-token{width:min(460px,100%);border:1px solid color-mix(in srgb,currentColor 13%,transparent);border-radius:24px;padding:26px;background:var(--surface,#121212);box-shadow:0 24px 80px rgba(0,0,0,.26)}.publisher-token h1{margin:0;font-size:1.65rem}.publisher-token p{color:var(--muted,#aaa);line-height:1.55}.publisher-token form{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:16px}.publisher-token small{display:block;margin-top:12px;color:var(--muted,#888);line-height:1.45}.publisher-check{display:flex;align-items:center;gap:9px;font-size:.78rem;color:var(--muted,#aaa)}.publisher-check input{accent-color:var(--site-accent,#ffb511)}[hidden]{display:none!important}@media(max-width:800px){.publisher-grid{grid-template-columns:1fr}.publisher-top{align-items:flex-start;flex-direction:column}.publisher-row{grid-template-columns:1fr}.publisher-shell{padding-top:26px}.publisher-card{padding:17px;border-radius:18px}}
-  </style>
+<script src="settings.js"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive,nosnippet"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#090909">
+<title>Project Admin</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="settings-tones.css"><link rel="stylesheet" href="settings.css">
+<style>
+:root{color-scheme:dark}.admin-lock{min-height:100dvh;display:grid;place-items:center;padding:22px}.login-card{width:min(440px,100%);border:1px solid color-mix(in srgb,currentColor 12%,transparent);border-radius:26px;padding:28px;background:var(--surface,#121212);box-shadow:0 28px 90px rgba(0,0,0,.32)}.kicker{font-size:.66rem;font-weight:900;letter-spacing:.18em;color:var(--site-accent,#ffb511)}.login-card h1{margin:8px 0 6px;font-size:2rem;letter-spacing:-.04em}.muted{color:var(--muted,#999)}.login-form{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:18px}.field input,.field textarea,.field select,.login-form input,.search-input{width:100%;box-sizing:border-box;border:1px solid color-mix(in srgb,currentColor 14%,transparent);background:color-mix(in srgb,var(--surface,#101010) 87%,#000);color:inherit;border-radius:12px;padding:12px 13px;font:inherit;outline:none}.field input:focus,.field textarea:focus,.field select:focus,.login-form input:focus,.search-input:focus{border-color:color-mix(in srgb,var(--site-accent,#ffb511) 65%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--site-accent,#ffb511) 12%,transparent)}.admin-shell{width:min(1280px,calc(100% - 28px));margin:0 auto;padding:28px 0 70px}.topbar{display:flex;gap:20px;justify-content:space-between;align-items:center;margin-bottom:20px}.brand-block h1{margin:3px 0 0;font-size:clamp(1.9rem,5vw,3.4rem);letter-spacing:-.05em}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.status-dot{display:inline-flex;align-items:center;gap:7px;font-size:.7rem;color:var(--muted,#999)}.status-dot:before{content:"";width:7px;height:7px;border-radius:50%;background:#58d68d;box-shadow:0 0 0 4px rgba(88,214,141,.12)}.tabs{display:flex;gap:7px;overflow:auto;padding-bottom:4px;margin-bottom:18px}.tab{appearance:none;border:1px solid color-mix(in srgb,currentColor 11%,transparent);background:transparent;color:var(--muted,#aaa);border-radius:999px;padding:10px 14px;font:800 .72rem/1 inherit;cursor:pointer;white-space:nowrap}.tab.active{color:#090909;background:var(--site-accent,#ffb511);border-color:transparent}.panel{display:none}.panel.active{display:block}.metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;margin-bottom:14px}.metric{border:1px solid color-mix(in srgb,currentColor 10%,transparent);background:var(--surface,#131313);border-radius:18px;padding:17px;min-height:108px;display:flex;flex-direction:column;justify-content:space-between}.metric small{font-size:.65rem;font-weight:800;letter-spacing:.06em;color:var(--muted,#8d8d8d);text-transform:uppercase}.metric strong{font-size:clamp(1.65rem,3vw,2.5rem);letter-spacing:-.045em}.metric span{font-size:.68rem;color:var(--muted,#888)}.grid-2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.75fr);gap:14px;margin-bottom:14px}.grid-equal{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{border:1px solid color-mix(in srgb,currentColor 10%,transparent);background:var(--surface,#131313);border-radius:20px;padding:18px}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.card h2{font-size:1rem;margin:0}.card-head small{color:var(--muted,#888)}.chart-wrap{height:300px;position:relative}.chart-wrap.small{height:245px}canvas{width:100%;height:100%;display:block}.rank-list{display:grid;gap:12px}.rank-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.rank-label{display:flex;justify-content:space-between;gap:12px;font-size:.73rem}.rank-track{height:7px;background:color-mix(in srgb,currentColor 8%,transparent);border-radius:999px;overflow:hidden;margin-top:6px}.rank-fill{height:100%;background:var(--site-accent,#ffb511);border-radius:999px}.rank-value{font-size:.72rem;color:var(--muted,#999)}.table-wrap{overflow:auto;border:1px solid color-mix(in srgb,currentColor 8%,transparent);border-radius:15px}.data-table{width:100%;border-collapse:collapse;min-width:760px}.data-table th,.data-table td{text-align:left;padding:12px 13px;border-bottom:1px solid color-mix(in srgb,currentColor 7%,transparent);font-size:.72rem}.data-table th{font-size:.61rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted,#888);position:sticky;top:0;background:var(--surface,#131313);z-index:1}.data-table tr:last-child td{border-bottom:0}.pill{display:inline-flex;border-radius:999px;padding:4px 7px;font-size:.58rem;font-weight:900;letter-spacing:.07em;background:color-mix(in srgb,var(--site-accent,#ffb511) 14%,transparent);color:var(--site-accent,#ffb511)}.analytics-toolbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.toolbar-group{display:flex;gap:7px;flex-wrap:wrap}.mini{appearance:none;border:1px solid color-mix(in srgb,currentColor 13%,transparent);background:transparent;color:inherit;border-radius:10px;padding:8px 10px;font:800 .68rem/1 inherit;cursor:pointer}.mini:hover{border-color:color-mix(in srgb,var(--site-accent,#ffb511) 45%,transparent)}.publisher-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(310px,.85fr);gap:14px}.form-grid{display:grid;gap:13px}.row-2{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:grid;gap:6px}.field label{font-size:.68rem;font-weight:800;color:var(--muted,#999)}.field textarea{min-height:105px;resize:vertical;line-height:1.5}.field textarea.body{min-height:210px}.check{display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--muted,#999)}.release-list{display:grid;gap:9px;max-height:790px;overflow:auto}.release-item{border:1px solid color-mix(in srgb,currentColor 9%,transparent);border-radius:14px;padding:13px}.release-top{display:flex;align-items:center;gap:7px}.release-top time{margin-left:auto;font-size:.65rem;color:var(--muted,#888)}.release-item h3{font-size:.92rem;margin:8px 0 4px}.release-item p{font-size:.72rem;line-height:1.45;color:var(--muted,#888);margin:0}.release-actions{display:flex;gap:6px;margin-top:10px}.danger{color:#ff7474}.new-badge{background:var(--site-accent,#ffb511);color:#090909;border-radius:999px;padding:4px 7px;font-size:.56rem;font-weight:900;letter-spacing:.1em}.draft-badge{border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:999px;padding:4px 7px;font-size:.56rem;font-weight:900;letter-spacing:.08em;color:var(--muted,#999)}.form-status{font-size:.72rem;color:var(--muted,#888)}.form-status.ok{color:#62d78c}.form-status.error{color:#ff7373}.empty{padding:30px;text-align:center;color:var(--muted,#888);font-size:.78rem}.privacy-note{font-size:.68rem;line-height:1.5;color:var(--muted,#818181);margin-top:10px}[hidden]{display:none!important}@media(max-width:1100px){.metrics{grid-template-columns:repeat(3,1fr)}}@media(max-width:860px){.grid-2,.grid-equal,.publisher-grid{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.metrics{grid-template-columns:repeat(2,1fr)}.chart-wrap{height:250px}}@media(max-width:560px){.admin-shell{width:min(100% - 18px,1280px);padding-top:18px}.metrics{grid-template-columns:1fr 1fr}.metric{padding:14px;min-height:98px}.row-2{grid-template-columns:1fr}.login-form{grid-template-columns:1fr}.card{padding:14px}.top-actions{width:100%}.top-actions>*{flex:1;text-align:center}}
+</style>
 </head>
 <body>
-  <section class="publisher-lock" id="lock">
-    <div class="publisher-token">
-      <span class="publisher-kicker">PRIVATE TOOL</span>
-      <h1>Release Publisher</h1>
-      <p>This page is intentionally not linked from the public website. Enter your publisher token to manage updates.</p>
-      <form id="token-form">
-        <input id="token" type="password" autocomplete="off" placeholder="Publisher token" required>
-        <button class="button compact" type="submit">Unlock</button>
-      </form>
-      <small id="token-status">The token is kept only in this browser tab and is never written to the website files.</small>
-    </div>
-  </section>
+<section class="admin-lock" id="lock"><div class="login-card"><span class="kicker">PRIVATE ADMIN</span><h1>Project dashboard</h1><p class="muted">Release publishing and anonymous Franklin usage analytics.</p><form id="login-form" class="login-form"><input id="token" type="password" inputmode="numeric" autocomplete="off" placeholder="Admin token" required><button class="button compact" type="submit">Unlock</button></form><p class="privacy-note" id="login-status">This page is not linked publicly. The token stays only in this browser tab.</p></div></section>
 
-  <main class="publisher-shell" id="dashboard" hidden>
-    <header class="publisher-top">
-      <div><span class="publisher-kicker">PRIVATE RELEASE TOOL</span><h1>Publish updates</h1><p>New published entries appear automatically at the top of the public Updates page.</p></div>
-      <div class="publisher-actions"><a class="button outline compact" href="updates.html" target="_blank" rel="noopener">View Updates</a><button class="button outline compact" id="lock-out" type="button">Lock</button></div>
-    </header>
-    <div class="publisher-grid">
-      <section class="publisher-card">
-        <h2 id="form-title">New update</h2>
-        <form class="publisher-form" id="release-form">
-          <input type="hidden" id="editing-id">
-          <div class="publisher-field"><label for="title">Title *</label><input id="title" maxlength="140" required placeholder="GPU efficiency and mission fixes"></div>
-          <div class="publisher-row">
-            <div class="publisher-field"><label for="release-date">Release date</label><input id="release-date" type="date" required></div>
-            <div class="publisher-field"><label for="category">Category</label><select id="category"><option>Update</option><option>Hotfix</option><option>Test build</option><option>Announcement</option><option>Launcher</option><option>macOS</option></select></div>
-          </div>
-          <div class="publisher-field"><label for="version">Version / build label</label><input id="version" maxlength="80" placeholder="Build 27 Oct 2026"></div>
-          <div class="publisher-field"><label for="summary">Short summary</label><textarea id="summary" maxlength="500" placeholder="One or two sentences shown before the full details."></textarea></div>
-          <div class="publisher-field"><label for="body">Release details</label><textarea class="body" id="body" maxlength="12000" placeholder="Write the full update. Blank lines create separate paragraphs."></textarea></div>
-          <div class="publisher-row">
-            <div class="publisher-field"><label for="download-url">Download / Discord URL</label><input id="download-url" type="url" placeholder="https://..."></div>
-            <div class="publisher-field"><label for="image-url">Optional image URL</label><input id="image-url" type="url" placeholder="https://..."></div>
-          </div>
-          <label class="publisher-check"><input id="published" type="checkbox" checked> Publish immediately</label>
-          <div class="publisher-submit"><button class="button compact" type="submit" id="save">Publish update</button><button class="button outline compact" type="button" id="cancel-edit" hidden>Cancel edit</button><span class="publisher-status" id="status"></span></div>
-        </form>
-      </section>
-      <aside class="publisher-card">
-        <h2>Published history</h2>
-        <div class="publisher-list" id="list"><p class="publisher-status">Loading…</p></div>
-      </aside>
-    </div>
-  </main>
+<main id="dashboard" class="admin-shell" hidden>
+<header class="topbar"><div class="brand-block"><span class="kicker">GTA V IOS · ADMIN</span><h1>Control center</h1><div class="status-dot" id="sync-label">Connected</div></div><div class="top-actions"><a class="button outline compact" href="updates.html" target="_blank" rel="noopener">Public Updates</a><button class="button outline compact" id="refresh-all" type="button">Refresh</button><button class="button outline compact" id="lock-out" type="button">Lock</button></div></header>
+<nav class="tabs" aria-label="Dashboard sections"><button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="analytics">Franklin Analytics</button><button class="tab" data-tab="releases">Releases</button></nav>
 
-  <script>
-  (() => {
-    'use strict';
-    const API = '/api/updates';
-    const TOKEN_KEY = 'gtav-release-publisher-token';
-    const $ = id => document.getElementById(id);
-    const lock = $('lock'), dashboard = $('dashboard'), tokenInput = $('token'), tokenStatus = $('token-status');
-    const form = $('release-form'), status = $('status'), list = $('list'), editingId = $('editing-id');
-    let token = '';
-    let items = [];
+<section class="panel active" id="panel-overview">
+<div class="metrics">
+<div class="metric"><small>Franklin users</small><strong id="m-users">0</strong><span id="m-users-today">0 today</span></div>
+<div class="metric"><small>Sessions</small><strong id="m-sessions">0</strong><span>Anonymous helper sessions</span></div>
+<div class="metric"><small>Questions</small><strong id="m-questions">0</strong><span id="m-questions-today">0 today</span></div>
+<div class="metric"><small>Helper opens</small><strong id="m-opens">0</strong><span>Total launcher opens</span></div>
+<div class="metric"><small>Site visits</small><strong id="m-visits">0</strong><span>Existing site counter</span></div>
+<div class="metric"><small>Published releases</small><strong id="m-releases">0</strong><span id="m-drafts">0 drafts</span></div>
+</div>
+<div class="grid-2"><section class="card"><div class="card-head"><div><h2>Franklin activity</h2><small>Last 14 days</small></div><span class="pill">LIVE DATA</span></div><div class="chart-wrap"><canvas id="trend-chart"></canvas></div></section><section class="card"><div class="card-head"><div><h2>Top question topics</h2><small>Automatically classified locally</small></div></div><div class="rank-list" id="topic-list"></div></section></div>
+<div class="grid-equal"><section class="card"><div class="card-head"><div><h2>Top pages</h2><small>Where Franklin is used</small></div></div><div class="rank-list" id="page-list"></div></section><section class="card"><div class="card-head"><div><h2>Device mix</h2><small>Anonymous device class</small></div></div><div class="chart-wrap small"><canvas id="device-chart"></canvas></div></section></div>
+</section>
 
-    $('release-date').value = new Date().toISOString().slice(0,10);
+<section class="panel" id="panel-analytics">
+<div class="analytics-toolbar"><div><h2 style="margin:0 0 4px;font-size:1.1rem">Franklin usage history</h2><div class="muted" style="font-size:.72rem">No IP addresses, fingerprints, or raw chat messages are stored.</div></div><div class="toolbar-group"><input id="session-search" class="search-input" style="width:220px" placeholder="Search session, user, page…"><button class="mini" id="export-json" type="button">Export JSON</button><button class="mini" id="export-csv" type="button">Export CSV</button></div></div>
+<section class="card"><div class="card-head"><div><h2>Recent sessions</h2><small>Newest activity first · up to 120 sessions</small></div><span class="pill" id="session-count">0 SESSIONS</span></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Anonymous user</th><th>Session</th><th>Page</th><th>Device</th><th>Language</th><th>Questions</th><th>Started</th><th>Last active</th></tr></thead><tbody id="sessions-body"></tbody></table></div></section>
+</section>
 
-    function setStatus(message, kind = '') {
-      status.textContent = message;
-      status.className = 'publisher-status' + (kind ? ' ' + kind : '');
-    }
-    function headers() { return {'Content-Type':'application/json','X-Admin-Token':token,'Accept':'application/json'}; }
-    function payload() {
-      return {
-        title: $('title').value,
-        releaseDate: $('release-date').value,
-        category: $('category').value,
-        version: $('version').value,
-        summary: $('summary').value,
-        body: $('body').value,
-        downloadUrl: $('download-url').value,
-        imageUrl: $('image-url').value,
-        published: $('published').checked
-      };
-    }
-    function resetForm() {
-      form.reset();
-      editingId.value = '';
-      $('release-date').value = new Date().toISOString().slice(0,10);
-      $('published').checked = true;
-      $('form-title').textContent = 'New update';
-      $('save').textContent = 'Publish update';
-      $('cancel-edit').hidden = true;
-      setStatus('');
-    }
-    async function request(url, options = {}) {
-      const response = await fetch(url, {cache:'no-store', ...options});
-      let data = {};
-      try { data = await response.json(); } catch {}
-      if (!response.ok) throw new Error(data.error || 'request_failed');
-      return data;
-    }
-    async function unlock(candidate) {
-      token = candidate.trim();
-      if (!token) return;
-      tokenStatus.textContent = 'Checking access…';
-      try {
-        const data = await request(API + '?admin=1', {headers:headers()});
-        sessionStorage.setItem(TOKEN_KEY, token);
-        lock.hidden = true;
-        dashboard.hidden = false;
-        items = Array.isArray(data.updates) ? data.updates : [];
-        render();
-        tokenStatus.textContent = 'Access granted.';
-      } catch (error) {
-        token = '';
-        sessionStorage.removeItem(TOKEN_KEY);
-        tokenStatus.textContent = error.message === 'unauthorized' ? 'Invalid publisher token.' : 'Publisher API is unavailable.';
-      }
-    }
-    function render() {
-      list.replaceChildren();
-      if (!items.length) {
-        const empty = document.createElement('p');
-        empty.className = 'publisher-status';
-        empty.textContent = 'No dashboard updates yet.';
-        list.append(empty);
-        return;
-      }
-      items.forEach((item, index) => {
-        const card = document.createElement('article');
-        card.className = 'publisher-item';
-        const top = document.createElement('div'); top.className = 'publisher-item-top';
-        if (index === 0 && item.published) { const badge = document.createElement('span'); badge.className='publisher-item-new'; badge.textContent='NEW'; top.append(badge); }
-        if (!item.published) { const draft = document.createElement('span'); draft.className='publisher-item-draft'; draft.textContent='DRAFT'; top.append(draft); }
-        const time = document.createElement('time'); time.textContent = item.releaseDate; top.append(time);
-        const h3 = document.createElement('h3'); h3.textContent = item.title;
-        const p = document.createElement('p'); p.textContent = item.summary || item.category || 'Update';
-        const actions = document.createElement('div'); actions.className = 'publisher-item-actions';
-        const edit = document.createElement('button'); edit.className='publisher-mini'; edit.type='button'; edit.textContent='Edit'; edit.addEventListener('click',()=>editItem(item.id));
-        const del = document.createElement('button'); del.className='publisher-mini danger'; del.type='button'; del.textContent='Delete'; del.addEventListener('click',()=>deleteItem(item.id));
-        actions.append(edit,del); card.append(top,h3,p,actions); list.append(card);
-      });
-    }
-    function editItem(id) {
-      const item = items.find(entry => entry.id === id); if (!item) return;
-      editingId.value = item.id;
-      $('title').value=item.title||''; $('release-date').value=item.releaseDate||''; $('category').value=item.category||'Update';
-      $('version').value=item.version||''; $('summary').value=item.summary||''; $('body').value=item.body||'';
-      $('download-url').value=item.downloadUrl||''; $('image-url').value=item.imageUrl||''; $('published').checked=Boolean(item.published);
-      $('form-title').textContent='Edit update'; $('save').textContent='Save changes'; $('cancel-edit').hidden=false; setStatus('Editing selected update.');
-      scrollTo({top:0,behavior:'smooth'});
-    }
-    async function reload() {
-      const data = await request(API + '?admin=1', {headers:headers()});
-      items = Array.isArray(data.updates) ? data.updates : [];
-      render();
-    }
-    async function deleteItem(id) {
-      if (!confirm('Delete this update permanently?')) return;
-      try { await request(API + '?id=' + encodeURIComponent(id), {method:'DELETE',headers:headers()}); await reload(); if (editingId.value===id) resetForm(); }
-      catch (error) { setStatus('Delete failed: ' + error.message, 'error'); }
-    }
-    $('token-form').addEventListener('submit', event => { event.preventDefault(); unlock(tokenInput.value); });
-    $('lock-out').addEventListener('click', () => { sessionStorage.removeItem(TOKEN_KEY); token=''; dashboard.hidden=true; lock.hidden=false; tokenInput.value=''; tokenInput.focus(); });
-    $('cancel-edit').addEventListener('click', resetForm);
-    form.addEventListener('submit', async event => {
-      event.preventDefault();
-      const id = editingId.value;
-      setStatus(id ? 'Saving…' : 'Publishing…');
-      $('save').disabled = true;
-      try {
-        await request(API + (id ? '?id=' + encodeURIComponent(id) : ''), {method:id?'PUT':'POST',headers:headers(),body:JSON.stringify(payload())});
-        await reload();
-        resetForm();
-        setStatus(id ? 'Changes saved.' : 'Update published. The public Updates page will show it automatically.', 'success');
-      } catch (error) { setStatus('Could not save: ' + error.message, 'error'); }
-      finally { $('save').disabled = false; }
-    });
+<section class="panel" id="panel-releases">
+<div class="publisher-grid"><section class="card"><div class="card-head"><div><h2 id="form-title">New update</h2><small>Published items appear automatically on Updates</small></div></div><form id="release-form" class="form-grid"><input type="hidden" id="editing-id"><div class="field"><label for="title">Title *</label><input id="title" maxlength="140" required placeholder="GPU efficiency and mission fixes"></div><div class="row-2"><div class="field"><label for="release-date">Release date</label><input id="release-date" type="date" required></div><div class="field"><label for="category">Category</label><select id="category"><option>Update</option><option>Hotfix</option><option>Test build</option><option>Announcement</option><option>Launcher</option><option>macOS</option></select></div></div><div class="field"><label for="version">Version / build</label><input id="version" maxlength="80" placeholder="Build 27 Oct 2026"></div><div class="field"><label for="summary">Short summary</label><textarea id="summary" maxlength="500" placeholder="Short description shown on the release card."></textarea></div><div class="field"><label for="body">Release details</label><textarea class="body" id="body" maxlength="12000" placeholder="Full release notes. Blank lines create separate paragraphs."></textarea></div><div class="row-2"><div class="field"><label for="download-url">Download / Discord URL</label><input id="download-url" type="url" placeholder="https://..."></div><div class="field"><label for="image-url">Optional image URL</label><input id="image-url" type="url" placeholder="https://..."></div></div><label class="check"><input id="published" type="checkbox" checked> Publish immediately</label><div class="toolbar-group"><button class="button compact" type="submit" id="save-release">Publish update</button><button class="button outline compact" type="button" id="cancel-edit" hidden>Cancel edit</button><span id="release-status" class="form-status"></span></div></form></section><aside class="card"><div class="card-head"><div><h2>Release history</h2><small>Manage published items and drafts</small></div><span class="pill" id="release-count">0 ITEMS</span></div><div class="release-list" id="release-list"></div></aside></div>
+</section>
+</main>
 
-    const saved = sessionStorage.getItem(TOKEN_KEY);
-    if (saved) unlock(saved);
-  })();
-  </script>
-</body>
-</html>
+<script>
+(()=>{'use strict';
+const UPDATE_API='/api/updates',ANALYTICS_API='/api/franklin-analytics',VISITS_API='/api/visits',TOKEN_KEY='gtav-admin-token-v2';
+const $=id=>document.getElementById(id);let token='',updates=[],analytics={summary:{},trend:[],sessions:[],topics:[],pages:[],devices:[]},refreshTimer=0;
+const fmt=n=>new Intl.NumberFormat().format(Number(n||0));const short=id=>String(id||'').slice(0,8);const when=v=>{if(!v)return'—';const d=new Date(v.replace?.(' ','T')+'Z');return Number.isNaN(d.getTime())?v:new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d)};
+function headers(){return{'Content-Type':'application/json','X-Admin-Token':token,'Accept':'application/json'}}
+async function req(url,options={}){const r=await fetch(url,{cache:'no-store',...options});let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.error||'request_failed');return d}
+function setSync(text){$('sync-label').textContent=text}
+async function unlock(candidate){token=String(candidate||'').trim();if(!token)return;$('login-status').textContent='Checking access…';try{await req(UPDATE_API+'?admin=1',{headers:headers()});await req(ANALYTICS_API,{headers:headers()});sessionStorage.setItem(TOKEN_KEY,token);$('lock').hidden=true;$('dashboard').hidden=false;$('login-status').textContent='Access granted.';await refreshAll();refreshTimer=setInterval(refreshAll,60000)}catch(e){token='';sessionStorage.removeItem(TOKEN_KEY);$('login-status').textContent=e.message==='unauthorized'?'Invalid admin token.':'Admin API is unavailable.'}}
+async function refreshAll(){setSync('Refreshing…');try{const [u,a,v]=await Promise.all([req(UPDATE_API+'?admin=1',{headers:headers()}),req(ANALYTICS_API,{headers:headers()}),req(VISITS_API).catch(()=>({visits:0}))]);updates=Array.isArray(u.updates)?u.updates:[];analytics=a||analytics;renderOverview(v.visits||0);renderSessions();renderReleases();setSync('Synced '+new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit'}).format(new Date()))}catch(e){setSync('Sync error')}}
+function renderOverview(visits){const s=analytics.summary||{};$('m-users').textContent=fmt(s.uniqueUsers);$('m-users-today').textContent=fmt(s.usersToday)+' today';$('m-sessions').textContent=fmt(s.sessions);$('m-questions').textContent=fmt(s.questions);$('m-questions-today').textContent=fmt(s.questionsToday)+' today';$('m-opens').textContent=fmt(s.opens);$('m-visits').textContent=fmt(visits);$('m-releases').textContent=fmt(updates.filter(x=>x.published).length);$('m-drafts').textContent=fmt(updates.filter(x=>!x.published).length)+' drafts';renderRanks('topic-list',analytics.topics||[],'topic','count');renderRanks('page-list',analytics.pages||[],'page','questions');drawTrend();drawDevices()}
+function renderRanks(id,rows,labelKey,valueKey){const root=$(id);root.replaceChildren();if(!rows.length){root.innerHTML='<div class="empty">No data yet.</div>';return}const max=Math.max(...rows.map(r=>Number(r[valueKey]||0)),1);rows.forEach(r=>{const item=document.createElement('div');item.className='rank-item';const left=document.createElement('div');const label=document.createElement('div');label.className='rank-label';const a=document.createElement('span');a.textContent=r[labelKey]||'unknown';const b=document.createElement('span');b.textContent=fmt(r[valueKey]);label.append(a,b);const track=document.createElement('div');track.className='rank-track';const fill=document.createElement('div');fill.className='rank-fill';fill.style.width=(Number(r[valueKey]||0)/max*100)+'%';track.append(fill);left.append(label,track);item.append(left);root.append(item)})}
+function prepCanvas(canvas){const rect=canvas.getBoundingClientRect(),dpr=Math.max(1,devicePixelRatio||1);canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx,w:rect.width,h:rect.height}}
+function drawTrend(){const canvas=$('trend-chart'),rows=analytics.trend||[];if(!canvas||!rows.length)return;const{ctx,w,h}=prepCanvas(canvas),pad={l:34,r:12,t:18,b:30},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,max=Math.max(1,...rows.flatMap(r=>[Number(r.questions||0),Number(r.users||0)]));ctx.clearRect(0,0,w,h);ctx.font='11px system-ui';ctx.fillStyle='rgba(160,160,160,.8)';ctx.strokeStyle='rgba(150,150,150,.12)';ctx.lineWidth=1;for(let i=0;i<=4;i++){const y=pad.t+ch*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillText(Math.round(max*(1-i/4)),4,y+4)}const accent=getComputedStyle(document.documentElement).getPropertyValue('--site-accent').trim()||'#ffb511';const plot=(key,color,width)=>{ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();rows.forEach((r,i)=>{const x=pad.l+(rows.length===1?0:cw*i/(rows.length-1)),y=pad.t+ch-(Number(r[key]||0)/max)*ch;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()};plot('questions',accent,2.5);plot('users','rgba(145,165,255,.9)',1.8);ctx.fillStyle='rgba(150,150,150,.85)';[0,Math.floor((rows.length-1)/2),rows.length-1].forEach(i=>{const x=pad.l+(rows.length===1?0:cw*i/(rows.length-1));ctx.fillText(rows[i].date.slice(5),x-13,h-8)});ctx.fillStyle=accent;ctx.fillRect(w-150,8,12,3);ctx.fillStyle='rgba(190,190,190,.9)';ctx.fillText('Questions',w-132,12);ctx.fillStyle='rgba(145,165,255,.9)';ctx.fillRect(w-75,8,12,3);ctx.fillStyle='rgba(190,190,190,.9)';ctx.fillText('Users',w-57,12)}
+function drawDevices(){const canvas=$('device-chart'),rows=analytics.devices||[];if(!canvas)return;const{ctx,w,h}=prepCanvas(canvas);ctx.clearRect(0,0,w,h);if(!rows.length){ctx.fillStyle='rgba(150,150,150,.8)';ctx.font='13px system-ui';ctx.fillText('No device data yet.',18,30);return}const max=Math.max(1,...rows.map(r=>Number(r.users||0))),pad=24,bh=Math.min(38,(h-30)/rows.length),accent=getComputedStyle(document.documentElement).getPropertyValue('--site-accent').trim()||'#ffb511';ctx.font='12px system-ui';rows.forEach((r,i)=>{const y=16+i*bh,barW=(w-125)*Number(r.users||0)/max;ctx.fillStyle='rgba(140,140,140,.12)';ctx.fillRect(86,y,w-110,12);ctx.fillStyle=accent;ctx.fillRect(86,y,barW,12);ctx.fillStyle='rgba(190,190,190,.9)';ctx.fillText(r.device,8,y+10);ctx.fillText(fmt(r.users),w-20,y+10)})}
+function renderSessions(){const q=$('session-search').value.trim().toLowerCase(),rows=(analytics.sessions||[]).filter(r=>!q||[r.user_id,r.session_id,r.page,r.device_type,r.language].some(v=>String(v||'').toLowerCase().includes(q)));$('session-count').textContent=rows.length+' SESSIONS';const body=$('sessions-body');body.replaceChildren();if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.className='empty';td.textContent='No matching sessions yet.';tr.append(td);body.append(tr);return}rows.forEach(r=>{const tr=document.createElement('tr');const values=[short(r.user_id),short(r.session_id),r.page||'—',r.device_type||'—',r.language||'—',fmt(r.questions),when(r.started_at),when(r.last_active)];values.forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i<2)td.style.fontFamily='ui-monospace,SFMono-Regular,Menlo,monospace';tr.append(td)});body.append(tr)})}
+function payload(){return{title:$('title').value,releaseDate:$('release-date').value,category:$('category').value,version:$('version').value,summary:$('summary').value,body:$('body').value,downloadUrl:$('download-url').value,imageUrl:$('image-url').value,published:$('published').checked}}
+function resetForm(){$('release-form').reset();$('editing-id').value='';$('release-date').value=new Date().toISOString().slice(0,10);$('published').checked=true;$('form-title').textContent='New update';$('save-release').textContent='Publish update';$('cancel-edit').hidden=true;releaseStatus('')}
+function releaseStatus(text,kind=''){$('release-status').textContent=text;$('release-status').className='form-status'+(kind?' '+kind:'')}
+function renderReleases(){const root=$('release-list');root.replaceChildren();$('release-count').textContent=updates.length+' ITEMS';if(!updates.length){root.innerHTML='<div class="empty">No dashboard releases yet.</div>';return}updates.forEach((item,index)=>{const card=document.createElement('article');card.className='release-item';const top=document.createElement('div');top.className='release-top';if(index===0&&item.published){const b=document.createElement('span');b.className='new-badge';b.textContent='NEW';top.append(b)}if(!item.published){const b=document.createElement('span');b.className='draft-badge';b.textContent='DRAFT';top.append(b)}const tag=document.createElement('span');tag.className='pill';tag.textContent=item.category||'Update';top.append(tag);const time=document.createElement('time');time.textContent=item.releaseDate||'';top.append(time);const h=document.createElement('h3');h.textContent=item.title;const p=document.createElement('p');p.textContent=item.summary||item.version||'No summary';const actions=document.createElement('div');actions.className='release-actions';const edit=document.createElement('button');edit.className='mini';edit.textContent='Edit';edit.onclick=()=>editRelease(item.id);const del=document.createElement('button');del.className='mini danger';del.textContent='Delete';del.onclick=()=>deleteRelease(item.id);actions.append(edit,del);card.append(top,h,p,actions);root.append(card)})}
+function editRelease(id){const x=updates.find(u=>u.id===id);if(!x)return;$('editing-id').value=x.id;$('title').value=x.title||'';$('release-date').value=x.releaseDate||'';$('category').value=x.category||'Update';$('version').value=x.version||'';$('summary').value=x.summary||'';$('body').value=x.body||'';$('download-url').value=x.downloadUrl||'';$('image-url').value=x.imageUrl||'';$('published').checked=!!x.published;$('form-title').textContent='Edit update';$('save-release').textContent='Save changes';$('cancel-edit').hidden=false;releaseStatus('Editing selected release.');document.querySelector('[data-tab="releases"]').click();scrollTo({top:0,behavior:'smooth'})}
+async function deleteRelease(id){if(!confirm('Delete this update permanently?'))return;try{await req(UPDATE_API+'?id='+encodeURIComponent(id),{method:'DELETE',headers:headers()});await refreshAll();if($('editing-id').value===id)resetForm()}catch(e){releaseStatus('Delete failed: '+e.message,'error')}}
+function download(name,text,type='application/json'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},0)}
+function exportCsv(){const rows=[['user_id','session_id','page','device','language','questions','started_at','last_active'],...(analytics.sessions||[]).map(r=>[r.user_id,r.session_id,r.page,r.device_type,r.language,r.questions,r.started_at,r.last_active])];download('franklin-usage.csv',rows.map(row=>row.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n'),'text/csv')}
+function activateTab(name){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+name));requestAnimationFrame(()=>{if(name==='overview'){drawTrend();drawDevices()}})}
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>activateTab(t.dataset.tab)));$('login-form').addEventListener('submit',e=>{e.preventDefault();unlock($('token').value)});$('lock-out').onclick=()=>{clearInterval(refreshTimer);sessionStorage.removeItem(TOKEN_KEY);token='';$('dashboard').hidden=true;$('lock').hidden=false;$('token').value='';$('token').focus()};$('refresh-all').onclick=refreshAll;$('session-search').addEventListener('input',renderSessions);$('export-json').onclick=()=>download('franklin-analytics.json',JSON.stringify(analytics,null,2));$('export-csv').onclick=exportCsv;$('cancel-edit').onclick=resetForm;$('release-date').value=new Date().toISOString().slice(0,10);
+$('release-form').addEventListener('submit',async e=>{e.preventDefault();const id=$('editing-id').value;releaseStatus(id?'Saving…':'Publishing…');$('save-release').disabled=true;try{await req(UPDATE_API+(id?'?id='+encodeURIComponent(id):''),{method:id?'PUT':'POST',headers:headers(),body:JSON.stringify(payload())});await refreshAll();resetForm();releaseStatus(id?'Changes saved.':'Update published.','ok')}catch(err){releaseStatus('Could not save: '+err.message,'error')}finally{$('save-release').disabled=false}});
+addEventListener('resize',()=>{clearTimeout(window.__dashResize);window.__dashResize=setTimeout(()=>{if(!$('panel-overview').classList.contains('active'))return;drawTrend();drawDevices()},120)});
+const saved=sessionStorage.getItem(TOKEN_KEY);if(saved)unlock(saved);
+})();
+</script>
+</body></html>

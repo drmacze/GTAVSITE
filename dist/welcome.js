@@ -27,7 +27,7 @@
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const returnTarget = safeReturnTarget();
     const next = '/home.html?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '');
-    try { sessionStorage.setItem('gtav-onboarding-transit', '1'); } catch {}
+    try { sessionStorage.setItem('gtav-onboarding-transit', String(Date.now())); } catch {}
     setTimeout(() => location.assign(next), reduced ? 0 : 120);
   }
 

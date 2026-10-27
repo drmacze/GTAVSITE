@@ -10,12 +10,19 @@
     if (!raw) return '';
     try {
       const target = new URL(raw, location.origin);
-      if (target.origin !== location.origin) return '';
-      if (target.pathname.includes('release-publisher-8c2f71d4')) return '';
+      const cleanPath = (target.pathname || '/').replace(/\/+$/, '') || '/';
+      const isHome = cleanPath.endsWith('/home') || cleanPath.endsWith('/home.html');
+      const isWelcome = cleanPath === '/' || cleanPath.endsWith('/index.html');
+      const invalid = target.origin !== location.origin || isHome || isWelcome || target.pathname.includes('release-publisher-8c2f71d4') || target.searchParams.has('return');
+      if (invalid) {
+        try { sessionStorage.removeItem('gtav-onboarding-return'); } catch {}
+        return '';
+      }
       const value = target.pathname + target.search + target.hash;
       try { sessionStorage.setItem('gtav-onboarding-return', value); } catch {}
       return value;
     } catch {
+      try { sessionStorage.removeItem('gtav-onboarding-return'); } catch {}
       return '';
     }
   }
@@ -27,10 +34,11 @@
     document.body.setAttribute('aria-busy', 'true');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const returnTarget = safeReturnTarget();
-    const next = '/home.html?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '');
+    const next = '/home?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '') + '#onboarding';
     try {
       sessionStorage.setItem('gtav-onboarding-transit', String(Date.now()));
       sessionStorage.setItem('gtav-welcome-seen', '1');
+      document.cookie = 'gtav-onboarding-transit=1; Max-Age=30; Path=/; SameSite=Lax; Secure';
     } catch {}
     setTimeout(() => location.replace(next), reduced ? 0 : 80);
   }

@@ -1,10 +1,22 @@
 /settings.js
   Cache-Control: no-cache, must-revalidate
 
+/onboarding.js
+  Cache-Control: no-cache, must-revalidate
+
+/text-effects.js
+  Cache-Control: no-cache, must-revalidate
+
+/franklin-connect.js
+  Cache-Control: no-cache, must-revalidate
+
 /push-client.js
   Cache-Control: no-cache, must-revalidate
 
 /admin-push.js
+  Cache-Control: no-cache, must-revalidate
+
+/admin-onboarding.js
   Cache-Control: no-cache, must-revalidate
 
 /push-sw.js

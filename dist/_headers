@@ -10,6 +10,18 @@
 /home.html
   Cache-Control: no-store, max-age=0
 
+/franklin
+  Cache-Control: no-store, max-age=0
+
+/franklin.html
+  Cache-Control: no-store, max-age=0
+
+/franklin-direct.js
+  Cache-Control: no-store, max-age=0
+
+/franklin-direct.css
+  Cache-Control: no-store, max-age=0
+
 /welcome.js
   Cache-Control: no-store, max-age=0
 

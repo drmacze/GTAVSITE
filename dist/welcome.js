@@ -4,73 +4,12 @@
   let entering = false;
   let interacted = false;
 
-  // Warm the next page while the welcome scene is visible. Using the
-  // extensionless Pages URL avoids the home.html -> /home redirect hop.
-  const warmHome = () => {
-    if (window.__gtavHomeWarmed) return;
-    window.__gtavHomeWarmed = true;
-
-    const addLink = (rel, href, as, fetchPriority) => {
-      try {
-        if (document.head.querySelector(`link[href="${href}"]`)) return;
-        const link = document.createElement('link');
-        link.rel = rel;
-        link.href = href;
-        if (as) link.as = as;
-        if (fetchPriority) link.fetchPriority = fetchPriority;
-        document.head.append(link);
-      } catch {}
-    };
-
-    // The next screen only needs these resources to reach first paint.
-    // Preload them after Welcome itself has finished loading so the welcome
-    // experience stays responsive while Home becomes effectively warm.
-    addLink('preload', '/home.css', 'style', 'high');
-    addLink('preload', '/assets/los-santos-background.jpeg', 'image', 'high');
-    addLink('preload', '/assets/gtav-logo.jpeg', 'image');
-    addLink('preload', '/assets/icons.svg', 'image');
-
-    // Below-the-fold and enhancement assets can remain low priority.
-    [
-      '/gameplay.css', '/credits.css', '/onboarding.css', '/toasts.css',
-      '/motion.css', '/text-effects.css', '/cookies.css', '/settings-tones.css',
-      '/settings.css', '/rating-summary.css?v=20261027stars',
-      '/app.js', '/gameplay.js', '/onboarding.js', '/text-effects.js?v=20261028lazy1'
-    ].forEach(href => addLink('prefetch', href));
-
-    try {
-      const link = document.createElement('link');
-      link.rel = 'prefetch';
-      link.href = '/home?intro=1';
-      link.as = 'document';
-      document.head.append(link);
-    } catch {}
-
-    // A low-priority same-origin fetch also warms browsers that ignore
-    // document prefetch. It never blocks the welcome experience.
-    try {
-      fetch('/home?intro=1', {
-        method: 'GET',
-        credentials: 'same-origin',
-        cache: 'force-cache',
-        priority: 'low'
-      }).catch(() => {});
-    } catch {}
-  };
-
-  if (document.readyState === 'complete') {
-    setTimeout(warmHome, 0);
-  } else {
-    window.addEventListener('load', () => setTimeout(warmHome, 0), { once: true });
-  }
-
   function enter() {
     if (entering) return;
     entering = true;
-    // Keep the welcome scene visible until the new document commits. The old
-    // fade-to-white transition made a normal navigation delay look like a
-    // frozen blank page on iOS in-app browsers.
-    location.assign('/home?intro=1');
+    document.body.classList.add('leaving');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(() => location.assign('home.html?intro=1'), reduced ? 0 : 250);
   }
 
   function checkEnd() {
@@ -81,7 +20,6 @@
   ['wheel', 'touchstart'].forEach(type => {
     window.addEventListener(type, () => {
       interacted = true;
-      warmHome();
     }, {passive: true});
   });
 

@@ -22,8 +22,8 @@ export async function onRequest({request,env}){
    const userId=clean(b.userId,80),sessionId=clean(b.sessionId,80);if(!userId||!sessionId)return json({error:'identity_required'},400);
    const topic=clean(b.topic,40)||'other',page=clean(b.page,160);
    await env.VISITS_DB.prepare(`INSERT INTO franklin_usage(id,user_id,session_id,event_type,topic,page,device_type,language,created_at) VALUES(?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)`).bind(crypto.randomUUID(),userId,sessionId,eventType,topic,page,clean(b.deviceType,20),clean(b.language,20)).run();
-   const content=clean(b.content,6000);if(content&&(eventType==='question'||eventType==='answer'))await env.VISITS_DB.prepare(`INSERT INTO franklin_conversations(id,user_id,session_id,role,content,page,topic,created_at) VALUES(?,?,?,?,?,?,?,CURRENT_TIMESTAMP)`).bind(crypto.randomUUID(),userId,sessionId,eventType==='question'?'user':'franklin',content,page,topic).run();
-   return json({ok:true,chatRetentionHours:24},201)
+   const consent=b.consent===true,content=clean(b.content,6000);if(consent&&content&&(eventType==='question'||eventType==='answer'))await env.VISITS_DB.prepare(`INSERT INTO franklin_conversations(id,user_id,session_id,role,content,page,topic,created_at) VALUES(?,?,?,?,?,?,?,CURRENT_TIMESTAMP)`).bind(crypto.randomUUID(),userId,sessionId,eventType==='question'?'user':'franklin',content,page,topic).run();
+   return json({ok:true,chatRetentionHours:24,chatStored:Boolean(consent&&content&&(eventType==='question'||eventType==='answer'))},201)
   }
   if(!(await admin(request)))return json({error:'unauthorized'},401);
   const totals=await env.VISITS_DB.prepare(`SELECT COUNT(DISTINCT user_id) unique_users,COUNT(DISTINCT session_id) sessions,SUM(CASE WHEN event_type='question' THEN 1 ELSE 0 END) questions,SUM(CASE WHEN event_type='answer' THEN 1 ELSE 0 END) answers,SUM(CASE WHEN event_type='open' THEN 1 ELSE 0 END) opens,COUNT(DISTINCT CASE WHEN date(created_at)=date('now') THEN user_id END) users_today,SUM(CASE WHEN date(created_at)=date('now') AND event_type='question' THEN 1 ELSE 0 END) questions_today FROM franklin_usage`).first();

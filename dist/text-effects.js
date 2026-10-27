@@ -12,7 +12,7 @@ if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
  const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-typing.js?v=20261027dash',()=>add('franklin-support-context.js?v=20261027dash',()=>add('franklin-developer-kb.js?v=20261027dash',()=>add('franklin-log-files.js?v=20261027dash',()=>add('franklin-site-rag.js?v=20261027dash',loadWebLLM)))));};
  const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027dash',loadRAG);};
  const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027dash',loadFunding);};
- const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027dash';document.head.append(css);add('franklin-connect.js?v=20261027dash',loadModeration);};
+ const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027dash';document.head.append(css);add('franklin-connect.js?v=20261027cancel2',loadModeration);};
  const loadAnalytics=()=>{if(window.__franklinAnalyticsLoaderAdded){loadConnect();return;}window.__franklinAnalyticsLoaderAdded=true;add('franklin-analytics.js?v=20261027metaonly',loadConnect);};
  add('ask-franklin.js?v=20261027dash',loadAnalytics);
 }

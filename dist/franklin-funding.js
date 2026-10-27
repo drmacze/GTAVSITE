@@ -12,7 +12,7 @@
     return{text:base+"\n\nIf you want to support the developer voluntarily:\n\nERC20: 0x2df6a507b418637D465fA3402Aa05D2cdF1BDb91\nSOL: J6CtXd23tQakYhRxqu6Q31HY5RmwGwkKNPdvNarD8iqm\nBTC: bc1qk3a8jq6zr3yy6e3yg035c4lmel08l3g53nskut\nLTC: ltc1qcw0qwdqepwyqwzf8x5exdhzgpxtzmjva49ke8a\n\nThank you!",topic:'funding',suggestions:['Is donating required?','Where can I join Discord?']};
   }
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-  async function type(b,text,m){b.style.whiteSpace='pre-wrap';if(matchMedia('(prefers-reduced-motion: reduce)').matches){b.textContent=text;return;}const cur=document.createElement('span');cur.className='franklin-typing-cursor';b.append(cur);await sleep(300);for(let i=0;i<text.length;i++){cur.before(document.createTextNode(text[i]));if(i%10===0)m.scrollTop=m.scrollHeight;let d=text.length<180?48:text.length<360?38:30;if(/[.!?]/.test(text[i]))d+=150;else if(/[,;:]/.test(text[i]))d+=70;await sleep(d);}cur.remove();}
+  async function type(b,text,m){if(window.FranklinTyping)return window.FranklinTyping.reveal(b,text);b.textContent=text;}
   async function render(q){
     const m=document.querySelector('.ask-franklin-messages'),input=document.querySelector('.ask-franklin-input'),send=document.querySelector('.ask-franklin-send');if(!m||!input||!send)return;
     send.disabled=true;const u=document.createElement('div');u.className='ask-franklin-message user';u.innerHTML='<div class="bubble"></div>';u.querySelector('.bubble').textContent=q;m.append(u);input.value='';input.style.height='auto';

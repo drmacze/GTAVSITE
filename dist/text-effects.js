@@ -1,103 +1,22 @@
 (() => {
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  if(reduced.matches)return;
-  const timers=new Map();
-  const running=new Set();
-  function type(node){
-    if(node.dataset.typeStarted)return;node.dataset.typeStarted='true';
-    const text=node.textContent.trim();if(!text)return;
-    const accessible=document.createElement('span');accessible.className='type-accessible';accessible.textContent=text;
-    const measure=document.createElement('span');measure.className='type-measure';measure.setAttribute('aria-hidden','true');measure.textContent=text;
-    const visual=document.createElement('span');visual.className='type-visual';visual.setAttribute('aria-hidden','true');
-    node.classList.add('type-frame','typing-active');node.replaceChildren(accessible,measure,visual);
-    const chars=Array.from(text);let index=0;
-    const finish=()=>{clearTimeout(timers.get(node));timers.delete(node);visual.textContent=text;node.classList.remove('typing-active');};
-    node.finishTyping=finish;
-    function step(){if(reduced.matches){finish();return;}visual.textContent=chars.slice(0,++index).join('');if(index>=chars.length){finish();return;}timers.set(node,setTimeout(step,Math.min(65,1800/chars.length)));}
-    step();
-  }
-  function shine(node){
-    if(node.dataset.shineStarted)return;node.dataset.shineStarted='true';running.add(node);node.classList.add('shine-running');
-    node.addEventListener('animationend',event=>{if(event.animationName==='text-shine'){node.classList.remove('shine-running');running.delete(node);}},{once:true});
-  }
-  const nodes=[...document.querySelectorAll('[data-shine],[data-type]')];
-  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;observer.unobserve(entry.target);if(reduced.matches)return;if(entry.target.hasAttribute('data-type'))type(entry.target);else shine(entry.target);}),{threshold:.3});nodes.forEach(node=>observer.observe(node));}
-  reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});
-  window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');if(reduced.matches)return;const timers=new Map(),running=new Set();
+  function type(node){if(node.dataset.typeStarted)return;node.dataset.typeStarted='true';const text=node.textContent.trim();if(!text)return;const accessible=document.createElement('span');accessible.className='type-accessible';accessible.textContent=text;const measure=document.createElement('span');measure.className='type-measure';measure.setAttribute('aria-hidden','true');measure.textContent=text;const visual=document.createElement('span');visual.className='type-visual';visual.setAttribute('aria-hidden','true');node.classList.add('type-frame','typing-active');node.replaceChildren(accessible,measure,visual);const chars=Array.from(text);let index=0;const finish=()=>{clearTimeout(timers.get(node));timers.delete(node);visual.textContent=text;node.classList.remove('typing-active');};node.finishTyping=finish;function step(){if(reduced.matches){finish();return;}visual.textContent=chars.slice(0,++index).join('');if(index>=chars.length){finish();return;}timers.set(node,setTimeout(step,Math.min(65,1800/chars.length)));}step();}
+  function shine(node){if(node.dataset.shineStarted)return;node.dataset.shineStarted='true';running.add(node);node.classList.add('shine-running');node.addEventListener('animationend',event=>{if(event.animationName==='text-shine'){node.classList.remove('shine-running');running.delete(node);}},{once:true});}
+  const nodes=[...document.querySelectorAll('[data-shine],[data-type]')];if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;observer.unobserve(entry.target);if(reduced.matches)return;if(entry.target.hasAttribute('data-type'))type(entry.target);else shine(entry.target);}),{threshold:.3});nodes.forEach(node=>observer.observe(node));}reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
 
-// Ask Franklin load order:
-// UI -> moderation -> live site RAG -> constrained local WebLLM composer -> extended knowledge -> base retrieval.
-// FAQ/tutorial/project pages are the primary source of truth. The local model only rewrites trusted answers.
+// Ask Franklin load order: UI -> moderation -> high-priority project facts -> live site RAG -> WebLLM -> extended knowledge -> base retrieval.
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   window.__askFranklinLoaderAdded=true;
-  const loadBaseEngine=()=>{
-    if(window.__franklinEngineLoaderAdded)return;
-    window.__franklinEngineLoaderAdded=true;
-    const engine=document.createElement('script');
-    engine.src='franklin-engine.js';
-    engine.defer=true;
-    document.head.append(engine);
-  };
-  const loadExtended=()=>{
-    if(window.__franklinExtendedLoaderAdded){loadBaseEngine();return;}
-    window.__franklinExtendedLoaderAdded=true;
-    const extended=document.createElement('script');
-    extended.src='franklin-engine-extra.js';
-    extended.defer=true;
-    extended.addEventListener('load',loadBaseEngine,{once:true});
-    extended.addEventListener('error',loadBaseEngine,{once:true});
-    document.head.append(extended);
-  };
-  const loadWebLLM=()=>{
-    if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}
-    window.__franklinWebLLMLoaderAdded=true;
-    const ai=document.createElement('script');
-    ai.src='franklin-webllm.js';
-    ai.defer=true;
-    ai.addEventListener('load',loadExtended,{once:true});
-    ai.addEventListener('error',loadExtended,{once:true});
-    document.head.append(ai);
-  };
-  const loadSiteRAG=()=>{
-    if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}
-    window.__franklinSiteRAGLoaderAdded=true;
-    const rag=document.createElement('script');
-    rag.src='franklin-site-rag.js';
-    rag.defer=true;
-    rag.addEventListener('load',loadWebLLM,{once:true});
-    rag.addEventListener('error',loadWebLLM,{once:true});
-    document.head.append(rag);
-  };
-  const loadModeration=()=>{
-    if(window.__franklinModerationLoaderAdded){loadSiteRAG();return;}
-    window.__franklinModerationLoaderAdded=true;
-    const moderation=document.createElement('script');
-    moderation.src='franklin-moderation.js';
-    moderation.defer=true;
-    moderation.addEventListener('load',loadSiteRAG,{once:true});
-    moderation.addEventListener('error',loadSiteRAG,{once:true});
-    document.head.append(moderation);
-  };
-  const script=document.createElement('script');
-  script.src='ask-franklin.js';
-  script.defer=true;
-  script.addEventListener('load',loadModeration,{once:true});
-  script.addEventListener('error',loadModeration,{once:true});
-  document.head.append(script);
+  const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.defer=true;s.addEventListener('load',next,{once:true});s.addEventListener('error',next,{once:true});document.head.append(s);};
+  const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027a',()=>{});};
+  const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027a',loadBase);};
+  const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027a',loadExtended);};
+  const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-site-rag.js?v=20261027a',loadWebLLM);};
+  const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027a',loadRAG);};
+  const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027a',loadFunding);};
+  add('ask-franklin.js?v=20261027a',loadModeration);
 }
 
-// Present the assistant like a contact: the visible chat name is simply "Franklin".
-(() => {
-  const apply=()=>{
-    const title=document.querySelector('.ask-franklin-title strong');
-    const label=document.querySelector('.ask-franklin-title span');
-    if(!title||!label)return false;
-    title.textContent='Franklin';
-    label.textContent='Community helper';
-    return true;
-  };
-  if(apply())return;
-  const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});
-  observer.observe(document.body,{childList:true,subtree:true});
-})();
+// Present the assistant like a contact: visible name is simply Franklin.
+(()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();

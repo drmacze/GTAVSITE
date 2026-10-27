@@ -38,14 +38,14 @@
     pointerId=null;
     gate.classList.remove('is-unlocking');
     track.classList.remove('is-complete');
-    status.textContent=message||'Geser lagi untuk mencoba kembali.';
+    status.textContent=message||'Swipe again to retry.';
     snapHome();
   };
   const helperIsOpen=()=>document.querySelector('.ask-franklin-panel.is-open');
   const finishGate=()=>{
     window.clearTimeout(loadTimer);
     window.clearInterval(statusTimer);
-    status.textContent='Franklin siap.';
+    status.textContent='Franklin is ready.';
     gate.classList.add('is-ready');
     gate.setAttribute('aria-hidden','true');
     window.setTimeout(()=>{gate.hidden=true},320);
@@ -65,12 +65,12 @@
       if(loaderStatus?.textContent)status.textContent=loaderStatus.textContent;
       if(retry?.textContent?.trim()==='Retry Franklin'){
         observer.disconnect();
-        resetForRetry('Koneksi Franklin gagal. Geser lagi untuk mencoba kembali.');
+        resetForRetry('Franklin connection failed. Swipe again to retry.');
       }
     },250);
     loadTimer=window.setTimeout(()=>{
       observer.disconnect();
-      if(!helperIsOpen())resetForRetry('Franklin belum terhubung. Geser lagi untuk mencoba kembali.');
+      if(!helperIsOpen())resetForRetry('Franklin is not connected yet. Swipe again to retry.');
     },26000);
   };
   const connect=()=>{
@@ -82,10 +82,10 @@
     setOffset(maxOffset());
     window.setTimeout(()=>track.classList.remove('is-snapping'),220);
     gate.classList.add('is-unlocking');
-    status.textContent='Menghubungkan Franklin…';
+    status.textContent='Connecting to Franklin…';
     const loader=document.querySelector('.lazy-franklin');
     if(!loader){
-      resetForRetry('Loader Franklin belum siap. Geser lagi untuk mencoba.');
+      resetForRetry('Franklin loader is not ready. Swipe again to retry.');
       return;
     }
     watchHelper();

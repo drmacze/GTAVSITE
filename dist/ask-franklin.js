@@ -29,7 +29,7 @@
     const avatar = document.createElement('span');
     avatar.className = 'ask-franklin-avatar';
     if (small) avatar.classList.add('small');
-    avatar.innerHTML = '<span class="ask-franklin-fallback" aria-hidden="true">F</span><img src="assets/franklin-helper.jpg" alt="" aria-hidden="true"><i class="ask-franklin-status" aria-hidden="true"></i>';
+    avatar.innerHTML = '<span class="ask-franklin-fallback" aria-hidden="true">F</span><img src="https://cdn.corenexis.com/f/dJ4k8HeoKK9.jpeg" alt="Franklin" aria-hidden="true"><i class="ask-franklin-status" aria-hidden="true"></i>';
     const image = avatar.querySelector('img');
     image.addEventListener('load', () => avatar.classList.add('is-loaded'), { once: true });
     image.addEventListener('error', () => image.remove(), { once: true });

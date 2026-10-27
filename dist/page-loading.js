@@ -8,7 +8,8 @@
  }
  function shouldGate(){
   const path=(location.pathname||'/').replace(/\/+$/,'')||'/';
-  if(path==='/'||path.endsWith('/index.html')||path.endsWith('/home.html'))return false;
+  const isHome=path.endsWith('/home')||path.endsWith('/home.html');
+  if(path==='/'||path.endsWith('/index.html')||isHome)return false;
   if(path.includes('release-publisher-8c2f71d4'))return false;
   return !hasCompletedOnboarding();
  }

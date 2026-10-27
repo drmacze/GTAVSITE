@@ -98,7 +98,7 @@ showWelcomeNotifications();
 {const musicScript=document.createElement("script");musicScript.src="music.js";document.head.append(musicScript);}
 
 // Discourage casual content copying while preserving editable tools and forms.
-(()=>{const editable=target=>target instanceof Element&&!!target.closest('input,textarea,[contenteditable="true"]');
+(()=>{const editable=target=>target instanceof Element&&!!target.closest('input,textarea,[contenteditable="true"],.ask-franklin-panel');
 document.addEventListener('contextmenu',event=>{if(!editable(event.target))event.preventDefault();});
 document.addEventListener('copy',event=>{if(!editable(event.target))event.preventDefault();});
 document.addEventListener('dragstart',event=>{if(event.target instanceof Element&&event.target.closest('img,video'))event.preventDefault();});

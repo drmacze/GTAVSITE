@@ -6,7 +6,7 @@
 })();
 if(document.body?.dataset?.page){
   const s=document.createElement('script');s.src='lazy-helper.js?v=20261028lazy';s.defer=true;document.head.append(s);
-  const avatarStyle=document.createElement('style');avatarStyle.dataset.franklinAvatar='local';avatarStyle.textContent=".ask-franklin-launcher .ask-franklin-avatar{background:#111 url('/assets/franklin-helper-new.jpg?v=20261028portrait3') center 18%/cover no-repeat!important}.ask-franklin-launcher .ask-franklin-avatar img,.ask-franklin-launcher .ask-franklin-fallback{opacity:0!important}";document.head.append(avatarStyle);
+  const avatarStyle=document.createElement('style');avatarStyle.dataset.franklinAvatar='local';avatarStyle.textContent=".ask-franklin-launcher .ask-franklin-avatar{background:#111 url('/assets/avatars/franklin.jpg?v=20261028portrait3') center 18%/cover no-repeat!important}.ask-franklin-launcher .ask-franklin-avatar img,.ask-franklin-launcher .ask-franklin-fallback{opacity:0!important}";document.head.append(avatarStyle);
 }
 (()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();
 

@@ -53,3 +53,28 @@ html .drawer-nav a:focus-visible .menu-arrow{color:var(--site-accent)}
 /* Navigation footer has two clear items, with consistent mobile typography. */
 .menu-bottom{align-items:center;flex-wrap:wrap}.menu-bottom>span{line-height:1.6}.menu-bottom>a{white-space:nowrap}.drawer-nav a{line-height:1.25}.menu-panel .drawer-nav{gap:0 24px}
 @media(max-width:750px){.menu-panel .drawer-nav a{font-size:clamp(23px,6.4vw,29px);padding:16px 0;gap:20px}.menu-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px}.menu-bottom>span{font-size:10px}.menu-bottom>a{font-size:11px}}
+
+/* Private admin dashboard: keep dark analytics surfaces readable even when the public site is in light mode. */
+html[data-mode=light] :is(.admin-lock .login-card,.admin-shell .metric,.admin-shell .card){--surface:#111310;--muted:#aeb3aa;color:#f5f6f2;background:#111310;border-color:#ffffff18}
+html[data-mode=light] .admin-lock .login-card :is(h1,p,small,label){color:inherit}
+html[data-mode=light] .admin-lock .login-card .privacy-note{color:#aeb3aa}
+html[data-mode=light] .admin-lock .login-form input{background:#090b09;color:#f5f6f2;border-color:#ffffff24}
+html[data-mode=light] .admin-shell .metric strong,
+html[data-mode=light] .admin-shell .card :is(h2,h3,strong){color:#f5f6f2}
+html[data-mode=light] .admin-shell .metric :is(small,span),
+html[data-mode=light] .admin-shell .card :is(.muted,.card-head small,.field label,.check,.form-status,.release-item p,.release-top time,.rank-value,.privacy-note){color:#aeb3aa}
+html[data-mode=light] .admin-shell .card :is(.field input,.field textarea,.field select){background:#090b09;color:#f5f6f2;border-color:#ffffff20}
+html[data-mode=light] .admin-shell .card .data-table th{background:#111310;color:#aeb3aa}
+html[data-mode=light] .admin-shell .card .data-table td{color:#e8ebe5}
+html[data-mode=light] .admin-shell .card .table-wrap,
+html[data-mode=light] .admin-shell .card .release-item{border-color:#ffffff18}
+html[data-mode=light] .admin-shell .search-input{--surface:#111310;background:#111310;color:#f5f6f2;border-color:#ffffff24}
+html[data-mode=light] .admin-shell .search-input::placeholder,
+html[data-mode=light] .admin-lock input::placeholder,
+html[data-mode=light] .admin-shell .card input::placeholder,
+html[data-mode=light] .admin-shell .card textarea::placeholder{color:#7f857c}
+html[data-mode=light] .admin-shell .card .mini{color:#f5f6f2;border-color:#ffffff24}
+html[data-mode=light] .admin-shell .card .rank-track{background:#ffffff12}
+html[data-mode=light] .admin-shell .card .draft-badge{color:#aeb3aa;border-color:#ffffff24}
+@media(max-width:560px){.admin-shell .topbar{gap:16px}.admin-shell .top-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.admin-shell .top-actions>*{min-width:0;padding-left:8px;padding-right:8px}.admin-shell .tabs{margin-inline:-2px;padding-inline:2px;scrollbar-width:none}.admin-shell .tabs::-webkit-scrollbar{display:none}.admin-shell .metric{border-radius:17px}.admin-shell .chart-wrap{height:230px}.admin-shell .chart-wrap.small{height:210px}}
+@media(prefers-reduced-motion:reduce){.site-settings{animation:none}.settings-switch span{transition:none}}

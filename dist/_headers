@@ -64,3 +64,9 @@
 /app.webmanifest
   Content-Type: application/manifest+json
   Cache-Control: no-store
+
+/feedback*
+  Cache-Control: no-cache, must-revalidate
+
+/community-ratings.js
+  Cache-Control: no-cache, must-revalidate

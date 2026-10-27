@@ -108,9 +108,8 @@
     if (!result?.text || EXCLUDED_TOPICS.has(result.topic)) return result;
     if (!canUse()) return result;
 
-    // First eligible question starts the local model in the background. We do not make
-    // the user wait for a large first-time model download; later replies are enhanced
-    // automatically after the model is cached and ready.
+    // Start downloading/caching the local model on the first eligible question, but do
+    // not hold the first response hostage to the initial model download.
     if (state.phase === 'idle') {
       start();
       return result;
@@ -143,11 +142,129 @@
     }
   }
 
+  const svg = name => `<svg class="icon" aria-hidden="true"><use href="assets/icons.svg#${name}"></use></svg>`;
+  function appendUser(text) {
+    const messages = document.querySelector('.ask-franklin-messages');
+    if (!messages) return;
+    const row = document.createElement('div');
+    row.className = 'ask-franklin-message user franklin-webllm-message';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+    row.append(bubble);
+    messages.append(row);
+    requestAnimationFrame(() => { messages.scrollTop = messages.scrollHeight; });
+  }
+  function appendBot(text, options = {}) {
+    const messages = document.querySelector('.ask-franklin-messages');
+    if (!messages) return;
+    const row = document.createElement('div');
+    row.className = 'ask-franklin-message bot franklin-webllm-message';
+    row.innerHTML = '<span class="mini-avatar">F</span>';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+    row.append(bubble);
+    if (options.discord) {
+      const link = document.createElement('a');
+      link.className = 'ask-franklin-discord';
+      link.href = 'https://discord.gg/HgcbPjcyJ';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.innerHTML = `Ask the crew on Discord ${svg('arrow-up-right')}`;
+      bubble.append(document.createElement('br'), link);
+    }
+    if (options.source?.href) {
+      const link = document.createElement('a');
+      link.className = 'ask-franklin-discord';
+      link.href = options.source.href;
+      link.innerHTML = `Open ${options.source.label || 'source'} ${svg('arrow-right')}`;
+      bubble.append(document.createElement('br'), link);
+    }
+    messages.append(row);
+    if (options.suggestions?.length) {
+      const wrap = document.createElement('div');
+      wrap.className = 'ask-franklin-actions ask-franklin-related';
+      options.suggestions.slice(0, 2).forEach(label => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'ask-franklin-chip';
+        chip.textContent = label;
+        wrap.append(chip);
+      });
+      messages.append(wrap);
+    }
+    requestAnimationFrame(() => { messages.scrollTop = messages.scrollHeight; });
+  }
+  function thinking() {
+    const messages = document.querySelector('.ask-franklin-messages');
+    if (!messages) return null;
+    const row = document.createElement('div');
+    row.className = 'ask-franklin-message bot is-thinking franklin-webllm-message';
+    row.innerHTML = '<span class="mini-avatar">F</span><div class="bubble" aria-label="Franklin is thinking"><i class="ask-franklin-dot"></i><i class="ask-franklin-dot"></i><i class="ask-franklin-dot"></i></div>';
+    messages.append(row);
+    requestAnimationFrame(() => { messages.scrollTop = messages.scrollHeight; });
+    return row;
+  }
+
+  let uiBusy = false;
+  async function answerInUI(raw) {
+    const question = String(raw || '').trim();
+    if (!question || uiBusy) return;
+    const input = document.querySelector('.ask-franklin-input');
+    const send = document.querySelector('.ask-franklin-send');
+    if (!input || !send) return;
+    uiBusy = true;
+    send.disabled = true;
+    appendUser(question);
+    input.value = '';
+    input.style.height = 'auto';
+    const wait = thinking();
+    try {
+      let result = null;
+      if (window.FranklinExtended?.answer) result = await window.FranklinExtended.answer(question);
+      else if (window.FranklinEngine?.answer) result = await window.FranklinEngine.answer(question);
+      else result = { text: "Aight, my helper engine isn't ready yet. Give it a second and try again.", topic: 'unknown' };
+      result = await refine(question, result);
+      wait?.remove();
+      appendBot(result.text, result);
+      window.gtavHaptics?.trigger?.('soft');
+    } catch {
+      wait?.remove();
+      appendBot("Man, something went sideways on my end. Try that again, or ask the crew on Discord if you need help right now.", { discord: true });
+      window.gtavHaptics?.trigger?.('warning');
+    } finally {
+      uiBusy = false;
+      send.disabled = !input.value.trim();
+      input.focus({ preventScroll: true });
+    }
+  }
+
+  // This listener is intentionally registered before the answer engines. Moderation is
+  // loaded before this file and can still block toxic submissions first.
+  document.addEventListener('submit', event => {
+    const form = event.target instanceof Element ? event.target.closest('.ask-franklin-form') : null;
+    if (!form) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    answerInUI(form.querySelector('.ask-franklin-input')?.value || '');
+  }, true);
+
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+    const chip = event.target.closest('.ask-franklin-chip');
+    if (!chip) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    answerInUI(chip.textContent || '');
+  }, true);
+
   window.FranklinWebLLM = {
     model: MODEL,
     supported: canUse,
     start,
     refine,
+    answerInUI,
     status: () => ({ phase: state.phase, progress: state.progress, error: state.error })
   };
 })();

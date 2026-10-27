@@ -2,3 +2,7 @@
 /* Keep the welcome scene static during native scrolling, with no scrub or GPU layer promotion. */
 .welcome-main{height:130svh;min-height:0}.welcome-stage{transform:none;backface-visibility:visible}.welcome-art{inset:0;transform:none;will-change:auto;backface-visibility:visible}.welcome-shade{will-change:auto}.welcome-copy,.welcome-bottom{will-change:auto;transform:none}.visit-signal[data-state="ready"] .visit-pulse::after{animation:none}
 @media(max-width:750px){.welcome-main{height:130svh;min-height:0}.welcome-art{inset:0}.welcome-stage{transform:none;backface-visibility:visible}}
+
+/* Gesture-first Welcome: keep iOS Safari from treating Continue as pull-to-refresh. */
+html:has(.welcome-page),body.welcome-page{height:100%;overflow:hidden;overscroll-behavior-y:none}.welcome-main{height:100svh;min-height:0;overflow:hidden}.welcome-stage{position:fixed;inset:0;top:0;height:100svh;min-height:0;touch-action:pan-x pinch-zoom}.welcome-page[aria-busy="true"]{cursor:progress}
+@media(max-width:750px){.welcome-main{height:100svh;min-height:0}.welcome-stage{height:100svh;min-height:0}}

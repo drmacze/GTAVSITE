@@ -29,7 +29,7 @@
     const avatar = document.createElement('span');
     avatar.className = 'ask-franklin-avatar';
     if (small) avatar.classList.add('small');
-    avatar.innerHTML = '<span class="ask-franklin-fallback" aria-hidden="true">F</span><img src="assets/franklin-helper.webp" alt="" aria-hidden="true"><i class="ask-franklin-status" aria-hidden="true"></i>';
+    avatar.innerHTML = '<span class="ask-franklin-fallback" aria-hidden="true">F</span><img src="assets/franklin-helper.jpg" alt="" aria-hidden="true"><i class="ask-franklin-status" aria-hidden="true"></i>';
     const image = avatar.querySelector('img');
     image.addEventListener('load', () => avatar.classList.add('is-loaded'), { once: true });
     image.addEventListener('error', () => image.remove(), { once: true });
@@ -38,10 +38,14 @@
 
   const launcher = document.createElement('button');
   launcher.type = 'button';
-  launcher.className = 'ask-franklin-launcher';
-  launcher.setAttribute('aria-label', 'Open Ask Franklin helper');
+  launcher.className = 'ask-franklin-launcher is-dock-open';
+  launcher.dataset.state = 'expanded';
+  launcher.setAttribute('aria-label', 'Open Ask Franklin chat');
   launcher.setAttribute('aria-expanded', 'false');
-  launcher.append(createAvatar(), Object.assign(document.createElement('span'), { textContent: 'Ask Franklin' }));
+  const launcherCopy = document.createElement('span');
+  launcherCopy.className = 'ask-franklin-launcher-copy';
+  launcherCopy.innerHTML = '<small>COMMUNITY</small><strong>Ask Franklin</strong>';
+  launcher.append(createAvatar(), launcherCopy);
 
   const panel = document.createElement('aside');
   panel.className = 'ask-franklin-panel';
@@ -93,6 +97,33 @@
   compose.append(form, legal);
   panel.append(head, notice, messages, compose);
   document.body.append(launcher, panel);
+
+  let collapseTimer = 0;
+  const clearCollapseTimer = () => {
+    if (!collapseTimer) return;
+    clearTimeout(collapseTimer);
+    collapseTimer = 0;
+  };
+  const collapseLauncher = () => {
+    if (panel.classList.contains('is-open')) return;
+    clearCollapseTimer();
+    launcher.classList.remove('is-dock-open');
+    launcher.dataset.state = 'compact';
+    launcher.setAttribute('aria-label', 'Expand Ask Franklin helper');
+  };
+  const scheduleCollapse = (delay = 4500) => {
+    if (panel.classList.contains('is-open')) return;
+    clearCollapseTimer();
+    collapseTimer = window.setTimeout(collapseLauncher, delay);
+  };
+  const expandLauncher = () => {
+    if (panel.classList.contains('is-open')) return;
+    clearCollapseTimer();
+    launcher.classList.add('is-dock-open');
+    launcher.dataset.state = 'expanded';
+    launcher.setAttribute('aria-label', 'Open Ask Franklin chat');
+    scheduleCollapse();
+  };
 
   const scrollBottom = () => requestAnimationFrame(() => { messages.scrollTop = messages.scrollHeight; });
   const botMessage = (text, options = {}) => {
@@ -159,8 +190,12 @@
   };
 
   const open = () => {
+    clearCollapseTimer();
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
+    launcher.classList.remove('is-dock-open');
+    launcher.classList.add('is-chat-open');
+    launcher.dataset.state = 'chat';
     launcher.setAttribute('aria-expanded', 'true');
     document.documentElement.classList.add('franklin-open');
     if (!messages.children.length) {
@@ -172,13 +207,36 @@
   const shut = () => {
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
+    launcher.classList.remove('is-chat-open', 'is-dock-open');
+    launcher.dataset.state = 'compact';
     launcher.setAttribute('aria-expanded', 'false');
+    launcher.setAttribute('aria-label', 'Expand Ask Franklin helper');
     document.documentElement.classList.remove('franklin-open');
-    launcher.focus({ preventScroll: true });
+    window.setTimeout(() => launcher.focus({ preventScroll: true }), 120);
   };
-  launcher.addEventListener('click', open);
+
+  launcher.addEventListener('click', () => {
+    if (launcher.dataset.state === 'compact') {
+      expandLauncher();
+      return;
+    }
+    if (launcher.dataset.state === 'expanded') open();
+  });
+  launcher.addEventListener('pointerenter', () => {
+    if (launcher.dataset.state === 'expanded') clearCollapseTimer();
+  });
+  launcher.addEventListener('pointerleave', () => {
+    if (launcher.dataset.state === 'expanded') scheduleCollapse(3000);
+  });
+  launcher.addEventListener('focus', () => {
+    if (launcher.dataset.state === 'expanded') clearCollapseTimer();
+  });
+  launcher.addEventListener('blur', () => {
+    if (launcher.dataset.state === 'expanded') scheduleCollapse(3000);
+  });
   close.addEventListener('click', shut);
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && panel.classList.contains('is-open')) shut(); });
+  scheduleCollapse(4800);
 
   input.addEventListener('input', () => {
     input.style.height = 'auto';

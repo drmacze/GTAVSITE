@@ -34,6 +34,15 @@
 /onboarding.js
   Cache-Control: no-store, max-age=0
 
+/compatibility-rules.js
+  Cache-Control: no-store, max-age=0
+
+/compatibility.js
+  Cache-Control: no-store, max-age=0
+
+/compatibility.css
+  Cache-Control: no-store, max-age=0
+
 /text-effects.js
   Cache-Control: no-cache, must-revalidate
 

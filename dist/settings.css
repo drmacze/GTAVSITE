@@ -44,3 +44,9 @@ html[data-mode=light] .gameplay-thumb[aria-current=true]{opacity:1;border-color:
 html .saved-phone svg{stroke:var(--site-accent)}
 html[data-mode=light] .saved-phone>span{background:#426237}
 html[data-mode=light] .chip-core{border-color:var(--site-accent)}
+/* Page palettes must inherit the saved accent, including the navigation dialog. */
+html body[data-page]{--accent:var(--site-accent)}
+html .menu-dialog{--accent:var(--site-accent)}
+html .drawer-nav a[aria-current=page] .menu-arrow,
+html .drawer-nav a:hover .menu-arrow,
+html .drawer-nav a:focus-visible .menu-arrow{color:var(--site-accent)}

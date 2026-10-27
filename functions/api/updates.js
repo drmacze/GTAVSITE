@@ -1,4 +1,4 @@
-const ADMIN_TOKEN_SHA256 = '4c4e6118a661f11a759715469e706a1a61406647ab2cdd6eac6166df49ae8257';
+const ADMIN_TOKEN_SHA256 = 'e0bc60c82713f64ef8a57c0c40d02ce24fd0141d5cc3086259c19b1e62a62bea';
 
 function json(payload, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(payload), {

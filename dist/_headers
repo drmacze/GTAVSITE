@@ -1,0 +1,15 @@
+/settings.js
+  Cache-Control: no-cache, must-revalidate
+
+/push-client.js
+  Cache-Control: no-cache, must-revalidate
+
+/admin-push.js
+  Cache-Control: no-cache, must-revalidate
+
+/push-sw.js
+  Cache-Control: no-cache, must-revalidate
+  Service-Worker-Allowed: /
+
+/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate

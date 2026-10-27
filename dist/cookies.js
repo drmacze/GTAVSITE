@@ -38,3 +38,12 @@
   window.addEventListener('pageshow',updateBanner);
   updateBanner();
 })();
+
+// Load the fan-made Ask Franklin helper on normal site pages, not the welcome screen.
+if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
+  window.__askFranklinLoaderAdded=true;
+  const script=document.createElement('script');
+  script.src='ask-franklin.js';
+  script.defer=true;
+  document.head.append(script);
+}

@@ -1,3 +1,26 @@
+/* Pre-paint onboarding gate for every public HTML page. */
+(()=>{
+ 'use strict';
+ const KEY='gtav-community-onboarding';
+ const path=(location.pathname||'/').replace(/\/+$/,'')||'/';
+ const isWelcome=path==='/'||path.endsWith('/index.html');
+ const isAdmin=path.includes('release-publisher-8c2f71d4');
+ const params=new URLSearchParams(location.search);
+ const isOnboardingTransit=(path.endsWith('/home')||path.endsWith('/home.html'))&&params.get('intro')==='1';
+ if(isWelcome||isAdmin||isOnboardingTransit)return;
+ let completed=false;
+ try{
+  const raw=localStorage.getItem(KEY)||sessionStorage.getItem(KEY)||'';
+  const saved=raw?JSON.parse(raw):null;
+  completed=Boolean(saved&&['youtube','tiktok','browser','friends','other'].includes(saved.source)&&['android','ios'].includes(saved.device)&&(saved.device==='android'||saved.model));
+ }catch{}
+ if(completed)return;
+ const target=location.pathname+location.search+location.hash;
+ try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}
+ document.documentElement.style.visibility='hidden';
+ location.replace('/?return='+encodeURIComponent(target));
+})();
+
 /* Shared preferences are applied before paint; no scroll listeners or animation loop. */
 (()=>{
  'use strict';

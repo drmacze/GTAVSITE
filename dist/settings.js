@@ -7,13 +7,32 @@
  const isAdmin=path.includes('release-publisher-8c2f71d4');
  const isHome=path.endsWith('/home')||path.endsWith('/home.html');
  const params=new URLSearchParams(location.search);
+ const isHomePath=value=>{try{const u=new URL(value,location.origin);const p=(u.pathname||'/').replace(/\/+$/,'')||'/';return p.endsWith('/home')||p.endsWith('/home.html')}catch{return false}};
+ const poisonedReturn=value=>{if(!value)return false;try{const u=new URL(value,location.origin);return u.origin!==location.origin||isHomePath(u.href)||u.pathname.includes('release-publisher-8c2f71d4')||u.searchParams.has('return')}catch{return true}};
+ if(isWelcome){
+  const raw=params.get('return');
+  if(raw&&poisonedReturn(raw)){
+   try{sessionStorage.removeItem('gtav-onboarding-return')}catch{}
+   try{history.replaceState(null,'','/')}catch{}
+  }
+  return;
+ }
+ if(isAdmin)return;
  let transitAt=0;
  try{transitAt=Number(sessionStorage.getItem('gtav-onboarding-transit')||0)}catch{}
  const transitAge=Date.now()-transitAt;
- const recentTransit=transitAt>0&&transitAge>=0&&transitAge<15000;
+ const recentTransit=transitAt>0&&transitAge>=0&&transitAge<30000;
  if(transitAt&&!recentTransit){try{sessionStorage.removeItem('gtav-onboarding-transit')}catch{}}
- const isOnboardingTransit=isHome&&(params.get('intro')==='1'||recentTransit);
- if(isWelcome||isAdmin||isOnboardingTransit)return;
+ let cookieTransit=false;
+ try{cookieTransit=document.cookie.split(';').some(part=>part.trim()==='gtav-onboarding-transit=1')}catch{}
+ let referrerWelcome=false;
+ try{const ref=new URL(document.referrer);const rp=(ref.pathname||'/').replace(/\/+$/,'')||'/';referrerWelcome=ref.origin===location.origin&&(rp==='/'||rp.endsWith('/index.html'))}catch{}
+ const hashTransit=location.hash==='#onboarding'||location.hash==='#intro';
+ const isOnboardingTransit=isHome&&(params.get('intro')==='1'||recentTransit||cookieTransit||referrerWelcome||hashTransit);
+ if(isOnboardingTransit){
+  try{document.cookie='gtav-onboarding-transit=; Max-Age=0; Path=/; SameSite=Lax; Secure'}catch{}
+  return;
+ }
  let completed=false;
  try{
   const raw=localStorage.getItem(KEY)||sessionStorage.getItem(KEY)||'';
@@ -21,11 +40,21 @@
   completed=Boolean(saved&&['youtube','tiktok','browser','friends','other'].includes(saved.source)&&['android','ios'].includes(saved.device)&&(saved.device==='android'||saved.model));
  }catch{}
  if(completed)return;
- const target=location.pathname+location.search+location.hash;
- try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}
  document.documentElement.style.background='#10100f';
  document.documentElement.style.colorScheme='dark';
  document.documentElement.style.visibility='hidden';
+ if(isHome){
+  try{sessionStorage.removeItem('gtav-onboarding-return')}catch{}
+  location.replace('/');
+  return;
+ }
+ const target=location.pathname+location.search+location.hash;
+ if(poisonedReturn(target)){
+  try{sessionStorage.removeItem('gtav-onboarding-return')}catch{}
+  location.replace('/');
+  return;
+ }
+ try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}
  location.replace('/?return='+encodeURIComponent(target));
 })();
 

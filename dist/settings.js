@@ -5,8 +5,14 @@
  const path=(location.pathname||'/').replace(/\/+$/,'')||'/';
  const isWelcome=path==='/'||path.endsWith('/index.html');
  const isAdmin=path.includes('release-publisher-8c2f71d4');
+ const isHome=path.endsWith('/home')||path.endsWith('/home.html');
  const params=new URLSearchParams(location.search);
- const isOnboardingTransit=(path.endsWith('/home')||path.endsWith('/home.html'))&&params.get('intro')==='1';
+ let transitAt=0;
+ try{transitAt=Number(sessionStorage.getItem('gtav-onboarding-transit')||0)}catch{}
+ const transitAge=Date.now()-transitAt;
+ const recentTransit=transitAt>0&&transitAge>=0&&transitAge<15000;
+ if(transitAt&&!recentTransit){try{sessionStorage.removeItem('gtav-onboarding-transit')}catch{}}
+ const isOnboardingTransit=isHome&&(params.get('intro')==='1'||recentTransit);
  if(isWelcome||isAdmin||isOnboardingTransit)return;
  let completed=false;
  try{

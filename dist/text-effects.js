@@ -26,3 +26,12 @@
   reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});
   window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
+
+// Reliable fallback loader for the fan-made Ask Franklin helper.
+if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
+  window.__askFranklinLoaderAdded=true;
+  const script=document.createElement('script');
+  script.src='ask-franklin.js';
+  script.defer=true;
+  document.head.append(script);
+}

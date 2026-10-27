@@ -1,5 +1,5 @@
 /* Global motion polish. Native touch scrolling and nested controls remain available. */
-html.lenis{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}dialog,[data-lenis-prevent]{overscroll-behavior:contain}html.motion-ready body{overflow-x:hidden}
+html.lenis{scroll-behavior:auto!important}html.lenis.lenis-stopped:has(dialog[open]){overflow:hidden}html.lenis.lenis-stopped:not(:has(dialog[open])){overflow-y:auto!important}dialog,[data-lenis-prevent]{overscroll-behavior:contain}html.motion-ready body{overflow-x:hidden}
 /* Home video remains automatic; only the sound control is exposed. */
 #video-play{display:none!important}
 html.motion-ready .home-content>*,html.motion-ready .home-bottom,html.motion-ready .updates-heading,html.motion-ready .release-entry{animation:none}
@@ -18,7 +18,7 @@ html.motion-ready body.motion-page-leaving main,html.motion-ready body.motion-pa
 html.motion-ready .button .icon,html.motion-ready .subtle-link .icon,html.motion-ready .home-explore .icon,html.motion-ready .guide-inline .icon{transition:transform .32s cubic-bezier(.22,1,.36,1)}html.motion-ready .button:hover .icon,html.motion-ready .subtle-link:hover .icon,html.motion-ready .home-explore:hover .icon,html.motion-ready .guide-inline:hover .icon{transform:translateX(3px)}
 html.motion-ready .site-brand img{transition:transform .45s cubic-bezier(.22,1,.36,1),filter .3s}html.motion-ready .site-brand:hover img{transform:rotate(-3deg) scale(1.06);filter:brightness(1.08)}
 html.motion-ready summary{transition:color .25s,padding-left .3s cubic-bezier(.22,1,.36,1)}html.motion-ready summary:hover{padding-left:5px;color:#fff}
-/* Touch safety: keep native vertical scrolling available if a Lenis lock state is left behind. Real open dialogs still keep their own lock through the site classes. */
+/* Touch safety: keep native vertical scrolling available if a Lenis lock state is left behind. */
 @media (pointer:coarse){html,body{touch-action:pan-y pinch-zoom!important}html.lenis:not(:has(dialog[open])){overflow-y:auto!important;height:auto!important}html.lenis:not(:has(dialog[open])) body{overflow-y:auto!important;height:auto!important;min-height:100%}html.lenis.lenis-stopped:not(:has(dialog[open])){overflow-y:auto!important}body{overscroll-behavior-y:auto}}
 @media(max-width:760px){.motion-progress{height:1px}html.motion-ready .site-header{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.motion-link::after{display:none}.motion-heading-line::after{bottom:-9px;width:66px}.motion-tracked.is-motion-active{box-shadow:inset 1px 0 0 #ffb51155}.technical-toc a.motion-current,.guide-toc a.motion-current,.result-nav a.motion-current{transform:translateX(2px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}.motion-progress{display:none!important}html .site-header{transform:none!important}html body.motion-page-leaving main,html body.motion-page-leaving .site-footer{opacity:1!important;transform:none!important}.motion-link::after,.motion-heading-line::after{display:none!important}.motion-tracked.is-motion-active{box-shadow:none!important}}

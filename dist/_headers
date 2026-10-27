@@ -1,11 +1,23 @@
 /settings.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store
 
 /onboarding.js
   Cache-Control: no-cache, must-revalidate
 
 /text-effects.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store
+
+/welcome.js
+  Cache-Control: no-store
+
+/app.js
+  Cache-Control: no-store
+
+/motion.css
+  Cache-Control: no-store
+
+/community.json
+  Cache-Control: no-store
 
 /franklin-connect.js
   Cache-Control: no-cache, must-revalidate

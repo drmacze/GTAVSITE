@@ -55,6 +55,12 @@ if(typeof document!=='undefined'){
   window.visualViewport?.addEventListener('resize',syncZoom,{passive:true});
   window.visualViewport?.addEventListener('scroll',syncZoom,{passive:true});
 
+  const setText=(node,text)=>{if(node&&node.textContent!==text)node.textContent=text};
+  const setVerdictIcon=(verdict,name)=>{
+   const use=verdict?.querySelector('.verdict-icon use');
+   const href='assets/icons.svg#'+name;
+   if(use&&use.getAttribute('href')!==href)use.setAttribute('href',href);
+  };
   let raf=0;
   const syncResults=()=>{
    raf=0;
@@ -69,16 +75,16 @@ if(typeof document!=='undefined'){
     const title=support.querySelector('#memory-support-title');
     const copy=support.querySelector('p');
     if(ram===4){
-     support.hidden=false;
-     if(label)label.textContent='REQUIRED MEMORY TOOL';
-     if(title)title.textContent='Use iRAM+ for this 4 GB profile.';
-     if(copy)copy.textContent='4 GB is the checker minimum. iRAM+ is required here to request Increased Memory Limit for an eligible Apple Account-signed installation. It does not add physical RAM or guarantee compatibility.';
+     if(support.hidden)support.hidden=false;
+     setText(label,'REQUIRED MEMORY TOOL');
+     setText(title,'Use iRAM+ for this 4 GB profile.');
+     setText(copy,'4 GB is the checker minimum. iRAM+ is required here to request Increased Memory Limit for an eligible Apple Account-signed installation. It does not add physical RAM or guarantee compatibility.');
     }else if(ram<4){
-     support.hidden=false;
-     if(label)label.textContent='MEMORY LIMIT WARNING';
-     if(title)title.textContent='Installed RAM is below the checker minimum.';
-     if(copy)copy.textContent='iRAM+ may request a higher app memory limit on eligible signed apps, but it cannot compensate for missing physical RAM or guarantee that this device can run the project.';
-    }else{
+     if(support.hidden)support.hidden=false;
+     setText(label,'MEMORY LIMIT WARNING');
+     setText(title,'Installed RAM is below the checker minimum.');
+     setText(copy,'iRAM+ may request a higher app memory limit on eligible signed apps, but it cannot compensate for missing physical RAM or guarantee that this device can run the project.');
+    }else if(!support.hidden){
      support.hidden=true;
     }
    }
@@ -92,23 +98,27 @@ if(typeof document!=='undefined'){
     const note=verdict.querySelector('p');
     const critical=ram<4||iosCard?.classList.contains('critical')||storageCard?.classList.contains('critical');
     const attention=ram===4||storageCard?.classList.contains('minimum');
-    verdict.classList.remove('critical','minimum','headroom','unknown');
+    const level=critical?'critical':attention?'minimum':'headroom';
+    if(!verdict.classList.contains(level)){
+     verdict.classList.remove('critical','minimum','headroom','unknown');
+     verdict.classList.add(level);
+    }
     if(critical){
-     verdict.classList.add('critical');
-     if(heading)heading.textContent='One or more required checks are not met';
-     if(note)note.textContent='Review the red checks below. iOS below 18, very low free storage, or RAM below 4 GB requires action before continuing.';
+     setVerdictIcon(verdict,'warning');
+     setText(heading,'One or more required checks are not met');
+     setText(note,'Review the red checks below. iOS below 18, very low free storage, or RAM below 4 GB requires action before continuing.');
     }else if(attention){
-     verdict.classList.add('minimum');
-     if(heading)heading.textContent=ram===4?'Minimum RAM — iRAM+ required':'Storage headroom is limited';
-     if(note)note.textContent=ram===4?'This 4 GB profile meets the RAM minimum, but the checker requires iRAM+ for Increased Memory Limit. Yellow storage checks also indicate limited headroom.':'The device passes the core checks, but 21–30 GB free storage leaves limited working space. More than 30 GB is preferred.';
+     setVerdictIcon(verdict,'info');
+     setText(heading,ram===4?'Minimum RAM — iRAM+ required':'Storage headroom is limited');
+     setText(note,ram===4?'This 4 GB profile meets the RAM minimum, but the checker requires iRAM+ for Increased Memory Limit. Yellow storage checks also indicate limited headroom.':'The device passes the core checks, but 21–30 GB free storage leaves limited working space. More than 30 GB is preferred.');
     }else{
-     verdict.classList.add('headroom');
-     if(heading)heading.textContent='Meets the reference checks';
-     if(note)note.textContent='RAM is above 4 GB, iOS is 18 or later, and free storage is above 30 GB. This is still a planning check, not a performance guarantee.';
+     setVerdictIcon(verdict,'check');
+     setText(heading,'Meets the reference checks');
+     setText(note,'RAM is above 4 GB, iOS is 18 or later, and free storage is above 30 GB. This is still a planning check, not a performance guarantee.');
     }
    }
    const sourceReview=document.querySelector('.source-review');
-   if(sourceReview)sourceReview.textContent='Checker policy: 4 GB RAM minimum (iRAM+ required at exactly 4 GB), iOS 18+, and more than 30 GB free storage preferred.';
+   setText(sourceReview,'Checker policy: 4 GB RAM minimum (iRAM+ required at exactly 4 GB), iOS 18+, and more than 30 GB free storage preferred.');
   };
   const schedule=()=>{if(!raf)raf=requestAnimationFrame(syncResults)};
   const root=document.querySelector('#compat-results');

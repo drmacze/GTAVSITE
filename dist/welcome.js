@@ -27,8 +27,11 @@
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const returnTarget = safeReturnTarget();
     const next = '/home.html?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '');
-    try { sessionStorage.setItem('gtav-onboarding-transit', String(Date.now())); } catch {}
-    setTimeout(() => location.assign(next), reduced ? 0 : 120);
+    try {
+      sessionStorage.setItem('gtav-onboarding-transit', String(Date.now()));
+      sessionStorage.setItem('gtav-welcome-seen', '1');
+    } catch {}
+    setTimeout(() => location.replace(next), reduced ? 0 : 80);
   }
 
   // Desktop wheel/trackpad: a deliberate downward scroll immediately continues.
@@ -36,22 +39,40 @@
     if (event.deltaY > 12) enter();
   }, {passive: true});
 
-  // iPhone/iPad: detect the swipe itself instead of waiting for Safari scrollY.
+  // iPhone/iPad: intercept the vertical gesture before Safari can turn it into overscroll/pull-to-refresh.
   window.addEventListener('touchstart', event => {
-    touchStartY = event.touches?.[0]?.clientY ?? null;
+    if (event.touches?.length !== 1) {
+      touchStartY = null;
+      return;
+    }
+    touchStartY = event.touches[0].clientY;
   }, {passive: true});
 
+  window.addEventListener('touchmove', event => {
+    if (entering || touchStartY == null || event.touches?.length !== 1) return;
+    const currentY = event.touches[0].clientY;
+    const distance = touchStartY - currentY;
+    if (Math.abs(distance) > 6 && event.cancelable) event.preventDefault();
+    if (distance >= 28) {
+      touchStartY = null;
+      enter();
+    }
+  }, {passive: false});
+
   window.addEventListener('touchend', event => {
-    if (touchStartY == null) return;
+    if (entering || touchStartY == null) return;
     const endY = event.changedTouches?.[0]?.clientY ?? touchStartY;
     const distance = touchStartY - endY;
     touchStartY = null;
-    if (distance >= 42) enter();
+    if (distance >= 24) enter();
   }, {passive: true});
 
   window.addEventListener('touchcancel', () => {
     touchStartY = null;
   }, {passive: true});
+
+  const hint = document.querySelector('.welcome-hint');
+  if (hint) hint.addEventListener('click', enter);
 
   window.addEventListener('keydown', event => {
     if (['Enter', 'ArrowDown', 'PageDown', 'End', ' '].includes(event.key)) {
@@ -60,11 +81,16 @@
     }
   });
 
-  window.addEventListener('pageshow', () => {
+  window.addEventListener('pageshow', event => {
     entering = false;
     touchStartY = null;
     document.body.classList.remove('leaving');
     document.body.removeAttribute('aria-busy');
+    // A restored Safari page can come from bfcache. The gesture code above stays active,
+    // while fresh network navigations are forced by no-store headers and versioned assets.
+    if (event.persisted) {
+      try { sessionStorage.setItem('gtav-welcome-seen', '1'); } catch {}
+    }
   });
 
   const signal = document.getElementById('visit-signal');

@@ -63,3 +63,21 @@ html[data-theme=dark] .franklin-disconnect{color:#ff7c83}
  .franklin-sheet-dock.is-dragging{transition:none}
  .franklin-sheet-grip{top:12px;width:52px;height:5px;left:calc(50% - 26px)}
 }
+
+/* Call controls stay in the first header row, visible in setup and chat. */
+html .ask-franklin-head{grid-template-columns:54px minmax(0,1fr) auto;gap:12px}
+.franklin-head-actions{display:flex;align-items:center;gap:7px;grid-column:3;grid-row:1;position:relative;z-index:2}
+html .franklin-disconnect{display:grid!important;place-items:center;flex:0 0 44px;width:44px;height:44px;min-width:44px;padding:11px!important;border:0;border-radius:50%;background:#e43b45!important;color:#fff!important;box-shadow:0 3px 12px #b4182026;cursor:pointer;transition:background .2s,transform .2s;grid-column:auto}
+html .franklin-disconnect svg{display:block;width:24px;height:24px}
+html .franklin-disconnect:hover{background:#c92c36!important;transform:scale(1.04);text-decoration:none}
+html .franklin-disconnect:active{transform:scale(.94)}
+.franklin-sheet-dock .franklin-disconnect{margin-left:8px}
+html .ask-franklin-head::after{right:123px;font-size:5px;letter-spacing:1.2px}
+html .ask-franklin-panel::before{display:none}
+.franklin-panel-edge{position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;overflow:visible;flex:none!important;opacity:0;transition:opacity .25s}
+.franklin-panel-edge path{fill:none;stroke:var(--af-accent);stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:145 855;animation:franklin-edge-travel 9s linear infinite;animation-play-state:paused}
+.ask-franklin-panel.is-open>.franklin-panel-edge{opacity:.85}
+.ask-franklin-panel.is-open>.franklin-panel-edge path{animation-play-state:running}
+@keyframes franklin-edge-travel{to{stroke-dashoffset:-1000}}
+@media(max-width:390px){html .ask-franklin-head{grid-template-columns:46px minmax(0,1fr) auto;gap:9px;padding-left:16px;padding-right:14px}.franklin-head-actions{gap:3px}.franklin-head-actions .ask-franklin-close{width:30px}html .ask-franklin-head::after{right:107px;letter-spacing:.8px}}
+@media(prefers-reduced-motion:reduce){.franklin-panel-edge path{animation:none!important;stroke-dasharray:none;opacity:.35}html .franklin-disconnect{transition:none}}

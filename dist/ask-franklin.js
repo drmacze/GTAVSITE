@@ -19,7 +19,7 @@
     if (document.querySelector('link[data-ask-franklin]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'ask-franklin.css?v=20261027viewport';
+    link.href = 'ask-franklin.css?v=20261027call';
     link.dataset.askFranklin = 'true';
     document.head.append(link);
   };
@@ -201,9 +201,34 @@
   const disconnect = document.createElement('button');
   disconnect.type = 'button';
   disconnect.className = 'franklin-disconnect';
-  disconnect.textContent = 'Disconnect';
+  disconnect.title = 'Disconnect';
+  disconnect.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.2 10.1c5.3-4.5 12.3-4.5 17.6 0 .7.6.8 1.6.2 2.3l-1.5 1.9a1.5 1.5 0 0 1-1.8.4l-2.6-1.1a1.4 1.4 0 0 1-.9-1.3v-1.6a13 13 0 0 0-4.4 0v1.6c0 .6-.3 1.1-.9 1.3l-2.6 1.1a1.5 1.5 0 0 1-1.8-.4L3 12.4c-.6-.7-.5-1.7.2-2.3Z"/></svg>';
   disconnect.setAttribute('aria-label', 'Disconnect Franklin and delete chat session');
-  head.append(disconnect);
+  const callActions = document.createElement('div');
+  callActions.className = 'franklin-head-actions';
+  close.replaceWith(callActions);
+  close.title = 'Minimize conversation';
+  close.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  callActions.append(close, disconnect);
+  // A lightweight SVG stroke follows the actual panel outline.
+  const edge = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  edge.classList.add('franklin-panel-edge');
+  edge.setAttribute('aria-hidden','true');
+  edge.setAttribute('focusable','false');
+  const edgePath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  edgePath.setAttribute('pathLength','1000');
+  edge.append(edgePath);
+  panel.append(edge);
+  const fitEdge = () => {
+    const w = panel.clientWidth, h = panel.clientHeight;
+    if(!w || !h)return;
+    const r = Math.min(parseFloat(getComputedStyle(panel).borderTopLeftRadius) || 0, w/2);
+    edge.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    edgePath.setAttribute('d', `M1 ${r+1} Q1 1 ${r+1} 1 H${w-r-1} Q${w-1} 1 ${w-1} ${r+1} V${h-1} H1 Z`);
+  };
+  if(window.ResizeObserver)new ResizeObserver(fitEdge).observe(panel);
+  window.addEventListener('resize',fitEdge);
+  requestAnimationFrame(fitEdge);
   const dockDisconnect = disconnect.cloneNode(true);
   sheetDock.append(dockDisconnect);
   const endSession = event => {

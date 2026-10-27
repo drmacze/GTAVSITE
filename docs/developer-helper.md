@@ -16,3 +16,5 @@ Helper sheet: mobile header swipe down minimizes the conversation to an edge doc
 Disconnect ends the local helper session: conversation, draft, attachment and support OS/build selection are cleared. It hides the mobile dock and restores the compact launcher. In-flight reply renderers check a session generation before appending or focusing the composer. Minimizing still preserves the conversation.
 
 Mobile sheet geometry uses visualViewport height and offsetTop directly, with no separate keyboard subtraction. While open, the background page is locked at its existing scroll position. OS version entry uses a text keyboard and normalizes commas to periods. The collapsed dock has a larger touch target and opens after a 22px upward drag or a tap.
+
+Disconnect is an accessible red circular phone control in the header and collapsed dock. The previous close control minimizes the panel. A pointer-transparent SVG stroke travels around the panel outline using the selected accent; animation pauses when closed and becomes a static outline with reduced motion.

@@ -53,7 +53,7 @@
   head.className = 'ask-franklin-head';
   const title = document.createElement('div');
   title.className = 'ask-franklin-title';
-  title.innerHTML = '<strong>Ask Franklin</strong><span>Los Santos community helper</span>';
+  title.innerHTML = '<strong>Ask Franklin</strong><span>Community helper</span>';
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'ask-franklin-close';
@@ -63,7 +63,7 @@
 
   const notice = document.createElement('div');
   notice.className = 'ask-franklin-notice';
-  notice.textContent = 'Fan-made helper. Franklin answers from this community site and general GTA V knowledge. If he is unsure, he will send you to the Discord community.';
+  notice.textContent = 'Franklin bisa saja menjawab jawaban tidak akurat, lebih baik bergabung ke Discord.';
 
   const messages = document.createElement('div');
   messages.className = 'ask-franklin-messages';
@@ -305,7 +305,7 @@
       source: { href: site.href, label: site.label }
     };
     return {
-      text: "Ah, gue belum punya info pasti soal itu, bro. Gue nggak mau ngarang. Coba tanyakan ke teman-teman gue di Discord — staff atau komunitas di sana bisa cek lebih detail.",
+      text: "Aight, I don't have a solid answer for that, homie. I don't wanna make something up. It's better if you join the Discord and ask the staff or community directly.",
       discord: true
     };
   };

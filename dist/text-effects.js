@@ -27,12 +27,22 @@
   window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
 
-// Reliable fallback loader for the fan-made Ask Franklin helper.
+// Reliable loader for the fan-made Ask Franklin helper and its V2 knowledge engine.
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   window.__askFranklinLoaderAdded=true;
+  const loadEngine=()=>{
+    if(window.__franklinEngineLoaderAdded)return;
+    window.__franklinEngineLoaderAdded=true;
+    const engine=document.createElement('script');
+    engine.src='franklin-engine.js';
+    engine.defer=true;
+    document.head.append(engine);
+  };
   const script=document.createElement('script');
   script.src='ask-franklin.js';
   script.defer=true;
+  script.addEventListener('load',loadEngine,{once:true});
+  script.addEventListener('error',loadEngine,{once:true});
   document.head.append(script);
 }
 

@@ -3,7 +3,7 @@
   "name": "GTA V iOS Community",
   "short_name": "GTA V iOS",
   "description": "GTA V iOS community project updates and support.",
-  "start_url": "/home.html?source=pwa",
+  "start_url": "/home",
   "scope": "/",
   "display": "standalone",
   "background_color": "#090909",

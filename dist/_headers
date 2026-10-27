@@ -49,3 +49,10 @@
 /assets/web-app-*
   Cache-Control: no-cache, must-revalidate
   Content-Type: image/png
+
+/install.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: no-store
+
+/install
+  Cache-Control: no-store

@@ -4,18 +4,29 @@
   function shine(node){if(node.dataset.shineStarted)return;node.dataset.shineStarted='true';running.add(node);node.classList.add('shine-running');node.addEventListener('animationend',event=>{if(event.animationName==='text-shine'){node.classList.remove('shine-running');running.delete(node);}},{once:true});}
   const nodes=[...document.querySelectorAll('[data-shine],[data-type]')];if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;observer.unobserve(entry.target);if(reduced.matches)return;if(entry.target.hasAttribute('data-type'))type(entry.target);else shine(entry.target);}),{threshold:.3});nodes.forEach(node=>observer.observe(node));}reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
+
+/* Franklin is deliberately split into a tiny UI core and a heavy knowledge stack.
+   Nothing in this loader is allowed to hold the initial document load open. */
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
- window.__askFranklinLoaderAdded=true;const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.defer=true;s.addEventListener('load',next,{once:true});s.addEventListener('error',next,{once:true});document.head.append(s);};
- const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027shortlogs',()=>{});};
- const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027shortlogs',loadBase);};
- const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027shortlogs',loadExtended);};
- const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-typing.js?v=20261027shortlogs',()=>add('franklin-support-context.js?v=20261027shortlogs',()=>add('franklin-developer-kb.js?v=20261027shortlogs',()=>add('franklin-log-files.js?v=20261027shortlogs',()=>add('franklin-dataset-engine.js?v=20261027shortlogs',()=>add('franklin-site-rag.js?v=20261027shortlogs',loadWebLLM))))));};
- const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027shortlogs',loadRAG);};
- const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027shortlogs',loadFunding);};
- const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027shortlogs';document.head.append(css);add('franklin-connect.js?v=20261027cancel2',loadModeration);};
- const loadAnalytics=()=>{if(window.__franklinAnalyticsLoaderAdded){loadConnect();return;}window.__franklinAnalyticsLoaderAdded=true;add('franklin-analytics.js?v=20261027metaonly',loadConnect);};
- add('franklin-conversation.js?v=20261027shortlogs',()=>add('ask-franklin.js?v=20261027shortlogs',loadAnalytics));
+ window.__askFranklinLoaderAdded=true;
+ const add=(src,next)=>{if([...document.scripts].some(s=>s.src.includes(src.split('?')[0])))return next?.();const s=document.createElement('script');s.src=src;s.async=true;s.addEventListener('load',()=>next?.(),{once:true});s.addEventListener('error',()=>next?.(),{once:true});document.head.append(s);};
+ const afterLoad=fn=>{const run=()=>('requestIdleCallback'in window?requestIdleCallback(fn,{timeout:900}):setTimeout(fn,0));if(document.readyState==='complete')run();else window.addEventListener('load',run,{once:true})};
+ let heavyStarted=false,coreStarted=false;
+ const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261028lazy1');};
+ const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261028lazy1',loadBase);};
+ const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261028lazy1',loadExtended);};
+ const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-typing.js?v=20261028lazy1',()=>add('franklin-support-context.js?v=20261028lazy1',()=>add('franklin-developer-kb.js?v=20261028lazy1',()=>add('franklin-log-files.js?v=20261028lazy1',()=>add('franklin-dataset-engine.js?v=20261028lazy1',()=>add('franklin-site-rag.js?v=20261028lazy1',loadWebLLM))))));};
+ const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261028lazy1',loadRAG);};
+ const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261028lazy1',loadFunding);};
+ const loadHeavy=()=>{if(heavyStarted)return;heavyStarted=true;loadModeration();};
+ const loadConnect=()=>{if(window.__franklinConnectLoaderAdded)return;window.__franklinConnectLoaderAdded=true;if(!document.querySelector('link[href^="franklin-connect.css"]')){const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261028lazy1';document.head.append(css)}add('franklin-connect.js?v=20261028lazy1');};
+ const loadAnalytics=()=>{if(window.__franklinAnalyticsLoaderAdded){loadConnect();return;}window.__franklinAnalyticsLoaderAdded=true;add('franklin-analytics.js?v=20261028lazy1',loadConnect);};
+ const loadCore=()=>{if(coreStarted)return;coreStarted=true;add('franklin-conversation.js?v=20261028lazy1',()=>add('ask-franklin.js?v=20261028lazy1',loadAnalytics));};
+ afterLoad(loadCore);
+ document.addEventListener('pointerdown',event=>{if(event.target instanceof Element&&event.target.closest('.ask-franklin-launcher,.franklin-sheet-dock'))loadHeavy()},{capture:true,passive:true});
+ document.addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target?.closest?.('.ask-franklin-launcher,.franklin-sheet-dock'))loadHeavy()},{capture:true});
+ window.addEventListener('franklin-connect-start',loadHeavy);
+ window.__loadFranklinHeavy=loadHeavy;
 }
+
 (()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();
-// Shared rating badge is mounted only inside Franklin chat headers.
-if(document.body?.dataset?.page){const s=document.createElement("script");s.src="community-ratings.js?v=20261027stars";s.defer=true;document.head.append(s);}

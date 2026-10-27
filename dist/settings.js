@@ -21,10 +21,10 @@
 /* Web Push / PWA + admin extensions bootstrap. */
 (()=>{
  'use strict';
- const addLink=(rel,href)=>{if(document.head.querySelector(`link[rel="${rel}"]`))return;const l=document.createElement('link');l.rel=rel;l.href=href;document.head.append(l)};
+ const ensureLink=(rel,href,extra={})=>{let l=document.head.querySelector(`link[rel="${rel}"]`);if(!l){l=document.createElement('link');l.rel=rel;document.head.append(l)}l.href=href;Object.entries(extra).forEach(([k,v])=>l.setAttribute(k,v));return l};
  const addMeta=(name,content)=>{if(document.head.querySelector(`meta[name="${name}"]`))return;const m=document.createElement('meta');m.name=name;m.content=content;document.head.append(m)};
  const loadScript=src=>{if([...document.scripts].some(s=>s.src.includes(src.split('?')[0])))return;const s=document.createElement('script');s.src=src;s.defer=true;document.head.append(s)};
- addLink('manifest','/manifest.webmanifest');addLink('apple-touch-icon','/assets/notification-logo.jpeg');addMeta('apple-mobile-web-app-capable','yes');addMeta('apple-mobile-web-app-title','GTA V IOS');
+ ensureLink('manifest','/manifest.webmanifest?v=20261027png2');ensureLink('apple-touch-icon','/apple-touch-icon.png?v=20261027png2',{sizes:'180x180',type:'image/png'});addMeta('apple-mobile-web-app-capable','yes');addMeta('apple-mobile-web-app-title','GTA V IOS');
  const admin=location.pathname.includes('release-publisher-8c2f71d4');
  if(admin){loadScript('/admin-push.js?v=20261027push2');loadScript('/admin-onboarding.js?v=20261027survey1');return}
  const css=document.createElement('link');css.rel='stylesheet';css.href='/push-notifications.css?v=20261027push2';document.head.append(css);loadScript('/push-client.js?v=20261027push2');

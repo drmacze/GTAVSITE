@@ -1,5 +1,6 @@
 (()=>{'use strict';const form=document.getElementById('feedback-form');if(!form)return;
 const $=id=>document.getElementById(id),field=n=>form.elements.namedItem(n),draftKey='gtav-feedback-draft-v1';let step=0,busy=false,frame=0,started=0,activePointer=null,toastTimer=0;
+const placeHelper=()=>{const launcher=document.querySelector('.ask-franklin-launcher'),slot=$('feedback-helper-slot');if(launcher&&slot){slot.append(launcher);return true}return false};if(!placeHelper()){const observer=new MutationObserver(()=>{if(placeHelper())observer.disconnect()});observer.observe(document.body,{childList:true,subtree:true})}
 const id=()=>crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(Number(c)^crypto.getRandomValues(new Uint8Array(1))[0]&15>>Number(c)/4).toString(16));let reportId=id();
 const toast=message=>{$('feedback-toast').textContent=message;$('feedback-toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('feedback-toast').hidden=true,6500)};
 const data=()=>({id:reportId,...Object.fromEntries(new FormData(form)),rating:Number(field('rating').value),version:field('version').value.replace(/,/g,'.')});

@@ -1,0 +1,11 @@
+const vm=require('vm'),fs=require('fs'),assert=require('assert/strict');
+const source=fs.readFileSync('dist/ask-franklin.js','utf8');const code=source.slice(source.indexOf('  const bindSwipe ='),source.indexOf('  close.addEventListener'));
+function surface(){return{style:{},handlers:{},addEventListener(k,f){this.handlers[k]=f},setPointerCapture(){}}}const head=surface(),sheetDock=surface(),panel={style:{},clientHeight:600};let opens=0,closes=0;
+vm.runInNewContext(code,{head,sheetDock,panel,mobileSheet:()=>true,open:()=>opens++,shut:()=>closes++});
+const event=(y,x=100)=>({button:0,pointerId:1,clientX:x,clientY:y,target:{closest:()=>null}});
+head.handlers.pointerdown(event(100));head.handlers.pointermove(event(200));assert.equal(panel.style.transform,'translateY(100px)');head.handlers.pointerup(event(200));assert.equal(closes,1);assert.equal(panel.style.transform,'');
+sheetDock.handlers.pointerdown(event(250));sheetDock.handlers.pointerup(event(150));assert.equal(opens,1);
+head.handlers.pointerdown(event(100));head.handlers.pointercancel(event(250));assert.equal(closes,1);
+head.handlers.pointerdown(event(100));head.handlers.pointerup(event(110));assert.equal(closes,1);
+head.handlers.pointerdown(event(100));head.handlers.pointerup(event(200,300));assert.equal(closes,1);
+console.log('PASS: swipe down/up, short/horizontal/cancelled gestures and drag reset.');

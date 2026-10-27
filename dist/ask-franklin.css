@@ -33,3 +33,18 @@
 }
 @media(max-width:390px){.ask-franklin-launcher{right:10px}.ask-franklin-launcher.is-dock-open{width:176px}.ask-franklin-launcher-copy{left:66px;width:92px}.ask-franklin-panel{height:min(80dvh,650px)}}
 @media(prefers-reduced-motion:reduce){.ask-franklin-panel,.ask-franklin-launcher,.ask-franklin-launcher::before,.ask-franklin-launcher::after,.ask-franklin-launcher-copy,.ask-franklin-avatar,.ask-franklin-chip,.ask-franklin-send{transition:none}.ask-franklin-dot{animation:none}}
+
+/* The conversation rests on the viewport edge; safe-area padding stays inside. */
+.franklin-sheet-dock{display:none}
+@media(max-width:760px){
+ html .ask-franklin-panel{bottom:var(--franklin-keyboard,0px);top:auto;height:min(calc(var(--franklin-viewport,100dvh) * .86),780px);max-height:var(--franklin-viewport,100dvh);margin:0;border-radius:22px 22px 0 0;padding-bottom:0;transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .2s}
+ html .ask-franklin-compose{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--af-backdrop)}
+ html .ask-franklin-head{cursor:grab;touch-action:none}
+ .franklin-sheet-dock:not([hidden]){position:fixed;display:flex;align-items:center;gap:12px;left:0;right:0;bottom:0;z-index:110;min-height:64px;padding:24px 24px calc(16px + env(safe-area-inset-bottom,0px));border:0;border-top:1px solid var(--settings-line);border-radius:18px 18px 0 0;background:var(--settings-bg);color:var(--settings-text);box-shadow:0 -8px 30px #0002;font:600 13px/1.4 'DM Sans',sans-serif;touch-action:none}
+ .franklin-sheet-grip{position:absolute;top:8px;left:calc(50% - 20px);width:40px;height:4px;border-radius:4px;background:var(--settings-muted);opacity:.4}
+ .franklin-sheet-hint{margin-left:auto;font-size:11px;font-weight:400;color:var(--settings-muted)}
+ .ask-franklin-launcher.is-sheet-minimized{display:none}
+}
+.franklin-typing-status{display:flex;align-items:center;gap:5px;min-height:30px;color:var(--af-muted);font-size:11px}
+.franklin-typing-status>span{margin-right:6px}
+@media(prefers-reduced-motion:reduce){html .ask-franklin-panel{transition:none}}

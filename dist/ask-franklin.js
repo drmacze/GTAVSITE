@@ -18,7 +18,7 @@
     if (document.querySelector('link[data-ask-franklin]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'ask-franklin.css';
+    link.href = 'ask-franklin.css?v=20261027sheet';
     link.dataset.askFranklin = 'true';
     document.head.append(link);
   };
@@ -189,7 +189,28 @@
     messages.append(wrap);
   };
 
+  const sheetDock = document.createElement('button');
+  sheetDock.type = 'button';
+  sheetDock.className = 'franklin-sheet-dock';
+  sheetDock.hidden = true;
+  sheetDock.setAttribute('aria-label', 'Open Franklin conversation');
+  sheetDock.innerHTML = '<span class="franklin-sheet-grip"></span><span>Franklin</span><span class="franklin-sheet-hint">Swipe up to continue</span>';
+  document.body.append(sheetDock);
+  const mobileSheet = () => matchMedia('(max-width: 760px)').matches;
+  const updateViewport = () => {
+    const viewport = window.visualViewport;
+    const keyboard = viewport ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop) : 0;
+    panel.style.setProperty('--franklin-keyboard', keyboard > 100 ? keyboard + 'px' : '0px');
+    panel.style.setProperty('--franklin-viewport', (viewport?.height || window.innerHeight) + 'px');
+  };
+  window.visualViewport?.addEventListener('resize', updateViewport);
+  window.visualViewport?.addEventListener('scroll', updateViewport);
+  window.addEventListener('resize', updateViewport);
+  updateViewport();
   const open = () => {
+    sheetDock.hidden = true;
+    launcher.classList.remove('is-sheet-minimized');
+    panel.inert = false;
     clearCollapseTimer();
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
@@ -202,17 +223,23 @@
       botMessage("Yo. Franklin here. Ask me about GTA V, the iOS launcher, installation, compatibility, settings, or common problems. If I don't know something for sure, I won't make it up.");
       addQuickActions();
     }
-    setTimeout(() => {if(panel.dataset.supportPhase!=='setup')input.focus({ preventScroll: true });}, 180);
+    setTimeout(() => {if(!mobileSheet() && panel.dataset.supportPhase!=='setup')input.focus({ preventScroll: true });}, 180);
   };
   const shut = () => {
     panel.classList.remove('is-open');
+    panel.inert = true;
+    input.blur();
     panel.setAttribute('aria-hidden', 'true');
     launcher.classList.remove('is-chat-open', 'is-dock-open');
     launcher.dataset.state = 'compact';
     launcher.setAttribute('aria-expanded', 'false');
     launcher.setAttribute('aria-label', 'Expand Ask Franklin helper');
     document.documentElement.classList.remove('franklin-open');
-    window.setTimeout(() => launcher.focus({ preventScroll: true }), 120);
+    if (mobileSheet()) {
+      sheetDock.hidden = false;
+      launcher.classList.add('is-sheet-minimized');
+    }
+    window.setTimeout(() => (mobileSheet() ? sheetDock : launcher).focus({ preventScroll: true }), 120);
   };
 
   launcher.addEventListener('click', () => {
@@ -234,6 +261,34 @@
   launcher.addEventListener('blur', () => {
     if (launcher.dataset.state === 'expanded') scheduleCollapse(3000);
   });
+  // Gestures are limited to the header/dock, so scrolling and text selection stay native.
+  const bindSwipe = (surface, direction, action) => {
+    let gesture = null;
+    surface.style.touchAction = 'none';
+    surface.addEventListener('pointerdown', event => {
+      if (event.button !== 0 || event.target.closest('button') && surface !== sheetDock) return;
+      gesture = {id:event.pointerId, x:event.clientX, y:event.clientY};
+      surface.setPointerCapture(event.pointerId);
+    });
+    surface.addEventListener('pointermove', event => {
+      if (!gesture || gesture.id !== event.pointerId || !mobileSheet()) return;
+      const delta = (event.clientY - gesture.y) * direction;
+      if (delta > 0 && surface === head) panel.style.transform = `translateY(${Math.min(delta, panel.clientHeight)}px)`;
+    });
+    const end = (event, cancelled) => {
+      if (!gesture || gesture.id !== event.pointerId) return;
+      const delta = (event.clientY - gesture.y) * direction;
+      const horizontal = Math.abs(event.clientX - gesture.x);
+      gesture = null;
+      panel.style.transform = '';
+      if (!cancelled && mobileSheet() && delta > 55 && delta > horizontal) action();
+    };
+    surface.addEventListener('pointerup', event => end(event, false));
+    surface.addEventListener('pointercancel', event => end(event, true));
+  };
+  bindSwipe(head, 1, shut);
+  bindSwipe(sheetDock, -1, open);
+  sheetDock.addEventListener('click', open);
   close.addEventListener('click', shut);
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && panel.classList.contains('is-open')) shut(); });
   scheduleCollapse(4800);

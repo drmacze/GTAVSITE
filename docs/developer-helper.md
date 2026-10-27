@@ -9,3 +9,6 @@ Log attachments are read on the device. Their diagnostic excerpts use the same d
 The compact paperclip, content/extension/size validation and top-right notification remain. Bot log messages include an avatar and place the bubble in the main grid column to prevent narrow vertical text. Keep both elements if the chat layout is changed.
 
 Run the regression tests and syntax checks. Tests cover signature matching, symptom matching, release caveats, unclear questions, and absence of notes links. Basic log summaries report captured values, not live device state or a confirmed crash cause.
+
+
+Helper sheet: mobile header swipe down minimizes the conversation to an edge dock; swipe up or tap restores the same session. The composer includes bottom safe-area padding and follows the visual viewport when a keyboard opens. Reply preparation now displays “Franklin is typing” with dots for a bounded, content-length-based interval, then renders the entire answer at once. This is a presentation indicator, not model token streaming.

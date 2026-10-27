@@ -43,6 +43,9 @@
 /compatibility.css
   Cache-Control: no-store, max-age=0
 
+/performance-check.js
+  Cache-Control: no-store, max-age=0
+
 /text-effects.js
   Cache-Control: no-cache, must-revalidate
 

@@ -1,5 +1,8 @@
 /* Native scrolling prevents competing scroll controllers and scroll-linked paint work. */
 html{scroll-behavior:auto}#video-play{display:none!important}
 body[data-page=home] .site-header{position:absolute;top:0;left:0;width:100%;background:linear-gradient(180deg,var(--tone-0c0b0bc7,#0c0b0bc7),transparent);border-bottom:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+/* Fast first paint: the Home hero uses the local poster immediately instead of waiting for the 7 MB trailer. */
+body[data-page=home] .home-hero{background-image:url('assets/los-santos-background.jpeg');background-size:cover;background-repeat:no-repeat;background-position:50% 70%}
+@media(max-width:750px){body[data-page=home] .home-hero{background-position:55% 72%}}
 @media(pointer:coarse){.site-header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.home-hero video{will-change:auto!important}.release-entry{animation:none!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}

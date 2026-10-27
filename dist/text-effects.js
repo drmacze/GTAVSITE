@@ -87,11 +87,13 @@ if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   document.head.append(script);
 }
 
-// Keep the helper subtitle concise regardless of which loader initializes it first.
+// Present the assistant like a contact: the visible chat name is simply "Franklin".
 (() => {
   const apply=()=>{
+    const title=document.querySelector('.ask-franklin-title strong');
     const label=document.querySelector('.ask-franklin-title span');
-    if(!label)return false;
+    if(!title||!label)return false;
+    title.textContent='Franklin';
     label.textContent='Community helper';
     return true;
   };

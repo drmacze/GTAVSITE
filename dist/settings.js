@@ -17,6 +17,8 @@
  if(completed)return;
  const target=location.pathname+location.search+location.hash;
  try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}
+ document.documentElement.style.background='#10100f';
+ document.documentElement.style.colorScheme='dark';
  document.documentElement.style.visibility='hidden';
  location.replace('/?return='+encodeURIComponent(target));
 })();

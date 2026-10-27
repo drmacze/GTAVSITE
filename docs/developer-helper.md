@@ -1,20 +1,21 @@
-# XDE developer knowledge integration
+# Private helper and user logs
 
-Source: the three files provided by XDE on 27 October 2026, with 50 entries. Preserve factual content and release status. This is retrieval from developer notes, not model training or live knowledge of subsequent releases.
+Complete XDE entries must never be committed again. The public JSON, Markdown, readable notes page and source generator were removed. The previous commits still contain them. **The GitHub repository must be made private, or its history cleaned by the owner, before claiming the knowledge source is confidential. Previously downloaded copies cannot be recalled.** Existing public deployment copies may likewise remain accessible until retired by their hosting provider.
 
-Edit entries in `scripts/build_kb.py` and run:
+Developer retrieval is now a POST to `/api/helper`. The browser receives a focused troubleshooting answer only, not the corpus, source inventory, internal notes or private build details. No endpoint lists records. Responses intentionally reveal user-facing advice; this does not prevent someone collecting advice through repeated questions.
 
-```sh
-python scripts/build_kb.py dist/knowledge
-node tests/developer-kb.cjs
-```
+## Cloudflare Pages configuration required
 
-This regenerates `dist/knowledge/kb.json`, `kb.md`, and the readable `dist/developer-notes.html` used by source links. Keep the snapshot date current in the renderer and retriever when new developer notes arrive.
+`functions/api/helper.js` uses the existing `VISITS_DB` D1 binding for a per-IP 15-request/minute limit. Only a salted address hash and short-lived counter are stored, never the log/question. It needs private secrets `XDE_KB_PARTS` and `XDE_KB_0` through `XDE_KB_N`. Split the original JSON into ordered chunks of at most 4,000 characters and set the count. Use environment secret settings; never frontend variables. Deploy after setting secrets. No copies belong in `dist`, public Git history or source maps.
 
-`franklin-developer-kb.js` loads JSON locally and ranks titles, symptoms and exact log signatures. Distinctive signatures receive priority. Weak or competing matches return a triage question for failure reports instead of a diagnosis. Basic Indonesian terms are normalized, but this is not comprehensive multilingual understanding. Explicit platform mismatches are penalized. Short unresolved follow-ups escalate the previous case without claiming it is confirmed.
+The values have been stored as Sites runtime secrets, but this static Sites project does not execute Pages Functions. The separate Cloudflare Pages project needs its own secret configuration. Without the backend, analysis fails closed with a clear unavailable message. No fallback downloads the knowledge to the browser.
 
-The developer retriever is loaded before existing helper answer engines. Each engine checks it before general website passages. Developer answers carry `grounded: true`, so the optional local model does not paraphrase away steps or release caveats. Unreleased fixes stay labelled as test builds; released and still-open status remain separate. Original `reply` templates are not blindly posted, avoiding unresolved placeholders such as `[file]` and `[build]`.
+## Log attachment
 
-No log upload or remote log processing was added. Users may paste relevant excerpts into the existing chat. Matching runs in the browser; persistent chat behavior remains controlled by the pre-existing helper. No personal report history or tester database was added.
+Attach a log opens a file picker for non-empty `.log` and `.txt` files up to 512 KB. Selecting the file only reads it on the device. A diagnostic excerpt (up to 90,000 characters) is prepared and previewed. Common email/token patterns are redacted for analysis, but this is not comprehensive anonymization. Users must review personal information. Only pressing Analyze sends the excerpt to the same-origin helper endpoint. The endpoint processes the request in memory and does not store or log it; hosting-level network metadata may still be recorded by the platform.
 
-Tests cover representative missing archive, MSAA test build, Paleto Bay, camera, money and macOS cases, broad crash ambiguity and off-topic fallback. These are retrieval regression tests, not evidence of clinical diagnostic accuracy or that all 50 cases will match every phrasing. Browser QA confirms an actual chat submission surfaces CRASH-05, unreleased status and the source link.
+Share file uses the device's native share sheet with the **original file** and allows the user to choose Discord or another app. It does not silently send to a Discord channel, bot, staff member or webhook. On unsupported browsers, explain that the user can attach the file manually in Discord. No uploaded log is made public or assigned a download URL.
+
+## Verification
+
+Run `node tests/developer-kb.cjs` and syntax-check the browser scripts and server modules. Test configured analysis and unavailable analysis separately. Never use real user logs in automated tests or a public fixture.

@@ -6,12 +6,12 @@
 })();
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
  window.__askFranklinLoaderAdded=true;const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.defer=true;s.addEventListener('load',next,{once:true});s.addEventListener('error',next,{once:true});document.head.append(s);};
- const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027e',()=>{});};
- const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027e',loadBase);};
- const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027e',loadExtended);};
- const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-developer-kb.js?v=20261027',()=>add('franklin-site-rag.js?v=20261027e',loadWebLLM));};
- const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027e',loadRAG);};
- const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027e',loadFunding);};
- const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027e';document.head.append(css);add('franklin-connect.js?v=20261027e',loadModeration);};add('ask-franklin.js?v=20261027e',loadConnect);
+ const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027-private1',()=>{});};
+ const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027-private1',loadBase);};
+ const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027-private1',loadExtended);};
+ const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-developer-kb.js?v=20261027-private1',()=>add('franklin-log-files.js?v=20261027-private1',()=>add('franklin-site-rag.js?v=20261027-private1',loadWebLLM)));};
+ const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027-private1',loadRAG);};
+ const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027-private1',loadFunding);};
+ const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027-private1';document.head.append(css);add('franklin-connect.js?v=20261027-private1',loadModeration);};add('ask-franklin.js?v=20261027-private1',loadConnect);
 }
 (()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();

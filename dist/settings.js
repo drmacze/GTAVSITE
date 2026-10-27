@@ -26,9 +26,9 @@
  window.addEventListener('gtav:haptic',e=>haptic(e.detail?.type||'tap'));
  function classifyHaptic(target){
   if(target.closest('.settings-switch'))return null;
-  if(target.closest('.ask-franklin-launcher,.menu-toggle,.settings-trigger,.push-trigger'))return 'open';
-  if(target.closest('.ask-franklin-close,.menu-close,.menu-backdrop,.settings-close,.toast-close'))return 'close';
-  if(target.closest('#onboarding-next,.toast-subscribe,.ask-franklin-send,[data-push-enable]'))return 'medium';
+  if(target.closest('.ask-franklin-launcher,.menu-toggle,.settings-trigger'))return 'open';
+  if(target.closest('.ask-franklin-close,.menu-close,.menu-backdrop,.settings-close,.toast-close,.push-toast-close'))return 'close';
+  if(target.closest('#onboarding-next,.toast-subscribe,.ask-franklin-send,.push-toast-enable'))return 'medium';
   if(target.closest('.gameplay-next,.gameplay-prev,.gameplay-thumb,[data-filter],[data-mode-choice],[data-theme-choice],[data-color-choice]'))return 'selection';
   if(target.closest('summary,.faq-list details'))return 'soft';
   if(target.closest('button,a,input[type=radio],input[type=checkbox]'))return 'tap';
@@ -46,9 +46,9 @@
   button.addEventListener('click',open);dialog.querySelector('.settings-close').addEventListener('click',close);
   dialog.addEventListener('close',()=>{document.body.classList.remove('settings-open');opener?.focus();});
   dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)close();}});
-  function sync(){['mode','theme','color'].forEach(k=>dialog.querySelectorAll(`[data-${k}-choice]`).forEach(b=>b.setAttribute('aria-pressed',String(prefs[k]===b.dataset[k+'Choice']))));dialog.querySelector('#settings-palette').hidden=prefs.theme!=='gtav';dialog.querySelector('.settings-color-label').textContent=colors[prefs.color][0];dialog.querySelector('.settings-switch').setAttribute('aria-checked',String(prefs.haptics));}
+  function sync(){['mode','theme','color'].forEach(k=>dialog.querySelectorAll(`[data-${k}-choice]`).forEach(b=>b.setAttribute('aria-pressed',String(prefs[k]===b.dataset[k+'Choice']))));dialog.querySelector('#settings-palette').hidden=prefs.theme!=='gtav';dialog.querySelector('.settings-color-label').textContent=colors[prefs.color][0];dialog.querySelector('.settings-switch:not(.notification-switch)')?.setAttribute('aria-checked',String(prefs.haptics));}
   function save(){apply();sync();try{localStorage.setItem(key,JSON.stringify(prefs));dialog.querySelector('.settings-saved').textContent='Preferences saved.';}catch{dialog.querySelector('.settings-saved').textContent='Applied for this visit. Browser storage is unavailable.';}}
-  dialog.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;for(const k of ['mode','theme','color']){if(b.dataset[k+'Choice']){prefs[k]=b.dataset[k+'Choice'];save();}}if(b.classList.contains('settings-switch')){const enabling=!prefs.haptics;prefs.haptics=enabling;save();if(enabling)haptic('success');}});
+  dialog.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;for(const k of ['mode','theme','color']){if(b.dataset[k+'Choice']){prefs[k]=b.dataset[k+'Choice'];save();}}if(b.classList.contains('settings-switch')&&!b.classList.contains('notification-switch')){const enabling=!prefs.haptics;prefs.haptics=enabling;save();if(enabling)haptic('success');}});
   document.addEventListener('click',e=>{if(!e.isTrusted||!(e.target instanceof Element))return;const type=classifyHaptic(e.target);if(type)haptic(type);},{capture:true});
   window.addEventListener('storage',e=>{if(e.key!==key)return;try{const next=JSON.parse(e.newValue);if(next&&['light','dark'].includes(next.mode)&&['gtav','launcher'].includes(next.theme)&&colors[next.color]){prefs={...next,haptics:next.haptics===true};apply();sync();}}catch{}});
   sync();
@@ -64,6 +64,6 @@
  const loadScript=src=>{if([...document.scripts].some(s=>s.src.includes(src.split('?')[0])))return;const s=document.createElement('script');s.src=src;s.defer=true;document.head.append(s)};
  addLink('manifest','/manifest.webmanifest');addLink('apple-touch-icon','/assets/notification-logo.jpeg');addMeta('apple-mobile-web-app-capable','yes');addMeta('apple-mobile-web-app-title','GTA V IOS');
  const admin=location.pathname.includes('release-publisher-8c2f71d4');
- if(admin){loadScript('/admin-push.js?v=20261027push1');return}
- const css=document.createElement('link');css.rel='stylesheet';css.href='/push-notifications.css?v=20261027push1';document.head.append(css);loadScript('/push-client.js?v=20261027push1');
+ if(admin){loadScript('/admin-push.js?v=20261027push2');return}
+ const css=document.createElement('link');css.rel='stylesheet';css.href='/push-notifications.css?v=20261027push2';document.head.append(css);loadScript('/push-client.js?v=20261027push2');
 })();

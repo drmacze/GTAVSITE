@@ -22,15 +22,15 @@
   }
   const nodes=[...document.querySelectorAll('[data-shine],[data-type]')];
   if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;observer.unobserve(entry.target);if(reduced.matches)return;if(entry.target.hasAttribute('data-type'))type(entry.target);else shine(entry.target);}),{threshold:.3});nodes.forEach(node=>observer.observe(node));}
-  // Without IntersectionObserver the original, complete text stays visible.
   reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});
   window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
 
-// Reliable loader for the fan-made Ask Franklin helper and its V2 knowledge engine.
+// Reliable loader for Ask Franklin. The extended free knowledge layer registers first,
+// then the base V2 engine remains available as a fallback for site retrieval and small talk.
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   window.__askFranklinLoaderAdded=true;
-  const loadEngine=()=>{
+  const loadBaseEngine=()=>{
     if(window.__franklinEngineLoaderAdded)return;
     window.__franklinEngineLoaderAdded=true;
     const engine=document.createElement('script');
@@ -38,11 +38,21 @@ if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
     engine.defer=true;
     document.head.append(engine);
   };
+  const loadExtended=()=>{
+    if(window.__franklinExtendedLoaderAdded){loadBaseEngine();return;}
+    window.__franklinExtendedLoaderAdded=true;
+    const extended=document.createElement('script');
+    extended.src='franklin-engine-extra.js';
+    extended.defer=true;
+    extended.addEventListener('load',loadBaseEngine,{once:true});
+    extended.addEventListener('error',loadBaseEngine,{once:true});
+    document.head.append(extended);
+  };
   const script=document.createElement('script');
   script.src='ask-franklin.js';
   script.defer=true;
-  script.addEventListener('load',loadEngine,{once:true});
-  script.addEventListener('error',loadEngine,{once:true});
+  script.addEventListener('load',loadExtended,{once:true});
+  script.addEventListener('error',loadExtended,{once:true});
   document.head.append(script);
 }
 

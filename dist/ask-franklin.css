@@ -48,3 +48,9 @@
 .franklin-typing-status{display:flex;align-items:center;gap:5px;min-height:30px;color:var(--af-muted);font-size:11px}
 .franklin-typing-status>span{margin-right:6px}
 @media(prefers-reduced-motion:reduce){html .ask-franklin-panel{transition:none}}
+
+.franklin-disconnect{border:0;background:transparent;color:#d83943;font:600 11px/1.4 'DM Sans',sans-serif;padding:8px 0;cursor:pointer;text-align:left;grid-column:2/4;justify-self:start}
+.franklin-disconnect:hover{color:#f05b62;text-decoration:underline}
+html[data-theme=dark] .franklin-disconnect{color:#ff7c83}
+.franklin-sheet-dock .franklin-disconnect{margin-left:12px;flex-shrink:0;font-size:12px;padding:8px}
+.franklin-disconnect:focus-visible{outline:2px solid currentColor;outline-offset:3px}

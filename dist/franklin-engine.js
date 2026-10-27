@@ -47,6 +47,7 @@
     history: []
   };
 
+document.addEventListener('franklin-disconnect',()=>{state.lastTopic='';state.lastQuestion='';state.lastSource=null;state.history=[];});
   const norm = value => String(value || '')
     .toLowerCase()
     .normalize('NFD')

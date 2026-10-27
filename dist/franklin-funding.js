@@ -13,11 +13,11 @@
   }
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   async function type(b,text,m){if(window.FranklinTyping)return window.FranklinTyping.reveal(b,text);b.textContent=text;}
-  async function render(q){
+  async function render(q){const generation=window.FranklinSession?.generation;
     const m=document.querySelector('.ask-franklin-messages'),input=document.querySelector('.ask-franklin-input'),send=document.querySelector('.ask-franklin-send');if(!m||!input||!send)return;
     send.disabled=true;const u=document.createElement('div');u.className='ask-franklin-message user';u.innerHTML='<div class="bubble"></div>';u.querySelector('.bubble').textContent=q;m.append(u);input.value='';input.style.height='auto';
-    const wait=document.createElement('div');wait.className='ask-franklin-message bot is-thinking';wait.innerHTML='<span class="mini-avatar">F</span><div class="bubble"><i class="ask-franklin-dot"></i><i class="ask-franklin-dot"></i><i class="ask-franklin-dot"></i></div>';m.append(wait);m.scrollTop=m.scrollHeight;await sleep(350);wait.remove();
-    const r=answer(q),row=document.createElement('div');row.className='ask-franklin-message bot';row.innerHTML='<span class="mini-avatar">F</span>';const b=document.createElement('div');b.className='bubble';row.append(b);m.append(row);await type(b,r.text,m);
+    const wait=document.createElement('div');wait.className='ask-franklin-message bot is-thinking';wait.innerHTML='<span class="mini-avatar">F</span><div class="bubble"><i class="ask-franklin-dot"></i><i class="ask-franklin-dot"></i><i class="ask-franklin-dot"></i></div>';m.append(wait);m.scrollTop=m.scrollHeight;await sleep(350);if(generation!==window.FranklinSession?.generation)return;wait.remove();
+    const r=answer(q),row=document.createElement('div');row.className='ask-franklin-message bot';row.innerHTML='<span class="mini-avatar">F</span>';const b=document.createElement('div');b.className='bubble';row.append(b);m.append(row);await type(b,r.text,m);if(generation!==window.FranklinSession?.generation)return;
     if(r.suggestions?.length){const w=document.createElement('div');w.className='ask-franklin-actions ask-franklin-related';r.suggestions.slice(0,2).forEach(x=>{const c=document.createElement('button');c.type='button';c.className='ask-franklin-chip';c.textContent=x;w.append(c);});m.append(w);}m.scrollTop=m.scrollHeight;send.disabled=!input.value.trim();input.focus({preventScroll:true});window.gtavHaptics?.trigger?.('soft');
   }
   document.addEventListener('submit',e=>{const f=e.target instanceof Element?e.target.closest('.ask-franklin-form'):null;if(!f)return;const q=f.querySelector('.ask-franklin-input')?.value?.trim()||'';if(!isFunding(q))return;e.preventDefault();e.stopImmediatePropagation();render(q);},true);

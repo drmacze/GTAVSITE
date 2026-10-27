@@ -1,6 +1,7 @@
 (() => {
   if (window.__askFranklinLoaded || document.querySelector('.ask-franklin-launcher')) return;
   window.__askFranklinLoaded = true;
+  window.FranklinSession = { generation: 0 };
 
   const DISCORD = 'https://discord.gg/HgcbPjcyJ';
   const SOURCE_PAGES = [
@@ -18,7 +19,7 @@
     if (document.querySelector('link[data-ask-franklin]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'ask-franklin.css?v=20261027sheet';
+    link.href = 'ask-franklin.css?v=20261027disconnect';
     link.dataset.askFranklin = 'true';
     document.head.append(link);
   };
@@ -189,13 +190,38 @@
     messages.append(wrap);
   };
 
-  const sheetDock = document.createElement('button');
-  sheetDock.type = 'button';
+  const sheetDock = document.createElement('div');
+  sheetDock.tabIndex = 0;
+  sheetDock.setAttribute('role', 'button');
   sheetDock.className = 'franklin-sheet-dock';
   sheetDock.hidden = true;
   sheetDock.setAttribute('aria-label', 'Open Franklin conversation');
   sheetDock.innerHTML = '<span class="franklin-sheet-grip"></span><span>Franklin</span><span class="franklin-sheet-hint">Swipe up to continue</span>';
   document.body.append(sheetDock);
+  const disconnect = document.createElement('button');
+  disconnect.type = 'button';
+  disconnect.className = 'franklin-disconnect';
+  disconnect.textContent = 'Disconnect';
+  disconnect.setAttribute('aria-label', 'Disconnect Franklin and delete chat session');
+  head.append(disconnect);
+  const dockDisconnect = disconnect.cloneNode(true);
+  sheetDock.append(dockDisconnect);
+  const endSession = event => {
+    event.stopPropagation();
+    window.FranklinSession.generation++;
+    window.FranklinTyping?.finish();
+    shut();
+    sheetDock.hidden = true;
+    launcher.classList.remove('is-sheet-minimized');
+    messages.replaceChildren();
+    input.value = '';
+    input.style.height = '';
+    send.disabled = true;
+    document.dispatchEvent(new CustomEvent('franklin-disconnect'));
+    launcher.focus({preventScroll:true});
+  };
+  disconnect.addEventListener('click', endSession);
+  dockDisconnect.addEventListener('click', endSession);
   const mobileSheet = () => matchMedia('(max-width: 760px)').matches;
   const updateViewport = () => {
     const viewport = window.visualViewport;
@@ -266,7 +292,7 @@
     let gesture = null;
     surface.style.touchAction = 'none';
     surface.addEventListener('pointerdown', event => {
-      if (event.button !== 0 || event.target.closest('button') && surface !== sheetDock) return;
+      if (event.button !== 0 || event.target.closest('button')) return;
       gesture = {id:event.pointerId, x:event.clientX, y:event.clientY};
       surface.setPointerCapture(event.pointerId);
     });
@@ -288,7 +314,8 @@
   };
   bindSwipe(head, 1, shut);
   bindSwipe(sheetDock, -1, open);
-  sheetDock.addEventListener('click', open);
+  sheetDock.addEventListener('click', event => {if(!event.target.closest('.franklin-disconnect'))open();});
+  sheetDock.addEventListener('keydown', event => {if(event.target===sheetDock && (event.key==='Enter'||event.key===' ')){event.preventDefault();open();}});
   close.addEventListener('click', shut);
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && panel.classList.contains('is-open')) shut(); });
   scheduleCollapse(4800);
@@ -424,7 +451,9 @@
   };
 
   let busy = false;
+  document.addEventListener('franklin-disconnect',()=>{busy=false;});
   async function ask(raw) {
+    const generation = window.FranklinSession.generation;
     const question = String(raw || '').trim();
     if (!question || busy) return;
     if (!panel.classList.contains('is-open')) open();
@@ -437,12 +466,15 @@
     try {
       const result = await answer(question);
       await new Promise(resolve => setTimeout(resolve, matchMedia('(prefers-reduced-motion: reduce)').matches ? 60 : 360));
+      if(generation!==window.FranklinSession.generation)return;
       wait.remove();
       botMessage(result.text, result);
     } catch {
+      if(generation!==window.FranklinSession.generation)return;
       wait.remove();
       botMessage("Man, something went sideways on my end. Try that again, or ask the crew on Discord if you need an answer right now.", { discord: true });
     } finally {
+      if(generation!==window.FranklinSession.generation)return;
       busy = false;
       send.disabled = !input.value.trim();
       input.focus({ preventScroll: true });

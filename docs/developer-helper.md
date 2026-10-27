@@ -12,3 +12,5 @@ Run the regression tests and syntax checks. Tests cover signature matching, symp
 
 
 Helper sheet: mobile header swipe down minimizes the conversation to an edge dock; swipe up or tap restores the same session. The composer includes bottom safe-area padding and follows the visual viewport when a keyboard opens. Reply preparation now displays “Franklin is typing” with dots for a bounded, content-length-based interval, then renders the entire answer at once. This is a presentation indicator, not model token streaming.
+
+Disconnect ends the local helper session: conversation, draft, attachment and support OS/build selection are cleared. It hides the mobile dock and restores the compact launcher. In-flight reply renderers check a session generation before appending or focusing the composer. Minimizing still preserves the conversation.

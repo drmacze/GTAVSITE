@@ -4,6 +4,80 @@
   function shine(node){if(node.dataset.shineStarted)return;node.dataset.shineStarted='true';running.add(node);node.classList.add('shine-running');node.addEventListener('animationend',event=>{if(event.animationName==='text-shine'){node.classList.remove('shine-running');running.delete(node);}},{once:true});}
   const nodes=[...document.querySelectorAll('[data-shine],[data-type]')];if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;observer.unobserve(entry.target);if(reduced.matches)return;if(entry.target.hasAttribute('data-type'))type(entry.target);else shine(entry.target);}),{threshold:.3});nodes.forEach(node=>observer.observe(node));}reduced.addEventListener('change',event=>{if(event.matches){timers.forEach((timer,node)=>node.finishTyping?.());running.forEach(node=>node.classList.remove('shine-running'));running.clear();}});window.addEventListener('pagehide',()=>{timers.forEach((timer,node)=>node.finishTyping?.());});
 })();
+
+// Current GTA V iOS requirements shared across the site and Franklin.
+(()=>{
+  if(window.__gtavRequirementsSync)return;window.__gtavRequirementsSync=true;
+  const requirements=Object.freeze({ramGB:4,ios:18});window.GTAVRequirements=requirements;
+
+  // Keep the Compatibility checker baseline current without changing historical release notes.
+  const originalFetch=window.fetch.bind(window);
+  window.fetch=async(input,init)=>{
+    const response=await originalFetch(input,init);
+    try{
+      const raw=typeof input==='string'?input:input?.url||'';
+      const url=new URL(raw,location.href);
+      if(url.pathname.endsWith('/compatibility-data.json')){
+        const data=await response.clone().json();
+        if(data?.baseline){
+          data.baseline.ramGB=requirements.ramGB;
+          data.baseline.ios=requirements.ios;
+          data.baseline.note='Current GTA V iOS minimum requirements: 4 GB RAM and iOS 18 or later. Release-specific instructions still take priority.';
+          const headers=new Headers(response.headers);headers.delete('content-length');headers.delete('content-encoding');headers.set('content-type','application/json; charset=utf-8');
+          return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers});
+        }
+      }
+    }catch{}
+    return response;
+  };
+
+  const patchVisibleRequirements=()=>{
+    const guide=document.querySelector('#requirements .guide-policy p');
+    if(guide)guide.textContent='Current minimum requirements are 4 GB of installed RAM and iOS 18 or later. Keep about 30 GB of free storage available for installation and extraction. Release-specific instructions take priority.';
+
+    const faqRam=document.querySelector('#faq-devices-1 .answer-body p');
+    if(faqRam)faqRam.innerHTML='The current minimum is <strong>4 GB of RAM</strong>. Devices at the 4 GB minimum should begin with conservative graphics settings and low-memory mode enabled. Check the requirements for the exact build you install. <a href="technicalities.html#current-status">Read the hardware notes</a>';
+    const faqIos=document.querySelector('#faq-devices-2 .answer-body p');
+    if(faqIos)faqIos.innerHTML='The current minimum operating system is <strong>iOS 18 or later</strong>. Older release notes may mention earlier iOS support because they document historical builds; use iOS 18+ for the current requirement. <a href="guide.html#requirements">Read the installation requirements</a>';
+    const faqMemoryQuestion=document.querySelector('#faq-devices-5 .question-text');
+    if(faqMemoryQuestion)faqMemoryQuestion.textContent='Does a 4 GB iPhone meet the memory minimum?';
+    const faqMemoryAnswer=document.querySelector('#faq-devices-5 .answer-body p');
+    if(faqMemoryAnswer)faqMemoryAnswer.innerHTML='Yes. <strong>4 GB RAM is the current minimum</strong>, although memory headroom is limited compared with higher-memory devices. Start with conservative settings and keep low-memory mode enabled where available. <a href="compatibility.html">Review your device profile</a>';
+
+    const currentStatus=document.querySelector('#current-status ul');
+    if(currentStatus){
+      const items=[...currentStatus.querySelectorAll('li')];
+      const hardware=items.find(item=>/Minimum hardware described here:/i.test(item.textContent));
+      if(hardware)hardware.innerHTML='<strong>Current minimum hardware:</strong> an A12-family chip (A12, A12X, or A12Z) and 4 GB of RAM.';
+      let os=items.find(item=>/Current minimum iOS:/i.test(item.textContent));
+      if(!os){os=document.createElement('li');currentStatus.append(os);}
+      os.innerHTML='<strong>Current minimum iOS:</strong> iOS 18 or later.';
+    }
+    const iosTargetNote=document.querySelector('#ios-target .technical-note');
+    if(iosTargetNote)iosTargetNote.innerHTML='The original development target was iOS 18+. Some historical release notes document earlier iOS support, but the <strong>current minimum requirement is iOS 18 or later</strong>.';
+
+    const compatIntro=document.querySelector('.compat-heading p');
+    if(compatIntro)compatIntro.innerHTML='Review your model’s hardware against the current minimums: <strong>4 GB RAM</strong> and <strong>iOS 18+</strong><br class="desktop-break"> before installing GTA V Port for iOS.';
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',patchVisibleRequirements,{once:true});else patchVisibleRequirements();
+
+  // Give Franklin an explicit current-requirements answer before older historical notes can win retrieval.
+  let attempts=0;const hook=setInterval(()=>{
+    attempts++;
+    const api=window.FranklinSupportContext;
+    if(api?.consume&&!api.__requirementsPatched){
+      const originalConsume=api.consume.bind(api);
+      api.consume=async q=>{
+        const text=String(q||'');
+        const asksRequirement=/(minimum|requirement|required|need).*(ram|memory|ios)|(ram|memory|ios).*(minimum|requirement|required|need)/i.test(text);
+        if(asksRequirement)return {text:'Current GTA V iOS minimum requirements are 4 GB of RAM and iOS 18 or later. Devices at the 4 GB minimum should use conservative settings and low-memory mode where available.',grounded:true,topic:'requirements'};
+        return originalConsume(q);
+      };
+      api.__requirementsPatched=true;clearInterval(hook);
+    }else if(attempts>120)clearInterval(hook);
+  },250);
+})();
+
 if(document.body?.dataset?.page){
   const s=document.createElement('script');s.src='lazy-helper.js?v=20261028lazy';s.defer=true;document.head.append(s);
   const avatarStyle=document.createElement('style');avatarStyle.dataset.franklinAvatar='local';avatarStyle.textContent=".ask-franklin-launcher .ask-franklin-avatar{background:#111 url('/assets/avatars/franklin.jpg?v=20261028portrait5') center 18%/cover no-repeat!important}.ask-franklin-launcher .ask-franklin-avatar img,.ask-franklin-launcher .ask-franklin-fallback{opacity:0!important}";document.head.append(avatarStyle);

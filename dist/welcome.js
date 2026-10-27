@@ -9,6 +9,35 @@
   const warmHome = () => {
     if (window.__gtavHomeWarmed) return;
     window.__gtavHomeWarmed = true;
+
+    const addLink = (rel, href, as, fetchPriority) => {
+      try {
+        if (document.head.querySelector(`link[href="${href}"]`)) return;
+        const link = document.createElement('link');
+        link.rel = rel;
+        link.href = href;
+        if (as) link.as = as;
+        if (fetchPriority) link.fetchPriority = fetchPriority;
+        document.head.append(link);
+      } catch {}
+    };
+
+    // The next screen only needs these resources to reach first paint.
+    // Preload them after Welcome itself has finished loading so the welcome
+    // experience stays responsive while Home becomes effectively warm.
+    addLink('preload', '/home.css', 'style', 'high');
+    addLink('preload', '/assets/los-santos-background.jpeg', 'image', 'high');
+    addLink('preload', '/assets/gtav-logo.jpeg', 'image');
+    addLink('preload', '/assets/icons.svg', 'image');
+
+    // Below-the-fold and enhancement assets can remain low priority.
+    [
+      '/gameplay.css', '/credits.css', '/onboarding.css', '/toasts.css',
+      '/motion.css', '/text-effects.css', '/cookies.css', '/settings-tones.css',
+      '/settings.css', '/rating-summary.css?v=20261027stars',
+      '/app.js', '/gameplay.js', '/onboarding.js', '/text-effects.js?v=20261028lazy1'
+    ].forEach(href => addLink('prefetch', href));
+
     try {
       const link = document.createElement('link');
       link.rel = 'prefetch';
@@ -16,6 +45,7 @@
       link.as = 'document';
       document.head.append(link);
     } catch {}
+
     // A low-priority same-origin fetch also warms browsers that ignore
     // document prefetch. It never blocks the welcome experience.
     try {

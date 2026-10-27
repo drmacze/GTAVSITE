@@ -202,7 +202,7 @@
       botMessage("Yo. Franklin here. Ask me about GTA V, the iOS launcher, installation, compatibility, settings, or common problems. If I don't know something for sure, I won't make it up.");
       addQuickActions();
     }
-    setTimeout(() => input.focus({ preventScroll: true }), 180);
+    setTimeout(() => {if(panel.dataset.supportPhase!=='setup')input.focus({ preventScroll: true });}, 180);
   };
   const shut = () => {
     panel.classList.remove('is-open');

@@ -28,3 +28,12 @@
 
 /assets/notification-logo.jpeg
   Cache-Control: no-cache, must-revalidate
+
+/*.html
+  Cache-Control: no-cache, must-revalidate
+
+/franklin-*.js
+  Cache-Control: no-cache, must-revalidate
+
+/franklin-dataset.json
+  Cache-Control: no-cache, must-revalidate

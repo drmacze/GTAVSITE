@@ -6,14 +6,14 @@
 })();
 if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
  window.__askFranklinLoaderAdded=true;const add=(src,next)=>{const s=document.createElement('script');s.src=src;s.defer=true;s.addEventListener('load',next,{once:true});s.addEventListener('error',next,{once:true});document.head.append(s);};
- const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027dataset',()=>{});};
- const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027dataset',loadBase);};
- const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027dataset',loadExtended);};
- const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-typing.js?v=20261027dataset',()=>add('franklin-support-context.js?v=20261027dataset',()=>add('franklin-developer-kb.js?v=20261027dataset',()=>add('franklin-log-files.js?v=20261027dataset',()=>add('franklin-conversation.js?v=20261027dataset',()=>add('franklin-dataset-engine.js?v=20261027dataset',()=>add('franklin-site-rag.js?v=20261027dataset',loadWebLLM)))))));};
- const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027dataset',loadRAG);};
- const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027dataset',loadFunding);};
- const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027dataset';document.head.append(css);add('franklin-connect.js?v=20261027cancel2',loadModeration);};
+ const loadBase=()=>{if(window.__franklinEngineLoaderAdded)return;window.__franklinEngineLoaderAdded=true;add('franklin-engine.js?v=20261027helpfix',()=>{});};
+ const loadExtended=()=>{if(window.__franklinExtendedLoaderAdded){loadBase();return;}window.__franklinExtendedLoaderAdded=true;add('franklin-engine-extra.js?v=20261027helpfix',loadBase);};
+ const loadWebLLM=()=>{if(window.__franklinWebLLMLoaderAdded){loadExtended();return;}window.__franklinWebLLMLoaderAdded=true;add('franklin-webllm.js?v=20261027helpfix',loadExtended);};
+ const loadRAG=()=>{if(window.__franklinSiteRAGLoaderAdded){loadWebLLM();return;}window.__franklinSiteRAGLoaderAdded=true;add('franklin-typing.js?v=20261027helpfix',()=>add('franklin-support-context.js?v=20261027helpfix',()=>add('franklin-developer-kb.js?v=20261027helpfix',()=>add('franklin-log-files.js?v=20261027helpfix',()=>add('franklin-dataset-engine.js?v=20261027helpfix',()=>add('franklin-site-rag.js?v=20261027helpfix',loadWebLLM))))));};
+ const loadFunding=()=>{if(window.__franklinFundingLoaderAdded){loadRAG();return;}window.__franklinFundingLoaderAdded=true;add('franklin-funding.js?v=20261027helpfix',loadRAG);};
+ const loadModeration=()=>{if(window.__franklinModerationLoaderAdded){loadFunding();return;}window.__franklinModerationLoaderAdded=true;add('franklin-moderation.js?v=20261027helpfix',loadFunding);};
+ const loadConnect=()=>{if(window.__franklinConnectLoaderAdded){loadModeration();return;}window.__franklinConnectLoaderAdded=true;const css=document.createElement('link');css.rel='stylesheet';css.href='franklin-connect.css?v=20261027helpfix';document.head.append(css);add('franklin-connect.js?v=20261027cancel2',loadModeration);};
  const loadAnalytics=()=>{if(window.__franklinAnalyticsLoaderAdded){loadConnect();return;}window.__franklinAnalyticsLoaderAdded=true;add('franklin-analytics.js?v=20261027metaonly',loadConnect);};
- add('ask-franklin.js?v=20261027dataset',loadAnalytics);
+ add('franklin-conversation.js?v=20261027helpfix',()=>add('ask-franklin.js?v=20261027helpfix',loadAnalytics));
 }
 (()=>{const apply=()=>{const title=document.querySelector('.ask-franklin-title strong'),label=document.querySelector('.ask-franklin-title span');if(!title||!label)return false;title.textContent='Franklin';label.textContent='Community helper';return true;};if(apply())return;const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});observer.observe(document.body,{childList:true,subtree:true});})();

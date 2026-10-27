@@ -2,7 +2,13 @@
 let previous=null;
 const clean=q=>String(q||'').toLowerCase().normalize('NFKC').replace(/[’']/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
 const response=(text,suggestions=[])=>({text,suggestions,topic:'conversation',grounded:true});
-function social(q){const n=clean(q);if(n.length>120||/[\r\n]/.test(q))return null;
+function isHelpRequest(q){
+ const n=clean(q),words=n.split(' ');
+ const allowed=new Set('you u can could would will please pls plz kindly help assist me us i need some a bit of assistance support with this that it your hey hi hei hello hallo halo hai yo franklin bro homie bang kak are able to do how get may want just yes sure really actually so well and thanks thank saya aku bisa boleh bantu membantu tolong dong kah nggak gak ga minta butuh bantuan apakah kamu anda saya aku ini ya bang kak'.split(' '));
+ return words.length<=18&&/\b(help|assist|assistance|support|bantu|membantu|bantuan)\b/.test(n)&&words.every(w=>allowed.has(w));
+}
+function social(q){const n=clean(q);if(n.length>180||/[\r\n]/.test(q))return null;
+ if(isHelpRequest(q))return response("Yes, I can help with GTA V and the GTA V iOS Project. What are you trying to do, and what is going wrong?",['Help with installation','My game crashes']);
  if(/^(?:hei|hey|hi|hello|hallo|halo|hai|yo|sup|wassup|good morning|good afternoon|good evening|selamat pagi|selamat siang|selamat sore|selamat malam)(?: there| franklin| bro| homie| bang| kak)?$/.test(n))return response("Hey, I'm here. What can I help you with: installation, a crash, or game settings?",['Help with installation','My game crashes']);
  if(/^(?:how are you|how are you doing|apa kabar|kamu apa kabar)$/.test(n))return response("I'm ready to help. How is the game running on your device?",['It runs well','I have a problem']);
  if(/^(?:thanks|thank you|thank you so much|thx|ty|makasih|terima kasih|makasi|thanks bro|thank you franklin)$/.test(n))return response("You're welcome. If something else comes up, tell me what happened and we'll work through it.");
@@ -20,5 +26,5 @@ const expansions={install:'How do I install GTA V iOS?',installation:'How do I i
 function expand(q){const n=clean(q);return expansions[n]||q;}
 function remember(q,result){if(result&&!['conversation','off-topic','unknown'].includes(result.topic))previous={question:String(q).slice(0,500),topic:result.topic};}
 document.addEventListener('franklin-disconnect',()=>{previous=null;});
-window.FranklinConversation={social,guide,expand,remember};
+window.FranklinConversation={social,guide,expand,remember,isHelpRequest};
 })();

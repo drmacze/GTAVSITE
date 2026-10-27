@@ -486,6 +486,8 @@
   };
 
   const answer = async question => {
+    const social = window.FranklinConversation?.social(question);
+    if (social) return social;
     const manual = manualAnswer(question);
     if (manual) return manual;
     const site = await searchSite(question);

@@ -274,7 +274,7 @@ document.addEventListener('franklin-disconnect',()=>{state.lastTopic='';state.la
     if (state.history.length > 6) state.history.shift();
   };
 
-  async function answer(rawQuestion) {const developerAnswer=await window.FranklinDeveloperKB?.answer(rawQuestion);if(developerAnswer)return developerAnswer;
+  async function answer(rawQuestion) {const social=window.FranklinConversation?.social(rawQuestion);if(social)return social;const developerAnswer=await window.FranklinDeveloperKB?.answer(rawQuestion);if(developerAnswer)return developerAnswer;
     const question = String(rawQuestion || '').trim();
     if (!question) return { text: "Yo, give me something to work with." };
 

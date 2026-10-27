@@ -58,9 +58,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 (()=>{
  if(location.pathname.includes('release-publisher-8c2f71d4'))return;
  const load=()=>{
-  if(!document.head.querySelector('link[href*="profile.css"]')){const css=document.createElement('link');css.rel='stylesheet';css.href='/profile.css?v=20261027id1';document.head.append(css)}
+  if(!document.head.querySelector('link[href*="profile.css"]')){const css=document.createElement('link');css.rel='stylesheet';css.href='/profile.css?v=20261028profile2';document.head.append(css)}
   if([...document.scripts].some(script=>script.src.includes('/profile.js')))return;
-  const script=document.createElement('script');script.src='/profile.js?v=20261027id1';script.defer=true;document.head.append(script);
+  const script=document.createElement('script');script.src='/profile.js?v=20261028profile2';script.defer=true;document.head.append(script);
  };
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();

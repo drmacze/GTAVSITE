@@ -19,7 +19,7 @@
     if (document.querySelector('link[data-ask-franklin]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'ask-franklin.css?v=20261027disconnect';
+    link.href = 'ask-franklin.css?v=20261027viewport';
     link.dataset.askFranklin = 'true';
     document.head.append(link);
   };
@@ -223,20 +223,39 @@
   disconnect.addEventListener('click', endSession);
   dockDisconnect.addEventListener('click', endSession);
   const mobileSheet = () => matchMedia('(max-width: 760px)').matches;
+  // Anchor to the visible viewport itself. Subtracting keyboard height from
+  // an already-resized layout viewport can otherwise lift the sheet twice.
   const updateViewport = () => {
     const viewport = window.visualViewport;
-    const keyboard = viewport ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop) : 0;
-    panel.style.setProperty('--franklin-keyboard', keyboard > 100 ? keyboard + 'px' : '0px');
-    panel.style.setProperty('--franklin-viewport', (viewport?.height || window.innerHeight) + 'px');
+    const height = viewport?.height || window.innerHeight;
+    const offset = viewport?.offsetTop || 0;
+    panel.style.setProperty('--franklin-viewport', height + 'px');
+    panel.style.setProperty('--franklin-viewport-top', offset + 'px');
   };
   window.visualViewport?.addEventListener('resize', updateViewport);
   window.visualViewport?.addEventListener('scroll', updateViewport);
   window.addEventListener('resize', updateViewport);
+  let sheetScrollY = null;
+  const lockPage = () => {
+    if (!mobileSheet() || sheetScrollY !== null) return;
+    sheetScrollY = window.scrollY;
+    document.body.style.setProperty('--franklin-page-top', -sheetScrollY + 'px');
+    document.body.classList.add('franklin-page-locked');
+  };
+  const unlockPage = () => {
+    if (sheetScrollY === null) return;
+    document.body.classList.remove('franklin-page-locked');
+    document.body.style.removeProperty('--franklin-page-top');
+    window.scrollTo({top:sheetScrollY,behavior:'instant'});
+    sheetScrollY = null;
+  };
   updateViewport();
   const open = () => {
     sheetDock.hidden = true;
     launcher.classList.remove('is-sheet-minimized');
     panel.inert = false;
+    lockPage();
+    updateViewport();
     clearCollapseTimer();
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
@@ -261,6 +280,7 @@
     launcher.setAttribute('aria-expanded', 'false');
     launcher.setAttribute('aria-label', 'Expand Ask Franklin helper');
     document.documentElement.classList.remove('franklin-open');
+    unlockPage();
     if (mobileSheet()) {
       sheetDock.hidden = false;
       launcher.classList.add('is-sheet-minimized');
@@ -294,11 +314,13 @@
     surface.addEventListener('pointerdown', event => {
       if (event.button !== 0 || event.target.closest('button')) return;
       gesture = {id:event.pointerId, x:event.clientX, y:event.clientY};
+      surface.classList.add('is-dragging');
       surface.setPointerCapture(event.pointerId);
     });
     surface.addEventListener('pointermove', event => {
       if (!gesture || gesture.id !== event.pointerId || !mobileSheet()) return;
       const delta = (event.clientY - gesture.y) * direction;
+      if (delta > 0 && surface === sheetDock) sheetDock.style.transform = `translateY(${-Math.min(delta * .3, 26)}px)`;
       if (delta > 0 && surface === head) panel.style.transform = `translateY(${Math.min(delta, panel.clientHeight)}px)`;
     });
     const end = (event, cancelled) => {
@@ -306,8 +328,10 @@
       const delta = (event.clientY - gesture.y) * direction;
       const horizontal = Math.abs(event.clientX - gesture.x);
       gesture = null;
+      surface.classList.remove('is-dragging');
+      sheetDock.style.transform = '';
       panel.style.transform = '';
-      if (!cancelled && mobileSheet() && delta > 55 && delta > horizontal) action();
+      if (!cancelled && mobileSheet() && delta > (surface === sheetDock ? 22 : 42) && delta > horizontal * 1.15) action();
     };
     surface.addEventListener('pointerup', event => end(event, false));
     surface.addEventListener('pointercancel', event => end(event, true));

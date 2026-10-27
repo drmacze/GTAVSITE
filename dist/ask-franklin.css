@@ -37,7 +37,7 @@
 /* The conversation rests on the viewport edge; safe-area padding stays inside. */
 .franklin-sheet-dock{display:none}
 @media(max-width:760px){
- html .ask-franklin-panel{bottom:var(--franklin-keyboard,0px);top:auto;height:min(calc(var(--franklin-viewport,100dvh) * .86),780px);max-height:var(--franklin-viewport,100dvh);margin:0;border-radius:22px 22px 0 0;padding-bottom:0;transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .2s}
+ html .ask-franklin-panel{--franklin-sheet-height:min(calc(var(--franklin-viewport,100dvh) * .86),780px);bottom:auto;top:calc(var(--franklin-viewport-top,0px) + var(--franklin-viewport,100dvh) - var(--franklin-sheet-height));height:var(--franklin-sheet-height);max-height:var(--franklin-viewport,100dvh);margin:0;border-radius:22px 22px 0 0;padding-bottom:0;transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .2s}
  html .ask-franklin-compose{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--af-backdrop)}
  html .ask-franklin-head{cursor:grab;touch-action:none}
  .franklin-sheet-dock:not([hidden]){position:fixed;display:flex;align-items:center;gap:12px;left:0;right:0;bottom:0;z-index:110;min-height:64px;padding:24px 24px calc(16px + env(safe-area-inset-bottom,0px));border:0;border-top:1px solid var(--settings-line);border-radius:18px 18px 0 0;background:var(--settings-bg);color:var(--settings-text);box-shadow:0 -8px 30px #0002;font:600 13px/1.4 'DM Sans',sans-serif;touch-action:none}
@@ -54,3 +54,12 @@
 html[data-theme=dark] .franklin-disconnect{color:#ff7c83}
 .franklin-sheet-dock .franklin-disconnect{margin-left:12px;flex-shrink:0;font-size:12px;padding:8px}
 .franklin-disconnect:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+@media(max-width:760px){
+ body.franklin-page-locked{position:fixed!important;top:var(--franklin-page-top,0px)!important;left:0;right:0;width:100%;overflow:hidden!important}
+ .ask-franklin-panel{overscroll-behavior:contain}
+ .ask-franklin-messages,.helper-setup{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+ .franklin-sheet-dock:not([hidden]){min-height:88px;padding-top:32px;transition:transform .28s cubic-bezier(.22,1,.36,1)}
+ .franklin-sheet-dock.is-dragging{transition:none}
+ .franklin-sheet-grip{top:12px;width:52px;height:5px;left:calc(50% - 26px)}
+}

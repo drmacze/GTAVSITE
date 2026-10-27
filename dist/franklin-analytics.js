@@ -1,19 +1,56 @@
 (()=>{
-'use strict';if(window.__franklinAnalyticsLoaded)return;window.__franklinAnalyticsLoaded=true;
-const USER_KEY='franklin-anon-user-v1',SESSION_KEY='franklin-session-v1',CONSENT_KEY='franklin-chat-diagnostics-v1';
-const makeId=()=>crypto.randomUUID?.()||('f-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
-const read=(store,key)=>{try{return store.getItem(key)||''}catch{return''}},write=(store,key,value)=>{try{store.setItem(key,value)}catch{}return value};
-const userId=read(localStorage,USER_KEY)||write(localStorage,USER_KEY,makeId()),sessionId=read(sessionStorage,SESSION_KEY)||write(sessionStorage,SESSION_KEY,makeId());
-const ua=navigator.userAgent||'',deviceType=/iPad|Tablet/i.test(ua)?'tablet':/iPhone|Android|Mobile/i.test(ua)?'mobile':'desktop',language=(navigator.language||'unknown').slice(0,20);
-let opened=false,awaitingAnswer=false,lastTopic='other',answerTimer=0,lastBot=null;
-const consent=()=>read(localStorage,CONSENT_KEY)==='allow';
-function topic(text){const s=String(text||'').toLowerCase(),groups=[['install',/install|sideload|ipa|esign|altstore|trollstore|setup|download/],['performance',/fps|performance|lag|stutter|heat|thermal|gpu|metal|graphics|ram|memory/],['crash',/crash|black screen|freeze|stuck|hang|force close|error/],['compatibility',/compatible|compatibility|support|device|iphone|ipad|ios|chip|a12|a13|a14|a15|a16|a17|m1|m2|m3|m4/],['controls',/control|controller|keyboard|mouse|touch|button|joystick/],['mission',/mission|heist|prologue|story|franklin|michael|trevor/],['update',/update|version|build|release|latest|new version/],['save',/save|game data|progress|icloud/],['funding',/donat|donate|payment|paid|free|wallet|crypto|btc|sol|ltc/],['community',/discord|community|support server|report/]];return groups.find(([,re])=>re.test(s))?.[0]||'other'}
-function send(eventType,extra={}){const payload={eventType,userId,sessionId,page:location.pathname,deviceType,language,consent:consent(),...extra};fetch('/api/franklin-analytics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true,credentials:'same-origin'}).catch(()=>{})}
-function addConsentControl(){const mount=()=>{const panel=document.querySelector('.ask-franklin-panel');if(!panel)return false;if(panel.querySelector('.franklin-diagnostics'))return true;const legal=panel.querySelector('.ask-franklin-legal');if(!legal)return false;const wrap=document.createElement('label');wrap.className='franklin-diagnostics';wrap.style.cssText='display:flex;align-items:flex-start;gap:8px;margin-top:8px;font-size:10px;line-height:1.4;opacity:.72;cursor:pointer';const box=document.createElement('input');box.type='checkbox';box.checked=consent();box.style.marginTop='2px';const text=document.createElement('span');text.textContent='Share chat content for support diagnostics. Messages are automatically deleted after 24 hours.';box.addEventListener('change',()=>write(localStorage,CONSENT_KEY,box.checked?'allow':'deny'));wrap.append(box,text);legal.append(wrap);return true};if(mount())return;const o=new MutationObserver(()=>{if(mount())o.disconnect()});o.observe(document.body,{childList:true,subtree:true})}
-document.addEventListener('click',e=>{const launcher=e.target instanceof Element?e.target.closest('.ask-franklin-launcher'):null;if(launcher&&!opened){opened=true;send('open')}const target=e.target instanceof Element?e.target.closest('button,[role="button"]'):null;if(target&&/disconnect/i.test(target.textContent||'')){send('disconnect');awaitingAnswer=false;clearTimeout(answerTimer)}},true);
-document.addEventListener('submit',e=>{const form=e.target instanceof Element?e.target.closest('.ask-franklin-form'):null;if(!form)return;const input=form.querySelector('.ask-franklin-input');let value=input?.value?.trim();if(!value)return;if(!opened){opened=true;send('open')}lastTopic=topic(value);if(window.FranklinModeration?.analyze?.(value)?.blocked)value='[Message blocked by moderation]';awaitingAnswer=true;send('question',consent()?{topic:lastTopic,content:value}:{topic:lastTopic})},true);
-function queueAnswer(bot){if(!awaitingAnswer||!bot)return;lastBot=bot;clearTimeout(answerTimer);answerTimer=setTimeout(()=>{if(!awaitingAnswer||!lastBot)return;const bubble=lastBot.querySelector?.('.bubble')||lastBot,text=String(bubble?.innerText||bubble?.textContent||'').trim();if(!text)return;awaitingAnswer=false;send('answer',consent()?{topic:lastTopic,content:text}:{topic:lastTopic});lastBot=null},1000)}
-const observer=new MutationObserver(records=>{if(!awaitingAnswer)return;for(const record of records){const candidates=[];if(record.target instanceof Element)candidates.push(record.target.closest?.('.ask-franklin-message.bot'));for(const node of record.addedNodes)if(node instanceof Element)candidates.push(node.matches?.('.ask-franklin-message.bot')?node:node.closest?.('.ask-franklin-message.bot')||node.querySelector?.('.ask-franklin-message.bot'));const bot=candidates.find(Boolean);if(bot)queueAnswer(bot)}});
-const start=()=>{const root=document.querySelector('.ask-franklin-messages');if(root)observer.observe(root,{childList:true,subtree:true,characterData:true});else setTimeout(start,300)};
-addConsentControl();start();window.addEventListener('pagehide',()=>{observer.disconnect();clearTimeout(answerTimer)},{once:true});
+ 'use strict';
+ if(window.__franklinAnalyticsLoaded)return;window.__franklinAnalyticsLoaded=true;
+ const USER_KEY='franklin-anon-user-v1',SESSION_KEY='franklin-session-v1';
+ const makeId=()=>crypto.randomUUID?.()||('f-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+ const read=(store,key)=>{try{return store.getItem(key)||''}catch{return''}};
+ const write=(store,key,value)=>{try{store.setItem(key,value)}catch{}return value};
+ const userId=read(localStorage,USER_KEY)||write(localStorage,USER_KEY,makeId());
+ const sessionId=read(sessionStorage,SESSION_KEY)||write(sessionStorage,SESSION_KEY,makeId());
+ const ua=navigator.userAgent||'';
+ const deviceType=/iPad|Tablet/i.test(ua)?'tablet':/iPhone|Android|Mobile/i.test(ua)?'mobile':'desktop';
+ const language=(navigator.language||'unknown').slice(0,20);
+ let opened=false,awaitingAnswer=false;
+ function topic(text){
+  const s=String(text||'').toLowerCase();
+  const groups=[
+   ['install',/install|sideload|ipa|esign|altstore|trollstore|setup|download/],
+   ['performance',/fps|performance|lag|stutter|heat|thermal|gpu|metal|graphics|ram|memory/],
+   ['crash',/crash|black screen|freeze|stuck|hang|force close|error/],
+   ['compatibility',/compatible|compatibility|support|device|iphone|ipad|ios|chip|a12|a13|a14|a15|a16|a17|m1|m2|m3|m4/],
+   ['controls',/control|controller|keyboard|mouse|touch|button|joystick/],
+   ['mission',/mission|heist|prologue|story|franklin|michael|trevor/],
+   ['update',/update|version|build|release|latest|new version/],
+   ['save',/save|game data|progress|icloud/],
+   ['funding',/donat|donate|payment|paid|free|wallet|crypto|btc|sol|ltc/],
+   ['community',/discord|community|support server|report/]
+  ];
+  return groups.find(([,re])=>re.test(s))?.[0]||'other';
+ }
+ function send(eventType,extra={}){
+  const payload={eventType,userId,sessionId,page:location.pathname,deviceType,language,...extra};
+  fetch('/api/franklin-analytics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true,credentials:'same-origin'}).catch(()=>{});
+ }
+ document.addEventListener('click',event=>{
+  const launcher=event.target instanceof Element?event.target.closest('.ask-franklin-launcher'):null;
+  if(launcher&&!opened){opened=true;send('open');}
+  const target=event.target instanceof Element?event.target.closest('button,[role="button"]'):null;
+  if(target&&/disconnect/i.test(target.textContent||'')){send('disconnect');awaitingAnswer=false;}
+ },true);
+ document.addEventListener('submit',event=>{
+  const form=event.target instanceof Element?event.target.closest('.ask-franklin-form'):null;if(!form)return;
+  const input=form.querySelector('.ask-franklin-input');const value=input?.value?.trim();if(!value)return;
+  if(!opened){opened=true;send('open');}
+  awaitingAnswer=true;send('question',{topic:topic(value)});
+ },true);
+ const observer=new MutationObserver(records=>{
+  if(!awaitingAnswer)return;
+  for(const record of records){for(const node of record.addedNodes){if(!(node instanceof Element))continue;
+   const bot=node.matches?.('.ask-franklin-message.bot')?node:node.querySelector?.('.ask-franklin-message.bot');
+   if(bot){awaitingAnswer=false;send('answer');return;}
+  }}
+ });
+ const start=()=>{const root=document.querySelector('.ask-franklin-messages');if(root)observer.observe(root,{childList:true,subtree:true});else setTimeout(start,300)};
+ start();
+ window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
 })();

@@ -10,6 +10,9 @@
 /page-loading.js
   Cache-Control: no-cache, must-revalidate
 
+/lazy-helper.js
+  Cache-Control: no-cache, must-revalidate
+
 /franklin-connect.js
   Cache-Control: no-cache, must-revalidate
 

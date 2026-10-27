@@ -7,6 +7,9 @@
 /text-effects.js
   Cache-Control: no-cache, must-revalidate
 
+/page-loading.js
+  Cache-Control: no-cache, must-revalidate
+
 /franklin-connect.js
   Cache-Control: no-cache, must-revalidate
 

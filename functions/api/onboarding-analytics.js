@@ -8,6 +8,7 @@ async function setup(db){
  await db.prepare(`CREATE TABLE IF NOT EXISTS onboarding_responses(visitor_id TEXT PRIMARY KEY,source TEXT NOT NULL,selected_device TEXT NOT NULL,model TEXT NOT NULL DEFAULT '',browser_device TEXT NOT NULL DEFAULT '',browser TEXT NOT NULL DEFAULT '',language TEXT NOT NULL DEFAULT '',first_seen TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`).run();
  await db.prepare(`CREATE INDEX IF NOT EXISTS idx_onboarding_source ON onboarding_responses(source)`).run();
  await db.prepare(`CREATE INDEX IF NOT EXISTS idx_onboarding_updated ON onboarding_responses(updated_at)`).run();
+ await db.prepare(`UPDATE onboarding_responses SET browser_device='',browser='',language='' WHERE browser_device<>'' OR browser<>'' OR language<>''`).run();
 }
 export async function onRequest({request,env}){
  if(!env.VISITS_DB)return json({error:'database_unavailable'},503);
@@ -20,15 +21,14 @@ export async function onRequest({request,env}){
    const source=clean(b.source,20),selected=clean(b.device,20);
    if(!['youtube','tiktok','browser','friends','other'].includes(source)||!['ios','android'].includes(selected))return json({error:'invalid_payload'},400);
    const model=selected==='ios'?clean(b.model,80):'';
-   await env.VISITS_DB.prepare(`INSERT INTO onboarding_responses(visitor_id,source,selected_device,model,browser_device,browser,language,first_seen,updated_at) VALUES(?,?,?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`).bind(crypto.randomUUID(),source,selected,model,clean(b.browserDevice,40),clean(b.browser,40),clean(b.language,20)).run();
+   await env.VISITS_DB.prepare(`INSERT INTO onboarding_responses(visitor_id,source,selected_device,model,browser_device,browser,language,first_seen,updated_at) VALUES(?,?,?,?, '', '', '', CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`).bind(crypto.randomUUID(),source,selected,model).run();
    return json({ok:true},201);
   }
   if(!(await admin(request)))return json({error:'unauthorized'},401);
   const total=await env.VISITS_DB.prepare(`SELECT COUNT(*) total,SUM(CASE WHEN selected_device='ios' THEN 1 ELSE 0 END) ios,SUM(CASE WHEN selected_device='android' THEN 1 ELSE 0 END) android,SUM(CASE WHEN date(first_seen)=date('now') THEN 1 ELSE 0 END) today FROM onboarding_responses`).first();
   const sources=await env.VISITS_DB.prepare(`SELECT source label,COUNT(*) count FROM onboarding_responses GROUP BY source ORDER BY count DESC`).all();
-  const devices=await env.VISITS_DB.prepare(`SELECT COALESCE(NULLIF(browser_device,''),'Unknown') label,COUNT(*) count FROM onboarding_responses GROUP BY browser_device ORDER BY count DESC LIMIT 10`).all();
+  const devices=await env.VISITS_DB.prepare(`SELECT selected_device label,COUNT(*) count FROM onboarding_responses GROUP BY selected_device ORDER BY count DESC`).all();
   const models=await env.VISITS_DB.prepare(`SELECT COALESCE(NULLIF(model,''),'Android / unspecified') label,COUNT(*) count FROM onboarding_responses GROUP BY model ORDER BY count DESC LIMIT 12`).all();
-  const browsers=await env.VISITS_DB.prepare(`SELECT COALESCE(NULLIF(browser,''),'Unknown') label,COUNT(*) count FROM onboarding_responses GROUP BY browser ORDER BY count DESC LIMIT 8`).all();
-  return json({summary:{total:Number(total?.total||0),ios:Number(total?.ios||0),android:Number(total?.android||0),today:Number(total?.today||0)},sources:(sources.results||[]).map(r=>({label:r.label,count:Number(r.count||0)})),devices:(devices.results||[]).map(r=>({label:r.label,count:Number(r.count||0)})),models:(models.results||[]).map(r=>({label:r.label,count:Number(r.count||0)})),browsers:(browsers.results||[]).map(r=>({label:r.label,count:Number(r.count||0)}))});
+  return json({summary:{total:Number(total?.total||0),ios:Number(total?.ios||0),android:Number(total?.android||0),today:Number(total?.today||0)},sources:(sources.results||[]).map(r=>({label:r.label,count:Number(r.count||0)})),devices:(devices.results||[]).map(r=>({label:r.label,count:Number(r.count||0)})),models:(models.results||[]).map(r=>({label:r.label,count:Number(r.count||0)}))});
  }catch(e){console.error('onboarding analytics error',e);return json({error:'analytics_error'},500)}
 }

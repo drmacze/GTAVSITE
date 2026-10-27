@@ -73,3 +73,9 @@
 
 /rating-summary.css
   Cache-Control: no-cache, must-revalidate
+
+/music.js
+  Cache-Control: no-cache, must-revalidate
+
+/music.css
+  Cache-Control: no-cache, must-revalidate

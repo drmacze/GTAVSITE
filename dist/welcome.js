@@ -2,7 +2,7 @@
   if (!document.querySelector('.welcome-page')) return;
 
   let entering = false;
-  let interacted = false;
+  let touchStartY = null;
 
   function safeReturnTarget() {
     const params = new URL(location.href).searchParams;
@@ -23,40 +23,46 @@
   function enter() {
     if (entering) return;
     entering = true;
-    // Keep Welcome visible until the next document commits; do not fade to a blank screen.
     document.body.setAttribute('aria-busy', 'true');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const returnTarget = safeReturnTarget();
-    const next = 'home.html?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '');
-    setTimeout(() => location.assign(next), reduced ? 0 : 250);
+    const next = '/home.html?intro=1' + (returnTarget ? '&return=' + encodeURIComponent(returnTarget) : '');
+    try { sessionStorage.setItem('gtav-onboarding-transit', '1'); } catch {}
+    setTimeout(() => location.assign(next), reduced ? 0 : 120);
   }
 
-  function checkEnd() {
-    const end = document.documentElement.scrollHeight - innerHeight;
-    if (interacted && end > 50 && scrollY >= end - 10) enter();
-  }
+  // Desktop wheel/trackpad: a deliberate downward scroll immediately continues.
+  window.addEventListener('wheel', event => {
+    if (event.deltaY > 12) enter();
+  }, {passive: true});
 
-  ['wheel', 'touchstart'].forEach(type => {
-    window.addEventListener(type, () => {
-      interacted = true;
-    }, {passive: true});
-  });
+  // iPhone/iPad: detect the swipe itself instead of waiting for Safari scrollY.
+  window.addEventListener('touchstart', event => {
+    touchStartY = event.touches?.[0]?.clientY ?? null;
+  }, {passive: true});
 
-  window.addEventListener('scroll', () => {
-    if (scrollY > 20) interacted = true;
-    checkEnd();
+  window.addEventListener('touchend', event => {
+    if (touchStartY == null) return;
+    const endY = event.changedTouches?.[0]?.clientY ?? touchStartY;
+    const distance = touchStartY - endY;
+    touchStartY = null;
+    if (distance >= 42) enter();
+  }, {passive: true});
+
+  window.addEventListener('touchcancel', () => {
+    touchStartY = null;
   }, {passive: true});
 
   window.addEventListener('keydown', event => {
-    if (event.key === 'Enter') {
+    if (['Enter', 'ArrowDown', 'PageDown', 'End', ' '].includes(event.key)) {
       event.preventDefault();
       enter();
     }
-    if (['ArrowDown', 'PageDown', 'End', ' '].includes(event.key)) interacted = true;
   });
 
   window.addEventListener('pageshow', () => {
     entering = false;
+    touchStartY = null;
     document.body.classList.remove('leaving');
     document.body.removeAttribute('aria-busy');
   });

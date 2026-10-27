@@ -5,6 +5,7 @@ const settings=read('dist/settings.js');
 const welcome=read('dist/welcome.js');
 const welcomeCss=read('dist/welcome.css');
 const onboarding=read('dist/onboarding.js');
+const pageLoading=read('dist/page-loading.js');
 const ratings=read('dist/community-ratings.js');
 const publicPages=['feedback.html','technicalities.html','updates.html','community.html','faq.html','compatibility.html','get-started.html','guide.html'];
 
@@ -53,6 +54,11 @@ assert.match(welcome,/window\.addEventListener\('pageshow'/,'Welcome must recove
 assert.match(welcomeCss,/overscroll-behavior-y:none/,'Welcome must suppress pull-to-refresh overscroll');
 assert.match(welcomeCss,/overflow:hidden/,'Welcome must stay a single-screen gesture surface');
 
+// The post-DOM loading gate must never bounce clean /home back to Welcome.
+assert.match(pageLoading,/const isHome=path\.endsWith\('\/home'\)\|\|path\.endsWith\('\/home\.html'\)/,'secondary gate must recognize both clean and .html Home URLs');
+assert.match(pageLoading,/path==='\/'\|\|path\.endsWith\('\/index\.html'\)\|\|isHome/,'secondary gate must exempt Home before checking onboarding completion');
+assert.doesNotMatch(pageLoading,/path\.endsWith\('\/home\.html'\)\)return false/,'secondary gate must not protect only the .html Home form');
+
 // Completing onboarding must never restore Home, Welcome, admin, or a nested return loop.
 assert.match(onboarding,/function safeReturnTarget\(\)/,'onboarding must validate a saved return target');
 assert.match(onboarding,/target\.origin!==location\.origin/,'return target must remain same-origin');
@@ -70,4 +76,4 @@ assert.match(observerMatch[1],/mountLauncher\(\)/,'observer should mount launche
 assert.match(observerMatch[1],/mountHelper\(\)/,'observer should mount Franklin helper badge');
 assert.doesNotMatch(observerMatch[1],/renderAll\(|render\(/,'observer callback must not redraw rating stars');
 
-console.log('PASS: recursive onboarding returns, iOS Welcome transit, direct-link return, and rating observer invariants are protected.');
+console.log('PASS: clean Home transit, recursive onboarding returns, iOS Welcome transit, direct-link return, and rating observer invariants are protected.');

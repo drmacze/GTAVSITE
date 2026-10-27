@@ -35,3 +35,16 @@ if(document.body?.dataset?.page&&!window.__askFranklinLoaderAdded){
   script.defer=true;
   document.head.append(script);
 }
+
+// Keep the helper subtitle concise regardless of which loader initializes it first.
+(() => {
+  const apply=()=>{
+    const label=document.querySelector('.ask-franklin-title span');
+    if(!label)return false;
+    label.textContent='Community helper';
+    return true;
+  };
+  if(apply())return;
+  const observer=new MutationObserver(()=>{if(apply())observer.disconnect();});
+  observer.observe(document.body,{childList:true,subtree:true});
+})();

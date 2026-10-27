@@ -1,7 +1,8 @@
 {
   "version": 1,
   "include": [
-    "/api/*"
+    "/api/*",
+    "/apple-touch-icon.png"
   ],
   "exclude": []
 }

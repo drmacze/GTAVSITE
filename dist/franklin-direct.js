@@ -91,9 +91,14 @@
     watchHelper();
     loader.click();
   };
+  const startsOnKnob=event=>{
+    const rect=knob.getBoundingClientRect();
+    const pad=7;
+    return event.clientX>=rect.left-pad&&event.clientX<=rect.right+pad&&event.clientY>=rect.top-pad&&event.clientY<=rect.bottom+pad;
+  };
 
   track.addEventListener('pointerdown',event=>{
-    if(complete||dragging||event.button!==undefined&&event.button!==0)return;
+    if(complete||dragging||event.button!==undefined&&event.button!==0||!startsOnKnob(event))return;
     dragging=true;
     pointerId=event.pointerId;
     startX=event.clientX;
@@ -128,6 +133,21 @@
   });
   track.addEventListener('click',event=>event.preventDefault());
   track.addEventListener('contextmenu',event=>event.preventDefault());
+  track.addEventListener('keydown',event=>{
+    if(complete)return;
+    if(event.key==='ArrowRight'){
+      event.preventDefault();
+      setOffset(offset+Math.max(18,maxOffset()*.12));
+      if(progress()>=.88)connect();
+    }else if(event.key==='Home'||event.key==='ArrowLeft'){
+      event.preventDefault();
+      snapHome();
+    }else if(event.key==='End'){
+      event.preventDefault();
+      setOffset(maxOffset());
+      connect();
+    }
+  });
   window.addEventListener('resize',()=>{if(complete)setOffset(maxOffset());else setOffset(0)},{passive:true});
   render();
 })();

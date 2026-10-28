@@ -1,29 +1,130 @@
-/* Compatibility results: restore the clearer card grid while keeping Setup and Results as separate states. */
-body[data-page="compatibility"] .hardware-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;border:0!important;margin-top:18px!important}
-body[data-page="compatibility"] .hardware-grid .hardware-card{display:block!important}
-body[data-page="compatibility"] .hardware-card{position:relative!important;box-sizing:border-box!important;min-width:0!important;padding:20px!important;border:1px solid rgba(255,255,255,.105)!important;border-radius:9px!important;background:rgba(255,255,255,.022)!important;box-shadow:none!important;overflow:hidden!important;transition:border-color .2s ease,background .2s ease,transform .2s ease!important}
-body[data-page="compatibility"] .hardware-card+.hardware-card{padding-left:20px!important}
-body[data-page="compatibility"] .hardware-card+.hardware-card:after{display:none!important}
-body[data-page="compatibility"] .hardware-card:before{content:"";position:absolute;left:18px;right:18px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);pointer-events:none}
-body[data-page="compatibility"] .hardware-card.critical{border-color:rgba(232,131,123,.34)!important;background:rgba(232,131,123,.035)!important}
-body[data-page="compatibility"] .hardware-card.minimum{border-color:rgba(221,183,101,.30)!important;background:rgba(221,183,101,.03)!important}
-body[data-page="compatibility"] .hardware-card.headroom{border-color:rgba(155,197,142,.25)!important;background:rgba(155,197,142,.025)!important}
-body[data-page="compatibility"] .hardware-card-top{margin-bottom:18px!important}
-body[data-page="compatibility"] .hardware-card h3{font-size:21px!important;margin-bottom:10px!important}
-body[data-page="compatibility"] .hardware-card p{font-size:9px!important;line-height:1.75!important}
-body[data-page="compatibility"] .hardware-badge{border:1px solid rgba(255,255,255,.10)!important;border-radius:4px!important;background:rgba(255,255,255,.025)!important;padding:3px 5px!important}
-body[data-page="compatibility"] .runtime-heading{margin-top:30px!important}
-body[data-page="compatibility"] .runtime-grid,body[data-page="compatibility"] .runtime-grid.port-runtime{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;border:0!important;margin-top:14px!important}
-body[data-page="compatibility"] .runtime-grid .hardware-card{display:block!important;padding:20px!important}
-body[data-page="compatibility"] .runtime-grid .hardware-card:nth-child(2){padding-left:20px!important}
-body[data-page="compatibility"] .runtime-grid .hardware-card:nth-child(2):after{display:none!important}
-/* Native/port detail cards remain available; the main grid is no longer artificially truncated. */
-body[data-page="compatibility"] .runtime-grid [data-port-card]{display:block!important}
-/* The benchmark lab is a primary result action, while the old settings review remains secondary. */
-body[data-page="compatibility"] .result-nav a[href="#fps-benchmark-lab"]{display:inline-flex!important;align-items:center!important;gap:8px!important;margin-right:22px!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;color:var(--fg-b9b9b9,#b9b9b9)!important;font-size:9px!important;letter-spacing:.55px!important;text-transform:none!important}
-body[data-page="compatibility"] .result-nav a[href="#fps-benchmark-lab"]:before{content:"Native";padding:3px 6px;border:1px solid rgba(155,197,142,.20);color:var(--compat-ok,#9bc58e);font-size:7px;letter-spacing:.7px;text-transform:uppercase}
-body[data-page="compatibility"] .result-nav a[href="#fps-benchmark-lab"]:hover{color:var(--compat-accent,#d7b46a)!important}
-@media(hover:hover) and (pointer:fine){body[data-page="compatibility"] .hardware-card:hover{transform:translateY(-2px)!important;border-color:rgba(255,255,255,.18)!important;background:rgba(255,255,255,.035)!important}}
-@media(max-width:760px){body[data-page="compatibility"] .hardware-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}body[data-page="compatibility"] .runtime-grid,body[data-page="compatibility"] .runtime-grid.port-runtime{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}body[data-page="compatibility"] .hardware-card{padding:17px!important}body[data-page="compatibility"] .hardware-card+.hardware-card{padding-left:17px!important}body[data-page="compatibility"] .hardware-card h3{font-size:19px!important}}
-@media(max-width:480px){body[data-page="compatibility"] .hardware-grid,body[data-page="compatibility"] .runtime-grid,body[data-page="compatibility"] .runtime-grid.port-runtime{grid-template-columns:1fr!important}body[data-page="compatibility"] .hardware-card,body[data-page="compatibility"] .hardware-card+.hardware-card,body[data-page="compatibility"] .runtime-grid .hardware-card,body[data-page="compatibility"] .runtime-grid .hardware-card:nth-child(2){padding:18px!important}body[data-page="compatibility"] .hardware-card h3{font-size:20px!important}body[data-page="compatibility"] .result-nav{flex-wrap:wrap;gap:11px 0}}
-@media(prefers-reduced-motion:reduce){body[data-page="compatibility"] .hardware-card{transition:none!important}}
+/* Compatibility — simplified scan → result experience */
+body[data-page="compatibility"]{--cx-accent:#d8b467;--cx-blue:#78b7d7;--cx-ok:#9bc58e;--cx-warn:#ddb765;--cx-bad:#e8837b;--cx-line:rgba(255,255,255,.105);--cx-panel:rgba(255,255,255,.026)}
+body[data-page="compatibility"] .compatibility-wrap{max-width:1040px;padding-top:54px;padding-bottom:72px}
+body[data-page="compatibility"] .compat-heading{max-width:760px;margin:0 auto 30px;padding:0 0 25px;border-bottom:1px solid var(--cx-line);display:block}
+body[data-page="compatibility"] .compat-heading .eyebrow{font-size:8px;letter-spacing:1.6px;color:#83765f}
+body[data-page="compatibility"] .compat-heading h1{margin:13px 0 10px;font-size:clamp(38px,6vw,62px);letter-spacing:-2px;line-height:1.03}
+body[data-page="compatibility"] .compat-heading p{margin:0;max-width:620px;color:#858585;font-size:12px;line-height:1.75}
+body[data-page="compatibility"] .compat-reviewed{display:none}
+body[data-page="compatibility"] .compat-checker{display:block!important;max-width:760px;margin:auto;border:0!important;background:transparent!important;border-radius:0!important;min-height:0!important;overflow:visible!important}
+body[data-page="compatibility"] .compat-checker:before,body[data-page="compatibility"] .compat-visual{display:none!important}
+body[data-page="compatibility"] .compat-setup{padding:0!important;border:0!important;background:none!important}
+body[data-page="compatibility"] .setup-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0;padding:0 0 14px;border-bottom:1px solid var(--cx-line)}
+body[data-page="compatibility"] .compat-step{font-size:8px;letter-spacing:1.5px;color:#9b8b69;font-weight:650}
+body[data-page="compatibility"] .lookup-tag{font-size:8px;color:#696969;border:0!important;border-radius:0!important;padding:0!important}
+body[data-page="compatibility"] .saved-device-card{display:grid!important;grid-template-columns:62px minmax(0,1fr);gap:18px;align-items:center;margin:0!important;padding:24px 0!important;border:0!important;border-bottom:1px solid var(--cx-line)!important;background:none!important}
+body[data-page="compatibility"] .saved-phone{width:58px;height:76px;border:0!important;border-radius:0!important;background:none!important}
+body[data-page="compatibility"] .saved-phone svg{width:40px;height:64px;stroke:var(--cx-accent)}
+body[data-page="compatibility"] .saved-phone>span{width:7px;height:7px;right:6px;bottom:11px;background:var(--cx-ok);box-shadow:0 0 0 4px #101010}
+body[data-page="compatibility"] .saved-device-label{display:block;margin-bottom:7px;font-size:7px;letter-spacing:1.35px;color:#8c7b5e}
+body[data-page="compatibility"] .saved-device-card h2{margin:0 0 6px;font-size:28px;line-height:1.12;letter-spacing:-.8px;font-weight:560}
+body[data-page="compatibility"] .saved-device-card p{margin:0;color:#777;font-size:10px;line-height:1.65;max-width:520px}
+body[data-page="compatibility"] .profile-notice{margin:20px 0 0;padding:15px 16px;border:1px solid rgba(221,183,101,.20)!important;border-radius:8px!important;background:rgba(221,183,101,.025)!important}
+body[data-page="compatibility"] .profile-notice p{font-size:10px;line-height:1.7}
+body[data-page="compatibility"] .optional-checks,body[data-page="compatibility"] .optional-checks.required-checks{margin:24px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important}
+body[data-page="compatibility"] .optional-checks summary,body[data-page="compatibility"] .optional-checks.required-checks summary{display:flex!important;align-items:center!important;padding:0 0 12px!important;border:0!important;color:#c9c9c9!important;font-size:12px!important;font-weight:600!important;cursor:default!important;list-style:none!important}
+body[data-page="compatibility"] .optional-checks summary::-webkit-details-marker{display:none}
+body[data-page="compatibility"] .optional-checks summary span,body[data-page="compatibility"] .optional-checks.required-checks summary span{display:none!important}
+body[data-page="compatibility"] .optional-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0!important}
+body[data-page="compatibility"] .optional-fields label{box-sizing:border-box;padding:14px 15px 13px;border:1px solid var(--cx-line);border-radius:8px;background:var(--cx-panel);color:#777;font-size:8px;letter-spacing:.35px}
+body[data-page="compatibility"] .optional-fields input,body[data-page="compatibility"] .optional-checks.required-checks .optional-fields input{display:block;width:100%;box-sizing:border-box;margin:7px 0 0;padding:0;border:0!important;background:none!important;color:#f1f1f1;font:500 17px/1.4 'DM Sans',sans-serif;box-shadow:none!important;outline:0!important}
+body[data-page="compatibility"] .optional-fields input::placeholder{color:#505050}
+body[data-page="compatibility"] .optional-fields label:focus-within{border-color:rgba(120,183,215,.46);background:rgba(120,183,215,.035)}
+body[data-page="compatibility"] .optional-checks>p,body[data-page="compatibility"] .optional-checks.required-checks>p{margin:10px 0 0!important;color:#606060!important;font-size:8px!important;line-height:1.6}
+body[data-page="compatibility"] .compat-app-memory-field{display:none!important}
+body[data-page="compatibility"] .compat-advanced{margin:10px 0 0;border-bottom:1px solid var(--cx-line)}
+body[data-page="compatibility"] .compat-advanced summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;color:#777;font-size:9px;cursor:pointer;list-style:none}
+body[data-page="compatibility"] .compat-advanced summary::-webkit-details-marker{display:none}
+body[data-page="compatibility"] .compat-advanced summary:after{content:'+';font-size:14px;color:#686868}
+body[data-page="compatibility"] .compat-advanced[open] summary:after{content:'−'}
+body[data-page="compatibility"] .compat-advanced .compat-app-memory-field{display:block!important;margin:0 0 14px;padding:13px 15px;border:1px solid var(--cx-line);border-radius:8px;background:var(--cx-panel)}
+body[data-page="compatibility"] .compat-advanced .compat-app-memory-field input{display:block;width:100%;margin-top:6px;border:0;background:none;color:#eee;font:500 16px/1.4 'DM Sans',sans-serif;outline:0}
+body[data-page="compatibility"] .compat-advanced .compat-app-memory-field small{display:block;margin-top:6px;color:#5f5f5f;font-size:8px;line-height:1.5}
+body[data-page="compatibility"] .review-steps{display:none!important}
+body[data-page="compatibility"] .compat-setup>.button{display:flex;width:100%;min-height:56px;align-items:center;justify-content:space-between;margin-top:22px;padding:0 20px;border-radius:8px!important;font-size:12px;letter-spacing:.25px}
+body[data-page="compatibility"] .compat-setup>.button:disabled{opacity:.28}
+body[data-page="compatibility"] .compat-caption{margin:10px 0 0;color:#5f5f5f;font-size:8px;line-height:1.6}
+body[data-page="compatibility"] .compat-error{font-size:9px;color:var(--cx-bad)}
+body[data-page="compatibility"].compat-scan-active{overflow:hidden!important}
+body[data-page="compatibility"].compat-scan-active .ask-franklin-launcher,body[data-page="compatibility"].compat-scan-active .franklin-nudge,body[data-page="compatibility"].compat-scan-active .franklin-sheet-dock{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+body[data-page="compatibility"] .compat-scan-backdrop{background:rgba(3,5,7,.68)!important;-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important}
+body[data-page="compatibility"] .compat-scan-sheet{width:min(620px,100%)!important;padding:12px 28px calc(26px + env(safe-area-inset-bottom))!important;border:1px solid rgba(255,255,255,.10)!important;border-bottom:0!important;border-radius:24px 24px 0 0!important;background:#151719!important;box-shadow:0 -24px 70px rgba(0,0,0,.48)!important}
+body[data-page="compatibility"] .compat-scan-grip{width:36px!important;height:3px!important;margin-bottom:19px!important;background:rgba(255,255,255,.14)!important}
+body[data-page="compatibility"] .compat-scan-kicker{padding-bottom:13px!important;border-bottom:1px solid rgba(255,255,255,.08)!important;color:#70777c!important}
+body[data-page="compatibility"] .compat-scan-kicker strong{color:#9aa4aa!important}
+body[data-page="compatibility"] .compat-scan-chip{display:none!important}
+body[data-page="compatibility"] .compat-scan-body{display:block!important;padding:27px 0 22px!important}
+body[data-page="compatibility"] .compat-scan-copy h2{margin:0 0 8px!important;color:#f1f3f4!important;font-size:27px!important;letter-spacing:-.7px!important}
+body[data-page="compatibility"] .compat-scan-copy>p{min-height:35px!important;margin:0 0 20px!important;color:#899196!important;font-size:10px!important;line-height:1.65!important}
+body[data-page="compatibility"] .compat-scan-progress{height:3px!important;border-radius:3px;background:rgba(255,255,255,.08)!important}
+body[data-page="compatibility"] .compat-scan-progress>span{border-radius:3px;background:var(--cx-blue)!important;box-shadow:none!important}
+body[data-page="compatibility"] .compat-scan-meta{margin-top:9px!important;color:#687179!important}
+body[data-page="compatibility"] .compat-scan-meta strong{color:#9eb6c1!important}
+body[data-page="compatibility"] .compat-scan-stages{display:grid!important;grid-template-columns:repeat(3,1fr)!important;border-top:1px solid rgba(255,255,255,.08)!important}
+body[data-page="compatibility"] .compat-scan-stages li{color:#5f686e!important;font-size:7px!important}
+body[data-page="compatibility"] .compat-scan-stages li.active{color:var(--cx-blue)!important}
+body[data-page="compatibility"] .compat-scan-stages li.done{color:var(--cx-ok)!important}
+body[data-compat-phase="results"] .compat-heading,body[data-compat-phase="results"] .compat-checker{display:none!important}
+body[data-compat-phase="results"] .compatibility-wrap{padding-top:38px}
+body[data-compat-phase="setup"] .compat-results{display:none!important}
+body[data-page="compatibility"] .compat-results{max-width:960px;margin:0 auto!important;scroll-margin-top:18px}
+body[data-page="compatibility"] .result-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end;padding:0 0 20px;border-bottom:0!important;margin:0}
+body[data-page="compatibility"] .result-heading .eyebrow{display:block;margin-bottom:8px;color:#737373;font-size:7px;letter-spacing:1.4px}
+body[data-page="compatibility"] .result-heading h2{margin:0;font-size:clamp(38px,7vw,58px);letter-spacing:-2px;line-height:1;font-weight:560}
+body[data-page="compatibility"] .result-heading button{display:none!important}
+body[data-page="compatibility"] .result-nav{display:none!important}
+body[data-page="compatibility"] .compat-verdict{display:flex!important;align-items:flex-start;gap:14px;margin:0 0 18px!important;padding:17px 18px!important;border:1px solid var(--cx-line)!important;border-radius:9px!important;background:var(--cx-panel)!important;color:#d5d5d5!important}
+body[data-page="compatibility"] .verdict-icon{display:grid;place-items:center;width:29px;height:29px;flex:0 0 29px;border:1px solid currentColor;border-radius:50%;padding:0!important}
+body[data-page="compatibility"] .verdict-icon .icon{width:13px;height:13px}
+body[data-page="compatibility"] .compat-verdict h3{margin:0 0 5px;font-size:16px;font-weight:600;letter-spacing:-.25px}
+body[data-page="compatibility"] .compat-verdict p{margin:0;max-width:760px;color:#858585;font-size:9px;line-height:1.65}
+body[data-page="compatibility"] .compat-verdict.critical{border-color:rgba(232,131,123,.28)!important;color:var(--cx-bad)!important;background:rgba(232,131,123,.025)!important}
+body[data-page="compatibility"] .compat-verdict.minimum{border-color:rgba(221,183,101,.25)!important;color:var(--cx-warn)!important;background:rgba(221,183,101,.022)!important}
+body[data-page="compatibility"] .compat-verdict.headroom{border-color:rgba(155,197,142,.22)!important;color:var(--cx-ok)!important;background:rgba(155,197,142,.02)!important}
+body[data-page="compatibility"] .compat-summary-title{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:25px 0 11px}
+body[data-page="compatibility"] .compat-summary-title h3{margin:0;font-size:12px;font-weight:600}
+body[data-page="compatibility"] .compat-summary-title span{color:#626262;font-size:8px}
+body[data-page="compatibility"] .compat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+body[data-page="compatibility"] .compat-summary-card{position:relative;min-width:0;padding:16px;border:1px solid var(--cx-line);border-radius:8px;background:var(--cx-panel)}
+body[data-page="compatibility"] .compat-summary-card[data-level="critical"]{border-color:rgba(232,131,123,.28)}
+body[data-page="compatibility"] .compat-summary-card[data-level="minimum"]{border-color:rgba(221,183,101,.26)}
+body[data-page="compatibility"] .compat-summary-card[data-level="headroom"]{border-color:rgba(155,197,142,.22)}
+body[data-page="compatibility"] .compat-summary-card span{display:block;color:#696969;font-size:7px;letter-spacing:.7px;text-transform:uppercase}
+body[data-page="compatibility"] .compat-summary-card strong{display:block;margin-top:9px;color:#ededed;font-size:19px;line-height:1.25;font-weight:550;letter-spacing:-.45px;overflow-wrap:anywhere}
+body[data-page="compatibility"] .compat-summary-card small{display:block;margin-top:7px;color:#727272;font-size:8px;line-height:1.5}
+body[data-page="compatibility"] .memory-support{display:flex!important;gap:12px;margin:14px 0 0!important;padding:14px 15px!important;border:1px solid rgba(221,183,101,.20)!important;border-radius:8px!important;background:rgba(221,183,101,.018)!important}
+body[data-page="compatibility"] .memory-support[hidden]{display:none!important}
+body[data-page="compatibility"] .memory-support-icon{padding:1px 0 0;color:var(--cx-warn)}
+body[data-page="compatibility"] .memory-support-icon .icon{width:16px;height:16px}
+body[data-page="compatibility"] .memory-support-label{display:none!important}
+body[data-page="compatibility"] .memory-support h3{margin:0 0 4px;font-size:11px;font-weight:600}
+body[data-page="compatibility"] .memory-support p{margin:0;color:#817b70;font-size:8px;line-height:1.6}
+body[data-page="compatibility"] .memory-support-links{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap}
+body[data-page="compatibility"] .memory-support-links a{font-size:8px;color:#bfa36b}
+body[data-page="compatibility"] .hardware-grid,body[data-page="compatibility"] .runtime-heading,body[data-page="compatibility"] .runtime-grid{display:none!important}
+body[data-page="compatibility"] .compat-result-actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px}
+body[data-page="compatibility"] .compat-result-actions button{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 16px;border:1px solid var(--cx-line);border-radius:8px;background:var(--cx-panel);color:#ddd;font:600 10px/1.4 'DM Sans',sans-serif;cursor:pointer}
+body[data-page="compatibility"] .compat-result-actions button.primary{border-color:rgba(120,183,215,.30);background:rgba(120,183,215,.045);color:#d9e7ee}
+body[data-page="compatibility"] .compat-result-actions .icon{width:14px;height:14px}
+body[data-page="compatibility"] .compat-tech{margin-top:18px;border-top:1px solid var(--cx-line)}
+body[data-page="compatibility"] .compat-tech>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 0;color:#747474;font-size:9px;cursor:pointer;list-style:none}
+body[data-page="compatibility"] .compat-tech>summary::-webkit-details-marker{display:none}
+body[data-page="compatibility"] .compat-tech>summary:after{content:'+';font-size:14px}
+body[data-page="compatibility"] .compat-tech[open]>summary:after{content:'−'}
+body[data-page="compatibility"] .compat-tech-body{padding:0 0 8px}
+body[data-page="compatibility"] .compat-tech .hardware-grid,body[data-page="compatibility"] .compat-tech .runtime-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 10px!important}
+body[data-page="compatibility"] .compat-tech .runtime-heading{display:flex!important;margin:20px 0 9px!important}
+body[data-page="compatibility"] .compat-tech .hardware-card{display:block!important;min-width:0;padding:15px!important;border:1px solid var(--cx-line)!important;border-radius:8px!important;background:rgba(255,255,255,.018)!important}
+body[data-page="compatibility"] .compat-tech .hardware-card:after,body[data-page="compatibility"] .compat-tech .hardware-card:before{display:none!important}
+body[data-page="compatibility"] .compat-tech .hardware-card h3{font-size:16px!important}
+body[data-page="compatibility"] .compat-tech .hardware-card p{font-size:8px!important}
+body[data-page="compatibility"] .compat-tech .port-evidence,body[data-page="compatibility"] .compat-tech .compat-sources,body[data-page="compatibility"] .compat-tech .compat-footnote{display:block!important;margin:12px 0 0!important}
+body[data-page="compatibility"] .port-evidence,body[data-page="compatibility"] .compat-sources,body[data-page="compatibility"] .compat-footnote{display:none!important}
+body[data-page="compatibility"] .performance-studio{display:none!important}
+body[data-page="compatibility"] .fps-lab{display:none!important;margin-top:18px!important;padding:0!important;border:0!important}
+body[data-page="compatibility"].benchmark-open .fps-lab{display:block!important}
+body[data-page="compatibility"].benchmark-open .compat-result-actions,body[data-page="compatibility"].benchmark-open .compat-tech,body[data-page="compatibility"].benchmark-open .memory-support,body[data-page="compatibility"].benchmark-open .compat-summary-title,body[data-page="compatibility"].benchmark-open .compat-summary-grid,body[data-page="compatibility"].benchmark-open .compat-verdict{display:none!important}
+body[data-page="compatibility"].benchmark-open .result-heading{padding-bottom:14px;border-bottom:1px solid var(--cx-line)!important}
+@media(max-width:720px){body[data-page="compatibility"] .compatibility-wrap{padding:30px 6.5% 58px}body[data-page="compatibility"] .compat-heading{margin-bottom:22px}body[data-page="compatibility"] .optional-fields{grid-template-columns:1fr}body[data-page="compatibility"] .compat-summary-grid{grid-template-columns:1fr 1fr}body[data-page="compatibility"] .result-heading{grid-template-columns:1fr}body[data-page="compatibility"] .compat-tech .hardware-grid,body[data-page="compatibility"] .compat-tech .runtime-grid{grid-template-columns:1fr}body[data-page="compatibility"] .compat-scan-sheet{padding-left:6.5%!important;padding-right:6.5%!important;border-left:0!important;border-right:0!important}}
+@media(max-width:430px){body[data-page="compatibility"] .compat-heading h1{font-size:40px}body[data-page="compatibility"] .saved-device-card{grid-template-columns:52px minmax(0,1fr);gap:14px}body[data-page="compatibility"] .saved-phone{width:48px;height:68px}body[data-page="compatibility"] .saved-phone svg{width:35px;height:57px}body[data-page="compatibility"] .saved-device-card h2{font-size:25px}body[data-page="compatibility"] .compat-summary-grid{grid-template-columns:1fr 1fr;gap:8px}body[data-page="compatibility"] .compat-summary-card{padding:13px}body[data-page="compatibility"] .compat-summary-card strong{font-size:17px}body[data-page="compatibility"] .compat-result-actions{grid-template-columns:1fr}body[data-page="compatibility"] .compat-scan-stages{display:none!important}}
+@media(prefers-reduced-motion:reduce){body[data-page="compatibility"] *{scroll-behavior:auto!important;transition:none!important}}

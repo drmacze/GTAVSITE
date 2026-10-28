@@ -16,6 +16,7 @@ function patchCompatibility(){
  const label=input.closest('label');
  if(label&&!label.querySelector('.storage-45-note')){const n=document.createElement('small');n.className='storage-45-note';n.textContent='45 GB free minimum before downloading or extracting the game files.';label.append(n)}
  const apply=()=>{
+  const sourceReview=document.querySelector('.source-review');if(sourceReview)sourceReview.textContent='Compatibility reference: iOS 16.3 technical minimum, iOS 18+ recommended, A12 experimental / A13 baseline, Low-Memory Profile at ≤4.5 GB, native app-memory tiers at 3000/4400/5800 MB, and 45 GB free storage minimum before game-file setup.';
   const value=Number(input.value);if(!Number.isFinite(value)||input.value==='')return;
   const cards=[...document.querySelectorAll('#runtime-grid .hardware-card')];
   const card=cards.find(c=>/free storage/i.test(c.querySelector('.hardware-label')?.textContent||c.textContent||''));
@@ -63,12 +64,13 @@ function patchTechnicalities(){
 }
 
 function patchVisibleLegacyCopy(){
- document.querySelectorAll('main p,main li,main small').forEach(node=>{
+ document.querySelectorAll('main p,main li,main small,main strong,main span').forEach(node=>{
   if(node.closest('#install-size')&&/21\.6|29\.5/i.test(node.textContent||''))return;
   if(node.children.length)return;
   const t=node.textContent||'';
   if(/about 30 GB free/i.test(t))node.textContent=t.replace(/about 30 GB free/ig,'at least 45 GB free');
   else if(/more than 30 GB free/i.test(t))node.textContent=t.replace(/more than 30 GB free/ig,'at least 45 GB free');
+  else if(/30 GB free/i.test(t))node.textContent=t.replace(/30 GB free/ig,'45 GB free minimum');
   else if(/~30 GB/i.test(t))node.textContent=t.replace(/~30 GB/ig,'45 GB minimum');
  });
 }

@@ -47,7 +47,7 @@
 (() => {
   if (document.body?.dataset.page !== 'home' || document.querySelector('script[data-story-showcase]')) return;
   const script = document.createElement('script');
-  script.src = 'story-showcase.js?v=20261029stories1';
+  script.src = 'story-scrolltrigger-v2.js?v=20261029st2';
   script.async = true;
   script.dataset.storyShowcase = 'true';
   document.head.append(script);

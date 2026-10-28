@@ -6,23 +6,27 @@
   const root=document.documentElement;
   const editable='input,textarea,select,[contenteditable="true"]';
   let blurTimer=0;
+  root.classList.add('franklin-unified-entry');
 
   const ensureStyle=()=>{
     if(document.getElementById('franklin-ui-guard-style'))return;
     const style=document.createElement('style');
     style.id='franklin-ui-guard-style';
     style.textContent=`
-      html.franklin-external-keyboard .ask-franklin-launcher,
+      html.franklin-unified-entry .ask-franklin-launcher,
+      html.franklin-unified-entry .franklin-sheet-dock,
+      html.franklin-unified-entry .franklin-nudge{
+        display:none!important;
+      }
       html.franklin-external-keyboard .ask-franklin-panel,
-      html.franklin-external-keyboard .franklin-sheet-dock,
-      html.franklin-external-keyboard .franklin-nudge,
       html.franklin-external-keyboard .lazy-franklin{
         opacity:0!important;
         visibility:hidden!important;
         pointer-events:none!important;
       }
-      body[data-page="feedback"] .franklin-nudge{display:none!important}
-      body[data-page="feedback"] #feedback-helper-slot:has(.ask-franklin-launcher){display:none!important}
+      body[data-page="feedback"] #feedback-helper-slot{
+        display:none!important;
+      }
     `;
     document.head.append(style);
   };
@@ -37,19 +41,46 @@
     root.classList.toggle('franklin-external-keyboard',externalEditable());
   };
 
+  const openUnifiedChat=()=>{
+    const panel=document.querySelector('.ask-franklin-panel');
+    const launcher=document.querySelector('.ask-franklin-launcher');
+    if(!launcher||panel?.classList.contains('is-open'))return;
+    if(launcher.dataset.state==='compact')launcher.click();
+    requestAnimationFrame(()=>{
+      if(launcher.dataset.state==='expanded')launcher.click();
+    });
+  };
+
+  const createPrimaryEntry=()=>{
+    if(document.querySelector('.lazy-franklin'))return null;
+    if(!document.querySelector('.ask-franklin-launcher'))return null;
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='lazy-franklin';
+    button.textContent='Ask Franklin';
+    button.setAttribute('aria-label','Open Ask Franklin');
+    button.dataset.unifiedEntry='true';
+    button.addEventListener('click',openUnifiedChat);
+    document.body.append(button);
+    return button;
+  };
+
   const normalizeLaunchers=()=>{
+    const primary=[...document.querySelectorAll('.lazy-franklin')];
+    if(primary.length){
+      primary.slice(1).forEach(el=>el.remove());
+      const button=primary[0];
+      if(button.parentElement?.id==='feedback-helper-slot')document.body.append(button);
+      if(button.hidden)button.hidden=false;
+    }else{
+      createPrimaryEntry();
+    }
+
     const launchers=[...document.querySelectorAll('.ask-franklin-launcher')];
-    if(launchers.length){
-      document.querySelectorAll('.lazy-franklin').forEach(el=>{el.hidden=true;});
-      launchers.slice(1).forEach(el=>el.remove());
-      const launcher=launchers[0];
-      if(document.body?.dataset.page==='feedback' && launcher.parentElement?.id==='feedback-helper-slot'){
-        document.body.append(launcher);
-      }
-    }
-    if(document.body?.dataset.page==='feedback'){
-      document.querySelectorAll('.franklin-nudge').forEach(el=>el.remove());
-    }
+    if(launchers.length>1)launchers.slice(1).forEach(el=>el.remove());
+    if(launchers[0]?.parentElement?.id==='feedback-helper-slot')document.body.append(launchers[0]);
+
+    document.querySelectorAll('.franklin-nudge').forEach(el=>el.remove());
   };
 
   ensureStyle();

@@ -91,3 +91,12 @@
  const loadFeedbackCommunity=()=>{if(!location.pathname.includes('feedback'))return;if(!document.head.querySelector('link[href^="/feedback-community.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href='/feedback-community.css?v=20261027voices1';document.head.append(link)}loadScript('/feedback-community.js?v=20261027voices1')};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadFeedbackCommunity,{once:true});else loadFeedbackCommunity();
 })();
+
+/* Compatibility-only result grid and native benchmark analyzer. */
+(()=>{
+ 'use strict';
+ const path=(location.pathname||'').replace(/\/+$/,'');
+ if(!(path.endsWith('/compatibility')||path.endsWith('/compatibility.html')))return;
+ if(!document.head.querySelector('link[href^="/compatibility-results-grid.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href='/compatibility-results-grid.css?v=20261028grid1';document.head.append(link)}
+ if(![...document.scripts].some(s=>s.src.includes('/compatibility-benchmark.js'))){const s=document.createElement('script');s.src='/compatibility-benchmark.js?v=20261028bench1';s.defer=true;document.head.append(s)}
+})();

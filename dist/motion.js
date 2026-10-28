@@ -26,14 +26,13 @@
    addStyle('home-chapter-lock-v1.css?v=20261029chapter4','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
 
-   // Prime the trailer immediately and keep one media controller responsible for scroll-to-sound + playback recovery.
    addScript('music.js?v=20261029media2','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
    addStyle('downloads.css?v=20261029dlc4','downloads-dlc4-style');
    addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
-   addStyle('mods-catalog-v4.css?v=20261029catalog4b','mods-catalog-v4-style');
-   addScript('mods-catalog-v4.js?v=20261029catalog4b','mods-catalog-v4-script');
+   addStyle('mods-catalog-v5.css?v=20261029catalog5','mods-catalog-v5-style');
+   addScript('mods-catalog-v5.js?v=20261029catalog5','mods-catalog-v5-script');
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');

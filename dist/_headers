@@ -86,7 +86,7 @@
   Cache-Control: no-store, max-age=0
 
 /lazy-helper.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, max-age=0
 
 /franklin-ui-guard.js
   Cache-Control: no-store, max-age=0

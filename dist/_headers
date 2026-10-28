@@ -122,6 +122,9 @@
 /franklin-dataset.json
   Cache-Control: no-cache, must-revalidate
 
+/franklin-claude-index.json
+  Cache-Control: no-cache, must-revalidate
+
 /apple-touch-icon*
   Cache-Control: no-cache, must-revalidate
   Content-Type: image/png

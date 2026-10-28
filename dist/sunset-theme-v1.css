@@ -1,0 +1,92 @@
+:root{
+  --sunset-cream:#f8eb98;
+  --sunset-gold:#fad574;
+  --sunset-peach:#e69d5f;
+  --sunset-coral:#cc7352;
+  --sunset-terracotta:#9b684e;
+  --sunset-brown:#6f493a;
+  --sunset-deep:#120e0c;
+  --bg:#120e0c!important;
+  --panel:#1b130f!important;
+  --line:rgba(248,235,152,.14)!important;
+  --muted:#b99779!important;
+  --accent:#e69d5f!important;
+  --site-accent:#e69d5f!important;
+  --palette-color:#fad574!important;
+  --tone-101010:#120e0c;
+  --tone-111111:#15100d;
+  --tone-151515:#1a120f;
+  --tone-171717:#1d1512;
+  --tone-202020:#241814;
+  --tone-222222:#291c16;
+  --tone-252525:#2d1f19;
+  --tone-262626:#302019;
+  --tone-292929:#34231b;
+  --tone-333333:#4c3428;
+  --tone-444444:#604334;
+  --tone-ffffff1c:rgba(248,235,152,.14);
+  --fg-f5f5f5:#fbf3df;
+  --fg-ffffff:#fff8e8;
+  --fg-eeeeee:#f2e5cc;
+  --fg-dddddd:#ead9be;
+  --fg-cfcfcf:#dec8a9;
+  --fg-bdbdbd:#cdb08d;
+  --fg-aaaaaa:#b99779;
+  --fg-999999:#a98265;
+  --fg-888888:#906f58;
+  --fg-777777:#7d604d;
+}
+:root[data-mode="light"]{
+  --bg:#f5e7c8!important;
+  --panel:#fff0d2!important;
+  --line:rgba(111,73,58,.18)!important;
+  --muted:#8b644e!important;
+  --accent:#b96a3d!important;
+  --site-accent:#b96a3d!important;
+  --palette-color:#cc7352!important;
+  --tone-101010:#f5e7c8;
+  --tone-111111:#f0ddba;
+  --tone-151515:#f8e8ca;
+  --tone-171717:#fff0d2;
+  --tone-202020:#efd8b5;
+  --tone-222222:#e9cfaa;
+  --tone-252525:#e4c69f;
+  --tone-262626:#dec099;
+  --tone-292929:#d7b68e;
+  --tone-333333:#c6a27d;
+  --tone-444444:#a77f61;
+  --fg-f5f5f5:#3f2a21;
+  --fg-ffffff:#2d1d17;
+  --fg-eeeeee:#493126;
+  --fg-dddddd:#5b3d30;
+  --fg-cfcfcf:#694837;
+  --fg-bdbdbd:#7a5642;
+  --fg-aaaaaa:#8b644e;
+  --fg-999999:#966f58;
+  --fg-888888:#a17b64;
+  --fg-777777:#ad8770;
+}
+body{background:var(--bg)!important;color:var(--fg-f5f5f5)!important}
+.site-header,.menu-panel,.site-settings,.profile-sheet,.ask-franklin-panel,.franklin-sheet{background-color:color-mix(in srgb,var(--panel) 88%,transparent)!important}
+.button.primary,.compat-scan-button,.feedback-submit,.profile-save{background:linear-gradient(135deg,var(--sunset-gold),var(--sunset-peach))!important;border-color:color-mix(in srgb,var(--sunset-gold) 70%,transparent)!important;color:#2a1811!important}
+.button.primary:hover,.compat-scan-button:hover,.feedback-submit:hover,.profile-save:hover{background:linear-gradient(135deg,#fff0a8,var(--sunset-coral))!important}
+.settings-trigger,.menu-toggle,.menu-close,.profile-close,.profile-edit,.ask-franklin-launcher,.lazy-franklin{border-color:rgba(248,235,152,.18)!important}
+input,textarea,select,.search,.feedback-field,.profile-field{border-color:rgba(248,235,152,.16)!important;background:color-mix(in srgb,var(--panel) 72%,transparent)!important}
+input:focus,textarea:focus,select:focus{border-color:var(--sunset-peach)!important;box-shadow:0 0 0 3px rgba(230,157,95,.10)!important}
+.home-intro-v4-message-phase{
+  background:
+    linear-gradient(180deg,rgba(18,14,12,.22) 0%,rgba(18,14,12,.10) 30%,rgba(18,14,12,.38) 66%,rgba(18,14,12,.93) 100%),
+    linear-gradient(90deg,rgba(111,73,58,.24),transparent 36%,transparent 64%,rgba(111,73,58,.20)),
+    url('assets/community-sunset-v1.svg') center/cover no-repeat;
+}
+.home-intro-v4-message-phase:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 52% at 50% 42%,rgba(248,235,152,.08),transparent 74%);mix-blend-mode:screen}
+.home-intro-v4-message{position:relative;z-index:1;text-shadow:0 10px 34px rgba(43,24,16,.34)}
+.home-intro-v4-message small{color:#ffe9ba!important}
+.home-intro-v4-message h1{color:#fff6df!important}
+.home-intro-v4-message h1 span{color:#f2b06f!important}
+.home-intro-v4-message p{color:#ead4ba!important}
+.home-intro-v4-announcement{background:linear-gradient(90deg,#6f493a,#cc7352 44%,#e69d5f 70%,#9b684e)!important;color:#fff5dd!important}
+.home-intro-v4-cue-pill{background:linear-gradient(135deg,rgba(250,213,116,.92),rgba(230,157,95,.92))!important;border-color:rgba(248,235,152,.34)!important;color:#3a2117!important}
+.home-intro-v4-chevron:before,.home-intro-v4-chevron:after{background:#efbc75!important}
+.site-footer{background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 88%,#2b1b14),var(--bg))!important}
+@media(max-width:760px){.home-intro-v4-message-phase{background-position:center top}}

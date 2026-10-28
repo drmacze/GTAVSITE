@@ -88,6 +88,7 @@
     items.forEach((item, index) => {
       const card = document.createElement('article');
       card.className = 'managed-update-card';
+      card.dataset.releaseId = item.id || String(index);
       if (index === 0) card.classList.add('is-latest');
 
       const meta = document.createElement('div');
@@ -154,6 +155,7 @@
       }
       shell.append(card);
     });
+    document.dispatchEvent(new CustomEvent("releases:updated"));
   }
 
   fetch(api, { headers: { Accept: 'application/json' }, cache: 'no-store' })

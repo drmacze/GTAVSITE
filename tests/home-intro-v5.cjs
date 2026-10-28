@@ -1,0 +1,20 @@
+const fs=require('fs');
+const assert=require('assert');
+const motion=fs.readFileSync('dist/motion.js','utf8');
+const js=fs.readFileSync('dist/home-intro-v5.js','utf8');
+const css=fs.readFileSync('dist/home-intro-v5.css','utf8');
+const headers=fs.readFileSync('dist/_headers','utf8');
+
+assert.match(motion,/home-intro-v5\.css\?v=20261028homeintro5/,'Home must load intro v5 CSS');
+assert.match(motion,/home-intro-v5\.js\?v=20261028homeintro5/,'Home must load intro v5 JS');
+assert.match(js,/assets\/home-intro-cover-v5\.svg/,'Intro must use the generated single cover asset');
+assert.doesNotMatch(js,/home-intro-v4-grid|preview-4\.webp.*preview-2\.webp/s,'Intro v5 must not rebuild the old DOM collage');
+assert.match(js,/const motion=smooth\(\(p-\.46\)\/\.29\)/,'Poster must have a long scroll hold before motion starts');
+assert.match(js,/coverScale=1\+motion\*\.38/,'Poster must expand toward the viewport during transition');
+assert.match(js,/coverOpacity=1-smooth\(\(p-\.70\)\/\.13\)/,'Poster fade must happen after expansion');
+assert.match(css,/height:390svh/,'Intro v5 must preserve the extended scroll runway');
+assert.match(css,/font-weight:760/,'GTA V iOS title must use the stronger weight');
+assert.match(css,/v5-mark-outer\{stroke-width:5\}/,'V mark must remain larger and bolder');
+assert.match(css,/brightness\(0\) invert\(1\) grayscale\(1\)/,'Apple mark must remain monochrome');
+assert.match(headers,/\/assets\/home-intro-cover-v5\.svg[\s\S]*Cache-Control: no-store/,'Generated cover must bypass stale cache');
+console.log('home intro v5 regression checks passed');

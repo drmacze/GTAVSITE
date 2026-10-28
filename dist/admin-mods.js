@@ -13,6 +13,9 @@ async function req(url,options={}){const r=await fetch(url,{cache:'no-store',...
 function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 function categoryLabel(value){return({modpack:'Mod Pack',dlc:'DLC',graphics:'Graphics',language:'Language'})[value]||'Mod Pack'}
 function categoryIcon(value){return({modpack:'package',dlc:'archive',graphics:'palette',language:'languages'})[value]||'package'}
+function uniqueUrls(values){const seen=new Set();return values.map(x=>String(x||'').trim()).filter(x=>{if(!x||seen.has(x))return false;seen.add(x);return true}).slice(0,12)}
+function previewsFromInput(){return uniqueUrls(($('mod-images')?.value||'').split(/\r?\n/))}
+function itemPreviews(item){return uniqueUrls(Array.isArray(item?.previewUrls)&&item.previewUrls.length?item.previewUrls:[item?.imageUrl,item?.preview2Url])}
 
 function mount(){
  const dashboard=$('dashboard');
@@ -35,8 +38,7 @@ function mount(){
      <div class="field"><label for="mod-subtitle">Subtitle</label><input id="mod-subtitle" maxlength="120" placeholder="Lighting & timecycle"><small>Short context shown below the mod name.</small></div>
      <div class="field"><label for="mod-description">Description</label><textarea id="mod-description" class="mod-description" maxlength="1200" placeholder="Briefly explain what this mod changes or adds."></textarea></div>
      <div class="field"><label for="mod-download">Download link *</label><div class="mods-admin-link-row"><input id="mod-download" type="url" required placeholder="https://gofile.io/d/..."><button type="button" class="mini" data-paste="mod-download">Paste</button></div><small>Paste a GoFile or other direct HTTPS download page.</small></div>
-     <div class="field"><label for="mod-image">Preview image</label><div class="mods-admin-link-row"><input id="mod-image" type="url" placeholder="https://.../preview.avif"><button type="button" class="mini" data-paste="mod-image">Paste</button></div></div>
-     <div class="field is-conditional" id="mod-preview2-field"><label for="mod-preview2">Second preview <span class="muted">· optional</span></label><div class="mods-admin-link-row"><input id="mod-preview2" type="url" placeholder="https://.../preview-2.avif"><button type="button" class="mini" data-paste="mod-preview2">Paste</button></div></div>
+     <div class="field"><label for="mod-images">Thumbnails / previews</label><div class="mods-admin-link-row mods-admin-preview-links"><textarea id="mod-images" rows="4" placeholder="https://.../preview-1.jpg&#10;https://.../preview-2.jpg"></textarea><button type="button" class="mini" data-paste="mod-images">Paste</button></div><small>One image URL per line. 1 image stays static; 2 or more automatically become a slider. Maximum 12 previews.</small></div>
      <div class="field is-conditional" id="mod-preset-field"><label for="mod-preset">Graphics preset <span class="muted">· optional</span></label><div class="mods-admin-link-row"><input id="mod-preset" placeholder="assets/...json or https://..."><button type="button" class="mini" data-paste="mod-preset">Paste</button></div></div>
      <div class="row-2">
       <div class="field"><label for="mod-tags">Tags</label><input id="mod-tags" maxlength="360" placeholder="Lighting, Timecycle, Realism"><small>Separate tags with commas.</small></div>
@@ -48,11 +50,11 @@ function mount(){
      </div>
      <div class="mods-admin-preview">
       <div class="mods-admin-preview-media" id="mod-preview-media">${icon('package')}</div>
-      <div class="mods-admin-preview-copy"><strong id="mod-preview-title">New mod</strong><span id="mod-preview-meta">Mod Pack · ready to publish</span></div>
+      <div class="mods-admin-preview-copy"><strong id="mod-preview-title">New mod</strong><span id="mod-preview-meta">Mod Pack · no thumbnail · ready to publish</span></div>
      </div>
      <div class="mods-admin-actions"><button class="button compact" id="mod-submit" type="submit">Publish mod</button><button class="button outline compact" id="mod-reset" type="button">Clear</button><span class="mods-admin-status" id="mod-form-status">Ready.</span></div>
     </form>
-    <p class="mods-admin-help"><strong>Easy upload:</strong> host the mod file on GoFile (or another HTTPS host), paste the link here, add a preview, then press Publish. DLC items and Language Packs are automatically grouped in the public library.</p>
+    <p class="mods-admin-help"><strong>Easy upload:</strong> paste the mod download link, then add thumbnail URLs one per line. The public card automatically becomes a slider only when it has more than one thumbnail.</p>
    </section>
    <section class="card">
     <div class="card-head"><div><h2>Library items</h2><small>Edit, draft or remove published mods</small></div><button class="mini" id="mods-refresh" type="button">Refresh</button></div>
@@ -63,7 +65,6 @@ function mount(){
  const feedbackPanel=$('panel-feedback');
  feedbackPanel?.before(panel)??dashboard.append(panel);
 
- // Existing dashboard bound its original tabs before this injected tab existed, so this tab owns its switch behavior.
  tab.addEventListener('click',()=>{
    dashboard.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===tab));
    dashboard.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x===panel));
@@ -74,7 +75,7 @@ function mount(){
  }));
 
  $('mod-category').addEventListener('change',syncConditional);
- ['mod-title','mod-category','mod-image','mod-published'].forEach(id=>$(id).addEventListener('input',syncPreview));
+ ['mod-title','mod-category','mod-images','mod-published'].forEach(id=>$(id).addEventListener('input',syncPreview));
  $('mod-admin-form').addEventListener('submit',save);
  $('mod-reset').addEventListener('click',resetForm);
  $('mods-refresh').addEventListener('click',load);
@@ -101,25 +102,27 @@ async function pasteInto(id){
 function syncConditional(){
  const category=$('mod-category').value;
  $('mod-code-field').hidden=category!=='language';
- $('mod-preview2-field').hidden=category!=='graphics';
  $('mod-preset-field').hidden=category!=='graphics';
  syncPreview();
 }
 function syncPreview(){
  const title=$('mod-title').value.trim()||'New mod';
  const category=$('mod-category').value;
- const image=$('mod-image').value.trim();
+ const previews=previewsFromInput();
  $('mod-preview-title').textContent=title;
- $('mod-preview-meta').textContent=`${categoryLabel(category)} · ${$('mod-published').checked?'will publish':'draft'}`;
+ const previewState=previews.length===0?'no thumbnail':previews.length===1?'1 thumbnail · static':`${previews.length} thumbnails · slider`;
+ $('mod-preview-meta').textContent=`${categoryLabel(category)} · ${previewState} · ${$('mod-published').checked?'will publish':'draft'}`;
  const media=$('mod-preview-media');
- media.innerHTML=image?`<img src="${esc(image)}" alt="">`:icon(categoryIcon(category));
+ media.innerHTML=previews[0]?`<img src="${esc(previews[0])}" alt="">`:icon(categoryIcon(category));
+ if(previews.length>1){const badge=document.createElement('span');badge.className='mods-admin-preview-badge';badge.textContent=`${previews.length} previews`;media.append(badge)}
 }
 function setStatus(text,type=''){$('mod-form-status').textContent=text;$('mod-form-status').className='mods-admin-status'+(type?' '+type:'')}
 
 function payload(){
+ const previewUrls=previewsFromInput();
  return{
   title:$('mod-title').value.trim(),category:$('mod-category').value,subtitle:$('mod-subtitle').value.trim(),description:$('mod-description').value.trim(),
-  downloadUrl:$('mod-download').value.trim(),imageUrl:$('mod-image').value.trim(),preview2Url:$('mod-preview2').value.trim(),presetUrl:$('mod-preset').value.trim(),
+  downloadUrl:$('mod-download').value.trim(),imageUrl:previewUrls[0]||'',preview2Url:previewUrls[1]||'',previewUrls,presetUrl:$('mod-preset').value.trim(),
   tags:$('mod-tags').value.split(',').map(x=>x.trim()).filter(Boolean),languageCode:$('mod-code').value.trim(),sortOrder:Number($('mod-sort').value||100),published:$('mod-published').checked
  };
 }
@@ -144,7 +147,8 @@ function resetForm(clearStatus=true){
 
 function edit(id){
  const item=mods.find(x=>x.id===id);if(!item)return;
- editingId=id;$('mod-editing-id').value=id;$('mod-title').value=item.title||'';$('mod-category').value=item.category||'modpack';$('mod-subtitle').value=item.subtitle||'';$('mod-description').value=item.description||'';$('mod-download').value=item.downloadUrl||'';$('mod-image').value=item.imageUrl||'';$('mod-preview2').value=item.preview2Url||'';$('mod-preset').value=item.presetUrl||'';$('mod-tags').value=(item.tags||[]).join(', ');$('mod-code').value=item.languageCode||'';$('mod-sort').value=item.sortOrder??100;$('mod-published').checked=!!item.published;$('mod-form-title').textContent='Edit mod';$('mod-submit').textContent='Save changes';setStatus('Editing '+item.title);syncConditional();syncPreview();$('panel-mods').scrollIntoView({behavior:'smooth',block:'start'});
+ const previews=itemPreviews(item);
+ editingId=id;$('mod-editing-id').value=id;$('mod-title').value=item.title||'';$('mod-category').value=item.category||'modpack';$('mod-subtitle').value=item.subtitle||'';$('mod-description').value=item.description||'';$('mod-download').value=item.downloadUrl||'';$('mod-images').value=previews.join('\n');$('mod-preset').value=item.presetUrl||'';$('mod-tags').value=(item.tags||[]).join(', ');$('mod-code').value=item.languageCode||'';$('mod-sort').value=item.sortOrder??100;$('mod-published').checked=!!item.published;$('mod-form-title').textContent='Edit mod';$('mod-submit').textContent='Save changes';setStatus('Editing '+item.title);syncConditional();syncPreview();$('panel-mods').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 async function remove(id){
@@ -160,8 +164,9 @@ function renderList(){
  root.replaceChildren();
  if(!rows.length){root.innerHTML='<div class="mods-admin-empty">No mods match this view.</div>';return}
  rows.forEach(item=>{
+  const previews=itemPreviews(item),thumb=previews[0]||'';
   const article=document.createElement('article');article.className='mods-admin-item';
-  article.innerHTML=`<div class="mods-admin-thumb">${item.imageUrl?`<img src="${esc(item.imageUrl)}" alt="">`:icon(categoryIcon(item.category))}</div><div class="mods-admin-copy"><strong>${esc(item.title)}</strong><small>${esc(categoryLabel(item.category)+(item.subtitle?' · '+item.subtitle:''))}</small><div class="mods-admin-meta"><span>${esc(String(item.sortOrder??100))}</span><span class="${item.published?'published':'draft'}">${item.published?'Published':'Draft'}</span>${item.languageCode?`<span>${esc(item.languageCode)}</span>`:''}</div></div><div class="mods-admin-item-actions"><button type="button" data-edit="${esc(item.id)}">Edit</button><button type="button" class="delete" data-delete="${esc(item.id)}">Delete</button></div>`;
+  article.innerHTML=`<div class="mods-admin-thumb">${thumb?`<img src="${esc(thumb)}" alt="">`:icon(categoryIcon(item.category))}</div><div class="mods-admin-copy"><strong>${esc(item.title)}</strong><small>${esc(categoryLabel(item.category)+(item.subtitle?' · '+item.subtitle:''))}</small><div class="mods-admin-meta"><span>${esc(String(item.sortOrder??100))}</span><span class="${item.published?'published':'draft'}">${item.published?'Published':'Draft'}</span><span>${previews.length} preview${previews.length===1?'':'s'}${previews.length>1?' · slider':''}</span>${item.languageCode?`<span>${esc(item.languageCode)}</span>`:''}</div></div><div class="mods-admin-item-actions"><button type="button" data-edit="${esc(item.id)}">Edit</button><button type="button" class="delete" data-delete="${esc(item.id)}">Delete</button></div>`;
   root.append(article);
  });
  root.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>edit(b.dataset.edit)));

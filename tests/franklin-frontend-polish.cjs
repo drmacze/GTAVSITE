@@ -1,0 +1,12 @@
+const fs=require('fs');
+const assert=require('assert');
+const lazy=fs.readFileSync('dist/lazy-helper.js','utf8');
+const guard=fs.readFileSync('dist/franklin-ui-guard.js','utf8');
+const polish=fs.readFileSync('dist/franklin-ui-polish.js','utf8');
+assert(lazy.includes("lazy-franklin-avatar"),'primary Franklin button must include avatar');
+assert(lazy.includes("franklin-ui-polish.js"),'Franklin loader must load UI polish');
+assert(!lazy.includes("button.remove()"),'primary Franklin button must persist after connect');
+assert(guard.includes(".ask-franklin-launcher")&&guard.includes("display:none!important"),'legacy launcher must stay frontend-hidden');
+assert(polish.includes("franklin-language-icon"),'language control must render a globe icon');
+assert(polish.includes("opacity:0!important"),'native language select must remain functional but visually hidden');
+console.log('Franklin frontend polish regression checks passed.');

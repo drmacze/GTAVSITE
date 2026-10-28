@@ -1,10 +1,12 @@
 /* Lightweight UI safety bootstrap. */
 (()=>{
  const addScript=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.append(s)};
+ const addStyle=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.append(l)};
  addScript('franklin-ui-guard-v2.js?v=20261028polish3','franklin-ui-guard-v2-loader');
  addScript('franklin-primary-state-fix.js?v=20261028primary1','franklin-primary-state-fix-loader');
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
+ addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');

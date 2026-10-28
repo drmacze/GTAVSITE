@@ -8,13 +8,12 @@
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
  if(document.body?.dataset.page==='home'){
-   // Keep onboarding completion inside the already-loaded combined Welcome + Home document.
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
-     requestAnimationFrame(()=>document.querySelector('.home-intro-v2')?.scrollIntoView({block:'start',behavior:'auto'}));
+     requestAnimationFrame(()=>document.querySelector('.home-intro-v3')?.scrollIntoView({block:'start',behavior:'auto'}));
    };
-   addStyle('home-intro-v2.css?v=20261028homeintro2','home-intro-v2-style');
-   addScript('home-intro-v2.js?v=20261028homeintro2','home-intro-v2-script');
+   addStyle('home-intro-v3.css?v=20261028homeintro3','home-intro-v3-style');
+   addScript('home-intro-v3.js?v=20261028homeintro3','home-intro-v3-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

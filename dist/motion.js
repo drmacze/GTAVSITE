@@ -33,8 +33,8 @@
    addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
    addStyle('mods-catalog-v5.css?v=20261029catalog5','mods-catalog-v5-style');
    addScript('mods-catalog-v5.js?v=20261029catalog5','mods-catalog-v5-script');
-   addStyle('mods-awesomekills-v1.css?v=20261029awesome4','mods-awesomekills-v1-style');
-   addScript('mods-awesomekills-v1.js?v=20261029awesome4','mods-awesomekills-v1-script');
+   addStyle('mods-awesomekills-v1.css?v=20261029awesome5','mods-awesomekills-v1-style');
+   addScript('mods-awesomekills-v1.js?v=20261029awesome5','mods-awesomekills-v1-script');
    addStyle('mods-clean-v6.css?v=20261029clean6','mods-clean-v6-style');
    addStyle('mods-library-v7.css?v=20261029library7','mods-library-v7-style');
    addScript('mods-library-v7.js?v=20261029library7','mods-library-v7-script');

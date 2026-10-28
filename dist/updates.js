@@ -1,7 +1,18 @@
 (() => {
+  if (window.__updatesLatest28) return;
+  window.__updatesLatest28 = true;
+
   const api = '/api/updates';
   const heading = document.querySelector('.updates-heading');
   if (!heading) return;
+
+  const cleanupLegacyShells = () => {
+    document.querySelectorAll('.managed-updates:not(.latest-release-28)').forEach(node => node.remove());
+  };
+  cleanupLegacyShells();
+  const legacyObserver = new MutationObserver(cleanupLegacyShells);
+  legacyObserver.observe(document.body, { childList: true, subtree: true });
+  window.addEventListener('pagehide', () => legacyObserver.disconnect(), { once: true });
 
   const featured28 = {
     category: 'Latest release',
@@ -37,10 +48,9 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'managed-updates.css?v=20261029latest28';
+  css.href = 'managed-updates.css?v=20261029latest28b';
   document.head.append(css);
 
-  // Remove the old injected 28 Oct archive card if an older cached bootstrap created it first.
   document.querySelector('.release-list > #release-2026-10-28')?.remove();
 
   const shell = document.createElement('section');

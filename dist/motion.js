@@ -24,8 +24,8 @@
    addScript('story-scrolltrigger-v3.js?v=20261029st7','story-scrolltrigger-v3-script');
 
    // Once the cinematic intro + Stories chapter is complete, Home becomes a one-way content chapter.
-   addStyle('home-chapter-lock-v1.css?v=20261029chapter2','home-chapter-lock-v1-style');
-   addScript('home-chapter-lock-v1.js?v=20261029chapter2','home-chapter-lock-v1-script');
+   addStyle('home-chapter-lock-v1.css?v=20261029chapter3','home-chapter-lock-v1-style');
+   addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
 
    // Explicit versioned load prevents Safari from reusing the old unversioned music.js request from app.js.
    addScript('music.js?v=20261029scrollmusic1','home-music-scroll-loader');

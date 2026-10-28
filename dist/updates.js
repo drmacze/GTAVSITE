@@ -5,7 +5,7 @@
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'managed-updates.css?v=20261027a';
+  css.href = 'managed-updates.css?v=20261028format';
   document.head.append(css);
 
   const shell = document.createElement('section');
@@ -20,12 +20,58 @@
     return Number.isNaN(parsed.valueOf()) ? date : new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' }).format(parsed);
   };
 
-  function paragraphs(body) {
+  // Build nodes directly so release text cannot inject HTML or executable URLs.
+  function inline(value) {
     const fragment = document.createDocumentFragment();
-    escapeText(body).split(/\n{2,}/).map(value => value.trim()).filter(Boolean).forEach(text => {
-      const p = document.createElement('p');
-      p.textContent = text;
-      fragment.append(p);
+    const plain = text => document.createTextNode(text.replace(/\*\*/g, ''));
+    const pattern = /(`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\))/g;
+    let offset = 0;
+    for (const match of String(value).matchAll(pattern)) {
+      fragment.append(plain(value.slice(offset, match.index)));
+      const node = document.createElement(match[2] ? 'code' : match[3] ? 'strong' : 'a');
+      node.textContent = match[2] || match[3] || match[4];
+      if (match[5]) {
+        node.href = match[5];
+        node.target = '_blank';
+        node.rel = 'noopener noreferrer';
+      }
+      fragment.append(node);
+      offset = match.index + match[0].length;
+    }
+    fragment.append(plain(value.slice(offset)));
+    return fragment;
+  }
+
+  function paragraphs(value) {
+    const fragment = document.createDocumentFragment();
+    let list = null;
+    escapeText(value).replace(/\r\n?/g, '\n').split('\n').forEach(raw => {
+      const line = raw.trim();
+      if (!line) { list = null; return; }
+      const heading = line.match(/^#{1,6}\s+(.+)$/) || line.match(/^\*\*(.+?)\*\*:?$/);
+      const bullet = line.match(/^(?:[-*•]\s+|\d+[.)]\s+)(.+)$/);
+      // Emoji-led release instructions are individual steps, not one dense paragraph.
+      const step = line.match(/^(?:[\u{1F100}-\u{1FAFF}\u2600-\u27BF]\uFE0F?\s*)(.+)$/u);
+      if (heading) {
+        list = null;
+        const h = document.createElement('h4');
+        h.append(inline(heading[1]));
+        fragment.append(h);
+      } else if (bullet || step) {
+        const tag = /^\d+[.)]\s/.test(line) ? 'ol' : 'ul';
+        if (!list || list.tagName.toLowerCase() !== tag) {
+          list = document.createElement(tag);
+          fragment.append(list);
+        }
+        const li = document.createElement('li');
+        li.append(inline(bullet ? bullet[1] : step[1]));
+        list.append(li);
+      } else {
+        list = null;
+        const p = document.createElement('p');
+        p.append(inline(line));
+        fragment.append(p);
+      }
     });
     return fragment;
   }
@@ -72,9 +118,9 @@
         card.append(version);
       }
       if (item.summary) {
-        const summary = document.createElement('p');
+        const summary = document.createElement('div');
         summary.className = 'managed-update-summary';
-        summary.textContent = item.summary;
+        summary.append(paragraphs(item.summary));
         card.append(summary);
       }
       if (item.imageUrl) {

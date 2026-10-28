@@ -5,6 +5,7 @@ window.__gtavStorage45Loaded=true;
 const MIN=45;
 const policy=Object.freeze({minimumFreeGB:45,installedDataApproxGB:22,source:'Current developer game-files setup instructions'});
 window.GTAVStoragePolicy=policy;
+const setText=(node,text)=>{if(node&&node.textContent!==text)node.textContent=text};
 
 const addStyle=()=>{if(document.getElementById('storage-policy-45-style'))return;const s=document.createElement('style');s.id='storage-policy-45-style';s.textContent=`
 .storage-45-note{display:block;margin-top:7px;color:#b89e6f;font-size:8px;line-height:1.55;letter-spacing:.1px}.storage-45-callout{margin:20px 0;padding:18px 19px;border:1px solid color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 28%,rgba(255,255,255,.12));border-radius:8px;background:color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 4%,transparent)}.storage-45-callout h3{margin:0 0 8px;font-size:12px;font-weight:650}.storage-45-callout p{margin:0;color:var(--fg-999999,#999);font-size:10px;line-height:1.8}.storage-45-callout p+p{margin-top:8px}.storage-45-path{display:block;margin-top:10px;padding:9px 10px;border:1px solid rgba(255,255,255,.08);border-radius:6px;background:rgba(255,255,255,.025);font:600 9px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fg-cfcfcf,#cfcfcf)}
@@ -16,18 +17,18 @@ function patchCompatibility(){
  const label=input.closest('label');
  if(label&&!label.querySelector('.storage-45-note')){const n=document.createElement('small');n.className='storage-45-note';n.textContent='45 GB free minimum before downloading or extracting the game files.';label.append(n)}
  const apply=()=>{
-  const sourceReview=document.querySelector('.source-review');if(sourceReview)sourceReview.textContent='Compatibility reference: iOS 16.3 technical minimum, iOS 18+ recommended, A12 experimental / A13 baseline, Low-Memory Profile at ≤4.5 GB, native app-memory tiers at 3000/4400/5800 MB, and 45 GB free storage minimum before game-file setup.';
+  const sourceReview=document.querySelector('.source-review:not(.storage-45-source-review)');
+  if(sourceReview){sourceReview.style.display='none';if(!document.querySelector('.storage-45-source-review')){const replacement=document.createElement(sourceReview.tagName.toLowerCase());replacement.className='source-review storage-45-source-review';replacement.textContent='Compatibility reference: iOS 16.3 technical minimum, iOS 18+ recommended, A12 experimental / A13 baseline, Low-Memory Profile at ≤4.5 GB, native app-memory tiers at 3000/4400/5800 MB, and 45 GB free storage minimum before game-file setup.';sourceReview.insertAdjacentElement('afterend',replacement)}}
   const value=Number(input.value);if(!Number.isFinite(value)||input.value==='')return;
   const cards=[...document.querySelectorAll('#runtime-grid .hardware-card')];
   const card=cards.find(c=>/free storage/i.test(c.querySelector('.hardware-label')?.textContent||c.textContent||''));
   if(!card)return;
   const ok=value>=MIN,level=ok?'headroom':'critical';
-  card.classList.remove('critical','minimum','headroom','unknown');card.classList.add(level);card.dataset.level=level;
-  const title=card.querySelector('h3');if(title)title.textContent=`${value} GB free`;
-  const note=card.querySelector('p');if(note)note.textContent=ok?'Meets the current 45 GB free-space minimum for game-file setup.':'Insufficient for setup. At least 45 GB free is required before downloading or extracting the game files. The installed data is smaller, but setup needs working space for the zip and extracted GTAV folder.';
-  const badge=card.querySelector('.hardware-badge');if(badge){badge.classList.remove('critical','minimum','headroom','unknown');badge.classList.add(level);badge.textContent=ok?'Meets minimum':'Insufficient'}
-  document.querySelectorAll('.compat-summary-card').forEach(summary=>{const name=summary.querySelector('span')?.textContent||'';if(!/storage/i.test(name))return;summary.dataset.level=level;const strong=summary.querySelector('strong');const small=summary.querySelector('small');if(strong)strong.textContent=`${value} GB free`;if(small)small.textContent=ok?'45 GB minimum met.':'45 GB minimum not met.'});
-  if(!ok){const verdict=document.querySelector('#compat-verdict');if(verdict){verdict.classList.remove('minimum','headroom');verdict.classList.add('critical');const h=verdict.querySelector('h3');const p=verdict.querySelector('p');if(h)h.textContent='Not ready to install';if(p)p.textContent='Free storage is below the current 45 GB minimum required before downloading or extracting the GTA V game files.'}}
+  if(card.dataset.storage45Level!==level){card.dataset.storage45Level=level;card.classList.remove('critical','minimum','headroom','unknown');card.classList.add(level);card.dataset.level=level}
+  setText(card.querySelector('h3'),`${value} GB free`);
+  setText(card.querySelector('p'),ok?'Meets the current 45 GB free-space minimum for game-file setup.':'Insufficient for setup. At least 45 GB free is required before downloading or extracting the game files. The installed data is smaller, but setup needs working space for the zip and extracted GTAV folder.');
+  const badge=card.querySelector('.hardware-badge');if(badge){if(!badge.classList.contains(level)){badge.classList.remove('critical','minimum','headroom','unknown');badge.classList.add(level)}setText(badge,ok?'Meets minimum':'Insufficient')}
+  document.querySelectorAll('.compat-summary-card').forEach(summary=>{const name=summary.querySelector('span')?.textContent||'';if(!/storage/i.test(name))return;if(summary.dataset.level!==level)summary.dataset.level=level;setText(summary.querySelector('strong'),`${value} GB free`);setText(summary.querySelector('small'),ok?'45 GB minimum met.':'45 GB minimum not met.')});
  };
  if(input.dataset.storage45Bound==='true'){apply();return}
  input.dataset.storage45Bound='true';input.addEventListener('input',()=>requestAnimationFrame(apply));
@@ -38,7 +39,7 @@ function patchCompatibility(){
 function patchGuide(){
  const req=document.querySelector('#requirements');if(req){
   const list=req.querySelector('.guide-checklist');if(list&&!list.querySelector('[data-storage45]')){const li=document.createElement('li');li.dataset.storage45='true';li.innerHTML='<strong>Have at least 45 GB of free storage before downloading or extracting the game files.</strong> This is the current minimum setup requirement.';list.prepend(li)}
-  const policyBox=req.querySelector('.guide-policy');if(policyBox){const h=policyBox.querySelector('h3'),p=policyBox.querySelector('p');if(h)h.textContent='Current storage requirement';if(p)p.textContent='The current developer setup requires at least 45 GB free before downloading or extracting the game files. The installed data is smaller, but the setup temporarily needs room for the archive and the extracted GTAV folder.'}
+  const policyBox=req.querySelector('.guide-policy');if(policyBox){setText(policyBox.querySelector('h3'),'Current storage requirement');setText(policyBox.querySelector('p'),'The current developer setup requires at least 45 GB free before downloading or extracting the game files. The installed data is smaller, but the setup temporarily needs room for the archive and the extracted GTAV folder.')}
  }
  const section=document.querySelector('#game-files');if(section&&!section.querySelector('[data-storage45-guide]')){
   const box=document.createElement('div');box.className='storage-45-callout';box.dataset.storage45Guide='true';box.innerHTML='<h3>45 GB free minimum before you start</h3><p>For the on-iPhone setup, save the game-files zip in <strong>Files → On My iPhone</strong> — not iCloud Drive. Keep Files open while it unpacks, then move the resulting <strong>GTAV</strong> folder into <strong>On My iPhone → GTA V</strong>.</p><span class="storage-45-path">GTA V › GTAV › common.rpf</span><p>Avoid <strong>GTA V › GTAV › GTAV › common.rpf</strong> and avoid placing <strong>common.rpf</strong> directly inside <strong>GTA V</strong>. After the folder is in the correct place and verified, delete the downloaded zip to reclaim roughly 22 GB. The website still uses 45 GB free as the minimum before setup.</p>';
@@ -48,7 +49,7 @@ function patchGuide(){
 
 function patchGetStarted(){
  const panel=document.querySelector('#start-panel-1');if(!panel)return;
- const note=panel.querySelector('.start-note p');if(note)note.textContent='Have at least 45 GB free before downloading or extracting the game files. Installed RAM and app-memory allowance are separate checks.';
+ setText(panel.querySelector('.start-note p'),'Have at least 45 GB free before downloading or extracting the game files. Installed RAM and app-memory allowance are separate checks.');
  const intro=panel.querySelector(':scope > p');if(intro&&!/45 GB/.test(intro.textContent))intro.textContent+=' The current game-file setup requires at least 45 GB of free storage.';
 }
 
@@ -67,11 +68,12 @@ function patchVisibleLegacyCopy(){
  document.querySelectorAll('main p,main li,main small,main strong,main span').forEach(node=>{
   if(node.closest('#install-size')&&/21\.6|29\.5/i.test(node.textContent||''))return;
   if(node.children.length)return;
-  const t=node.textContent||'';
-  if(/about 30 GB free/i.test(t))node.textContent=t.replace(/about 30 GB free/ig,'at least 45 GB free');
-  else if(/more than 30 GB free/i.test(t))node.textContent=t.replace(/more than 30 GB free/ig,'at least 45 GB free');
-  else if(/30 GB free/i.test(t))node.textContent=t.replace(/30 GB free/ig,'45 GB free minimum');
-  else if(/~30 GB/i.test(t))node.textContent=t.replace(/~30 GB/ig,'45 GB minimum');
+  const t=node.textContent||'';let next=t;
+  if(/about 30 GB free/i.test(next))next=next.replace(/about 30 GB free/ig,'at least 45 GB free');
+  if(/more than 30 GB free/i.test(next))next=next.replace(/more than 30 GB free/ig,'at least 45 GB free');
+  if(/30 GB free/i.test(next))next=next.replace(/30 GB free/ig,'45 GB free minimum');
+  if(/~30 GB/i.test(next))next=next.replace(/~30 GB/ig,'45 GB minimum');
+  if(next!==t)node.textContent=next;
  });
 }
 

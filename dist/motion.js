@@ -7,6 +7,10 @@
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
+ if(document.body?.dataset.page==='home'){
+   addStyle('home-intro-v1.css?v=20261028homeintro1','home-intro-v1-style');
+   addScript('home-intro-v1.js?v=20261028homeintro1','home-intro-v1-script');
+ }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
@@ -17,12 +21,10 @@
 (()=>{
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const touch=matchMedia('(pointer: coarse)').matches;
- // Welcome stays native and stationary; welcome.js owns the transition at the end.
  if(document.querySelector('.welcome-page')||reduced)return;
  // Touch devices retain native momentum without section transforms or layout refreshes.
  if(touch||!('IntersectionObserver' in window))return;
  const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;observer.unobserve(entry.target);entry.target.animate([{opacity:.65,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:340,easing:'ease-out'});}}, {threshold:.08});
- // Animate only top-level editorial sections, never nested text, controls, or dynamic results.
  document.querySelectorAll('.technical-section,.guide-section,.project-credits,.support-group').forEach(section=>observer.observe(section));
  window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
 })();

@@ -43,3 +43,12 @@
   }).observe(track);
   update(0);
 })();
+
+(() => {
+  if (document.body?.dataset.page !== 'home' || document.querySelector('script[data-story-showcase]')) return;
+  const script = document.createElement('script');
+  script.src = 'story-showcase.js?v=20261029stories1';
+  script.async = true;
+  script.dataset.storyShowcase = 'true';
+  document.head.append(script);
+})();

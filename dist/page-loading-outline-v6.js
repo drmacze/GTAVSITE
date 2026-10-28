@@ -1,7 +1,7 @@
 /* UI safety bootstrap. */
 (()=>{
  const addScript=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;document.head.append(s)};
- addScript('franklin-ui-guard.js?v=20261028unified5','franklin-ui-guard-loader');
+ addScript('franklin-ui-guard-v2.js?v=20261028polish2','franklin-ui-guard-loader');
  if(document.body?.dataset.page==='feedback'){
   if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028unified5';l.dataset.feedbackFixes='true';document.head.append(l)}
   addScript('feedback-fixes.js?v=20261028unified5','feedback-fixes-loader');
@@ -43,33 +43,18 @@
   if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button>0)return;
   const url=eligible(a);
   if(!url||navigating)return;
-  e.preventDefault();
-  navigating=true;
-  prefetch(a);
+  e.preventDefault();navigating=true;prefetch(a);
   try{sessionStorage.setItem(TRANSITION_KEY,'1')}catch{}
   show();
   const go=()=>{location.href=url.href};
   if(reduceMotion.matches){go();return}
-  let finished=false;
-  let fallback=0;
-  const finish=()=>{
-   if(finished)return;
-   finished=true;
-   if(fallback)clearTimeout(fallback);
-   go();
-  };
-  const onAnimationEnd=event=>{
-   if(event.animationName!=='outline-v6-shine-once')return;
-   glint.removeEventListener('animationend',onAnimationEnd);
-   finish();
-  };
+  let finished=false;let fallback=0;
+  const finish=()=>{if(finished)return;finished=true;if(fallback)clearTimeout(fallback);go()};
+  const onAnimationEnd=event=>{if(event.animationName!=='outline-v6-shine-once')return;glint.removeEventListener('animationend',onAnimationEnd);finish()};
   glint.addEventListener('animationend',onAnimationEnd);
   void glint.getBoundingClientRect();
   requestAnimationFrame(()=>overlay.classList.add('is-leaving'));
-  fallback=setTimeout(()=>{
-   glint.removeEventListener('animationend',onAnimationEnd);
-   finish();
-  },SHINE_FALLBACK_MS);
+  fallback=setTimeout(()=>{glint.removeEventListener('animationend',onAnimationEnd);finish()},SHINE_FALLBACK_MS);
  });
  window.addEventListener('pageshow',e=>{navigating=false;if(e.persisted)overlay.classList.remove('is-active','is-arriving','is-leaving','is-revealing')});
  window.addEventListener('pagehide',()=>{navigating=false});

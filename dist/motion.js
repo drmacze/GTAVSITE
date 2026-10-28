@@ -22,6 +22,7 @@
    window.__storyST5=true;
    addStyle('story-scrolltrigger-v3.css?v=20261029st7','story-scrolltrigger-v3-style');
    addScript('story-scrolltrigger-v3.js?v=20261029st7','story-scrolltrigger-v3-script');
+   addStyle('home-scroll-refinements-v1.css?v=20261029refine1','home-scroll-refinements-v1-style');
 
    // Once the cinematic intro + Stories chapter is complete, Home becomes a one-way content chapter.
    addStyle('home-chapter-lock-v1.css?v=20261029chapter3','home-chapter-lock-v1-style');

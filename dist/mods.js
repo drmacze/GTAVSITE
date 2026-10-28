@@ -1,5 +1,7 @@
 (()=>{
 'use strict';
+if(window.__gtavModsDLC20261029)return;
+window.__gtavModsDLC20261029=true;
 
 const main=document.querySelector('.mods-studio');
 if(!main)return;
@@ -73,8 +75,12 @@ if(languages&&!main.querySelector('.mods-dlc')){
   languages.before(section);
 }
 
-const languagePicker=main.querySelector('.language-picker');
+let languagePicker=main.querySelector('.language-picker');
 if(languagePicker){
+  // Replace the node once so a stale pre-cache script cannot leave a second click handler attached.
+  const cleanPicker=languagePicker.cloneNode(true);
+  languagePicker.replaceWith(cleanPicker);
+  languagePicker=cleanPicker;
   const hint=languagePicker.querySelector('.language-hint');
   if(hint)hint.textContent='5 packs available';
   const options=languagePicker.querySelector('.language-options');

@@ -15,6 +15,7 @@
    };
    addStyle('home-intro-v4.css?v=20261028homeintro4r3','home-intro-v4-style');
    addStyle('home-intro-v4-polish.css?v=20261028v4polish2','home-intro-v4-polish-style');
+   addStyle('community-welcome-v2.css?v=20261028communitywelcome2','community-welcome-v2-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
  }
  if(document.body?.dataset.page==='feedback'){

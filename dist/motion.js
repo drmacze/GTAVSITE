@@ -35,8 +35,8 @@
    // Build content first, then enhance it as a searchable catalogue.
    addStyle('downloads.css?v=20261029dlc4','downloads-dlc4-style');
    addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
-   addStyle('mods-catalog-v4.css?v=20261029catalog4','mods-catalog-v4-style');
-   addScript('mods-catalog-v4.js?v=20261029catalog4','mods-catalog-v4-script');
+   addStyle('mods-catalog-v4.css?v=20261029catalog4b','mods-catalog-v4-style');
+   addScript('mods-catalog-v4.js?v=20261029catalog4b','mods-catalog-v4-script');
  }
  if(document.body?.dataset.page==='updates'){
    // Force the hierarchy build that promotes 28 Oct and demotes 27 Oct into the normal archive.

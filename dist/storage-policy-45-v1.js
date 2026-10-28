@@ -28,8 +28,9 @@ function patchCompatibility(){
   document.querySelectorAll('.compat-summary-card').forEach(summary=>{const name=summary.querySelector('span')?.textContent||'';if(!/storage/i.test(name))return;summary.dataset.level=level;const strong=summary.querySelector('strong');const small=summary.querySelector('small');if(strong)strong.textContent=`${value} GB free`;if(small)small.textContent=ok?'45 GB minimum met.':'45 GB minimum not met.'});
   if(!ok){const verdict=document.querySelector('#compat-verdict');if(verdict){verdict.classList.remove('minimum','headroom');verdict.classList.add('critical');const h=verdict.querySelector('h3');const p=verdict.querySelector('p');if(h)h.textContent='Not ready to install';if(p)p.textContent='Free storage is below the current 45 GB minimum required before downloading or extracting the GTA V game files.'}}
  };
- input.addEventListener('input',()=>requestAnimationFrame(apply));
- const results=document.querySelector('#compat-results')||document.body;new MutationObserver(()=>requestAnimationFrame(apply)).observe(results,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']});
+ if(input.dataset.storage45Bound==='true'){apply();return}
+ input.dataset.storage45Bound='true';input.addEventListener('input',()=>requestAnimationFrame(apply));
+ const results=document.querySelector('#compat-results')||document.body;if(results.dataset.storage45Observed!=='true'){results.dataset.storage45Observed='true';new MutationObserver(()=>requestAnimationFrame(apply)).observe(results,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']})}
  apply();
 }
 
@@ -58,7 +59,7 @@ function patchFAQ(){
 function patchTechnicalities(){
  const sec=document.querySelector('#install-size');if(!sec||sec.querySelector('[data-storage45-tech]'))return;
  const box=document.createElement('div');box.className='storage-45-callout';box.dataset.storage45Tech='true';box.innerHTML='<h3>Setup free-space requirement</h3><p>The installed data size shown above is not the amount of free space needed to perform the setup. The current requirement is <strong>45 GB free minimum</strong> before downloading or extracting the game files so the archive and extracted GTAV folder can coexist temporarily.</p>';
- sec.append(box)
+ (sec.querySelector(':scope > div')||sec).append(box)
 }
 
 function patchVisibleLegacyCopy(){

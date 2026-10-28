@@ -34,6 +34,9 @@
 /home-intro-v4.js
   Cache-Control: no-store, max-age=0
 
+/home-intro-v4-polish.css
+  Cache-Control: no-store, max-age=0
+
 /home-intro-v5.css
   Cache-Control: no-store, max-age=0
 

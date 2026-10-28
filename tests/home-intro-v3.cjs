@@ -1,0 +1,21 @@
+const fs=require('fs');
+const assert=require('assert');
+const motion=fs.readFileSync('dist/motion.js','utf8');
+const js=fs.readFileSync('dist/home-intro-v3.js','utf8');
+const css=fs.readFileSync('dist/home-intro-v3.css','utf8');
+const loader=fs.readFileSync('dist/page-loading-outline-v6.js','utf8');
+
+assert.match(motion,/home-intro-v3\.css/,'Home must load intro v3 CSS');
+assert.match(motion,/home-intro-v3\.js/,'Home must load intro v3 JS');
+assert.doesNotMatch(motion,/home-intro-v2\.(?:css|js)/,'Home must not load intro v2');
+assert.match(js,/Welcome to our community site/,'announcement bar copy must exist');
+assert.match(js,/home-intro-v3-mark/,'left intro mark must exist');
+assert.match(js,/home-intro-v3-status/,'status headline above cover must exist');
+assert.match(js,/home-intro-v3-cue-pill">Scroll down/,'non-clickable scroll cue must exist');
+assert.match(js,/rockstargames-newsite\/img\/meta-icons\/rockstar\/favicon\.svg/,'official Rockstar mark source must be used');
+assert.match(css,/pointer-events:none;user-select:none/,'scroll cue must be non-interactive');
+assert.match(css,/brightness\(0\) invert\(\.76\)/,'Apple and Rockstar marks must be monochrome');
+assert.match(js,/coverScale=1\+coverOut\*\.18/,'cover must scale during the scroll transition');
+assert.match(loader,/setTimeout\(announceIntro,280\)/,'initial loader must hand off into the intro with a visible transition gap');
+assert.match(loader,/window\.__gtavIntroLoaderComplete=true/,'intro loader completion state must be persisted for race-free reveal');
+console.log('home intro v3 regression checks passed');

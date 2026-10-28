@@ -19,6 +19,7 @@
  let mediaBusy=false;
  let manualPause=false;
  let recoveryTimer=0;
+ let gestureStartScroll=scrollY;
 
  function primeVideo(){
    if(!video.getAttribute('src'))video.src='assets/trailer.mp4';
@@ -49,10 +50,7 @@
  async function ensureVideoPlaying(){
    if(document.hidden||reduced.matches||manualPause)return false;
    primeVideo();
-   try{
-     await video.play();
-     return true;
-   }catch{return false;}
+   try{await video.play();return true;}catch{return false;}
  }
 
  async function enableSoundFromGesture(){
@@ -72,7 +70,6 @@
      window.dispatchEvent(new CustomEvent('gtav:home-music-started'));
      return true;
    }catch{
-     /* Keep the listener armed. The next real gesture retries after buffering/source setup. */
      soundOn=false;
      if(video.paused&&!manualPause){video.muted=true;await ensureVideoPlaying();}
      syncControls();
@@ -104,32 +101,30 @@
    },delay);
  }
 
- const onScrollGesture=()=>{
-   if(document.body.classList.contains('home-chapter-locked')&&soundOn)return;
-   enableSoundFromGesture();
- };
- const wheelGesture=event=>{if(Math.abs(event.deltaY)>0)onScrollGesture();};
- const keyGesture=event=>{if(['ArrowDown','PageDown',' ','Spacebar'].includes(event.key))onScrollGesture();};
+ const markGesture=()=>{gestureStartScroll=scrollY;};
+ const finishTouchGesture=()=>{if(Math.abs(scrollY-gestureStartScroll)>2)enableSoundFromGesture();};
+ const wheelGesture=event=>{if(Math.abs(event.deltaY)>0)enableSoundFromGesture();};
+ const keyGesture=event=>{if(['ArrowDown','PageDown',' ','Spacebar'].includes(event.key))enableSoundFromGesture();};
  let gesturesBound=false;
  function addAutoGestureListeners(){
    if(gesturesBound||soundOn)return;
    gesturesBound=true;
-   addEventListener('touchmove',onScrollGesture,{passive:true});
-   addEventListener('pointerup',onScrollGesture,{passive:true});
+   addEventListener('touchstart',markGesture,{passive:true});
+   addEventListener('touchend',finishTouchGesture,{passive:true});
    addEventListener('wheel',wheelGesture,{passive:true});
    addEventListener('keydown',keyGesture);
  }
  function removeAutoGestureListeners(){
    if(!gesturesBound)return;
    gesturesBound=false;
-   removeEventListener('touchmove',onScrollGesture);
-   removeEventListener('pointerup',onScrollGesture);
+   removeEventListener('touchstart',markGesture);
+   removeEventListener('touchend',finishTouchGesture);
    removeEventListener('wheel',wheelGesture);
    removeEventListener('keydown',keyGesture);
  }
 
  const playButton=document.querySelector('#video-play');
- playButton?.addEventListener('click',()=>{manualPause=!video.paused; if(!manualPause)recoverPlayback(0);},{capture:true});
+ playButton?.addEventListener('click',()=>{manualPause=!video.paused;if(!manualPause)recoverPlayback(0);},{capture:true});
  control?.addEventListener('click',toggle);
 
  video.addEventListener('loadedmetadata',()=>{video.preload='auto';recoverPlayback(0);});

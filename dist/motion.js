@@ -30,6 +30,11 @@
    // Explicit versioned load prevents Safari from reusing the old unversioned music.js request from app.js.
    addScript('music.js?v=20261029scrollmusic1','home-music-scroll-loader');
  }
+ if(document.body?.dataset.page==='downloads'){
+   // downloads.html historically loaded static asset versions. Load the current Mods build explicitly.
+   addStyle('downloads.css?v=20261029dlc2','downloads-dlc2-style');
+   addScript('mods.js?v=20261029dlc2','mods-dlc2-script');
+ }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');

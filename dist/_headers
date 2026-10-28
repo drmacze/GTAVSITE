@@ -71,7 +71,7 @@
   Cache-Control: no-cache, must-revalidate
 
 /motion.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, max-age=0
 
 /loading.css
   Cache-Control: no-store, max-age=0

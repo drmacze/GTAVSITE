@@ -5,6 +5,7 @@ window.__awesomekillsGraphicsV2=true;
 
 const BASE='assets/mods/awesomekills/';
 const SEARCH_TEXT='awesomekills graphics ios night fix lighting nighttime lighting timecycle visual';
+const DOWNLOAD_URL='https://gofile.io/d/e726b04a-a872-4ab3-a5b5-d877e05fa422';
 
 async function loadPreview(path,img){
   try{
@@ -59,9 +60,9 @@ function mount(){
           <li>Improves the timecycle</li>
         </ul>
         <div class="awesomekills-actions">
-          <button class="awesomekills-download is-pending" type="button" aria-disabled="true">
-            <span><small>Mod file</small>Download OIV</span><b>Public link pending</b>
-          </button>
+          <a class="awesomekills-download" href="${DOWNLOAD_URL}" target="_blank" rel="noopener noreferrer">
+            <span><small>Mod file</small>Download OIV</span><b>↗</b>
+          </a>
         </div>
       </div>
     </article>`;
@@ -122,14 +123,6 @@ function mount(){
   };
   search?.addEventListener('input',()=>setTimeout(reconcile,120));
   document.querySelectorAll('.mods-filter-nav [data-filter]').forEach(button=>button.addEventListener('click',()=>setTimeout(reconcile,40)));
-
-  const pending=row.querySelector('.is-pending');
-  pending.addEventListener('click',()=>{
-    const label=pending.querySelector('b');
-    const old=label.textContent;
-    label.textContent='Need public file URL';
-    setTimeout(()=>label.textContent=old,1800);
-  });
 
   return true;
 }

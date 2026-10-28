@@ -28,6 +28,12 @@
 /home-intro-v3.js
   Cache-Control: no-store, max-age=0
 
+/home-intro-v4.css
+  Cache-Control: no-store, max-age=0
+
+/home-intro-v4.js
+  Cache-Control: no-store, max-age=0
+
 /franklin
   Cache-Control: no-store, max-age=0
 

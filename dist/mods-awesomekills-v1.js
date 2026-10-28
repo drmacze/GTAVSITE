@@ -4,8 +4,7 @@ if(window.__awesomekillsGraphicsV2)return;
 window.__awesomekillsGraphicsV2=true;
 
 const BASE='assets/mods/awesomekills/';
-const PRESET=BASE+'GTA-V-graphics-settings-iPhone11.json';
-const SEARCH_TEXT='awesomekills graphics ios night fix lighting pencahayaan malam timecycle visual preset iphone 11 a13 4 gb 960 540 50 fps';
+const SEARCH_TEXT='awesomekills graphics ios night fix lighting nighttime lighting timecycle visual';
 
 async function loadPreview(path,img){
   try{
@@ -28,7 +27,7 @@ function mount(){
   const count=section.querySelector('.catalog-section-count');
   if(count)count.textContent='1 published';
   const intro=section.querySelector('.graphics-heading p');
-  if(intro)intro.textContent='Graphics-focused enhancements, visual fixes and optional presets for GTA V on iOS.';
+  if(intro)intro.textContent='Graphics-focused enhancements and visual fixes for GTA V on iOS.';
 
   row.className='graphics-row awesomekills-row';
   row.dataset.searchExtra=SEARCH_TEXT;
@@ -56,20 +55,13 @@ function mount(){
         <div class="awesomekills-meta"><span>GRAPHICS · iOS</span><span>01</span></div>
         <h3 id="awesomekills-title">Awesomekills Graphics iOS</h3>
         <ul class="awesomekills-features">
-          <li>Memperbaiki pencahayaan malam</li>
-          <li>Memperbaiki timecycle</li>
+          <li>Improves nighttime lighting</li>
+          <li>Improves the timecycle</li>
         </ul>
-        <div class="awesomekills-preset-note">
-          <span>OPTIONAL PRESET</span>
-          <p>iPhone 11 (A13, 4 GB) · 960 × 540 · 50 FPS</p>
-        </div>
         <div class="awesomekills-actions">
           <button class="awesomekills-download is-pending" type="button" aria-disabled="true">
             <span><small>Mod file</small>Download OIV</span><b>Public link pending</b>
           </button>
-          <a class="awesomekills-download is-secondary" href="${PRESET}" download="GTA V graphics settings.json">
-            <span><small>Optional</small>Preset JSON</span><b>↓</b>
-          </a>
         </div>
       </div>
     </article>`;

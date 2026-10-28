@@ -88,6 +88,15 @@
 /lazy-helper.js
   Cache-Control: no-cache, must-revalidate
 
+/franklin-ui-guard.js
+  Cache-Control: no-store, max-age=0
+
+/feedback-fixes.js
+  Cache-Control: no-store, max-age=0
+
+/feedback-fixes.css
+  Cache-Control: no-store, max-age=0
+
 /franklin-connect.js
   Cache-Control: no-cache, must-revalidate
 

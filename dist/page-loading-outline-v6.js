@@ -35,12 +35,15 @@
  try{arrived=sessionStorage.getItem(TRANSITION_KEY)==='1';sessionStorage.removeItem(TRANSITION_KEY)}catch{}
  if(arrived){show('arriving');if(reduceMotion.matches)hide();else setTimeout(hide,ARRIVE_HOLD_MS)}
 
- // Initial Home load: the loader is real. It waits for both one full outline shine
- // and the intro's required images/logo/platform assets to finish preloading.
  if(document.body?.dataset.page==='home'&&!arrived){
   let shineDone=reduceMotion.matches,assetsReady=window.__gtavHomeIntroAssetsReady===true,finished=false,fallback=0;
   const cleanup=()=>{window.removeEventListener('gtav:intro-assets-ready',onAssetsReady);glint.removeEventListener('animationend',onShineEnd);if(fallback)clearTimeout(fallback)};
-  const finish=()=>{if(finished||!shineDone||!assetsReady)return;finished=true;cleanup();hide();window.dispatchEvent(new CustomEvent('gtav:intro-loader-complete'))};
+  const announceIntro=()=>{window.__gtavIntroLoaderComplete=true;window.dispatchEvent(new CustomEvent('gtav:intro-loader-complete'))};
+  const finish=()=>{
+   if(finished||!shineDone||!assetsReady)return;
+   finished=true;cleanup();hide();
+   if(reduceMotion.matches)announceIntro();else setTimeout(announceIntro,280);
+  };
   const onAssetsReady=()=>{assetsReady=true;finish()};
   const onShineEnd=event=>{if(event.animationName!=='outline-v6-shine-once')return;shineDone=true;finish()};
   window.addEventListener('gtav:intro-assets-ready',onAssetsReady,{once:true});

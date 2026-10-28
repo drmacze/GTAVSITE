@@ -1,0 +1,22 @@
+const fs=require('fs');
+const assert=require('assert');
+const css=fs.readFileSync('dist/compatibility-results-grid.css','utf8');
+const js=fs.readFileSync('dist/compatibility-benchmark.js','utf8');
+
+assert(css.includes('.result-nav{display:none!important}'),'legacy results navigation must stay hidden');
+assert(css.includes('.review-steps{display:none!important}'),'setup should not expose fake step navigation');
+assert(css.includes('.compat-summary-grid'),'results need one concise summary grid');
+assert(css.includes('.compat-result-actions'),'results need explicit primary actions');
+assert(css.includes('.compat-tech'),'technical detail must remain secondary');
+assert(css.includes('.compat-scan-chip{display:none!important}'),'scan must not restore decorative chip animation');
+assert(js.includes("'Compatibility checks'"),'summary heading missing');
+assert(js.includes("'FPS Benchmark'"),'benchmark action missing');
+assert(js.includes("'Edit details'"),'edit action missing');
+assert(js.includes("'Technical details'"),'technical disclosure missing');
+assert(js.includes("makeSummaryCard('Chip'"),'chip summary missing');
+assert(js.includes("makeSummaryCard('RAM'"),'RAM summary missing');
+assert(js.includes("makeSummaryCard('iOS'"),'iOS summary missing');
+assert(js.includes("makeSummaryCard('Free storage'"),'storage summary missing');
+assert(js.includes('Safari does not generate the FPS numbers'),'benchmark must disclose native source');
+assert(js.includes('Benchmark-*.txt'),'native benchmark import missing');
+console.log('compatibility simple UX guard OK');

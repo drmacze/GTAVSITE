@@ -10,10 +10,10 @@
  if(document.body?.dataset.page==='home'){
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
-     requestAnimationFrame(()=>document.querySelector('.home-intro-v4')?.scrollIntoView({block:'start',behavior:'auto'}));
+     requestAnimationFrame(()=>document.querySelector('.home-intro-v5')?.scrollIntoView({block:'start',behavior:'auto'}));
    };
-   addStyle('home-intro-v4.css?v=20261028homeintro4','home-intro-v4-style');
-   addScript('home-intro-v4.js?v=20261028homeintro4','home-intro-v4-script');
+   addStyle('home-intro-v5.css?v=20261028homeintro5','home-intro-v5-style');
+   addScript('home-intro-v5.js?v=20261028homeintro5','home-intro-v5-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

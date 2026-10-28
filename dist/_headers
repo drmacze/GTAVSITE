@@ -58,12 +58,6 @@
 /mods.js
   Cache-Control: no-cache, must-revalidate
 
-/mod-converter.js
-  Cache-Control: no-cache, must-revalidate
-
-/mod-converter.css
-  Cache-Control: no-cache, must-revalidate
-
 /text-effects.js
   Cache-Control: no-cache, must-revalidate
 

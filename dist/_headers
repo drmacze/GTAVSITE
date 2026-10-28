@@ -46,6 +46,12 @@
 /assets/home-intro-cover-v5.svg
   Cache-Control: no-store, max-age=0
 
+/sunset-theme-v1.css
+  Cache-Control: no-store, max-age=0
+
+/assets/community-sunset-v1.svg
+  Cache-Control: no-store, max-age=0
+
 /franklin
   Cache-Control: no-store, max-age=0
 

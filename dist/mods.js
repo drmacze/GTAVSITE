@@ -16,22 +16,33 @@
     });
   }
 
-  const loadConverter = () => {
-    if (document.querySelector('script[data-mod-converter]')) return;
-    if (!document.querySelector('link[data-mod-converter]')) {
-      const css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = '/mod-converter.css?v=20261028launcher1';
-      css.dataset.modConverter = '1';
-      document.head.append(css);
-    }
-    const script = document.createElement('script');
-    script.src = '/mod-converter.js?v=20261028launcher1';
-    script.defer = true;
-    script.dataset.modConverter = '1';
-    document.head.append(script);
-  };
+  // The converter is a primary Mods feature. Load it immediately after the
+  // deferred Mods script runs instead of waiting for requestIdleCallback,
+  // which can be delayed indefinitely on iOS Safari under load.
+  if (!document.querySelector('link[data-mod-converter]')) {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = '/mod-converter.css?v=20261028launcher2';
+    css.dataset.modConverter = '1';
+    document.head.append(css);
+  }
 
-  if ('requestIdleCallback' in window) requestIdleCallback(loadConverter, {timeout:1200});
-  else setTimeout(loadConverter, 350);
+  if (!document.querySelector('script[data-mod-converter]')) {
+    const script = document.createElement('script');
+    script.src = '/mod-converter.js?v=20261028launcher2';
+    script.async = true;
+    script.dataset.modConverter = '1';
+    script.onerror = () => {
+      console.error('Mod converter failed to load.');
+      const anchor = document.querySelector('.mods-languages');
+      if (anchor && !document.querySelector('#mod-converter-load-error')) {
+        const notice = document.createElement('section');
+        notice.id = 'mod-converter-load-error';
+        notice.className = 'mod-converter-load-error';
+        notice.innerHTML = '<span class="eyebrow">LAUNCHER TOOL</span><h2>Mod converter</h2><p>The converter could not be loaded. Reload this page and try again.</p>';
+        anchor.insertAdjacentElement('beforebegin', notice);
+      }
+    };
+    document.head.append(script);
+  }
 })();

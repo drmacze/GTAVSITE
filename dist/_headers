@@ -73,6 +73,9 @@
 /motion.js
   Cache-Control: no-store, max-age=0
 
+/storage-policy-45-v1.js
+  Cache-Control: no-store, max-age=0
+
 /loading.css
   Cache-Control: no-store, max-age=0
 

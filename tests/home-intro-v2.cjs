@@ -1,0 +1,21 @@
+const fs=require('fs');
+const assert=require('assert');
+const motion=fs.readFileSync('dist/motion.js','utf8');
+const css=fs.readFileSync('dist/home-intro-v2.css','utf8');
+const js=fs.readFileSync('dist/home-intro-v2.js','utf8');
+const loader=fs.readFileSync('dist/page-loading-outline-v6.js','utf8');
+const index=fs.readFileSync('dist/index.html','utf8');
+
+assert.match(motion,/home-intro-v2\.css/,'Home must load intro v2 CSS');
+assert.match(motion,/home-intro-v2\.js/,'Home must load intro v2 JS');
+assert.doesNotMatch(motion,/home-intro-v1\.css/,'Home must not load intro v1 CSS');
+assert.doesNotMatch(motion,/home-intro-v1\.js/,'Home must not load intro v1 JS');
+assert.match(js,/Welcome to our<br><span>community site\.<\/span>/,'welcome message must use staged reference copy');
+assert.match(js,/GTA V iOS/,'cover phase must label GTA V iOS');
+assert.match(js,/gtav:intro-assets-ready/,'intro must announce actual asset readiness');
+assert.match(css,/mix-blend-mode:screen/,'GTA V logo black background must visually disappear');
+assert.match(css,/body\.intro2-active \.lazy-franklin/,'helper must stay hidden during intro');
+assert.match(loader,/gtav:intro-assets-ready/,'initial loader must wait for intro assets');
+assert.match(loader,/outline-v6-shine-once/,'initial loader must wait for full V outline shine');
+assert.match(index,/location\.replace\('\/home\.html\?intro=1/,'root must enter the combined Home document');
+console.log('home intro v2 regression checks passed');

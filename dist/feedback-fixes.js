@@ -134,15 +134,18 @@
     absorbToast();
   }
 
-  // feedback.js historically moves the real launcher into an old page slot.
-  // Keep Franklin as one global floating helper instead.
+  // feedback.js historically moves Franklin controls into an old page slot.
+  // Keep the primary lower-left entry visible and leave the legacy launcher hidden by the global guard.
   const normalizeHelper=()=>{
-    const launchers=[...document.querySelectorAll('.ask-franklin-launcher')];
-    if(launchers.length){
-      launchers.slice(1).forEach(el=>el.remove());
-      if(launchers[0].parentElement?.id==='feedback-helper-slot')document.body.append(launchers[0]);
-      document.querySelectorAll('.lazy-franklin').forEach(el=>{el.hidden=true;});
+    const primary=[...document.querySelectorAll('.lazy-franklin')];
+    if(primary.length){
+      primary.slice(1).forEach(el=>el.remove());
+      if(primary[0].parentElement?.id==='feedback-helper-slot')document.body.append(primary[0]);
+      if(primary[0].hidden)primary[0].hidden=false;
     }
+    const launchers=[...document.querySelectorAll('.ask-franklin-launcher')];
+    if(launchers.length>1)launchers.slice(1).forEach(el=>el.remove());
+    if(launchers[0]?.parentElement?.id==='feedback-helper-slot')document.body.append(launchers[0]);
     document.querySelectorAll('.franklin-nudge').forEach(el=>el.remove());
   };
   const helperObserver=new MutationObserver(normalizeHelper);

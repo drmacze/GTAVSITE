@@ -1,136 +1,144 @@
 (()=>{
 'use strict';
-if(window.__storyST3||document.body?.dataset.page!=='home')return;
-window.__storyST3=true;
+if(window.__storyST4||document.body?.dataset.page!=='home')return;
+window.__storyST4=true;
 
-const VICE='https://cdn.phototourl.com/member/2026-10-28-c1ede1c5-8074-4007-84b0-8914de52aca7.jpg';
-const LIBERTY='https://cdn.phototourl.com/member/2026-10-28-15936355-50be-4aaa-ba32-8c767668038c.jpg';
-const COVER_URLS=[VICE,LIBERTY];
+const COVER_URLS=[
+  'https://cdn.phototourl.com/member/2026-10-28-c1ede1c5-8074-4007-84b0-8914de52aca7.jpg',
+  'https://cdn.phototourl.com/member/2026-10-28-15936355-50be-4aaa-ba32-8c767668038c.jpg'
+];
 
-const addCss=()=>{
-  if(document.querySelector('link[data-story-st3]'))return;
-  const link=document.createElement('link');
+function addCss(){
+  let link=document.querySelector('link[data-story-st4]');
+  if(link)return;
+  link=document.createElement('link');
   link.rel='stylesheet';
-  link.href='story-scrolltrigger-v2.css?v=20261029st3';
-  link.dataset.storySt3='1';
+  link.href='story-scrolltrigger-v2.css?v=20261029st4';
+  link.dataset.storySt4='1';
   document.head.append(link);
-};
+}
 
-const loadScript=src=>new Promise((resolve,reject)=>{
-  const existing=[...document.scripts].find(node=>node.src.includes(src));
-  if(existing){
-    if((src.includes('gsap')&&window.gsap)||(src.includes('ScrollTrigger')&&window.ScrollTrigger))return resolve();
-    existing.addEventListener('load',resolve,{once:true});
-    existing.addEventListener('error',reject,{once:true});
-    return;
-  }
-  const script=document.createElement('script');
-  script.src=src;
-  script.onload=resolve;
-  script.onerror=reject;
-  document.head.append(script);
-});
-
-const ensureGsap=async()=>{
-  if(!window.gsap)await loadScript('vendor/gsap-3.13.0.min.js');
-  if(!window.ScrollTrigger)await loadScript('vendor/ScrollTrigger-3.13.0.min.js');
-  if(!window.gsap||!window.ScrollTrigger)throw new Error('GSAP ScrollTrigger unavailable');
-  window.gsap.registerPlugin(window.ScrollTrigger);
-};
-
-const waitForStories=()=>new Promise(resolve=>{
-  const find=()=>document.querySelector('.story-showcase-v1');
-  const current=find();
-  if(current)return resolve(current);
-  const root=document.querySelector('main')||document.body;
-  const observer=new MutationObserver(()=>{
-    const section=find();
-    if(!section)return;
-    observer.disconnect();
-    resolve(section);
+function loadScript(src,test){
+  if(test())return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    const existing=[...document.scripts].find(s=>s.src.includes(src));
+    if(existing){
+      existing.addEventListener('load',()=>test()?resolve():reject(new Error(src+' loaded without global')),{once:true});
+      existing.addEventListener('error',reject,{once:true});
+      setTimeout(()=>test()&&resolve(),0);
+      return;
+    }
+    const script=document.createElement('script');
+    script.src=src;
+    script.async=true;
+    script.onload=()=>test()?resolve():reject(new Error(src+' loaded without global'));
+    script.onerror=reject;
+    document.head.append(script);
   });
-  observer.observe(root,{childList:true,subtree:true});
-  setTimeout(()=>{
-    observer.disconnect();
-    resolve(find());
-  },8000);
-});
+}
 
-const applyArtwork=section=>{
+async function ensureGsap(){
+  await loadScript('vendor/gsap-3.13.0.min.js',()=>!!window.gsap);
+  await loadScript('vendor/ScrollTrigger-3.13.0.min.js',()=>!!window.ScrollTrigger);
+  window.gsap.registerPlugin(window.ScrollTrigger);
+}
+
+function waitForStories(){
+  return new Promise(resolve=>{
+    const find=()=>document.querySelector('.story-showcase-v1');
+    const now=find();
+    if(now)return resolve(now);
+    const root=document.querySelector('main')||document.body;
+    const observer=new MutationObserver(()=>{
+      const section=find();
+      if(!section)return;
+      observer.disconnect();
+      resolve(section);
+    });
+    observer.observe(root,{childList:true,subtree:true});
+    setTimeout(()=>{observer.disconnect();resolve(find())},12000);
+  });
+}
+
+function applyArtwork(section){
   const images=[...section.querySelectorAll('.story-showcase-v1-art img')];
-  COVER_URLS.forEach((src,index)=>{
-    const image=images[index];
-    if(!image)return;
-    image.src=src;
+  images.forEach((image,index)=>{
+    if(!COVER_URLS[index])return;
+    image.src=COVER_URLS[index];
     image.removeAttribute('srcset');
     image.loading='eager';
     image.decoding='async';
     image.referrerPolicy='no-referrer';
   });
-};
+}
 
-const setActive=(cards,dots,index)=>{
-  cards.forEach((card,i)=>card.classList.toggle('is-current',i===index));
+function setActive(cards,dots,index){
+  cards.forEach((card,i)=>{
+    card.classList.toggle('is-current',i===index);
+    card.classList.toggle('is-active',i===index);
+  });
   dots.forEach((dot,i)=>dot.classList.toggle('is-active',i===index));
-};
+}
 
-const buildMotion=section=>{
-  const gsap=window.gsap;
-  const ScrollTrigger=window.ScrollTrigger;
-  const track=section.querySelector('.story-showcase-v1-track');
+function buildMotion(section){
+  const {gsap,ScrollTrigger}=window;
   const inner=section.querySelector('.story-showcase-v1-inner');
+  const track=section.querySelector('.story-showcase-v1-track');
   const cards=[...section.querySelectorAll('.story-showcase-v1-card')];
   const dots=[...section.querySelectorAll('.story-showcase-v1-dots i')];
-  const images=cards.map(card=>card.querySelector('img'));
-  const actions=[...section.querySelectorAll('.story-showcase-v1-actions')];
-  if(!track||!inner||cards.length<2)return;
+  const images=cards.map(card=>card.querySelector('.story-showcase-v1-art img'));
+  const actions=cards.map(card=>card.querySelector('.story-showcase-v1-actions'));
+  if(!inner||!track||cards.length<2)return;
 
-  section.classList.add('story-st2','story-st2-ready');
+  section.classList.add('story-st4','story-st4-ready');
   cards.forEach(card=>card.classList.add('is-visible'));
   setActive(cards,dots,0);
 
-  const isMobile=()=>matchMedia('(max-width:760px)').matches;
-  const travel=()=>Math.max(0,track.scrollWidth-section.clientWidth);
+  const mobile=()=>matchMedia('(max-width:760px)').matches;
+  const offX=()=>Math.max(innerWidth*0.86,520);
 
-  gsap.set(inner,{opacity:.28,scale:.965,y:isMobile()?'7vh':'5vh',transformOrigin:'50% 50%'});
-  gsap.set(track,{x:0,y:isMobile()?'22vh':'16vh'});
-  gsap.set(cards,{scale:isMobile()?.84:.9,opacity:.34,transformOrigin:'50% 50%'});
-  gsap.set(cards[0],{opacity:1,scale:isMobile()?.93:.96});
-  gsap.set(images,{scale:1.12,yPercent:4});
-  gsap.set(actions,{opacity:0,y:24,scale:.96});
+  gsap.set(inner,{opacity:1});
+  gsap.set(cards,{xPercent:-50,yPercent:-50,transformOrigin:'50% 50%',force3D:true});
+  gsap.set(cards[0],{x:0,y:mobile()?'12vh':'10vh',scale:.78,rotation:-1.4,opacity:0});
+  gsap.set(cards[1],{x:offX(),y:mobile()?'5vh':'3vh',scale:.82,rotation:2.2,opacity:0});
+  gsap.set(images,{scale:1.14,yPercent:3,force3D:true});
+  gsap.set(actions,{opacity:0,y:20,scale:.94});
+  gsap.set(dots,{opacity:0});
 
-  const timeline=gsap.timeline({
+  const tl=gsap.timeline({
     defaults:{ease:'none'},
     scrollTrigger:{
       trigger:section,
       start:'top top',
-      end:()=>`+=${Math.round(innerHeight*(isMobile()?2.55:2.25))}`,
-      pin:true,
-      pinSpacing:true,
-      scrub:.68,
-      anticipatePin:1,
+      end:'bottom bottom',
+      scrub:.62,
       invalidateOnRefresh:true,
       onUpdate:self=>{
-        const index=self.progress<.57?0:1;
+        const p=self.progress;
+        const index=p<.52?0:1;
         setActive(cards,dots,index);
-        section.style.setProperty('--story-progress',self.progress.toFixed(4));
+        section.style.setProperty('--story-progress',p.toFixed(4));
+        section.classList.toggle('is-in-view',p>.01&&p<.99);
       }
     }
   });
 
-  timeline
-    .to(inner,{opacity:1,scale:1,y:0,duration:.16},0)
-    .to(track,{y:0,duration:.18},0)
-    .to(cards,{scale:1,opacity:1,duration:.18,stagger:.018},0)
-    .to(images,{scale:1.045,yPercent:0,duration:.22,stagger:.015},0)
-    .to(actions,{opacity:1,y:0,scale:1,duration:.12,stagger:.02},.07)
-    .to(track,{x:()=>-travel(),duration:.62},.18)
-    .to(cards[0],{scale:isMobile()?.91:.945,opacity:.58,duration:.34},.38)
-    .fromTo(cards[1],{scale:isMobile()?.92:.955,opacity:.72},{scale:1,opacity:1,duration:.34,immediateRender:false},.4)
-    .to(images[0],{xPercent:-4,duration:.42},.28)
-    .fromTo(images[1],{xPercent:4},{xPercent:0,duration:.42,immediateRender:false},.4)
-    .to(inner,{scale:.992,y:isMobile()?'-2.5vh':'-1.5vh',duration:.14},.84)
-    .to(section,{filter:'brightness(.94)',duration:.12},.87);
+  tl.to(cards[0],{y:0,scale:1,rotation:0,opacity:1,duration:.15},0)
+    .to(images[0],{scale:1.035,yPercent:0,duration:.18},0)
+    .to(actions[0],{opacity:1,y:0,scale:1,duration:.08},.08)
+    .to(dots,{opacity:1,duration:.06},.08)
+    .to(cards[0],{x:()=>-offX(),y:'-2vh',scale:.86,rotation:-2.6,opacity:.2,duration:.26},.32)
+    .to(images[0],{xPercent:-5,scale:1.08,duration:.26},.32)
+    .to(actions[0],{opacity:0,y:-10,duration:.08},.34)
+    .to(cards[1],{x:0,y:0,scale:1,rotation:0,opacity:1,duration:.26},.34)
+    .to(images[1],{xPercent:0,yPercent:0,scale:1.035,duration:.26},.34)
+    .to(actions[1],{opacity:1,y:0,scale:1,duration:.09},.48)
+    .to(cards[1],{scale:1.025,duration:.16},.65)
+    .to(images[1],{scale:1,duration:.16},.65)
+    .to(cards[1],{y:'-9vh',scale:.93,opacity:.12,duration:.18},.82)
+    .to(actions[1],{opacity:0,y:-12,duration:.08},.84)
+    .to(dots,{opacity:0,duration:.08},.86)
+    .to(inner,{opacity:.15,duration:.14},.86);
 
   const refresh=()=>ScrollTrigger.refresh();
   images.forEach(image=>{
@@ -140,18 +148,26 @@ const buildMotion=section=>{
     }
   });
 
-  const resizeObserver='ResizeObserver'in window?new ResizeObserver(refresh):null;
-  resizeObserver?.observe(section);
-  requestAnimationFrame(refresh);
+  let ro=null;
+  if('ResizeObserver'in window){
+    let raf=0;
+    ro=new ResizeObserver(()=>{
+      cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(refresh);
+    });
+    ro.observe(section);
+  }
 
+  requestAnimationFrame(()=>requestAnimationFrame(refresh));
+  addEventListener('pageshow',refresh,{once:true});
   addEventListener('pagehide',()=>{
-    resizeObserver?.disconnect();
-    timeline.scrollTrigger?.kill();
-    timeline.kill();
+    ro?.disconnect();
+    tl.scrollTrigger?.kill();
+    tl.kill();
   },{once:true});
-};
+}
 
-const init=async()=>{
+async function init(){
   addCss();
   document.querySelectorAll('.story-showcase:not(.story-showcase-v1)').forEach(node=>node.remove());
   const section=await waitForStories();
@@ -159,7 +175,7 @@ const init=async()=>{
   applyArtwork(section);
 
   if(matchMedia('(prefers-reduced-motion:reduce)').matches){
-    section.classList.add('story-st2','story-st2-ready');
+    section.classList.add('story-st4','story-st4-ready');
     return;
   }
 
@@ -167,10 +183,10 @@ const init=async()=>{
     await ensureGsap();
     buildMotion(section);
   }catch(error){
-    section.classList.remove('story-st2','story-st2-ready');
-    console.warn('[stories] ScrollTrigger fallback',error);
+    section.classList.add('story-st4','story-st4-fallback');
+    console.warn('[stories] sticky ScrollTrigger fallback',error);
   }
-};
+}
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
 else init();

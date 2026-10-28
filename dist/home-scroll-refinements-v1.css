@@ -1,0 +1,51 @@
+/* Home cinematic refinements: slower Stories pacing, longer Get visibility, cleaner locked hero. */
+
+/* Require more physical scroll distance for the same ScrollTrigger progress. */
+.story-showcase-v1.story-st6{
+  height:360svh!important;
+  min-height:2200px!important;
+}
+
+/* Keep the active cover CTA readable for the full active-card phase. */
+.story-st6 .story-showcase-v1-card.is-current .story-showcase-v1-actions{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+/* Remove the four controls marked in the review screenshot once the content chapter is active. */
+body[data-page="home"].home-chapter-locked .site-header .header-actions>a.button.outline.compact,
+body[data-page="home"] .home-header-account,
+body[data-page="home"].home-chapter-locked .home-content>.eyebrow,
+body[data-page="home"].home-chapter-locked .home-actions>.button.outline{
+  display:none!important;
+}
+
+/* Rebalance spacing after the eyebrow and secondary CTA are removed. */
+body[data-page="home"].home-chapter-locked .home-content>h1{
+  margin-top:0!important;
+}
+body[data-page="home"].home-chapter-locked .home-actions{
+  width:max-content;
+  max-width:100%;
+}
+
+@media(max-width:760px){
+  .story-showcase-v1.story-st6{
+    height:390svh!important;
+    min-height:2350px!important;
+  }
+}
+
+@media(max-width:430px){
+  .story-showcase-v1.story-st6{
+    height:405svh!important;
+    min-height:2400px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .story-showcase-v1.story-st6{
+    height:auto!important;
+    min-height:0!important;
+  }
+}

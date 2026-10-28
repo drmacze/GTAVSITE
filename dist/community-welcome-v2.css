@@ -1,0 +1,104 @@
+/* Community welcome v2: uploaded collage strip + centered GTA-style message. */
+.home-intro-v4-announcement{
+  height:108px!important;
+  padding:0!important;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,rgba(18,14,12,.08),rgba(18,14,12,.24)),
+    url('assets/community-strip-v2.svg') center 46%/cover no-repeat!important;
+  color:transparent!important;
+  text-shadow:none!important;
+  border-bottom:1px solid rgba(255,244,214,.10);
+  box-shadow:0 14px 34px rgba(31,15,9,.14);
+}
+.home-intro-v4-announcement::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(18,14,12,.18),transparent 18%,transparent 82%,rgba(18,14,12,.18));
+}
+.home-intro-v4-nav{top:132px!important}
+.home-intro-v4-cover-phase{padding-top:196px!important}
+
+.home-intro-v4-message-phase{
+  place-items:center!important;
+}
+.home-intro-v4-message{
+  width:min(980px,88vw)!important;
+  margin:0 auto!important;
+  text-align:center!important;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:32px 20px;
+}
+.home-intro-v4-message small{
+  margin:0 0 24px!important;
+  color:rgba(255,245,220,.92)!important;
+  font:800 10px/1.15 'DM Sans',sans-serif!important;
+  letter-spacing:3.2px!important;
+  text-shadow:0 2px 12px rgba(45,20,10,.48)!important;
+}
+.home-intro-v4-message h1{
+  margin:0!important;
+  max-width:900px!important;
+  color:#2a160f!important;
+  font-family:Impact,'Arial Black','DM Sans',sans-serif!important;
+  font-size:clamp(64px,9.2vw,126px)!important;
+  font-weight:900!important;
+  line-height:.88!important;
+  letter-spacing:-.045em!important;
+  text-transform:uppercase;
+  -webkit-text-stroke:1px rgba(255,239,199,.50);
+  text-shadow:
+    0 2px 0 rgba(255,231,183,.42),
+    0 12px 30px rgba(62,26,13,.30),
+    0 30px 70px rgba(62,26,13,.18)!important;
+}
+.home-intro-v4-message h1 span{
+  display:inline!important;
+  color:#fff0c6!important;
+  -webkit-text-stroke:1px rgba(62,26,13,.34);
+  text-shadow:
+    0 2px 0 rgba(65,28,15,.20),
+    0 10px 26px rgba(62,26,13,.30)!important;
+}
+.home-intro-v4-message p{
+  max-width:620px!important;
+  margin:30px auto 0!important;
+  color:rgba(255,246,226,.92)!important;
+  font-size:15px!important;
+  line-height:1.7!important;
+  text-align:center!important;
+  text-shadow:0 3px 16px rgba(45,20,10,.48)!important;
+}
+
+/* Keep text readable against any warm background region and across appearance modes. */
+:root[data-mode='light'] .home-intro-v4-message h1{
+  color:#2b1710!important;
+  -webkit-text-stroke:1px rgba(255,244,214,.34);
+}
+:root[data-mode='light'] .home-intro-v4-message h1 span{
+  color:#fff3cf!important;
+}
+:root[data-mode='dark'] .home-intro-v4-message h1{
+  color:#24130d!important;
+}
+
+@media(max-width:760px){
+  .home-intro-v4-announcement{height:88px!important;background-position:center 48%!important}
+  .home-intro-v4-nav{top:108px!important}
+  .home-intro-v4-cover-phase{padding-top:172px!important}
+  .home-intro-v4-message{width:92vw!important;padding:28px 12px!important}
+  .home-intro-v4-message small{font-size:8px!important;letter-spacing:2.6px!important;margin-bottom:18px!important}
+  .home-intro-v4-message h1{font-size:clamp(52px,14.7vw,78px)!important;line-height:.90!important;letter-spacing:-.04em!important;-webkit-text-stroke:.8px rgba(255,239,199,.50)}
+  .home-intro-v4-message p{font-size:12px!important;line-height:1.65!important;max-width:330px!important;margin-top:22px!important}
+}
+@media(max-width:390px){
+  .home-intro-v4-announcement{height:80px!important}
+  .home-intro-v4-nav{top:98px!important}
+  .home-intro-v4-cover-phase{padding-top:158px!important}
+  .home-intro-v4-message h1{font-size:50px!important}
+}

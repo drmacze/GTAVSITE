@@ -8,14 +8,13 @@
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
  if(document.body?.dataset.page==='home'){
-   // onboarding.js checks for this hook before falling back to a second /home navigation.
-   // Keep completion inside the already-loaded combined Welcome + Home document.
+   // Keep onboarding completion inside the already-loaded combined Welcome + Home document.
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
-     requestAnimationFrame(()=>document.querySelector('.home-intro')?.scrollIntoView({block:'start',behavior:'auto'}));
+     requestAnimationFrame(()=>document.querySelector('.home-intro-v2')?.scrollIntoView({block:'start',behavior:'auto'}));
    };
-   addStyle('home-intro-v1.css?v=20261028homeintro1','home-intro-v1-style');
-   addScript('home-intro-v1.js?v=20261028homeintro1','home-intro-v1-script');
+   addStyle('home-intro-v2.css?v=20261028homeintro2','home-intro-v2-style');
+   addScript('home-intro-v2.js?v=20261028homeintro2','home-intro-v2-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
@@ -28,7 +27,6 @@
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const touch=matchMedia('(pointer: coarse)').matches;
  if(document.querySelector('.welcome-page')||reduced)return;
- // Touch devices retain native momentum without section transforms or layout refreshes.
  if(touch||!('IntersectionObserver' in window))return;
  const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;observer.unobserve(entry.target);entry.target.animate([{opacity:.65,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:340,easing:'ease-out'});}}, {threshold:.08});
  document.querySelectorAll('.technical-section,.guide-section,.project-credits,.support-group').forEach(section=>observer.observe(section));

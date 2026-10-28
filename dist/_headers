@@ -91,6 +91,9 @@
 /franklin-ui-guard.js
   Cache-Control: no-store, max-age=0
 
+/franklin-ui-guard-v2.js
+  Cache-Control: no-store, max-age=0
+
 /feedback-fixes.js
   Cache-Control: no-store, max-age=0
 

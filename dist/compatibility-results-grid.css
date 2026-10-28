@@ -1,0 +1,25 @@
+/* Compatibility results: restore the clearer card grid while keeping Setup and Results as separate states. */
+body[data-page="compatibility"] .hardware-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;border:0!important;margin-top:18px!important}
+body[data-page="compatibility"] .hardware-grid .hardware-card{display:block!important}
+body[data-page="compatibility"] .hardware-card{position:relative!important;box-sizing:border-box!important;min-width:0!important;padding:20px!important;border:1px solid rgba(255,255,255,.105)!important;border-radius:9px!important;background:rgba(255,255,255,.022)!important;box-shadow:none!important;overflow:hidden!important;transition:border-color .2s ease,background .2s ease,transform .2s ease!important}
+body[data-page="compatibility"] .hardware-card+.hardware-card{padding-left:20px!important}
+body[data-page="compatibility"] .hardware-card+.hardware-card:after{display:none!important}
+body[data-page="compatibility"] .hardware-card:before{content:"";position:absolute;left:18px;right:18px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);pointer-events:none}
+body[data-page="compatibility"] .hardware-card.critical{border-color:rgba(232,131,123,.34)!important;background:rgba(232,131,123,.035)!important}
+body[data-page="compatibility"] .hardware-card.minimum{border-color:rgba(221,183,101,.30)!important;background:rgba(221,183,101,.03)!important}
+body[data-page="compatibility"] .hardware-card.headroom{border-color:rgba(155,197,142,.25)!important;background:rgba(155,197,142,.025)!important}
+body[data-page="compatibility"] .hardware-card-top{margin-bottom:18px!important}
+body[data-page="compatibility"] .hardware-card h3{font-size:21px!important;margin-bottom:10px!important}
+body[data-page="compatibility"] .hardware-card p{font-size:9px!important;line-height:1.75!important}
+body[data-page="compatibility"] .hardware-badge{border:1px solid rgba(255,255,255,.10)!important;border-radius:4px!important;background:rgba(255,255,255,.025)!important;padding:3px 5px!important}
+body[data-page="compatibility"] .runtime-heading{margin-top:30px!important}
+body[data-page="compatibility"] .runtime-grid,body[data-page="compatibility"] .runtime-grid.port-runtime{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;border:0!important;margin-top:14px!important}
+body[data-page="compatibility"] .runtime-grid .hardware-card{display:block!important;padding:20px!important}
+body[data-page="compatibility"] .runtime-grid .hardware-card:nth-child(2){padding-left:20px!important}
+body[data-page="compatibility"] .runtime-grid .hardware-card:nth-child(2):after{display:none!important}
+/* Native/port detail cards remain available; the main grid is no longer artificially truncated. */
+body[data-page="compatibility"] .runtime-grid [data-port-card]{display:block!important}
+@media(hover:hover) and (pointer:fine){body[data-page="compatibility"] .hardware-card:hover{transform:translateY(-2px)!important;border-color:rgba(255,255,255,.18)!important;background:rgba(255,255,255,.035)!important}}
+@media(max-width:760px){body[data-page="compatibility"] .hardware-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}body[data-page="compatibility"] .runtime-grid,body[data-page="compatibility"] .runtime-grid.port-runtime{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}body[data-page="compatibility"] .hardware-card{padding:17px!important}body[data-page="compatibility"] .hardware-card+.hardware-card{padding-left:17px!important}body[data-page="compatibility"] .hardware-card h3{font-size:19px!important}}
+@media(max-width:480px){body[data-page="compatibility"] .hardware-grid,body[data-page="compatibility"] .runtime-grid,body[data-page="compatibility"] .runtime-grid.port-runtime{grid-template-columns:1fr!important}body[data-page="compatibility"] .hardware-card,body[data-page="compatibility"] .hardware-card+.hardware-card,body[data-page="compatibility"] .runtime-grid .hardware-card,body[data-page="compatibility"] .runtime-grid .hardware-card:nth-child(2){padding:18px!important}body[data-page="compatibility"] .hardware-card h3{font-size:20px!important}}
+@media(prefers-reduced-motion:reduce){body[data-page="compatibility"] .hardware-card{transition:none!important}}

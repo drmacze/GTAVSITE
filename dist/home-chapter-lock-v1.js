@@ -16,6 +16,8 @@ function iconUse(name){
 function convertHeroCTA(){
   const cta=document.querySelector('.home-actions .button.primary');
   if(!cta)return;
+  const alreadyGetStarted=!cta.classList.contains('discord-link')&&cta.getAttribute('href')==='get-started.html'&&cta.querySelector('.home-chapter-cta-label')?.textContent==='Get Started';
+  if(alreadyGetStarted)return;
   cta.classList.remove('discord-link');
   cta.href='get-started.html';
   cta.removeAttribute('target');

@@ -29,8 +29,8 @@
    addScript('music.js?v=20261029media2','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
-   addStyle('mods-library-v9.css?v=20261029library9b','mods-library-v9-style');
-   addScript('mods-library-v9.js?v=20261029library9b','mods-library-v9-script');
+   addStyle('mods-library-v9.css?v=20261029library9c','mods-library-v9-style');
+   addScript('mods-library-v9.js?v=20261029library9c','mods-library-v9-script');
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');

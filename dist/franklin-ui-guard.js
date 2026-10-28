@@ -13,6 +13,10 @@
     const style=document.createElement('style');
     style.id='franklin-ui-guard-style';
     style.textContent=`
+      html.franklin-unified-entry .lazy-franklin{
+        left:max(18px,env(safe-area-inset-left))!important;
+        right:auto!important;
+      }
       html.franklin-unified-entry .ask-franklin-launcher,
       html.franklin-unified-entry .franklin-sheet-dock,
       html.franklin-unified-entry .franklin-nudge{

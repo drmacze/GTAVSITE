@@ -35,22 +35,25 @@
   Cache-Control: no-store, max-age=0
 
 /compatibility-rules.js
-  Cache-Control: no-store, max-age=0
+  Cache-Control: no-cache, must-revalidate
 
 /compatibility.js
-  Cache-Control: no-store, max-age=0
+  Cache-Control: no-cache, must-revalidate
 
 /compatibility.css
-  Cache-Control: no-store, max-age=0
+  Cache-Control: no-cache, must-revalidate
 
 /compatibility-results-grid.css
-  Cache-Control: no-store, max-age=0
+  Cache-Control: no-cache, must-revalidate
 
 /compatibility-benchmark.js
-  Cache-Control: no-store, max-age=0
+  Cache-Control: no-cache, must-revalidate
+
+/compatibility-benchmark-lab.js
+  Cache-Control: no-cache, must-revalidate
 
 /performance-check.js
-  Cache-Control: no-store, max-age=0
+  Cache-Control: no-cache, must-revalidate
 
 /text-effects.js
   Cache-Control: no-cache, must-revalidate

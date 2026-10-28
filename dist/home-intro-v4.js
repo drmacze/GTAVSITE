@@ -54,7 +54,7 @@ section.innerHTML=`
    <div class="home-intro-v4-message">
     <small class="home-intro-v4-message-kicker">The GTA V iOS project</small>
     <h1><span class="home-intro-v4-message-line home-intro-v4-message-line-1">Welcome to our</span><span class="home-intro-v4-message-line home-intro-v4-message-line-2">community site.</span></h1>
-    <p class="home-intro-v4-message-body">Project updates, compatibility guidance, installation help, community captures and Franklin support — all in one place.</p>
+    <p class="home-intro-v4-message-body">Project updates, compatibility guidance, installation help, community captures and Helper AI.</p>
    </div>
   </div>
  </div>`;
@@ -74,14 +74,11 @@ let currentProgress=0,targetProgress=0,raf=0,lastRendered=-1;
 function computeTarget(){const rect=section.getBoundingClientRect();const travel=Math.max(1,section.offsetHeight-innerHeight);targetProgress=clamp((-rect.top)/travel)}
 function paint(p){
  if(Math.abs(p-lastRendered)<.00025)return;lastRendered=p;
- // Keep the poster phase relaxed, then give the editorial message a much longer reading window.
  const motion=smoother((p-.43)/.24);
  const coverScale=1+motion*.14;
  const coverY=-motion*86;
  const chromeOpacity=1-smoother((p-.53)/.14);
  const coverOpacity=1-smoother((p-.61)/.13);
-
- // Scroll-triggered editorial reveal: kicker -> first line -> accent line -> body.
  const messagePhase=smoother((p-.67)/.08);
  const kicker=smoother((p-.675)/.055);
  const line1=smoother((p-.695)/.065);

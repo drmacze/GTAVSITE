@@ -118,8 +118,6 @@
     if(event.target instanceof Element&&event.target.closest('#new-report'))clearAllErrors();
   },true);
 
-  // The legacy script still uses the toast for network failures and copy feedback.
-  // Convert actual failures into an inline footer and suppress the floating toast.
   const toast=document.getElementById('feedback-toast');
   if(toast){
     const absorbToast=()=>{
@@ -134,21 +132,14 @@
     absorbToast();
   }
 
-  // feedback.js historically moves Franklin controls into an old page slot.
-  // Keep the primary lower-left entry visible and leave the legacy launcher hidden by the global guard.
-  const normalizeHelper=()=>{
-    const primary=[...document.querySelectorAll('.lazy-franklin')];
-    if(primary.length){
-      primary.slice(1).forEach(el=>el.remove());
-      if(primary[0].parentElement?.id==='feedback-helper-slot')document.body.append(primary[0]);
-      if(primary[0].hidden)primary[0].hidden=false;
-    }
-    const launchers=[...document.querySelectorAll('.ask-franklin-launcher')];
-    if(launchers.length>1)launchers.slice(1).forEach(el=>el.remove());
-    if(launchers[0]?.parentElement?.id==='feedback-helper-slot')document.body.append(launchers[0]);
-    document.querySelectorAll('.franklin-nudge').forEach(el=>el.remove());
+  // Feedback may contain an old helper slot, but it must never own Franklin's frontend.
+  // Move only the canonical latest button to <body>; leave the legacy controller in place
+  // so its backend event bindings and knowledge pipeline remain intact.
+  const keepPrimaryGlobal=()=>{
+    const primary=document.querySelector('.lazy-franklin');
+    if(primary&&primary.parentElement!==document.body)document.body.append(primary);
   };
-  const helperObserver=new MutationObserver(normalizeHelper);
+  const helperObserver=new MutationObserver(keepPrimaryGlobal);
   helperObserver.observe(document.body,{childList:true,subtree:true});
-  normalizeHelper();
+  keepPrimaryGlobal();
 })();

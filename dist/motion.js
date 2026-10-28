@@ -18,28 +18,24 @@
    addStyle('community-welcome-v3.css?v=20261028communitywelcome4','community-welcome-v3-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
 
-   // Stories are mounted from the Home bootstrap that is actually active in production.
    window.__storyST5=true;
    addStyle('story-scrolltrigger-v3.css?v=20261029st7','story-scrolltrigger-v3-style');
    addScript('story-scrolltrigger-v3.js?v=20261029st7','story-scrolltrigger-v3-script');
    addStyle('home-scroll-refinements-v1.css?v=20261029refine1','home-scroll-refinements-v1-style');
 
-   // Once the cinematic intro + Stories chapter is complete, Home becomes a one-way content chapter.
-   addStyle('home-chapter-lock-v1.css?v=20261029chapter3','home-chapter-lock-v1-style');
+   addStyle('home-chapter-lock-v1.css?v=20261029chapter4','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
 
-   // Explicit versioned load prevents Safari from reusing the old unversioned music.js request from app.js.
-   addScript('music.js?v=20261029scrollmusic1','home-music-scroll-loader');
+   // Prime the trailer immediately and keep one media controller responsible for scroll-to-sound + playback recovery.
+   addScript('music.js?v=20261029media2','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
-   // Build content first, then enhance it as a searchable catalogue.
    addStyle('downloads.css?v=20261029dlc4','downloads-dlc4-style');
    addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
    addStyle('mods-catalog-v4.css?v=20261029catalog4b','mods-catalog-v4-style');
    addScript('mods-catalog-v4.js?v=20261029catalog4b','mods-catalog-v4-script');
  }
  if(document.body?.dataset.page==='updates'){
-   // Force the hierarchy build that promotes 28 Oct and demotes 27 Oct into the normal archive.
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');
    addScript('updates.js?v=20261029latest28b','updates-latest28-script');
  }
@@ -48,7 +44,6 @@
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
 
- /* Safari/iOS browser chrome is outside the page, so tint it to the warm site surface. */
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{
@@ -61,7 +56,6 @@
  new MutationObserver(applyChromeTint).observe(root,{attributes:true,attributeFilter:['data-mode']});
 })();
 
-/* Native scroll with bounded, one-shot reveals. No perpetual animation ticker. */
 (()=>{
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const touch=matchMedia('(pointer: coarse)').matches;

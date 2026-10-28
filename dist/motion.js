@@ -17,6 +17,12 @@
    addStyle('home-intro-v4-polish.css?v=20261028v4polish2','home-intro-v4-polish-style');
    addStyle('community-welcome-v3.css?v=20261028communitywelcome4','community-welcome-v3-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
+
+   // Stories must be created from the bootstrap that is actually used by Home.
+   // Suppress the obsolete ST5 gameplay loader, then load one deterministic ST6 implementation.
+   window.__storyST5=true;
+   addStyle('story-scrolltrigger-v3.css?v=20261029st6','story-scrolltrigger-v3-style');
+   addScript('story-scrolltrigger-v3.js?v=20261029st6','story-scrolltrigger-v3-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

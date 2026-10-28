@@ -10,6 +10,12 @@
 /home.html
   Cache-Control: no-store, max-age=0
 
+/home-intro-v1.css
+  Cache-Control: no-store, max-age=0
+
+/home-intro-v1.js
+  Cache-Control: no-store, max-age=0
+
 /franklin
   Cache-Control: no-store, max-age=0
 
@@ -74,6 +80,9 @@
   Cache-Control: no-store, max-age=0
 
 /storage-policy-45-v1.js
+  Cache-Control: no-store, max-age=0
+
+/profile-glass-v1.css
   Cache-Control: no-store, max-age=0
 
 /loading.css

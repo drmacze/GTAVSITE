@@ -49,8 +49,9 @@
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{
+   const downloads=document.body?.dataset.page==='downloads';
    const light=root.dataset.mode==='light';
-   const tint=light?'#c7956f':'#6b432f';
+   const tint=downloads?'#000000':(light?'#c7956f':'#6b432f');
    if(meta.content!==tint)meta.content=tint;
    root.style.backgroundColor=tint;
  };

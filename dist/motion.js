@@ -26,6 +26,9 @@
    // Once the cinematic intro + Stories chapter is complete, Home becomes a one-way content chapter.
    addStyle('home-chapter-lock-v1.css?v=20261029chapter2','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter2','home-chapter-lock-v1-script');
+
+   // Explicit versioned load prevents Safari from reusing the old unversioned music.js request from app.js.
+   addScript('music.js?v=20261029scrollmusic1','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

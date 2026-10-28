@@ -57,7 +57,7 @@ function mount(){
       <div class="nexus-hero-bg" aria-hidden="true"></div>
       <div class="nexus-breadcrumb"><a href="home.html">Home</a><span>›</span><span>GTA V iOS Mods</span></div>
       <div class="nexus-hero-content">
-        <img class="nexus-cover" src="assets/home-intro-cover-v5.svg" alt="GTA V iOS artwork">
+        <img class="nexus-cover" src="https://user13692.na.imgto.link/public/20261028/a7a06b1488b4b44342b0cf18-img-8148.avif" alt="GTA V iOS artwork">
         <div class="nexus-hero-copy">
           <span class="nexus-overline">COMMUNITY MOD LIBRARY</span>
           <h1 id="nexus-title">GTA V iOS Mods</h1>

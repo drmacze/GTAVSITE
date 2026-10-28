@@ -1,0 +1,16 @@
+const fs=require('fs');
+const assert=require('assert');
+const js=fs.readFileSync('dist/home-intro-v4.js','utf8');
+const css=fs.readFileSync('dist/home-intro-v4-polish.css','utf8');
+const motion=fs.readFileSync('dist/motion.js','utf8');
+assert.match(js,/GTA V IOS/,'hero title must stay GTA V IOS');
+assert.match(js,/currentProgress\+=delta\*\.105/,'intro must keep damped scroll scrub');
+assert.match(js,/\(p-\.49\)\/\.27/,'poster must retain long hold before motion');
+assert.match(js,/\(p-\.69\)\/\.16/,'poster fade must remain gradual');
+assert.match(css,/height:400svh/,'mobile intro runway must remain long');
+assert.match(css,/font-weight:900/,'hero label must remain heavy');
+assert.match(css,/v4-mark-outer\{fill:/,'V mark must remain filled/bold');
+assert.match(css,/invert\(96%\)/,'Apple mark must remain silver-white');
+assert.match(motion,/home-intro-v4-polish\.css\?v=20261028v4polish2/,'active bootstrap must load the matched polish');
+assert.match(motion,/home-intro-v4\.js\?v=20261028homeintro4r3/,'active bootstrap must load the matched motion engine');
+console.log('Rockstar-matched intro regression checks passed');

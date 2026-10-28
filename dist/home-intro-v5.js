@@ -3,6 +3,8 @@
 if(window.__gtavHomeIntroV5)return;window.__gtavHomeIntroV5=true;
 if(document.body?.dataset.page!=='home')return;
 
+if(!document.querySelector('link[data-story-showcase-v1]')){const link=document.createElement('link');link.rel='stylesheet';link.href='story-showcase-v1.css?v=20261029';link.dataset.storyShowcaseV1='true';document.head.append(link)}
+
 const ASSETS=['assets/home-intro-cover-v5.svg','assets/apple.svg'];
 const preloadOne=src=>new Promise(resolve=>{const img=new Image();let done=false;const finish=()=>{if(done)return;done=true;resolve(src)};img.onload=finish;img.onerror=finish;img.src=src;if(img.decode)img.decode().then(finish).catch(()=>{});setTimeout(finish,7000)});
 Promise.all(ASSETS.map(preloadOne)).then(()=>{window.__gtavHomeIntroAssetsReady=true;window.dispatchEvent(new CustomEvent('gtav:intro-assets-ready',{detail:{count:ASSETS.length}}))});
@@ -34,6 +36,34 @@ section.innerHTML=`
   <div class="home-intro-v5-message-phase"><div class="home-intro-v5-message"><small>The GTA V iOS project</small><h1>Welcome to our<br><span>community site.</span></h1><p>Project updates, compatibility guidance, installation help, community captures and Franklin support — all in one place.</p></div></div>
  </div>`;
 const hero=document.querySelector('.home-hero');if(!hero)return;hero.before(section);
+
+const stories=document.createElement('section');stories.className='story-showcase-v1';stories.id='stories';stories.setAttribute('aria-label','Grand Theft Auto Stories collection');
+stories.innerHTML=`
+ <div class="story-showcase-v1-inner">
+  <div class="story-showcase-v1-track" role="region" aria-roledescription="carousel" aria-label="Grand Theft Auto Stories covers">
+   <article class="story-showcase-v1-card is-active" data-story-card aria-label="Grand Theft Auto Vice City Stories">
+    <div class="story-showcase-v1-art"><img src="assets/story-covers/vice-city-stories.webp" alt="Grand Theft Auto Vice City Stories cover" width="200" height="255" loading="lazy" decoding="async"></div>
+    <div class="story-showcase-v1-actions"><a class="story-showcase-v1-get" href="https://discord.gg/HgcbPjcyJ" target="_blank" rel="noopener noreferrer" aria-label="Get Vice City Stories on Discord"><span>Get</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+   </article>
+   <article class="story-showcase-v1-card" data-story-card aria-label="Grand Theft Auto Liberty City Stories">
+    <div class="story-showcase-v1-art"><img src="assets/story-covers/liberty-city-stories.webp" alt="Grand Theft Auto Liberty City Stories cover" width="200" height="214" loading="lazy" decoding="async"></div>
+    <div class="story-showcase-v1-actions"><a class="story-showcase-v1-get" href="https://discord.gg/HgcbPjcyJ" target="_blank" rel="noopener noreferrer" aria-label="Get Liberty City Stories on Discord"><span>Get</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+   </article>
+  </div>
+  <div class="story-showcase-v1-dots" aria-hidden="true"><i class="is-active"></i><i></i></div>
+ </div>`;
+section.after(stories);
+
+const storyTrack=stories.querySelector('.story-showcase-v1-track');
+const storyCards=[...stories.querySelectorAll('[data-story-card]')];
+const storyDots=[...stories.querySelectorAll('.story-showcase-v1-dots i')];
+const setStoryActive=index=>{storyCards.forEach((card,i)=>card.classList.toggle('is-active',i===index));storyDots.forEach((dot,i)=>dot.classList.toggle('is-active',i===index))};
+const syncStoryActive=()=>{if(!storyTrack||innerWidth>760){storyCards.forEach(card=>card.classList.add('is-active'));return}const center=storyTrack.getBoundingClientRect().left+storyTrack.clientWidth/2;let best=0,dist=Infinity;storyCards.forEach((card,i)=>{const r=card.getBoundingClientRect();const d=Math.abs(r.left+r.width/2-center);if(d<dist){dist=d;best=i}});setStoryActive(best)};
+let storyTick=false;const scheduleStory=()=>{if(storyTick)return;storyTick=true;requestAnimationFrame(()=>{storyTick=false;syncStoryActive()})};
+storyTrack?.addEventListener('scroll',scheduleStory,{passive:true});
+addEventListener('resize',scheduleStory,{passive:true});
+if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{rootMargin:'0px 0px -10% 0px',threshold:.18});storyCards.forEach(card=>observer.observe(card))}else storyCards.forEach(card=>card.classList.add('is-visible'));
+requestAnimationFrame(syncStoryActive);
 
 document.body.classList.add('intro5-active');
 section.querySelector('.home-intro-v5-account')?.addEventListener('click',()=>{const trigger=document.querySelector('.profile-trigger');if(trigger){trigger.click();return}window.gtavIdentity?.open?.()});
@@ -75,5 +105,5 @@ function schedule(){if(ticking)return;ticking=true;requestAnimationFrame(render)
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});
 try{const u=new URL(location.href);if(u.searchParams.get('intro')==='1'&&!location.hash){history.scrollRestoration='manual';scrollTo(0,0);u.searchParams.delete('intro');history.replaceState(null,'',u.pathname+(u.searchParams.toString()?`?${u.searchParams}`:'')+u.hash)}}catch{}
 requestAnimationFrame(()=>{render();requestAnimationFrame(render)});
-addEventListener('pagehide',()=>{removeEventListener('scroll',schedule);removeEventListener('resize',schedule)},{once:true});
+addEventListener('pagehide',()=>{removeEventListener('scroll',schedule);removeEventListener('resize',schedule);removeEventListener('resize',scheduleStory);storyTrack?.removeEventListener('scroll',scheduleStory)},{once:true});
 })();

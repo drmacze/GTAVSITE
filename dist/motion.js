@@ -2,6 +2,7 @@
 (()=>{
  const addScript=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.append(s)};
  const addStyle=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.append(l)};
+ addStyle('sunset-theme-v1.css?v=20261028sunset1','sunset-theme-v1-loader');
  addScript('franklin-ui-guard-v2.js?v=20261028polish3','franklin-ui-guard-v2-loader');
  addScript('franklin-primary-state-fix.js?v=20261028primary1','franklin-primary-state-fix-loader');
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');

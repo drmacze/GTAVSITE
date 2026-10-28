@@ -1,0 +1,153 @@
+/* Community Profile — premium glass surface */
+.profile-backdrop{
+  background:rgba(3,5,7,.42)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(118%)!important;
+  backdrop-filter:blur(10px) saturate(118%)!important;
+}
+
+.profile-sheet{
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--panel,#171717) 68%,transparent) 0%,
+      color-mix(in srgb,var(--panel,#171717) 58%,transparent) 52%,
+      color-mix(in srgb,var(--bg,#090909) 72%,transparent) 100%)!important;
+  -webkit-backdrop-filter:blur(34px) saturate(148%)!important;
+  backdrop-filter:blur(34px) saturate(148%)!important;
+  border-color:color-mix(in srgb,var(--line,rgba(255,255,255,.12)) 82%,transparent)!important;
+  box-shadow:
+    0 -30px 90px rgba(0,0,0,.46),
+    inset 0 1px 0 rgba(255,255,255,.075),
+    inset 0 -1px 0 rgba(255,255,255,.025)!important;
+  opacity:1!important;
+  isolation:isolate;
+}
+
+.profile-sheet::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(80% 42% at 50% -4%,color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 8%,transparent),transparent 68%),
+    linear-gradient(180deg,rgba(255,255,255,.035),transparent 28%);
+}
+
+.profile-grip{
+  position:relative;
+  z-index:5;
+  background:rgba(255,255,255,.34)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.08)!important;
+}
+
+.profile-head{
+  background:color-mix(in srgb,var(--panel,#171717) 30%,transparent)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(135%)!important;
+  backdrop-filter:blur(18px) saturate(135%)!important;
+  border-bottom-color:rgba(255,255,255,.075)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+
+.profile-body{
+  background:transparent!important;
+}
+
+.profile-close{
+  background:rgba(255,255,255,.035)!important;
+  border-color:rgba(255,255,255,.11)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(130%)!important;
+  backdrop-filter:blur(16px) saturate(130%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.12)!important;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease!important;
+}
+.profile-close:active{transform:scale(.94)}
+
+.profile-avatar-large{
+  background:rgba(255,255,255,.025)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(125%)!important;
+  backdrop-filter:blur(14px) saturate(125%)!important;
+  box-shadow:
+    0 0 0 9px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 5%,transparent),
+    0 18px 50px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+
+.profile-avatar-pencil{
+  background:color-mix(in srgb,var(--panel,#151515) 58%,transparent)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(140%)!important;
+  backdrop-filter:blur(16px) saturate(140%)!important;
+  border-color:color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 58%,rgba(255,255,255,.12))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.28)!important;
+}
+
+.profile-avatar-picker{
+  background:rgba(255,255,255,.018)!important;
+  border:1px solid rgba(255,255,255,.075)!important;
+  border-radius:16px!important;
+  padding:14px!important;
+  -webkit-backdrop-filter:blur(18px) saturate(132%)!important;
+  backdrop-filter:blur(18px) saturate(132%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+
+.profile-name-wrap{
+  border-radius:16px;
+  background:rgba(255,255,255,.018);
+  box-shadow:0 12px 36px rgba(0,0,0,.10);
+}
+.profile-name-wrap input{
+  background:color-mix(in srgb,var(--bg,#090909) 46%,transparent)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(138%)!important;
+  backdrop-filter:blur(20px) saturate(138%)!important;
+  border-color:rgba(255,255,255,.12)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+.profile-name-wrap input:focus{
+  background:color-mix(in srgb,var(--bg,#090909) 38%,transparent)!important;
+  border-color:color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 60%,rgba(255,255,255,.12))!important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 9%,transparent),
+    inset 0 1px 0 rgba(255,255,255,.065)!important;
+}
+
+.profile-actions{
+  border-top-color:rgba(255,255,255,.075)!important;
+}
+
+.profile-save{
+  background:color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 78%,transparent)!important;
+  color:var(--bg,#090909)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(145%)!important;
+  backdrop-filter:blur(18px) saturate(145%)!important;
+  box-shadow:
+    0 12px 30px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 12%,transparent),
+    inset 0 1px 0 rgba(255,255,255,.25)!important;
+}
+.profile-save:active{transform:scale(.97)!important}
+.profile-save:disabled{opacity:.38!important;filter:saturate(.65)}
+
+.profile-sheet-edge path{
+  opacity:.74;
+  filter:drop-shadow(0 0 8px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 42%,transparent))!important;
+}
+
+html[data-mode="light"] .profile-backdrop{background:rgba(20,24,28,.20)!important}
+html[data-mode="light"] .profile-sheet{
+  background:linear-gradient(180deg,rgba(248,248,248,.72),rgba(242,242,242,.62) 55%,rgba(235,235,235,.70))!important;
+  box-shadow:0 -26px 76px rgba(30,35,40,.20),inset 0 1px 0 rgba(255,255,255,.72)!important;
+}
+html[data-mode="light"] .profile-head{background:rgba(255,255,255,.24)!important}
+html[data-mode="light"] .profile-name-wrap input{background:rgba(255,255,255,.34)!important;border-color:rgba(25,30,35,.12)!important}
+html[data-mode="light"] .profile-close,html[data-mode="light"] .profile-avatar-picker{background:rgba(255,255,255,.30)!important;border-color:rgba(25,30,35,.10)!important}
+
+@media(max-width:760px){
+  .profile-sheet{-webkit-backdrop-filter:blur(28px) saturate(145%)!important;backdrop-filter:blur(28px) saturate(145%)!important}
+  .profile-head{-webkit-backdrop-filter:blur(16px) saturate(132%)!important;backdrop-filter:blur(16px) saturate(132%)!important}
+  .profile-name-wrap input{-webkit-backdrop-filter:blur(16px) saturate(135%)!important;backdrop-filter:blur(16px) saturate(135%)!important}
+}
+
+@media(prefers-reduced-transparency:reduce){
+  .profile-sheet{background:color-mix(in srgb,var(--panel,#171717) 94%,var(--bg,#090909) 6%)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}

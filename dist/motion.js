@@ -8,6 +8,12 @@
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
  if(document.body?.dataset.page==='home'){
+   // onboarding.js checks for this hook before falling back to a second /home navigation.
+   // Keep completion inside the already-loaded combined Welcome + Home document.
+   if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
+     window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
+     requestAnimationFrame(()=>document.querySelector('.home-intro')?.scrollIntoView({block:'start',behavior:'auto'}));
+   };
    addStyle('home-intro-v1.css?v=20261028homeintro1','home-intro-v1-style');
    addScript('home-intro-v1.js?v=20261028homeintro1','home-intro-v1-script');
  }

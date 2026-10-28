@@ -82,6 +82,9 @@ async function ensureTable(db) {
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS project_mods_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL DEFAULT '')`).run();
+  const seeded = await db.prepare(`SELECT value FROM project_mods_meta WHERE key = 'default_seed_v1' LIMIT 1`).first();
+  if (seeded) return;
 
   const seeds = [
     ['community-pack-1','Community Mod Pack 1','modpack','Gameplay & realism','Gore improvements, DriveV, realistic pedestrians and traffic, plus new forests and abandoned cabins.','https://gofile.io/d/RNlatXEi','assets/los-santos-background.jpeg','','',JSON.stringify(['4 improvements','Gameplay']),'',10],
@@ -96,13 +99,13 @@ async function ensureTable(db) {
     ['language-ar','Arabic','language','Arabic','Arabic translation pack for GTA V.','https://gofile.io/d/0KdSmVMg','','','',JSON.stringify(['Translation']),'AR',43],
     ['language-id','Indonesian','language','Indonesian','Indonesian translation pack for GTA V.','https://gofile.io/d/9u6eONPa','','','',JSON.stringify(['Translation']),'ID',44]
   ];
-
   const statement = db.prepare(`
     INSERT OR IGNORE INTO project_mods
     (id,title,category,subtitle,description,download_url,image_url,preview2_url,preset_url,tags_json,language_code,sort_order,published,created_at,updated_at)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
   `);
   for (const seed of seeds) await statement.bind(...seed).run();
+  await db.prepare(`INSERT OR REPLACE INTO project_mods_meta (key,value) VALUES ('default_seed_v1','done')`).run();
 }
 
 function mapRow(row) {
@@ -131,7 +134,6 @@ async function readPayload(request) {
   let source;
   try { source = await request.json(); }
   catch { throw new Error('invalid_json'); }
-
   const payload = {
     title: cleanText(source.title, 140),
     category: cleanCategory(source.category),
@@ -154,63 +156,35 @@ async function readPayload(request) {
 export async function onRequest(context) {
   const { request, env } = context;
   if (!env.VISITS_DB) return json({ error: 'database_unavailable' }, 503);
-  if (!['GET','POST','PUT','DELETE'].includes(request.method)) {
-    return json({ error: 'method_not_allowed' }, 405, { Allow: 'GET, POST, PUT, DELETE' });
-  }
-
+  if (!['GET','POST','PUT','DELETE'].includes(request.method)) return json({ error: 'method_not_allowed' }, 405, { Allow: 'GET, POST, PUT, DELETE' });
   try {
     await ensureTable(env.VISITS_DB);
     const url = new URL(request.url);
     const adminView = url.searchParams.get('admin') === '1';
-
     if (request.method === 'GET') {
       if (adminView && !(await isAdmin(request))) return json({ error: 'unauthorized' }, 401);
-      const query = adminView
-        ? `SELECT * FROM project_mods ORDER BY sort_order ASC, created_at ASC`
-        : `SELECT * FROM project_mods WHERE published = 1 ORDER BY sort_order ASC, created_at ASC`;
+      const query = adminView ? `SELECT * FROM project_mods ORDER BY sort_order ASC, created_at ASC` : `SELECT * FROM project_mods WHERE published = 1 ORDER BY sort_order ASC, created_at ASC`;
       const result = await env.VISITS_DB.prepare(query).all();
       return json({ mods: (result.results || []).map(mapRow) });
     }
-
     if (!sameOrigin(request)) return json({ error: 'origin_not_allowed' }, 403);
     if (!(await isAdmin(request))) return json({ error: 'unauthorized' }, 401);
-
     if (request.method === 'POST') {
       const payload = await readPayload(request);
       const id = crypto.randomUUID();
-      await env.VISITS_DB.prepare(`
-        INSERT INTO project_mods
-        (id,title,category,subtitle,description,download_url,image_url,preview2_url,preset_url,tags_json,language_code,sort_order,published,created_at,updated_at)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
-      `).bind(
-        id,payload.title,payload.category,payload.subtitle,payload.description,payload.downloadUrl,
-        payload.imageUrl,payload.preview2Url,payload.presetUrl,JSON.stringify(payload.tags),payload.languageCode,
-        payload.sortOrder,payload.published
-      ).run();
+      await env.VISITS_DB.prepare(`INSERT INTO project_mods (id,title,category,subtitle,description,download_url,image_url,preview2_url,preset_url,tags_json,language_code,sort_order,published,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`).bind(id,payload.title,payload.category,payload.subtitle,payload.description,payload.downloadUrl,payload.imageUrl,payload.preview2Url,payload.presetUrl,JSON.stringify(payload.tags),payload.languageCode,payload.sortOrder,payload.published).run();
       const row = await env.VISITS_DB.prepare(`SELECT * FROM project_mods WHERE id = ? LIMIT 1`).bind(id).first();
       return json({ mod: mapRow(row) }, 201);
     }
-
     const id = cleanText(url.searchParams.get('id'), 80);
     if (!id) return json({ error: 'id_required' }, 400);
-
     if (request.method === 'DELETE') {
       const result = await env.VISITS_DB.prepare(`DELETE FROM project_mods WHERE id = ?`).bind(id).run();
       if (!result.meta?.changes) return json({ error: 'not_found' }, 404);
       return json({ ok: true });
     }
-
     const payload = await readPayload(request);
-    const result = await env.VISITS_DB.prepare(`
-      UPDATE project_mods
-      SET title=?, category=?, subtitle=?, description=?, download_url=?, image_url=?, preview2_url=?,
-          preset_url=?, tags_json=?, language_code=?, sort_order=?, published=?, updated_at=CURRENT_TIMESTAMP
-      WHERE id=?
-    `).bind(
-      payload.title,payload.category,payload.subtitle,payload.description,payload.downloadUrl,payload.imageUrl,
-      payload.preview2Url,payload.presetUrl,JSON.stringify(payload.tags),payload.languageCode,payload.sortOrder,
-      payload.published,id
-    ).run();
+    const result = await env.VISITS_DB.prepare(`UPDATE project_mods SET title=?, category=?, subtitle=?, description=?, download_url=?, image_url=?, preview2_url=?, preset_url=?, tags_json=?, language_code=?, sort_order=?, published=?, updated_at=CURRENT_TIMESTAMP WHERE id=?`).bind(payload.title,payload.category,payload.subtitle,payload.description,payload.downloadUrl,payload.imageUrl,payload.preview2Url,payload.presetUrl,JSON.stringify(payload.tags),payload.languageCode,payload.sortOrder,payload.published,id).run();
     if (!result.meta?.changes) return json({ error: 'not_found' }, 404);
     const row = await env.VISITS_DB.prepare(`SELECT * FROM project_mods WHERE id = ? LIMIT 1`).bind(id).first();
     return json({ mod: mapRow(row) });

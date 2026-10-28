@@ -40,6 +40,8 @@
    addScript('mods-library-v7.js?v=20261029library7','mods-library-v7-script');
    addStyle('mods-glass-v8.css?v=20261029glass8','mods-glass-v8-style');
    addScript('mods-glass-v8.js?v=20261029glass8','mods-glass-v8-script');
+   addStyle('mods-library-v9.css?v=20261029library9','mods-library-v9-style');
+   addScript('mods-library-v9.js?v=20261029library9','mods-library-v9-script');
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');

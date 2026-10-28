@@ -1,101 +1,21 @@
 <!doctype html>
 <html lang="en">
-<head><script src="settings.js?v=20261028loopfix1"></script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#10100f">
-  <meta name="description" content="Welcome to the GTA V iOS project community. Explore development updates, gameplay, and community support.">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="GTA V IOS">
-  <meta name="mobile-web-app-capable" content="yes">
-  <title>Welcome | GTA V iOS Community</title>
-  <style id="welcome-ios-guard">html,body.welcome-page{overscroll-behavior:none}body.welcome-page{position:fixed;inset:0;width:100%;height:100%;overflow:hidden}.welcome-main{height:100svh!important;min-height:0!important;overflow:hidden}.welcome-stage{position:fixed!important;inset:0!important;top:0!important;height:100svh!important;min-height:0!important;touch-action:pan-x pinch-zoom!important}</style>
-  <script>
-  (()=>{
-    let startY=null,navigating=false;
-    const cleanReturn=()=>{
-      let raw='';
-      try{raw=new URL(location.href).searchParams.get('return')||''}catch{}
-      if(!raw)return'';
-      try{
-        const u=new URL(raw,location.origin);
-        const p=(u.pathname||'/').replace(/\/+$/,'')||'/';
-        const home=p.endsWith('/home')||p.endsWith('/home.html');
-        const welcome=p==='/'||p.endsWith('/index.html');
-        if(u.origin!==location.origin||home||welcome||u.pathname.includes('release-publisher-8c2f71d4')||u.searchParams.has('return')){
-          try{sessionStorage.removeItem('gtav-onboarding-return')}catch{}
-          return'';
-        }
-        return u.pathname+u.search+u.hash;
-      }catch{try{sessionStorage.removeItem('gtav-onboarding-return')}catch{}return''}
-    };
-    const go=()=>{
-      if(navigating||window.__gtavWelcomeNavigating)return;
-      navigating=true;window.__gtavWelcomeNavigating=true;
-      const ret=cleanReturn();
-      try{
-        sessionStorage.setItem('gtav-onboarding-transit',String(Date.now()));
-        sessionStorage.setItem('gtav-welcome-seen','1');
-        if(ret)sessionStorage.setItem('gtav-onboarding-return',ret);else sessionStorage.removeItem('gtav-onboarding-return');
-        document.cookie='gtav-onboarding-transit=1; Max-Age=30; Path=/; SameSite=Lax; Secure';
-      }catch{}
-      location.replace('/home?intro=1'+(ret?'&return='+encodeURIComponent(ret):'')+'#onboarding');
-    };
-    window.__gtavWelcomeContinue=go;
-    addEventListener('touchstart',e=>{startY=e.touches?.length===1?e.touches[0].clientY:null},{passive:true});
-    addEventListener('touchmove',e=>{if(startY==null||e.touches?.length!==1)return;const d=startY-e.touches[0].clientY;if(Math.abs(d)>6&&e.cancelable)e.preventDefault();if(d>=28){startY=null;go()}},{passive:false});
-    addEventListener('touchend',e=>{if(startY==null)return;const d=startY-(e.changedTouches?.[0]?.clientY??startY);startY=null;if(d>=24)go()},{passive:true});
-    addEventListener('wheel',e=>{if(e.deltaY>12)go()},{passive:true});
-    addEventListener('keydown',e=>{if(['Enter','ArrowDown','PageDown','End',' '].includes(e.key)){e.preventDefault();go()}});
-  })();
-  </script>
-
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="welcome.css?v=20261028iosswipe7">
-
-  <link rel="stylesheet" href="motion.css">
-
-  <script defer src="motion.js"></script>
-  <link rel="stylesheet" href="text-effects.css">
-  <script defer src="text-effects.js?v=20261028lazy"></script>
-  <script defer src="welcome.js?v=20261028iosswipe7"></script>
-  <noscript><meta http-equiv="refresh" content="5;url=home.html"></noscript>
-<link rel="stylesheet" href="settings-tones.css"><link rel="stylesheet" href="settings.css"><link rel="apple-touch-icon" sizes="180x180" href="/community-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/community-mark-192.png"><link rel="manifest" href="/app.webmanifest"><link rel="stylesheet" href="rating-summary.css?v=20261027stars"><script defer src="community-ratings.js?v=20261028observerfix"></script><link rel="stylesheet" href="loading.css"><script defer src="page-loading.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'"></head>
-<body class="welcome-page">
-  <main class="welcome-main" id="main">
-    <div class="welcome-stage">
-      <div class="welcome-art" aria-hidden="true"></div>
-      <div class="welcome-shade" aria-hidden="true"></div>
-
-      <div class="welcome-copy">
-        <p class="welcome-kicker"><span data-type>GTA V / iOS PROJECT</span></p>
-<a class="rating-summary rating-summary-launcher" data-rating-summary="launcher" href="feedback.html" aria-label="GTA V iOS launcher community rating"><span class="rating-stars" aria-hidden="true"></span><span class="rating-summary-score">—</span><span class="rating-summary-count">Loading ratings…</span></a>
-        <h1 data-shine>
-          <span class="welcome-line">Welcome to</span>
-          <span class="welcome-line welcome-accent">GTA V iOS.</span>
-        </h1>
-        <p class="welcome-description">Development updates, gameplay,<br>and community support.</p>
-      </div>
-
-      <div class="welcome-bottom">
-        <p class="welcome-hint" onclick="window.__gtavWelcomeContinue?.()">Swipe up to continue <span>or tap here</span></p>
-
-        <div class="welcome-meta">
-          <aside class="visit-signal" id="visit-signal" data-state="loading" aria-label="Community visit count">
-            <div class="visit-signal-head">
-              <span class="visit-pulse" aria-hidden="true"></span>
-              <span>COMMUNITY SIGNAL</span>
-            </div>
-            <div class="visit-signal-data">
-              <strong id="visit-count" aria-live="polite">···</strong>
-              <span>VISITS</span>
-            </div>
-          </aside>
-          <p class="welcome-note">An independent community project.</p>
-        </div>
-      </div>
-    </div>
-  </main>
-</body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10100f">
+<title>GTA V iOS Community</title>
+<script>
+(()=>{
+ const current=new URL(location.href);
+ const target=new URL('/home',location.origin);
+ target.searchParams.set('intro','1');
+ const ret=current.searchParams.get('return');
+ if(ret)target.searchParams.set('return',ret);
+ location.replace(target.pathname+target.search+target.hash);
+})();
+</script>
+<noscript><meta http-equiv="refresh" content="0;url=/home?intro=1"></noscript>
+</head>
+<body></body>
 </html>

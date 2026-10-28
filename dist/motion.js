@@ -33,8 +33,8 @@
    addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
    addStyle('mods-catalog-v5.css?v=20261029catalog5','mods-catalog-v5-style');
    addScript('mods-catalog-v5.js?v=20261029catalog5','mods-catalog-v5-script');
-   addStyle('mods-awesomekills-v1.css?v=20261029awesome2','mods-awesomekills-v1-style');
-   addScript('mods-awesomekills-v1.js?v=20261029awesome2','mods-awesomekills-v1-script');
+   addStyle('mods-awesomekills-v1.css?v=20261029awesome3','mods-awesomekills-v1-style');
+   addScript('mods-awesomekills-v1.js?v=20261029awesome3','mods-awesomekills-v1-script');
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');

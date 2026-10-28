@@ -70,6 +70,9 @@
 /text-effects.js
   Cache-Control: no-cache, must-revalidate
 
+/motion.js
+  Cache-Control: no-cache, must-revalidate
+
 /loading.css
   Cache-Control: no-store, max-age=0
 

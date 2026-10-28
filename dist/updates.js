@@ -1,5 +1,6 @@
 (() => {
   const api = '/api/updates';
+  const latest27OctThumbnail = 'https://res.cloudinary.com/dtz0urit6/image/upload/q_auto:best,f_webp/cloudinary-tools-uploads/bh7g4vkxnkyne53xhamc';
   const heading = document.querySelector('.updates-heading');
   if (!heading) return;
 
@@ -123,10 +124,11 @@
         summary.append(paragraphs(item.summary));
         card.append(summary);
       }
-      if (item.imageUrl) {
+      const imageUrl = item.releaseDate === '2026-10-27' ? latest27OctThumbnail : item.imageUrl;
+      if (imageUrl) {
         const image = document.createElement('img');
         image.className = 'managed-update-image';
-        image.src = item.imageUrl;
+        image.src = imageUrl;
         image.alt = '';
         image.loading = 'lazy';
         card.append(image);

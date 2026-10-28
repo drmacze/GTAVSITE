@@ -39,9 +39,9 @@
    addScript('mods-ui-fix-v3.js?v=20261029modsui3','mods-ui-fix-v3-script');
  }
  if(document.body?.dataset.page==='updates'){
-   // 28 Oct release is layered on top of the static archive so older release markup stays untouched.
-   addStyle('update-28-oct-v1.css?v=20261029oct28r2','update-28-oct-v1-style');
-   addScript('update-28-oct-v1.js?v=20261029oct28r2','update-28-oct-v1-script');
+   // Force the hierarchy build that promotes 28 Oct and demotes 27 Oct into the normal archive.
+   addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');
+   addScript('updates.js?v=20261029latest28b','updates-latest28-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

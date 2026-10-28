@@ -43,6 +43,12 @@
 /compatibility.css
   Cache-Control: no-store, max-age=0
 
+/compatibility-results-grid.css
+  Cache-Control: no-store, max-age=0
+
+/compatibility-benchmark.js
+  Cache-Control: no-store, max-age=0
+
 /performance-check.js
   Cache-Control: no-store, max-age=0
 

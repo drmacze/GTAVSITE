@@ -1,7 +1,7 @@
 /* Lightweight UI safety bootstrap. */
 (()=>{
  const addScript=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.append(s)};
- addScript('franklin-ui-guard.js?v=20261028uifix1','franklin-ui-guard-loader');
+ addScript('franklin-ui-guard-v2.js?v=20261028polish3','franklin-ui-guard-v2-loader');
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');

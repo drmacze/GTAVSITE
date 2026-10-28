@@ -4,8 +4,9 @@ if(window.__awesomekillsGraphicsV2)return;
 window.__awesomekillsGraphicsV2=true;
 
 const BASE='assets/mods/awesomekills/';
-const SEARCH_TEXT='awesomekills graphics ios night fix lighting nighttime lighting timecycle visual';
+const SEARCH_TEXT='awesomekills graphics ios night fix lighting nighttime lighting timecycle visual graphics preset settings';
 const DOWNLOAD_URL='https://gofile.io/d/e726b04a-a872-4ab3-a5b5-d877e05fa422';
+const PRESET_URL=BASE+'GTA-V-graphics-settings-iPhone11.json';
 
 async function loadPreview(path,img){
   try{
@@ -62,6 +63,9 @@ function mount(){
         <div class="awesomekills-actions">
           <a class="awesomekills-download" href="${DOWNLOAD_URL}" target="_blank" rel="noopener noreferrer">
             <span><small>Mod file</small>Download OIV</span><b>↗</b>
+          </a>
+          <a class="awesomekills-download is-secondary" href="${PRESET_URL}" download="GTA-V-graphics-settings-iPhone11.json">
+            <span><small>Settings file</small>Graphics Preset</span><b>↓</b>
           </a>
         </div>
       </div>

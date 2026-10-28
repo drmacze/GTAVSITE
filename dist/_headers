@@ -34,6 +34,15 @@
 /home-intro-v4.js
   Cache-Control: no-store, max-age=0
 
+/home-intro-v5.css
+  Cache-Control: no-store, max-age=0
+
+/home-intro-v5.js
+  Cache-Control: no-store, max-age=0
+
+/assets/home-intro-cover-v5.svg
+  Cache-Control: no-store, max-age=0
+
 /franklin
   Cache-Control: no-store, max-age=0
 

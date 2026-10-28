@@ -10,13 +10,13 @@
  if(document.body?.dataset.page==='home'){
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
-     requestAnimationFrame(()=>document.querySelector('.home-intro-v3')?.scrollIntoView({block:'start',behavior:'auto'}));
+     requestAnimationFrame(()=>document.querySelector('.home-intro-v4')?.scrollIntoView({block:'start',behavior:'auto'}));
    };
-   addStyle('home-intro-v3.css?v=20261028homeintro3','home-intro-v3-style');
-   addScript('home-intro-v3.js?v=20261028homeintro3','home-intro-v3-script');
+   addStyle('home-intro-v4.css?v=20261028homeintro4','home-intro-v4-style');
+   addScript('home-intro-v4.js?v=20261028homeintro4','home-intro-v4-script');
  }
  if(document.body?.dataset.page==='feedback'){
-   if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
+   if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
 })();

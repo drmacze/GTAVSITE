@@ -5,13 +5,27 @@
  const loaded=new Set();
  let running=false;
  let ready=false;
+ const LOCAL_AVATAR='assets/avatars/franklin.jpg';
+ const FALLBACK_AVATAR='https://cdn.corenexis.com/f/dJ4k8HeoKK9.jpeg';
 
  const button=document.createElement('button');
  button.type='button';
  button.className='lazy-franklin';
- button.textContent='Ask Franklin';
- button.setAttribute('aria-label','Connect to Franklin');
  button.dataset.franklinPrimary='true';
+ button.innerHTML=`<span class="lazy-franklin-avatar" aria-hidden="true"><img src="${LOCAL_AVATAR}" alt=""><i></i></span><span class="lazy-franklin-copy"><small>COMMUNITY HELPER</small><strong>Ask Franklin</strong></span><span class="lazy-franklin-arrow" aria-hidden="true">→</span>`;
+ button.setAttribute('aria-label','Connect to Franklin');
+ const avatarImg=button.querySelector('.lazy-franklin-avatar img');
+ avatarImg?.addEventListener('error',()=>{
+  if(avatarImg.dataset.fallbackTried==='true'){avatarImg.remove();return;}
+  avatarImg.dataset.fallbackTried='true';
+  avatarImg.src=FALLBACK_AVATAR;
+ });
+ const setButtonLabel=(label,kicker='COMMUNITY HELPER')=>{
+  const strong=button.querySelector('.lazy-franklin-copy strong');
+  const small=button.querySelector('.lazy-franklin-copy small');
+  if(strong)strong.textContent=label;
+  if(small)small.textContent=kicker;
+ };
  document.body.append(button);
 
  const panel=document.createElement('section');
@@ -23,7 +37,7 @@
  document.body.append(panel);
  panel.querySelector('button').onclick=()=>{panel.hidden=true};
 
- const scripts=['franklin-conversation.js','ask-franklin.js','franklin-analytics.js','franklin-funding.js','franklin-typing.js','franklin-support-context.js','franklin-developer-kb.js','franklin-log-files.js','franklin-dataset-engine.js','franklin-claude-rag.js','franklin-site-rag.js','franklin-policy.js','guard-core.js','franklin-i18n.js','franklin-guard.js','franklin-helper-v3.js','franklin-webllm.js','franklin-engine-extra.js','franklin-engine.js'];
+ const scripts=['franklin-conversation.js','ask-franklin.js','franklin-analytics.js','franklin-funding.js','franklin-typing.js','franklin-support-context.js','franklin-developer-kb.js','franklin-log-files.js','franklin-dataset-engine.js','franklin-claude-rag.js','franklin-site-rag.js','franklin-policy.js','guard-core.js','franklin-i18n.js','franklin-guard.js','franklin-helper-v3.js','franklin-ui-polish.js','franklin-webllm.js','franklin-engine-extra.js','franklin-engine.js'];
  const knowledgeNames=['FranklinDeveloperKB','FranklinDataset','FranklinClaudeRAG'];
  const surfaceHref='ask-franklin-surface-v3.css?v=20261028composer1';
 
@@ -31,7 +45,7 @@
   if(loaded.has(src))return Promise.resolve();
   return new Promise((resolve,reject)=>{
    const s=document.createElement('script');
-   s.src=src+'?v=20261028helper4';
+   s.src=src+'?v=20261028helper5';
    const timeout=setTimeout(()=>{s.remove();reject(Error('Connection timed out. Tap Retry.'))},20000);
    s.onload=()=>{clearTimeout(timeout);loaded.add(src);resolve()};
    s.onerror=()=>{clearTimeout(timeout);s.remove();reject(Error('An asset could not load. Check your connection and retry.'))};
@@ -69,14 +83,13 @@
  }
 
  async function connect(){
-  if(ready){
-   openFranklin();
-   return;
-  }
+  if(ready){openFranklin();return;}
   panel.hidden=false;
   if(running)return;
   running=true;
   button.disabled=true;
+  button.dataset.state='loading';
+  setButtonLabel('Connecting…','FRANKLIN');
   const status=panel.querySelector('p');
   const progress=panel.querySelector('progress');
   const count=panel.querySelector('.asset-count');
@@ -85,12 +98,8 @@
   const update=()=>{progress.value=100*done/total;count.textContent=done+' / '+total+' assets ready'};
   try{
    update();
-   for(const src of scripts){
-    status.textContent=done<2?'Building the interface…':'Assembling assistant assets…';
-    await script(src);done++;update();
-   }
-   status.textContent='Applying interface surface…';
-   await surfaceStyle();done++;update();
+   for(const src of scripts){status.textContent=done<2?'Building the interface…':'Assembling assistant assets…';await script(src);done++;update()}
+   status.textContent='Applying interface surface…';await surfaceStyle();done++;update();
    status.textContent='Loading project knowledge…';
    for(const name of knowledgeNames){
     const api=window[name];
@@ -107,25 +116,22 @@
    status.textContent='Ready';
    ready=true;
    button.disabled=false;
-   button.textContent='Ask Franklin';
-   button.setAttribute('aria-label','Open Ask Franklin');
    button.dataset.ready='true';
+   button.dataset.state='ready';
+   setButtonLabel('Ask Franklin');
+   button.setAttribute('aria-label','Open Ask Franklin');
    document.body.classList.remove('helper-assets-pending');
    if(!panel.hidden)openFranklin();
    panel.hidden=true;
   }catch(e){
    status.textContent=e.message||'Unable to connect. Please retry.';
-   button.textContent='Retry Franklin';
+   button.dataset.state='error';
+   setButtonLabel('Retry Franklin','CONNECTION ISSUE');
    button.disabled=false;
-  }finally{
-   running=false;
-  }
+  }finally{running=false}
  }
 
  button.addEventListener('click',connect);
- document.addEventListener('franklin-disconnect',()=>{
-  button.hidden=false;
-  button.disabled=false;
- });
+ document.addEventListener('franklin-disconnect',()=>{button.hidden=false;button.disabled=false;setButtonLabel('Ask Franklin')});
  document.body.classList.add('helper-assets-pending');
 })();

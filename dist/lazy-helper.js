@@ -1,137 +1,80 @@
 (()=>{
+ 'use strict';
  if(!document.body.dataset.page||window.__lazyHelper)return;
  window.__lazyHelper=true;
 
  const loaded=new Set();
- let running=false;
- let ready=false;
+ let running=false,ready=false,collapseTimer=0,currentProgress=0;
  const LOCAL_AVATAR='assets/avatars/franklin.jpg';
  const FALLBACK_AVATAR='https://cdn.corenexis.com/f/dJ4k8HeoKK9.jpeg';
+ const scripts=['franklin-conversation.js','ask-franklin.js','franklin-analytics.js','franklin-funding.js','franklin-typing.js','franklin-support-context.js','franklin-developer-kb.js','franklin-log-files.js','franklin-dataset-engine.js','franklin-claude-rag.js','franklin-site-rag.js','franklin-policy.js','guard-core.js','franklin-i18n.js','franklin-guard.js','franklin-helper-v3.js','franklin-ui-polish.js','franklin-webllm.js','franklin-engine-extra.js','franklin-engine.js'];
+ const knowledge=[
+  ['FranklinDeveloperKB','Developer knowledge'],
+  ['FranklinDataset','Curated dataset'],
+  ['FranklinClaudeRAG','Project index'],
+  ['FranklinSiteRAG','Project documentation']
+ ];
+ const surfaceHref='ask-franklin-surface-v3.css?v=20261028composer2';
+
+ const style=document.createElement('style');
+ style.id='lazy-franklin-connect-style';
+ style.textContent=`
+ .franklin-connect-layer[hidden]{display:none!important}.franklin-connect-layer{position:fixed;inset:0;z-index:12020}.franklin-connect-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;animation:franklinConnectFade .3s ease forwards}.franklin-connect-sheet{position:absolute;left:50%;bottom:0;width:min(720px,100%);max-height:min(78svh,680px);box-sizing:border-box;padding:13px 30px calc(28px + env(safe-area-inset-bottom));border:1px solid color-mix(in srgb,var(--line,#ffffff1c) 92%,transparent);border-bottom:0;border-radius:30px 30px 0 0;background:linear-gradient(180deg,color-mix(in srgb,var(--panel,#171717) 96%,#fff 1%),var(--panel,#171717));box-shadow:0 -28px 84px rgba(0,0,0,.42);color:var(--text,#f2f2f2);transform:translate(-50%,105%);animation:franklinConnectUp .55s cubic-bezier(.16,1,.3,1) forwards;overflow:hidden}.franklin-connect-layer.is-closing .franklin-connect-backdrop{animation:franklinConnectFadeOut .36s ease forwards}.franklin-connect-layer.is-closing .franklin-connect-sheet{animation:franklinConnectDown .4s cubic-bezier(.4,0,.8,.3) forwards}.franklin-connect-grip{width:42px;height:4px;border-radius:8px;background:#ffffff22;margin:0 auto 22px}.franklin-connect-kicker{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:15px;border-bottom:1px solid #ffffff12;font:650 8px/1.2 'DM Sans',Arial,sans-serif;letter-spacing:1.45px;color:#8e8e8e}.franklin-connect-kicker strong{color:color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 82%,#fff 6%);font-weight:700}.franklin-connect-main{display:grid;grid-template-columns:148px minmax(0,1fr);gap:28px;align-items:center;padding:28px 0 25px}.franklin-connect-visual{position:relative;width:128px;height:128px;margin:auto;border:1px solid #ffffff1b;border-radius:27px;background:linear-gradient(145deg,#ffffff06,#ffffff02);display:grid;place-items:center;overflow:hidden;isolation:isolate}.franklin-connect-visual:before{content:'';position:absolute;left:15px;right:15px;top:17px;height:1px;background:linear-gradient(90deg,transparent,#d6b56b,transparent);box-shadow:0 0 12px #d6b56b66;animation:franklinConnectScan 1.8s ease-in-out infinite alternate}.franklin-connect-visual:after{content:'';position:absolute;inset:15px;border:1px solid #ffffff0e;border-radius:20px}.franklin-connect-avatar{position:relative;z-index:2;width:62px;height:62px;border-radius:50%;padding:3px;border:1px solid color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 62%,#fff 10%);background:#161616;box-shadow:0 10px 32px rgba(0,0,0,.38),0 0 0 5px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 8%,transparent)}.franklin-connect-avatar img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 12%;border-radius:50%}.franklin-connect-dot{position:absolute;right:2px;bottom:6px;width:10px;height:10px;border-radius:50%;background:#7daa5d;border:2px solid #171717;box-shadow:0 0 14px #7daa5d88}.franklin-connect-visual small{position:absolute;left:0;right:0;bottom:13px;text-align:center;font-size:5.5px;letter-spacing:1.4px;color:#8e7d5f}.franklin-connect-copy h2{margin:0 0 9px;font-size:clamp(24px,5vw,34px);font-weight:560;letter-spacing:-.85px}.franklin-connect-copy>p{margin:0 0 20px;min-height:38px;font-size:11px;line-height:1.65;color:#909090}.franklin-connect-progress{height:2px;background:#ffffff12;overflow:hidden}.franklin-connect-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#9f8554,#ddb96d);box-shadow:0 0 10px #d6b56b55;transition:width .18s cubic-bezier(.2,.8,.2,1)}.franklin-connect-meta{display:flex;justify-content:space-between;gap:16px;margin-top:10px;font-size:8px;letter-spacing:.75px;color:#717171}.franklin-connect-meta strong{color:#baa06a;font-weight:650}.franklin-connect-stages{display:grid;grid-template-columns:repeat(3,1fr);list-style:none;margin:0;padding:0;border-top:1px solid #ffffff11}.franklin-connect-stages li{position:relative;padding:15px 12px 0 0;font-size:8px;line-height:1.45;color:#606060;transition:color .22s ease}.franklin-connect-stages li+li{padding-left:12px;border-left:1px solid #ffffff0d}.franklin-connect-stages li span{display:block;margin-bottom:4px;font-size:7px;letter-spacing:1px}.franklin-connect-stages li.active{color:#d0b16a}.franklin-connect-stages li.done{color:#91a185}.franklin-connect-actions{display:flex;justify-content:flex-end;margin-top:18px}.franklin-connect-minimize{height:34px;padding:0 13px;border:1px solid #ffffff14;border-radius:11px;background:#ffffff05;color:#929292;font:600 9px/1 'DM Sans',Arial,sans-serif;letter-spacing:.04em}.franklin-connect-minimize:active{transform:scale(.97)}body.franklin-connect-active{overflow:hidden!important}.franklin-connect-layer[data-phase='ready'] .franklin-connect-visual:before{animation:none;top:63px;background:#8eaa70;box-shadow:0 0 18px #8eaa7066}.franklin-connect-layer[data-phase='error'] .franklin-connect-dot{background:#c7836a;box-shadow:0 0 14px #c7836a66}
+ @keyframes franklinConnectUp{to{transform:translate(-50%,0)}}@keyframes franklinConnectDown{from{transform:translate(-50%,0)}to{transform:translate(-50%,105%)}}@keyframes franklinConnectFade{to{opacity:1}}@keyframes franklinConnectFadeOut{from{opacity:1}to{opacity:0}}@keyframes franklinConnectScan{from{transform:translateY(0);opacity:.35}to{transform:translateY(90px);opacity:.95}}
+ @media(max-width:620px){.franklin-connect-sheet{width:100%;padding:12px 7% calc(23px + env(safe-area-inset-bottom));border-left:0;border-right:0;border-radius:28px 28px 0 0}.franklin-connect-grip{width:38px;height:3px;margin-bottom:18px}.franklin-connect-main{grid-template-columns:106px minmax(0,1fr);gap:20px;padding:24px 0 21px}.franklin-connect-visual{width:102px;height:102px;border-radius:22px}.franklin-connect-avatar{width:51px;height:51px}.franklin-connect-visual small{bottom:10px;font-size:5px}.franklin-connect-copy h2{font-size:25px}.franklin-connect-copy>p{font-size:10px;min-height:34px;margin-bottom:17px}.franklin-connect-stages li{font-size:7px;padding-right:8px}.franklin-connect-stages li+li{padding-left:8px}}
+ @media(max-width:390px){.franklin-connect-main{grid-template-columns:1fr;text-align:center}.franklin-connect-visual{width:92px;height:92px}.franklin-connect-copy>p{min-height:0}.franklin-connect-stages{display:none}.franklin-connect-meta{justify-content:center}}
+ @media(prefers-reduced-motion:reduce){.franklin-connect-backdrop,.franklin-connect-sheet,.franklin-connect-layer.is-closing .franklin-connect-backdrop,.franklin-connect-layer.is-closing .franklin-connect-sheet{animation-duration:.01ms!important}.franklin-connect-visual:before{animation:none;top:52px}.franklin-connect-progress span{transition:none}}
+ `;
+ document.head.append(style);
 
  const button=document.createElement('button');
- button.type='button';
- button.className='lazy-franklin';
- button.dataset.franklinPrimary='true';
+ button.type='button';button.className='lazy-franklin';button.dataset.franklinPrimary='true';button.dataset.state='expanded';
  button.innerHTML=`<span class="lazy-franklin-avatar" aria-hidden="true"><img src="${LOCAL_AVATAR}" alt=""><i></i></span><span class="lazy-franklin-copy"><small>COMMUNITY HELPER</small><strong>Ask Franklin</strong></span><span class="lazy-franklin-arrow" aria-hidden="true">→</span>`;
- button.setAttribute('aria-label','Connect to Franklin');
+ button.setAttribute('aria-label','Collapse or connect to Franklin');
  const avatarImg=button.querySelector('.lazy-franklin-avatar img');
- avatarImg?.addEventListener('error',()=>{
-  if(avatarImg.dataset.fallbackTried==='true'){avatarImg.remove();return;}
-  avatarImg.dataset.fallbackTried='true';
-  avatarImg.src=FALLBACK_AVATAR;
- });
- const setButtonLabel=(label,kicker='COMMUNITY HELPER')=>{
-  const strong=button.querySelector('.lazy-franklin-copy strong');
-  const small=button.querySelector('.lazy-franklin-copy small');
-  if(strong)strong.textContent=label;
-  if(small)small.textContent=kicker;
- };
+ avatarImg?.addEventListener('error',()=>{if(avatarImg.dataset.fallbackTried==='true'){avatarImg.remove();return}avatarImg.dataset.fallbackTried='true';avatarImg.src=FALLBACK_AVATAR});
  document.body.append(button);
 
- const panel=document.createElement('section');
- panel.className='asset-loader';
- panel.hidden=true;
- panel.setAttribute('role','dialog');
- panel.setAttribute('aria-label','Loading Franklin');
- panel.innerHTML='<div><small>ASSISTANT CHANNEL</small><h2>Connecting to Franklin</h2><p role="status">Building the interface…</p><progress max="100" value="0" aria-label="Assets loaded"></progress><small class="asset-count"></small><button type="button">Close</button></div>';
- document.body.append(panel);
- panel.querySelector('button').onclick=()=>{panel.hidden=true};
+ const layer=document.createElement('section');
+ layer.className='franklin-connect-layer';layer.hidden=true;layer.dataset.phase='runtime';layer.setAttribute('role','dialog');layer.setAttribute('aria-modal','true');layer.setAttribute('aria-labelledby','franklin-connect-title');
+ layer.innerHTML=`<div class="franklin-connect-backdrop" aria-hidden="true"></div><div class="franklin-connect-sheet" tabindex="-1"><div class="franklin-connect-grip" aria-hidden="true"></div><div class="franklin-connect-kicker"><strong>ASSISTANT CONNECTION</strong><span class="franklin-connect-percent">0%</span></div><div class="franklin-connect-main"><div class="franklin-connect-visual" aria-hidden="true"><span class="franklin-connect-avatar"><img src="${LOCAL_AVATAR}" alt=""><i class="franklin-connect-dot"></i></span><small>FRANKLIN CORE</small></div><div class="franklin-connect-copy"><h2 id="franklin-connect-title">Connecting to Franklin</h2><p role="status">Preparing assistant runtime…</p><div class="franklin-connect-progress" role="progressbar" aria-label="Franklin connection progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div><div class="franklin-connect-meta"><span class="franklin-connect-count">0 assets ready</span><strong class="franklin-connect-state">RUNTIME</strong></div></div></div><ol class="franklin-connect-stages"><li class="active"><span>01</span>Assistant runtime</li><li><span>02</span>Knowledge & RAG</li><li><span>03</span>Ready to chat</li></ol><div class="franklin-connect-actions"><button class="franklin-connect-minimize" type="button">Minimize</button></div></div>`;
+ document.body.append(layer);
+ const sheet=layer.querySelector('.franklin-connect-sheet'),status=layer.querySelector('[role="status"]'),bar=layer.querySelector('.franklin-connect-progress'),fill=bar.querySelector('span'),percent=layer.querySelector('.franklin-connect-percent'),count=layer.querySelector('.franklin-connect-count'),stateText=layer.querySelector('.franklin-connect-state'),stageEls=[...layer.querySelectorAll('.franklin-connect-stages li')];
+ layer.querySelector('.franklin-connect-minimize').addEventListener('click',()=>hideLayer(false));
+ layer.querySelector('.franklin-connect-backdrop').addEventListener('click',()=>hideLayer(false));
 
- const scripts=['franklin-conversation.js','ask-franklin.js','franklin-analytics.js','franklin-funding.js','franklin-typing.js','franklin-support-context.js','franklin-developer-kb.js','franklin-log-files.js','franklin-dataset-engine.js','franklin-claude-rag.js','franklin-site-rag.js','franklin-policy.js','guard-core.js','franklin-i18n.js','franklin-guard.js','franklin-helper-v3.js','franklin-ui-polish.js','franklin-webllm.js','franklin-engine-extra.js','franklin-engine.js'];
- const knowledgeNames=['FranklinDeveloperKB','FranklinDataset','FranklinClaudeRAG'];
- const surfaceHref='ask-franklin-surface-v3.css?v=20261028composer1';
+ const setButtonLabel=(label,kicker='COMMUNITY HELPER')=>{button.querySelector('.lazy-franklin-copy strong').textContent=label;button.querySelector('.lazy-franklin-copy small').textContent=kicker};
+ const clearCollapse=()=>{clearTimeout(collapseTimer);collapseTimer=0};
+ const collapse=()=>{if(running||document.querySelector('.ask-franklin-panel.is-open'))return;clearCollapse();button.dataset.state='compact';button.setAttribute('aria-label','Expand Ask Franklin helper')};
+ const expand=(hold=5200)=>{clearCollapse();button.dataset.state=ready?'ready-expanded':'expanded';button.setAttribute('aria-label',ready?'Open Ask Franklin':'Connect to Franklin');if(hold)collapseTimer=setTimeout(collapse,hold)};
 
- function script(src){
-  if(loaded.has(src))return Promise.resolve();
-  return new Promise((resolve,reject)=>{
-   const s=document.createElement('script');
-   s.src=src+'?v=20261028helper5';
-   const timeout=setTimeout(()=>{s.remove();reject(Error('Connection timed out. Tap Retry.'))},20000);
-   s.onload=()=>{clearTimeout(timeout);loaded.add(src);resolve()};
-   s.onerror=()=>{clearTimeout(timeout);s.remove();reject(Error('An asset could not load. Check your connection and retry.'))};
-   document.head.append(s);
-  });
- }
+ function showLayer(){clearCollapse();layer.classList.remove('is-closing');layer.hidden=false;document.body.classList.add('franklin-connect-active');requestAnimationFrame(()=>sheet.focus({preventScroll:true}))}
+ function hideLayer(animated=true){if(layer.hidden)return;document.body.classList.remove('franklin-connect-active');if(!animated){layer.hidden=true;layer.classList.remove('is-closing');return}layer.classList.add('is-closing');setTimeout(()=>{layer.hidden=true;layer.classList.remove('is-closing')},420)}
+ function setStage(index,phase,label){layer.dataset.phase=phase;stateText.textContent=label;stageEls.forEach((el,i)=>{el.classList.toggle('active',i===index);el.classList.toggle('done',i<index)})}
+ function setProgress(value,label){currentProgress=Math.max(currentProgress,Math.min(100,Math.round(value)));fill.style.width=currentProgress+'%';bar.setAttribute('aria-valuenow',String(currentProgress));percent.textContent=currentProgress+'%';if(label)count.textContent=label}
 
- function surfaceStyle(){
-  const existing=document.querySelector('link[data-franklin-surface]');
-  if(existing)return existing.sheet?Promise.resolve():new Promise((resolve,reject)=>{
-   existing.addEventListener('load',resolve,{once:true});
-   existing.addEventListener('error',()=>reject(Error('Interface surface could not load.')),{once:true});
-  });
-  return new Promise((resolve,reject)=>{
-   const l=document.createElement('link');
-   l.rel='stylesheet';
-   l.href=surfaceHref;
-   l.dataset.franklinSurface='true';
-   l.onload=resolve;
-   l.onerror=()=>reject(Error('Interface surface could not load.'));
-   document.head.append(l);
-  });
- }
-
- function openFranklin(){
-  const chat=document.querySelector('.ask-franklin-panel');
-  const controller=document.querySelector('.ask-franklin-launcher');
-  if(!controller)return false;
-  if(chat?.classList.contains('is-open'))return true;
-  if(controller.dataset.state==='compact')controller.click();
-  requestAnimationFrame(()=>{
-   if(controller.dataset.state==='expanded')controller.click();
-  });
-  return true;
- }
+ function script(src){if(loaded.has(src))return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src+'?v=20261028helper6';const timeout=setTimeout(()=>{s.remove();reject(Error('Connection timed out while loading assistant runtime.'))},20000);s.onload=()=>{clearTimeout(timeout);loaded.add(src);resolve()};s.onerror=()=>{clearTimeout(timeout);s.remove();reject(Error('An assistant runtime file could not load. Check your connection and retry.'))};document.head.append(s)})}
+ function surfaceStyle(){const existing=document.querySelector('link[data-franklin-surface]');if(existing)return existing.sheet?Promise.resolve():new Promise((resolve,reject)=>{existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',()=>reject(Error('Interface surface could not load.')),{once:true})});return new Promise((resolve,reject)=>{const l=document.createElement('link');l.rel='stylesheet';l.href=surfaceHref;l.dataset.franklinSurface='true';l.onload=resolve;l.onerror=()=>reject(Error('Interface surface could not load.'));document.head.append(l)})}
+ function openFranklin(){const chat=document.querySelector('.ask-franklin-panel'),controller=document.querySelector('.ask-franklin-launcher');if(!controller)return false;if(chat?.classList.contains('is-open'))return true;if(controller.dataset.state==='compact')controller.click();requestAnimationFrame(()=>{if(controller.dataset.state==='expanded')controller.click()});return true}
 
  async function connect(){
-  if(ready){openFranklin();return;}
-  panel.hidden=false;
-  if(running)return;
-  running=true;
-  button.disabled=true;
-  button.dataset.state='loading';
-  setButtonLabel('Connecting…','FRANKLIN');
-  const status=panel.querySelector('p');
-  const progress=panel.querySelector('progress');
-  const count=panel.querySelector('.asset-count');
-  let done=0;
-  const total=scripts.length+knowledgeNames.length+1;
-  const update=()=>{progress.value=100*done/total;count.textContent=done+' / '+total+' assets ready'};
+  if(ready){openFranklin();return}
+  showLayer();if(running)return;running=true;button.disabled=true;button.dataset.state='loading';setButtonLabel('Connecting…','FRANKLIN');currentProgress=0;setProgress(0,'0 assets ready');setStage(0,'runtime','RUNTIME');
+  const total=scripts.length+1+knowledge.length;let done=0;
+  const tick=label=>{done++;setProgress(done/total*100,`${done} / ${total} assets ready`);if(label)status.textContent=label};
   try{
-   update();
-   for(const src of scripts){status.textContent=done<2?'Building the interface…':'Assembling assistant assets…';await script(src);done++;update()}
-   status.textContent='Applying interface surface…';await surfaceStyle();done++;update();
-   status.textContent='Loading project knowledge…';
-   for(const name of knowledgeNames){
-    const api=window[name];
-    if(!api?.load)throw Error('Knowledge module could not initialize. Reload the page to retry.');
-    const data=await Promise.race([api.load(),new Promise((_,reject)=>setTimeout(()=>reject(Error('Knowledge timed out. Reload the page to retry.')),20000))]);
-    if(!data?.length)throw Error('Knowledge could not load. Reload the page to retry.');
-    done++;update();
-   }
-   await Promise.all([...document.querySelectorAll('link[data-ask-franklin]')].map(link=>link.sheet?Promise.resolve():new Promise((resolve,reject)=>{
-    link.addEventListener('load',resolve,{once:true});
-    link.addEventListener('error',()=>reject(Error('Interface styles could not load. Reload to retry.')),{once:true});
-    setTimeout(()=>link.sheet?resolve():reject(Error('Styles timed out. Reload to retry.')),20000);
-   })));
-   status.textContent='Ready';
-   ready=true;
-   button.disabled=false;
-   button.dataset.ready='true';
-   button.dataset.state='ready';
-   setButtonLabel('Ask Franklin');
-   button.setAttribute('aria-label','Open Ask Franklin');
-   document.body.classList.remove('helper-assets-pending');
-   if(!panel.hidden)openFranklin();
-   panel.hidden=true;
-  }catch(e){
-   status.textContent=e.message||'Unable to connect. Please retry.';
-   button.dataset.state='error';
-   setButtonLabel('Retry Franklin','CONNECTION ISSUE');
-   button.disabled=false;
-  }finally{running=false}
+   for(let i=0;i<scripts.length;i++){status.textContent=`Loading assistant runtime · ${i+1} of ${scripts.length}`;await script(scripts[i]);tick()}
+   status.textContent='Applying Franklin interface…';await surfaceStyle();tick();
+   setStage(1,'knowledge','KNOWLEDGE');status.textContent='Loading project knowledge and search indexes…';
+   for(const [name,label] of knowledge){const api=window[name];if(!api?.load)throw Error(`${label} did not initialize.`);const data=await Promise.race([api.load(),new Promise((_,reject)=>setTimeout(()=>reject(Error(`${label} timed out.`)),25000))]);if(!data?.length)throw Error(`${label} returned no usable data.`);tick(`Loaded ${label}.`)}
+   await Promise.all([...document.querySelectorAll('link[data-ask-franklin]')].map(link=>link.sheet?Promise.resolve():new Promise((resolve,reject)=>{link.addEventListener('load',resolve,{once:true});link.addEventListener('error',()=>reject(Error('Chat interface styles could not load.')),{once:true});setTimeout(()=>link.sheet?resolve():reject(Error('Chat interface styles timed out.')),20000)})));
+   setProgress(100,`${total} / ${total} assets ready`);setStage(2,'ready','READY');stageEls[2].classList.add('done');status.textContent='Knowledge loaded. Franklin is ready.';ready=true;button.disabled=false;button.dataset.ready='true';button.dataset.state='ready-expanded';setButtonLabel('Ask Franklin');button.setAttribute('aria-label','Open Ask Franklin');document.body.classList.remove('helper-assets-pending');
+   await new Promise(resolve=>setTimeout(resolve,420));hideLayer(true);setTimeout(()=>openFranklin(),240);
+  }catch(error){layer.dataset.phase='error';status.textContent=error.message||'Unable to connect. Tap Franklin to retry.';stateText.textContent='RETRY';button.dataset.state='error';setButtonLabel('Retry Franklin','CONNECTION ISSUE');button.disabled=false;setTimeout(()=>hideLayer(true),1500)}finally{running=false}
  }
 
- button.addEventListener('click',connect);
- document.addEventListener('franklin-disconnect',()=>{button.hidden=false;button.disabled=false;setButtonLabel('Ask Franklin')});
+ button.addEventListener('click',()=>{const state=button.dataset.state;if(state==='loading')return;if(state==='compact'){expand();return}if(ready){openFranklin();return}connect()});
+ document.addEventListener('franklin-disconnect',()=>{button.hidden=false;button.disabled=false;setButtonLabel('Ask Franklin');expand(1800)});
  document.body.classList.add('helper-assets-pending');
+ expand(6200);
 })();

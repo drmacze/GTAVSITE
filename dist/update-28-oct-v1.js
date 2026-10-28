@@ -8,6 +8,18 @@ const mount=()=>{
   const jump=document.querySelector('.release-jump');
   if(!list||!jump||document.querySelector('#release-2026-10-28'))return;
 
+  if(!document.querySelector('#release-28-thumb-style')){
+    const style=document.createElement('style');
+    style.id='release-28-thumb-style';
+    style.textContent=`
+      .release-thumbnail-28{position:relative;margin:0 30px 8px;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:7px;background:#0d0d0d}
+      .release-thumbnail-28::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 64%,rgba(0,0,0,.18));box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
+      .release-thumbnail-28 img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.001)}
+      @media(max-width:750px){.release-thumbnail-28{margin:0 20px 6px;border-radius:6px;aspect-ratio:16/9}}
+    `;
+    document.head.append(style);
+  }
+
   const toolbarCount=document.querySelector('.release-toolbar small');
   if(toolbarCount)toolbarCount.textContent='11 releases · Newest first';
 
@@ -35,6 +47,9 @@ const mount=()=>{
         </div>
         <span class="release-chevron"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#chevron-down"></use></svg></span>
       </summary>
+      <figure class="release-thumbnail-28">
+        <img src="https://cdn.phototourl.com/member/2026-10-28-2e7c040f-d82c-4e91-b42f-814f001bea04.jpg" alt="GTA V for iPhone, iPad and Mac — 28 Oct update" loading="eager" decoding="async" referrerpolicy="no-referrer">
+      </figure>
       <div class="release-body">
         <section class="release-part">
           <h3>GTA Online DLC Packs 1–4</h3>
@@ -82,6 +97,9 @@ const mount=()=>{
       </div>
     </details>`;
   list.prepend(article);
+
+  const thumb=article.querySelector('.release-thumbnail-28 img');
+  thumb?.addEventListener('error',()=>thumb.closest('.release-thumbnail-28')?.remove(),{once:true});
 
   const oldLatest=document.querySelector('#release-2026-10-26 .release-tag');
   if(oldLatest&&/latest/i.test(oldLatest.textContent))oldLatest.textContent='Previous release';

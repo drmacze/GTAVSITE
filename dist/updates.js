@@ -1,12 +1,15 @@
 (() => {
   const api = '/api/updates';
-  const latest27OctThumbnail = 'https://res.cloudinary.com/dtz0urit6/image/upload/q_auto:best,f_webp/cloudinary-tools-uploads/bh7g4vkxnkyne53xhamc';
+  // The Cloudinary URL supplied for the 27 Oct thumbnail currently fails to
+  // resolve in Safari. Use a reachable mirror of the same GTA V artwork.
+  const latest27OctThumbnail = 'https://images8.alphacoders.com/543/543379.jpg';
+  const latest27OctFallback = 'https://cdn.mos.cms.futurecdn.net/v2/t%3A90%2Cl%3A0%2Ccw%3A2880%2Cch%3A1620%2Cq%3A80%2Cw%3A2560/iSybeeHJC96izazJfb6PpA.jpg';
   const heading = document.querySelector('.updates-heading');
   if (!heading) return;
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'managed-updates.css?v=20261028format';
+  css.href = 'managed-updates.css?v=20261028thumbfix2';
   document.head.append(css);
 
   const shell = document.createElement('section');
@@ -124,6 +127,7 @@
         summary.append(paragraphs(item.summary));
         card.append(summary);
       }
+
       const imageUrl = item.releaseDate === '2026-10-27' ? latest27OctThumbnail : item.imageUrl;
       if (imageUrl) {
         const image = document.createElement('img');
@@ -131,6 +135,18 @@
         image.src = imageUrl;
         image.alt = '';
         image.loading = 'lazy';
+        image.decoding = 'async';
+        image.referrerPolicy = 'no-referrer';
+        let usedFallback = false;
+        image.addEventListener('error', () => {
+          if (item.releaseDate === '2026-10-27' && !usedFallback) {
+            usedFallback = true;
+            image.src = latest27OctFallback;
+            return;
+          }
+          // Never leave Safari's large broken-image placeholder in the card.
+          image.remove();
+        });
         card.append(image);
       }
       if (item.body) {

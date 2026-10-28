@@ -61,8 +61,8 @@ function render(){
  ticking=false;
  const rect=section.getBoundingClientRect();const travel=Math.max(1,section.offsetHeight-innerHeight);const p=clamp((-rect.top)/travel);
  if(Math.abs(p-last)<.0015)return;last=p;
- const coverIn=ease(p/.19),coverOut=1-ease((p-.44)/.2),coverOpacity=clamp(coverIn*coverOut);
- const coverScale=.86+.14*coverIn+.055*ease((p-.42)/.25);const coverY=(1-coverIn)*34-ease((p-.44)/.24)*54;
+ const coverOut=1-ease((p-.43)/.21),coverOpacity=clamp(coverOut);
+ const coverScale=.97+.035*ease(p/.3)+.045*ease((p-.43)/.24);const coverY=8-ease((p-.43)/.24)*58;
  const messageIn=ease((p-.50)/.18),messageOut=1-ease((p-.84)/.16),messageOpacity=clamp(messageIn*messageOut);const messageY=(1-messageIn)*76-ease((p-.84)/.16)*34;
  const exit=ease((p-.92)/.08);
  document.body.style.setProperty('--intro2-cover-opacity',coverOpacity.toFixed(4));

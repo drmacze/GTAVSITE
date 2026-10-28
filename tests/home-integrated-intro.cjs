@@ -1,0 +1,20 @@
+const fs=require('fs');
+const assert=require('assert');
+const intro=fs.readFileSync('dist/home-intro-v1.js','utf8');
+const css=fs.readFileSync('dist/home-intro-v1.css','utf8');
+const motion=fs.readFileSync('dist/motion.js','utf8');
+const index=fs.readFileSync('dist/index.html','utf8');
+
+assert.match(index,/location\.replace\(target\.pathname\+target\.search/,'root must immediately enter the combined home document');
+assert.doesNotMatch(index,/welcome-stage|welcome-copy|Swipe up to continue/,'legacy standalone welcome UI must not render at root');
+assert.match(motion,/home-intro-v1\.css/,'home bootstrap must load intro styling');
+assert.match(motion,/home-intro-v1\.js/,'home bootstrap must load intro behavior');
+assert.match(motion,/showWelcomeNotifications/,'onboarding completion must stay in the loaded home page');
+assert.match(intro,/Welcome to our community site/,'intro banner copy must replace launch-trailer messaging');
+assert.match(intro,/home-intro-title-above">GTA V iOS/,'GTA V iOS label must sit above the cover');
+assert.match(intro,/assets\/apple\.svg/,'Apple mark must appear below the cover');
+assert.match(intro,/rockstar-mark/,'Rockstar mark must appear below the cover');
+assert.match(intro,/home-intro-account/,'intro must expose an account control');
+assert.match(css,/position:sticky/,'intro must use a continuous sticky scroll stage');
+assert.match(css,/--intro-progress/,'scroll progress must drive the intro animation');
+console.log('integrated welcome-home regression checks passed');

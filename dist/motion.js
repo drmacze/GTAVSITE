@@ -22,6 +22,10 @@
    window.__storyST5=true;
    addStyle('story-scrolltrigger-v3.css?v=20261029st7','story-scrolltrigger-v3-style');
    addScript('story-scrolltrigger-v3.js?v=20261029st7','story-scrolltrigger-v3-script');
+
+   // Once the cinematic intro + Stories chapter is complete, Home becomes a one-way content chapter.
+   addStyle('home-chapter-lock-v1.css?v=20261029chapter2','home-chapter-lock-v1-style');
+   addScript('home-chapter-lock-v1.js?v=20261029chapter2','home-chapter-lock-v1-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

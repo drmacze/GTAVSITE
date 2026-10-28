@@ -29,19 +29,8 @@
    addScript('music.js?v=20261029media2','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
-   addStyle('downloads.css?v=20261029dlc4','downloads-dlc4-style');
-   addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
-   addStyle('mods-catalog-v5.css?v=20261029catalog5','mods-catalog-v5-style');
-   addScript('mods-catalog-v5.js?v=20261029catalog5','mods-catalog-v5-script');
-   addStyle('mods-awesomekills-v1.css?v=20261029awesome5','mods-awesomekills-v1-style');
-   addScript('mods-awesomekills-v1.js?v=20261029awesome5','mods-awesomekills-v1-script');
-   addStyle('mods-clean-v6.css?v=20261029clean6','mods-clean-v6-style');
-   addStyle('mods-library-v7.css?v=20261029library7','mods-library-v7-style');
-   addScript('mods-library-v7.js?v=20261029library7','mods-library-v7-script');
-   addStyle('mods-glass-v8.css?v=20261029glass8','mods-glass-v8-style');
-   addScript('mods-glass-v8.js?v=20261029glass8','mods-glass-v8-script');
-   addStyle('mods-library-v9.css?v=20261029library9','mods-library-v9-style');
-   addScript('mods-library-v9.js?v=20261029library9','mods-library-v9-script');
+   addStyle('mods-library-v9.css?v=20261029library9b','mods-library-v9-style');
+   addScript('mods-library-v9.js?v=20261029library9b','mods-library-v9-script');
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');

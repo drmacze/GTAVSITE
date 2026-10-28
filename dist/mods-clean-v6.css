@@ -1,0 +1,160 @@
+/* Mods catalogue v6 — black canvas, cleaner hierarchy, fewer dividers */
+body[data-page="downloads"]{
+  --mods-bg:#000;
+  --mods-surface:#090909;
+  --mods-surface-2:#0d0d0d;
+  --mods-soft:#151515;
+  --mods-line:rgba(255,255,255,.075);
+  background:#000!important;
+  color:var(--fg-f5f5f5,#f3f3f3);
+}
+body[data-page="downloads"]::before{background:#000!important;opacity:1!important}
+body[data-page="downloads"] .site-header{background:rgba(0,0,0,.86)!important;border-bottom:0!important;box-shadow:none!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+body[data-page="downloads"] .mods-studio{max-width:1160px;padding-top:64px;background:#000}
+body[data-page="downloads"] .site-footer{background:#000!important;border-top:0!important}
+
+/* Hero */
+.mods-catalog-v5 .mods-heading{max-width:760px;margin-bottom:34px!important}
+.mods-catalog-v5 .mods-heading .eyebrow{color:var(--site-accent,var(--accent));opacity:.92}
+.mods-catalog-v5 .mods-heading h1{margin:14px 0 18px;font-size:clamp(46px,7vw,78px);line-height:.94;letter-spacing:-.06em}
+.mods-catalog-v5 .mods-heading>p{max-width:620px!important;color:rgba(255,255,255,.58)!important;font-size:14px!important;line-height:1.7}
+
+/* Search */
+.mods-search-panel{margin:0 0 14px!important;padding:0!important;border:0!important}
+.mods-search-label{margin:0 0 10px!important;color:rgba(255,255,255,.42)!important;font-size:8px!important;letter-spacing:.16em!important}
+.mods-search-line{min-height:62px!important;padding:0 18px;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:#0a0a0a;transition:border-color .22s ease,background .22s ease,box-shadow .22s ease}
+.mods-search-line:focus-within{background:#0c0c0c;border-color:color-mix(in srgb,var(--site-accent,var(--accent)) 40%,rgba(255,255,255,.09));box-shadow:0 0 0 3px color-mix(in srgb,var(--site-accent,var(--accent)) 8%,transparent)}
+.mods-search-icon{color:rgba(255,255,255,.46)!important}
+.mods-search-line input{font-size:19px!important;font-weight:550!important;letter-spacing:-.02em!important}
+.mods-search-line input::placeholder{color:rgba(255,255,255,.3)!important}
+.mods-search-clear{padding-right:0!important;color:rgba(255,255,255,.45)!important}
+
+/* Category navigation */
+.mods-filter-rail{position:sticky!important;top:0!important;z-index:12!important;margin:0 0 54px!important;padding:10px 0 12px!important;border:0!important;background:rgba(0,0,0,.92)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+.mods-filter-nav{gap:22px!important;padding:0!important}
+.mods-filter-nav button{min-height:38px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:rgba(255,255,255,.42)!important;font-size:9px!important;letter-spacing:.08em!important;transition:color .2s ease!important}
+.mods-filter-nav button::after{content:"";position:absolute;left:0;right:0;bottom:1px;height:2px;border-radius:2px;background:var(--site-accent,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .24s cubic-bezier(.22,1,.36,1)}
+.mods-filter-nav button.is-active{color:#fff!important}
+.mods-filter-nav button.is-active::after{transform:scaleX(1)}
+.mods-filter-nav button .filter-count{min-width:auto!important;height:auto!important;padding:0!important;border:0!important;border-radius:0!important;font-size:7px!important;opacity:.48!important}
+.mods-results-status{color:rgba(255,255,255,.34)!important}
+
+/* Section rhythm */
+.mods-feature,.mods-dlc,.mods-graphics,.mods-languages{position:relative}
+.mods-feature{gap:8%!important;align-items:center!important}
+.mod-edition{min-height:390px!important;padding:22px 0!important;border:0!important;background:transparent!important}
+.mod-edition>span:first-child{color:rgba(255,255,255,.45)!important}
+.mod-edition b{color:var(--site-accent,var(--accent));filter:drop-shadow(0 18px 54px color-mix(in srgb,var(--site-accent,var(--accent)) 20%,transparent));opacity:.92}
+.mod-edition>span:last-child{color:rgba(255,255,255,.28)!important}
+.mod-editorial .eyebrow{color:rgba(255,255,255,.42)!important}
+.mod-editorial h2{margin-bottom:24px!important}
+.mod-tracklist{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px;margin-bottom:28px!important}
+.mod-tracklist li{gap:12px!important;padding:5px 0!important;border:0!important;color:rgba(255,255,255,.76);font-size:13px!important}
+.mod-tracklist li::before{color:var(--site-accent,var(--accent))!important;opacity:.72}
+.mods-download{min-height:54px!important;border-radius:12px;padding:0 20px!important;box-shadow:0 12px 40px color-mix(in srgb,var(--site-accent,var(--accent)) 10%,transparent)}
+.mod-instruction{color:rgba(255,255,255,.4)!important}
+
+/* DLC */
+.mods-dlc{margin-top:112px!important}
+.dlc-heading{margin-bottom:34px!important}
+.dlc-heading>.eyebrow{color:rgba(255,255,255,.4)!important}
+.dlc-heading p{color:rgba(255,255,255,.46)!important}
+.dlc-list{border:0!important;display:grid;gap:8px}
+.dlc-pack{border:0!important;border-radius:14px;background:transparent;transition:background .2s ease}
+.dlc-pack:hover,.dlc-pack[open]{background:#080808}
+.dlc-pack>summary{min-height:96px!important;padding:16px 18px!important;border:0!important;border-radius:14px}
+.dlc-index{color:var(--site-accent,var(--accent))!important;opacity:.8}
+.dlc-identity strong{color:#f4f4f4!important}
+.dlc-identity small,.dlc-summary-stats{color:rgba(255,255,255,.4)!important}
+.dlc-summary-stats b{color:rgba(255,255,255,.84)!important}
+.dlc-chevron{color:rgba(255,255,255,.38)!important}
+.dlc-content{padding:0 18px 22px 96px!important}
+.dlc-breakdown{border:0!important;gap:8px}
+.dlc-breakdown span{padding:16px 0 0!important}
+.dlc-breakdown small{color:rgba(255,255,255,.34)!important}
+.dlc-download{border:1px solid rgba(255,255,255,.1)!important;border-radius:10px!important;background:#0c0c0c!important;color:#f1f1f1!important}
+.dlc-download:hover{background:var(--site-accent,var(--accent))!important;border-color:var(--site-accent,var(--accent))!important;color:#111!important}
+
+/* Graphics */
+.mods-graphics{margin-top:104px!important}
+.graphics-heading{margin-bottom:32px!important}
+.graphics-heading>.eyebrow{color:rgba(255,255,255,.4)!important}
+.graphics-heading p{color:rgba(255,255,255,.46)!important}
+.graphics-row,.awesomekills-row{border:0!important;padding:0!important}
+.awesomekills-graphics{gap:clamp(30px,5vw,66px)!important;padding:0!important}
+.awesomekills-preview{border-radius:16px!important;background:#050505!important;box-shadow:0 30px 90px rgba(0,0,0,.54)!important}
+.awesomekills-info{padding:10px 0 0!important}
+.awesomekills-meta{padding:0 0 10px!important;border:0!important;color:rgba(255,255,255,.4)!important}
+.awesomekills-info h3{margin:14px 0 20px!important}
+.awesomekills-features{gap:9px!important;margin:0 0 26px!important;border:0!important}
+.awesomekills-features li{padding:0 0 0 17px!important;border:0!important;color:rgba(255,255,255,.7)!important}
+.awesomekills-features li::before{top:7px!important;width:4px!important;height:4px!important}
+.awesomekills-actions{gap:10px!important}
+.awesomekills-download{min-height:56px!important;padding:0 16px!important;border:1px solid rgba(255,255,255,.085)!important;border-radius:12px!important;background:#0a0a0a!important}
+.awesomekills-download:hover{background:#101010!important;border-color:rgba(255,255,255,.16)!important;transform:translateY(-1px)}
+
+/* Languages */
+.mods-languages{margin-top:104px!important;border:0!important}
+.language-picker{border:0!important}
+.language-picker>summary{padding:0 0 24px!important;border:0!important}
+.language-picker>summary .eyebrow{color:rgba(255,255,255,.4)!important}
+.language-picker>summary .language-hint{color:rgba(255,255,255,.36)!important}
+.language-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0!important}
+.language-note{grid-column:1/-1;margin:0 0 8px!important;color:rgba(255,255,255,.38)!important}
+.language-option{min-height:64px!important;padding:0 16px!important;border:0!important;border-radius:12px;background:#080808;transition:background .2s ease,transform .2s ease!important}
+.language-option:hover{padding-left:16px!important;background:#0d0d0d;transform:translateY(-1px)}
+.language-abbr{color:rgba(255,255,255,.34)!important}
+.language-action{color:rgba(255,255,255,.46)!important}
+.language-option:hover .language-action{color:var(--site-accent,var(--accent))!important}
+
+.mods-end{margin-top:72px!important;padding-top:0!important;border:0!important;color:rgba(255,255,255,.38)!important}
+.mods-empty-state{margin:56px 0 28px!important;padding:40px 0!important;border:0!important}
+
+@media(max-width:850px){
+  .mod-tracklist{grid-template-columns:1fr}
+  .dlc-content{padding-left:72px!important}
+  .language-options{grid-template-columns:1fr}
+}
+
+@media(max-width:650px){
+  body[data-page="downloads"] .mods-studio{padding:36px 22px 56px!important}
+  .mods-catalog-v5 .mods-heading{margin-bottom:28px!important}
+  .mods-catalog-v5 .mods-heading h1{font-size:46px!important}
+  .mods-search-line{min-height:56px!important;border-radius:14px!important;padding:0 14px!important}
+  .mods-filter-rail{margin-bottom:42px!important;padding:8px 0 10px!important}
+  .mods-filter-nav{gap:18px!important}
+  .mods-filter-nav button{min-height:34px!important;font-size:8px!important}
+  .mods-results-status{margin-top:6px!important}
+
+  .mods-feature{gap:22px!important}
+  .mod-edition{height:96px!important;padding:8px 0!important}
+  .mod-edition b{font-size:86px!important}
+  .mod-editorial h2{font-size:34px!important;margin-bottom:18px!important}
+  .mod-tracklist{gap:7px!important;margin-bottom:22px!important}
+  .mod-tracklist li{font-size:12px!important}
+  .mods-download{width:100%;border-radius:11px!important}
+
+  .mods-dlc,.mods-graphics,.mods-languages{margin-top:76px!important}
+  .dlc-heading,.graphics-heading{margin-bottom:24px!important}
+  .dlc-heading h2,.graphics-heading h2{font-size:34px!important}
+  .dlc-pack{border-radius:12px!important}
+  .mods-catalog-v5 .dlc-pack>summary{min-height:78px!important;padding:14px 12px!important;grid-template-columns:26px minmax(0,1fr) 20px!important;gap:10px!important}
+  .mods-catalog-v5 .dlc-content{padding:0 12px 18px 48px!important}
+  .dlc-download{border-radius:10px!important}
+
+  .awesomekills-graphics{gap:22px!important}
+  .awesomekills-preview{border-radius:12px!important}
+  .awesomekills-info{padding:0!important}
+  .awesomekills-info h3{font-size:31px!important;margin:12px 0 16px!important}
+  .awesomekills-download{border-radius:10px!important}
+
+  .language-picker>summary{padding-bottom:18px!important}
+  .language-options{gap:7px!important}
+  .language-option{min-height:60px!important;border-radius:10px!important;padding:0 14px!important}
+  .language-option:hover{padding-left:14px!important}
+  .mods-end{margin-top:56px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .mods-search-line,.dlc-pack,.language-option,.awesomekills-download,.mods-filter-nav button::after{transition:none!important}
+}

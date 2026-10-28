@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__storyST4||document.body?.dataset.page!=='home')return;
-window.__storyST4=true;
+if(window.__storyST5||document.body?.dataset.page!=='home')return;
+window.__storyST5=true;
 
 const COVER_URLS=[
   'https://cdn.phototourl.com/member/2026-10-28-c1ede1c5-8074-4007-84b0-8914de52aca7.jpg',
@@ -9,12 +9,12 @@ const COVER_URLS=[
 ];
 
 function addCss(){
-  let link=document.querySelector('link[data-story-st4]');
+  let link=document.querySelector('link[data-story-st5]');
   if(link)return;
   link=document.createElement('link');
   link.rel='stylesheet';
-  link.href='story-scrolltrigger-v2.css?v=20261029st4';
-  link.dataset.storySt4='1';
+  link.href='story-scrolltrigger-v2.css?v=20261029st5';
+  link.dataset.storySt5='1';
   document.head.append(link);
 }
 
@@ -83,64 +83,72 @@ function setActive(cards,dots,index){
 function buildMotion(section){
   const {gsap,ScrollTrigger}=window;
   const inner=section.querySelector('.story-showcase-v1-inner');
-  const track=section.querySelector('.story-showcase-v1-track');
   const cards=[...section.querySelectorAll('.story-showcase-v1-card')];
   const dots=[...section.querySelectorAll('.story-showcase-v1-dots i')];
   const images=cards.map(card=>card.querySelector('.story-showcase-v1-art img'));
   const actions=cards.map(card=>card.querySelector('.story-showcase-v1-actions'));
-  if(!inner||!track||cards.length<2)return;
+  if(!inner||cards.length<2)return;
 
-  section.classList.add('story-st4','story-st4-ready');
+  section.classList.add('story-st5','story-st5-ready');
   cards.forEach(card=>card.classList.add('is-visible'));
   setActive(cards,dots,0);
 
   const mobile=()=>matchMedia('(max-width:760px)').matches;
-  const offX=()=>Math.max(innerWidth*0.86,520);
+  const offX=()=>Math.max(innerWidth*0.88,540);
 
   gsap.set(inner,{opacity:1});
   gsap.set(cards,{xPercent:-50,yPercent:-50,transformOrigin:'50% 50%',force3D:true});
-  gsap.set(cards[0],{x:0,y:mobile()?'12vh':'10vh',scale:.78,rotation:-1.4,opacity:0});
-  gsap.set(cards[1],{x:offX(),y:mobile()?'5vh':'3vh',scale:.82,rotation:2.2,opacity:0});
-  gsap.set(images,{scale:1.14,yPercent:3,force3D:true});
-  gsap.set(actions,{opacity:0,y:20,scale:.94});
-  gsap.set(dots,{opacity:0});
+  gsap.set(cards[0],{x:0,y:mobile()?'8vh':'7vh',scale:.86,rotation:-1,opacity:.76});
+  gsap.set(cards[1],{x:offX(),y:mobile()?'3vh':'2vh',scale:.84,rotation:2,opacity:0});
+  gsap.set(images,{scale:1.11,yPercent:2.5,force3D:true});
+  gsap.set(actions,{opacity:0,y:18,scale:.95});
+  gsap.set(dots,{opacity:.35});
 
-  const tl=gsap.timeline({
-    defaults:{ease:'none'},
-    scrollTrigger:{
-      trigger:section,
-      start:'top top',
-      end:'bottom bottom',
-      scrub:.62,
-      invalidateOnRefresh:true,
-      onUpdate:self=>{
-        const p=self.progress;
-        const index=p<.52?0:1;
-        setActive(cards,dots,index);
-        section.style.setProperty('--story-progress',p.toFixed(4));
-        section.classList.toggle('is-in-view',p>.01&&p<.99);
-      }
+  const tl=gsap.timeline({defaults:{ease:'none'},paused:true});
+  tl
+    .to(cards[0],{y:0,scale:1,rotation:0,opacity:1,duration:.12},0)
+    .to(images[0],{scale:1.025,yPercent:0,duration:.14},0)
+    .to(actions[0],{opacity:1,y:0,scale:1,duration:.07},.055)
+    .to(dots,{opacity:1,duration:.06},.055)
+    .to(cards[0],{x:()=>-offX(),y:'-1.5vh',scale:.88,rotation:-2.2,opacity:.26,duration:.27},.31)
+    .to(images[0],{xPercent:-4.5,scale:1.07,duration:.27},.31)
+    .to(actions[0],{opacity:0,y:-10,duration:.07},.32)
+    .to(cards[1],{x:0,y:0,scale:1,rotation:0,opacity:1,duration:.27},.31)
+    .to(images[1],{xPercent:0,yPercent:0,scale:1.025,duration:.27},.31)
+    .to(actions[1],{opacity:1,y:0,scale:1,duration:.08},.45)
+    .to(cards[1],{scale:1.018,duration:.12},.63)
+    .to(images[1],{scale:1,duration:.12},.63)
+    .to(cards[1],{y:'-7vh',scale:.94,opacity:.2,duration:.17},.83)
+    .to(actions[1],{opacity:0,y:-10,duration:.07},.84)
+    .to(dots,{opacity:0,duration:.07},.88)
+    .to(inner,{opacity:.16,duration:.12},.88);
+
+  const trigger=ScrollTrigger.create({
+    trigger:section,
+    start:'top top',
+    end:'bottom bottom',
+    scrub:true,
+    invalidateOnRefresh:true,
+    animation:tl,
+    onEnter:()=>section.classList.add('is-in-view'),
+    onEnterBack:()=>section.classList.add('is-in-view'),
+    onLeave:()=>section.classList.remove('is-in-view'),
+    onLeaveBack:()=>section.classList.remove('is-in-view'),
+    onUpdate:self=>{
+      const p=self.progress;
+      setActive(cards,dots,p<.5?0:1);
+      section.style.setProperty('--story-progress',p.toFixed(4));
     }
   });
 
-  tl.to(cards[0],{y:0,scale:1,rotation:0,opacity:1,duration:.15},0)
-    .to(images[0],{scale:1.035,yPercent:0,duration:.18},0)
-    .to(actions[0],{opacity:1,y:0,scale:1,duration:.08},.08)
-    .to(dots,{opacity:1,duration:.06},.08)
-    .to(cards[0],{x:()=>-offX(),y:'-2vh',scale:.86,rotation:-2.6,opacity:.2,duration:.26},.32)
-    .to(images[0],{xPercent:-5,scale:1.08,duration:.26},.32)
-    .to(actions[0],{opacity:0,y:-10,duration:.08},.34)
-    .to(cards[1],{x:0,y:0,scale:1,rotation:0,opacity:1,duration:.26},.34)
-    .to(images[1],{xPercent:0,yPercent:0,scale:1.035,duration:.26},.34)
-    .to(actions[1],{opacity:1,y:0,scale:1,duration:.09},.48)
-    .to(cards[1],{scale:1.025,duration:.16},.65)
-    .to(images[1],{scale:1,duration:.16},.65)
-    .to(cards[1],{y:'-9vh',scale:.93,opacity:.12,duration:.18},.82)
-    .to(actions[1],{opacity:0,y:-12,duration:.08},.84)
-    .to(dots,{opacity:0,duration:.08},.86)
-    .to(inner,{opacity:.15,duration:.14},.86);
+  // Force the first painted state to match the current scroll position.
+  // This prevents iOS momentum scrolling from showing an empty sticky stage.
+  tl.progress(trigger.progress, false);
 
-  const refresh=()=>ScrollTrigger.refresh();
+  const refresh=()=>{
+    ScrollTrigger.refresh();
+    tl.progress(trigger.progress,false);
+  };
   images.forEach(image=>{
     if(image&&!image.complete){
       image.addEventListener('load',refresh,{once:true});
@@ -162,7 +170,7 @@ function buildMotion(section){
   addEventListener('pageshow',refresh,{once:true});
   addEventListener('pagehide',()=>{
     ro?.disconnect();
-    tl.scrollTrigger?.kill();
+    trigger.kill();
     tl.kill();
   },{once:true});
 }
@@ -175,7 +183,7 @@ async function init(){
   applyArtwork(section);
 
   if(matchMedia('(prefers-reduced-motion:reduce)').matches){
-    section.classList.add('story-st4','story-st4-ready');
+    section.classList.add('story-st5','story-st5-ready');
     return;
   }
 
@@ -183,8 +191,8 @@ async function init(){
     await ensureGsap();
     buildMotion(section);
   }catch(error){
-    section.classList.add('story-st4','story-st4-fallback');
-    console.warn('[stories] sticky ScrollTrigger fallback',error);
+    section.classList.add('story-st5','story-st5-fallback');
+    console.warn('[stories] ScrollTrigger fallback',error);
   }
 }
 

@@ -37,6 +37,12 @@
 /home-intro-v4-polish.css
   Cache-Control: no-store, max-age=0
 
+/community-welcome-v3.css
+  Cache-Control: no-store, max-age=0
+
+/assets/community-strip-v2.svg
+  Cache-Control: no-store, max-age=0
+
 /home-intro-v5.css
   Cache-Control: no-store, max-age=0
 

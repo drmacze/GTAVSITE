@@ -76,6 +76,12 @@
 /page-loading.js
   Cache-Control: no-store, max-age=0
 
+/loading-outline-v6.css
+  Cache-Control: no-store, max-age=0
+
+/page-loading-outline-v6.js
+  Cache-Control: no-store, max-age=0
+
 /lazy-helper.js
   Cache-Control: no-cache, must-revalidate
 

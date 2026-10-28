@@ -7,18 +7,8 @@ const BASE='assets/mods/awesomekills/';
 const SEARCH_TEXT='awesomekills graphics ios night fix lighting nighttime lighting timecycle visual graphics preset settings';
 const DOWNLOAD_URL='https://gofile.io/d/e726b04a-a872-4ab3-a5b5-d877e05fa422';
 const PRESET_URL=BASE+'GTA-V-graphics-settings-iPhone11.json';
-
-async function loadPreview(path,img){
-  try{
-    const res=await fetch(BASE+path,{cache:'force-cache'});
-    if(!res.ok)throw new Error(String(res.status));
-    const encoded=(await res.text()).trim();
-    if(!encoded)throw new Error('empty');
-    img.src='data:image/webp;base64,'+encoded;
-  }catch{
-    img.closest('.awesomekills-slide')?.classList.add('preview-unavailable');
-  }
-}
+const PREVIEW_ONE='https://user13692.na.imgto.link/public/20261028/e2fc4facdafeabc469b5c8e2-img-8405.avif';
+const PREVIEW_TWO='https://user13692.na.imgto.link/public/20261028/ae37373de6e09c391ff08a60-img-8408.avif';
 
 function mount(){
   const section=document.querySelector('#graphics');
@@ -38,19 +28,19 @@ function mount(){
       <div class="awesomekills-preview" data-index="0">
         <div class="awesomekills-track" tabindex="0" aria-label="Awesomekills Graphics iOS preview screenshots">
           <figure class="awesomekills-slide">
-            <img alt="Awesomekills Graphics iOS night lighting preview" decoding="async">
-            <figcaption><span>Night</span><small>Lighting fix</small></figcaption>
+            <img src="${PREVIEW_ONE}" alt="Awesomekills Graphics iOS preview 1" decoding="async" referrerpolicy="no-referrer">
+            <figcaption><span>Preview 01</span><small>Graphics showcase</small></figcaption>
           </figure>
           <figure class="awesomekills-slide">
-            <img alt="Awesomekills Graphics iOS daytime preview" loading="lazy" decoding="async">
-            <figcaption><span>Day</span><small>Timecycle preview</small></figcaption>
+            <img src="${PREVIEW_TWO}" alt="Awesomekills Graphics iOS preview 2" loading="lazy" decoding="async" referrerpolicy="no-referrer">
+            <figcaption><span>Preview 02</span><small>Graphics showcase</small></figcaption>
           </figure>
         </div>
         <button class="awesomekills-arrow is-prev" type="button" aria-label="Previous preview">‹</button>
         <button class="awesomekills-arrow is-next" type="button" aria-label="Next preview">›</button>
         <div class="awesomekills-dots" aria-label="Preview position">
-          <button type="button" class="is-active" aria-label="Show night preview" aria-current="true"></button>
-          <button type="button" aria-label="Show day preview"></button>
+          <button type="button" class="is-active" aria-label="Show preview 1" aria-current="true"></button>
+          <button type="button" aria-label="Show preview 2"></button>
         </div>
       </div>
       <div class="awesomekills-info">
@@ -70,10 +60,6 @@ function mount(){
         </div>
       </div>
     </article>`;
-
-  const images=[...row.querySelectorAll('.awesomekills-slide img')];
-  loadPreview('night-1.b64',images[0]);
-  loadPreview('day-1.b64',images[1]);
 
   const preview=row.querySelector('.awesomekills-preview');
   const track=preview.querySelector('.awesomekills-track');

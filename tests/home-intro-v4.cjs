@@ -1,0 +1,21 @@
+const fs=require('fs');
+const assert=require('assert');
+const js=fs.readFileSync('dist/home-intro-v4.js','utf8');
+const css=fs.readFileSync('dist/home-intro-v4.css','utf8');
+const motion=fs.readFileSync('dist/motion.js','utf8');
+
+assert.match(motion,/home-intro-v4\.css\?v=20261028homeintro4/,'motion must load intro v4 css');
+assert.match(motion,/home-intro-v4\.js\?v=20261028homeintro4/,'motion must load intro v4 js');
+assert.doesNotMatch(motion,/home-intro-v3\.js\?v=/,'motion must not load intro v3');
+assert.match(js,/home-intro-v4-status">GTA V iOS</,'status must read GTA V iOS');
+assert.match(js,/Scroll down/,'non-interactive scroll cue must remain');
+assert.match(js,/assets\/apple\.svg/,'official Apple mark asset must be present');
+assert.match(js,/rockstargames-newsite\/img\/meta-icons\/rockstar\/favicon\.svg/,'Rockstar mark must be requested from Rockstar');
+assert.match(js,/\(p-\.43\)\/\.29/,'poster transition must use the longer hold/motion window');
+assert.match(js,/\(p-\.71\)\/\.14/,'copy must enter after poster transition');
+assert.match(css,/height:340svh/,'intro must provide long scroll travel for smooth transitions');
+assert.match(css,/var\(--site-accent/,'announcement and cue must follow user accent');
+assert.doesNotMatch(css,/#c77f91|#e5a0a2|#be7893/,'old pink announcement palette must be removed');
+assert.match(css,/display:none!important;visibility:hidden!important/,'Franklin must be hidden while intro is active');
+assert.match(css,/v4-mark-outer/,'custom outline V mark must be used');
+console.log('home intro v4 regression checks passed');

@@ -50,7 +50,13 @@ section.innerHTML=`
     <div class="home-intro-v4-cue" aria-hidden="true"><div class="home-intro-v4-cue-pill">Scroll down</div><div class="home-intro-v4-chevron"></div></div>
    </div>
   </div>
-  <div class="home-intro-v4-message-phase"><div class="home-intro-v4-message"><small>The GTA V iOS project</small><h1>Welcome to our<br><span>community site.</span></h1><p>Project updates, compatibility guidance, installation help, community captures and Franklin support — all in one place.</p></div></div>
+  <div class="home-intro-v4-message-phase">
+   <div class="home-intro-v4-message">
+    <small class="home-intro-v4-message-kicker">The GTA V iOS project</small>
+    <h1><span class="home-intro-v4-message-line home-intro-v4-message-line-1">Welcome to our</span><span class="home-intro-v4-message-line home-intro-v4-message-line-2">community site.</span></h1>
+    <p class="home-intro-v4-message-body">Project updates, compatibility guidance, installation help, community captures and Franklin support — all in one place.</p>
+   </div>
+  </div>
  </div>`;
 const hero=document.querySelector('.home-hero');if(!hero)return;hero.before(section);
 
@@ -67,34 +73,45 @@ const smoother=t=>{t=clamp(t);return t*t*t*(t*(t*6-15)+10)};
 let currentProgress=0,targetProgress=0,raf=0,lastRendered=-1;
 function computeTarget(){const rect=section.getBoundingClientRect();const travel=Math.max(1,section.offsetHeight-innerHeight);targetProgress=clamp((-rect.top)/travel)}
 function paint(p){
- if(Math.abs(p-lastRendered)<.00035)return;lastRendered=p;
- // GTA VI-like cadence: long hold, then a soft scrubbed lift/scale, then poster fade, then copy.
- const motion=smoother((p-.49)/.27);
+ if(Math.abs(p-lastRendered)<.00025)return;lastRendered=p;
+ // Keep the poster phase relaxed, then give the editorial message a much longer reading window.
+ const motion=smoother((p-.43)/.24);
  const coverScale=1+motion*.14;
  const coverY=-motion*86;
- const chromeOpacity=1-smoother((p-.59)/.16);
- const coverOpacity=1-smoother((p-.69)/.16);
- const copyIn=smoother((p-.80)/.12);
- const copyOut=1-smoother((p-.94)/.045);
- const copyOpacity=clamp(copyIn*copyOut);
- const copyY=(1-copyIn)*78-smoother((p-.94)/.045)*22;
- const exit=smoother((p-.975)/.025);
+ const chromeOpacity=1-smoother((p-.53)/.14);
+ const coverOpacity=1-smoother((p-.61)/.13);
+
+ // Scroll-triggered editorial reveal: kicker -> first line -> accent line -> body.
+ const messagePhase=smoother((p-.67)/.08);
+ const kicker=smoother((p-.675)/.055);
+ const line1=smoother((p-.695)/.065);
+ const line2=smoother((p-.72)/.07);
+ const body=smoother((p-.755)/.07);
+ const copyExit=smoother((p-.965)/.03);
+ const copyOpacity=clamp(messagePhase*(1-copyExit));
+ const copyY=(1-messagePhase)*68-copyExit*18;
+ const exit=smoother((p-.987)/.013);
+
  document.body.style.setProperty('--intro4-cover-scale',coverScale.toFixed(5));
  document.body.style.setProperty('--intro4-cover-y',`${coverY.toFixed(2)}px`);
  document.body.style.setProperty('--intro4-cover-opacity',coverOpacity.toFixed(5));
  document.body.style.setProperty('--intro4-chrome-opacity',chromeOpacity.toFixed(5));
  document.body.style.setProperty('--intro4-copy-opacity',copyOpacity.toFixed(5));
  document.body.style.setProperty('--intro4-copy-y',`${copyY.toFixed(2)}px`);
+ document.body.style.setProperty('--intro4-msg-kicker',kicker.toFixed(5));
+ document.body.style.setProperty('--intro4-msg-line1',line1.toFixed(5));
+ document.body.style.setProperty('--intro4-msg-line2',line2.toFixed(5));
+ document.body.style.setProperty('--intro4-msg-body',body.toFixed(5));
  document.body.style.setProperty('--intro4-exit',exit.toFixed(5));
- const rect=section.getBoundingClientRect();const active=rect.bottom>innerHeight*.10&&exit<.995;
+ const rect=section.getBoundingClientRect();const active=rect.bottom>innerHeight*.08&&exit<.995;
  document.body.classList.toggle('intro4-active',active);document.body.classList.toggle('intro4-releasing',exit>.08)
 }
 function scrub(){
  const delta=targetProgress-currentProgress;
- currentProgress+=delta*.105;
- if(Math.abs(delta)<.00045)currentProgress=targetProgress;
+ currentProgress+=delta*.075;
+ if(Math.abs(delta)<.0003)currentProgress=targetProgress;
  paint(currentProgress);
- if(Math.abs(targetProgress-currentProgress)>.00045)raf=requestAnimationFrame(scrub);else raf=0;
+ if(Math.abs(targetProgress-currentProgress)>.0003)raf=requestAnimationFrame(scrub);else raf=0;
 }
 function schedule(){computeTarget();if(!raf)raf=requestAnimationFrame(scrub)}
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});

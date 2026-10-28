@@ -32,11 +32,11 @@
    addScript('music.js?v=20261029scrollmusic1','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
-   // downloads.html historically loaded static asset versions. Load the current Mods build explicitly.
-   addStyle('downloads.css?v=20261029dlc3','downloads-dlc3-style');
-   addScript('mods.js?v=20261029dlc3','mods-dlc3-script');
-   addStyle('mods-ui-fix-v3.css?v=20261029modsui3','mods-ui-fix-v3-style');
-   addScript('mods-ui-fix-v3.js?v=20261029modsui3','mods-ui-fix-v3-script');
+   // Build content first, then enhance it as a searchable catalogue.
+   addStyle('downloads.css?v=20261029dlc4','downloads-dlc4-style');
+   addScript('mods.js?v=20261029dlc4','mods-dlc4-script');
+   addStyle('mods-catalog-v4.css?v=20261029catalog4','mods-catalog-v4-style');
+   addScript('mods-catalog-v4.js?v=20261029catalog4','mods-catalog-v4-script');
  }
  if(document.body?.dataset.page==='updates'){
    // Force the hierarchy build that promotes 28 Oct and demotes 27 Oct into the normal archive.

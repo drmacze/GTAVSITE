@@ -1,0 +1,37 @@
+body[data-page="feedback"] #feedback-toast{display:none!important}
+body[data-page="feedback"] #feedback-helper-slot{display:none!important;width:0!important;height:0!important;overflow:hidden!important}
+body[data-page="feedback"] .franklin-nudge{display:none!important}
+
+.feedback-inline-error{
+  display:block;
+  width:100%;
+  margin:6px 0 0;
+  padding:0 2px;
+  color:#ff6468;
+  font-size:11px;
+  line-height:1.5;
+  font-weight:500;
+  letter-spacing:.01em;
+  text-align:left;
+}
+.feedback-field>.feedback-inline-error{margin-top:-2px}
+.rating-field>.feedback-inline-error{margin-top:10px}
+.feedback-step[data-step="0"] fieldset>.feedback-inline-error{margin-top:12px}
+.feedback-submit-error{margin-top:12px;text-align:left}
+
+.feedback-field input[aria-invalid="true"],
+.feedback-field textarea[aria-invalid="true"],
+.feedback-field select[aria-invalid="true"]{
+  border-color:color-mix(in srgb,#ff6468 78%,var(--line))!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,#ff6468 18%,transparent)!important;
+}
+.feedback-step[data-step="0"] input[aria-invalid="true"]+span,
+.rating-field input[aria-invalid="true"]+svg{
+  color:#ff6468;
+  stroke:#ff6468;
+}
+
+@media(max-width:700px){
+  .feedback-inline-error{font-size:10px;line-height:1.45;margin-top:5px}
+  .feedback-submit-error{margin-top:10px}
+}

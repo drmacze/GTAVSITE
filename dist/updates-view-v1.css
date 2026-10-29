@@ -1,0 +1,137 @@
+/* Updates view controls — list/grid library presentation. */
+.updates-view-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:13px;
+  background:rgba(255,255,255,.035);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  backdrop-filter:blur(16px) saturate(140%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.updates-view-toggle button{
+  width:38px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:rgba(245,241,235,.46);
+  transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+.updates-view-toggle button:active{transform:scale(.94)}
+.updates-view-toggle button[aria-pressed="true"]{
+  background:rgba(255,255,255,.085);
+  color:#f7f3ed;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055);
+}
+.updates-view-toggle svg{width:18px;height:18px;display:block}
+
+/* Explicitly keep release details closed until the user opens them. */
+.managed-update-details:not([open]) .managed-update-body,
+.release-card:not([open]) .release-body{display:none}
+
+/* List is the clean editorial default. */
+html[data-updates-view="list"] .release-list{display:block}
+
+/* Grid turns the archive into a compact release library. */
+html[data-updates-view="grid"] .release-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  align-items:start;
+}
+html[data-updates-view="grid"] .release-entry{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  min-width:0;
+  margin:0;
+}
+html[data-updates-view="grid"] .release-date{
+  padding:0 4px;
+  display:flex;
+  align-items:center;
+  min-height:24px;
+}
+html[data-updates-view="grid"] .release-date time{
+  flex-direction:row;
+  align-items:center;
+  gap:6px;
+}
+html[data-updates-view="grid"] .release-date strong{
+  font-size:11px;
+  letter-spacing:0;
+  font-weight:700;
+  color:rgba(245,241,235,.68);
+}
+html[data-updates-view="grid"] .release-date time>span{
+  font-size:7px;
+  letter-spacing:.8px;
+  color:rgba(245,241,235,.38);
+}
+html[data-updates-view="grid"] .release-card{
+  height:auto;
+  min-width:0;
+  border-radius:18px!important;
+}
+html[data-updates-view="grid"] .release-card>summary{
+  min-height:176px;
+  padding:18px;
+  align-items:flex-start;
+  gap:10px;
+}
+html[data-updates-view="grid"] .release-card .release-tag{
+  margin-bottom:9px;
+  font-size:7px;
+}
+html[data-updates-view="grid"] .release-intro h2{
+  font-size:16px;
+  line-height:1.28;
+  letter-spacing:-.3px;
+  margin-bottom:8px;
+}
+html[data-updates-view="grid"] .release-intro p{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  overflow:hidden;
+  font-size:10px;
+  line-height:1.55;
+}
+html[data-updates-view="grid"] .release-chevron{
+  width:26px;
+  height:26px;
+}
+html[data-updates-view="grid"] .release-body{padding:0 18px 20px}
+html[data-updates-view="grid"] .release-part{padding-top:18px;margin-top:18px}
+
+/* Featured release stays prominent, but grid mode makes it slightly tighter. */
+html[data-updates-view="grid"] .latest-release-28 .managed-update-card{
+  padding:20px!important;
+}
+html[data-updates-view="grid"] .latest-release-28 .managed-update-image{
+  max-height:440px;
+}
+
+@media(max-width:700px){
+  .managed-updates-heading{align-items:center!important}
+  .updates-view-toggle{margin-left:auto;flex:0 0 auto}
+  html[data-updates-view="grid"] .release-list{gap:10px}
+  html[data-updates-view="grid"] .release-card>summary{min-height:164px;padding:14px}
+  html[data-updates-view="grid"] .release-intro h2{font-size:14px}
+  html[data-updates-view="grid"] .release-intro p{-webkit-line-clamp:2;font-size:9px}
+  html[data-updates-view="grid"] .release-chevron{width:24px;height:24px}
+  html[data-updates-view="grid"] .release-body{padding:0 14px 16px}
+  html[data-updates-view="grid"] .release-part li{font-size:10px}
+}
+@media(max-width:360px){
+  html[data-updates-view="grid"] .release-list{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .updates-view-toggle button{transition:none}
+}

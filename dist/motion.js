@@ -36,7 +36,7 @@
  if(document.body?.dataset.page==='downloads'){
    addStyle('mods-library-v10.css?v=20261029library11','mods-library-v10-style');
    addScript('mods-library-v11.js?v=20261029library11','mods-library-v11-script');
-   addScript('mods-additional-v1.js?v=20261029additional1','mods-additional-v1-script');
+   addScript('mods-additional-v1.js?v=20261029additional2','mods-additional-v1-script');
    addStyle('mods-description-v1.css?v=20261029description3','mods-description-v1-style');
    addScript('mods-description-v1.js?v=20261029description3','mods-description-v1-script');
    addStyle('mods-preview-slider-v1.css?v=20261029preview1','mods-preview-slider-v1-style');

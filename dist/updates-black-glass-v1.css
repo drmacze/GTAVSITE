@@ -1,0 +1,163 @@
+/* Updates / release notes — black glass treatment. */
+body[data-page="updates"]{
+  --updates-glass:rgba(14,14,14,.62);
+  --updates-glass-strong:rgba(12,12,12,.78);
+  --updates-line:rgba(255,255,255,.095);
+  --updates-line-soft:rgba(255,255,255,.055);
+  --updates-text:#f4f1eb;
+  --updates-muted:rgba(244,241,235,.58);
+  --updates-accent:var(--site-accent,var(--accent,#e6a05f));
+  background:#000!important;
+  color:var(--updates-text)!important;
+}
+html:has(body[data-page="updates"]){background:#000!important}
+body[data-page="updates"] main,
+body[data-page="updates"] .updates-wrap{
+  background:#000!important;
+}
+body[data-page="updates"] .site-header{
+  background:rgba(0,0,0,.74)!important;
+  border-bottom-color:var(--updates-line-soft)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(140%)!important;
+  backdrop-filter:blur(22px) saturate(140%)!important;
+}
+body[data-page="updates"] .updates-heading>p,
+body[data-page="updates"] .managed-update-summary,
+body[data-page="updates"] .managed-update-body,
+body[data-page="updates"] .release-intro p,
+body[data-page="updates"] .release-part ul,
+body[data-page="updates"] .release-part ol{
+  color:var(--updates-muted)!important;
+}
+
+/* Glass surfaces */
+body[data-page="updates"] .managed-update-card,
+body[data-page="updates"] .release-card{
+  position:relative;
+  isolation:isolate;
+  border:1px solid var(--updates-line)!important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.018) 42%,rgba(255,255,255,.008)),
+    var(--updates-glass)!important;
+  -webkit-backdrop-filter:blur(26px) saturate(145%)!important;
+  backdrop-filter:blur(26px) saturate(145%)!important;
+  box-shadow:
+    0 22px 62px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+body[data-page="updates"] .managed-update-card{border-radius:22px!important}
+body[data-page="updates"] .release-card{border-radius:16px!important;overflow:hidden}
+body[data-page="updates"] .release-card[open],
+body[data-page="updates"] .release-card:hover{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.082),rgba(255,255,255,.022) 44%,rgba(255,255,255,.01)),
+    var(--updates-glass-strong)!important;
+  border-color:rgba(255,255,255,.14)!important;
+}
+body[data-page="updates"] .managed-update-image{
+  border-color:var(--updates-line-soft)!important;
+  background:#080808!important;
+}
+body[data-page="updates"] .managed-update-details,
+body[data-page="updates"] .release-part,
+body[data-page="updates"] .release-download,
+body[data-page="updates"] .release-toolbar{
+  border-color:var(--updates-line-soft)!important;
+}
+body[data-page="updates"] .release-toolbar{
+  margin-top:4px;
+  padding:20px 18px 16px!important;
+  border:1px solid var(--updates-line-soft)!important;
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+  -webkit-backdrop-filter:blur(18px) saturate(135%);
+  backdrop-filter:blur(18px) saturate(135%);
+}
+body[data-page="updates"] .release-jump{margin-top:12px}
+body[data-page="updates"] .release-jump a{
+  border-color:var(--updates-line-soft)!important;
+  background:rgba(255,255,255,.035)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(135%);
+  backdrop-filter:blur(16px) saturate(135%);
+  border-radius:999px!important;
+}
+body[data-page="updates"] .release-jump a[aria-current]{
+  color:var(--updates-accent)!important;
+  border-color:color-mix(in srgb,var(--updates-accent) 32%,transparent)!important;
+  background:color-mix(in srgb,var(--updates-accent) 8%,rgba(255,255,255,.02))!important;
+}
+body[data-page="updates"] .managed-update-version,
+body[data-page="updates"] .release-chevron{
+  border-color:var(--updates-line)!important;
+  background:rgba(255,255,255,.025)!important;
+}
+
+/* Latest release: animated glow travelling around the outline. */
+@property --release-glow-angle{
+  syntax:"<angle>";
+  inherits:false;
+  initial-value:0deg;
+}
+body[data-page="updates"] .managed-update-card.is-latest{
+  overflow:visible!important;
+  border-color:rgba(255,255,255,.11)!important;
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.48),
+    0 0 38px color-mix(in srgb,var(--updates-accent) 9%,transparent),
+    inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+body[data-page="updates"] .managed-update-card.is-latest::before{
+  content:""!important;
+  position:absolute!important;
+  inset:-1px!important;
+  width:auto!important;
+  border-radius:inherit!important;
+  padding:1.5px!important;
+  pointer-events:none!important;
+  z-index:3!important;
+  background:
+    conic-gradient(
+      from var(--release-glow-angle),
+      transparent 0deg 242deg,
+      color-mix(in srgb,var(--updates-accent) 5%,transparent) 260deg,
+      color-mix(in srgb,var(--updates-accent) 88%,#fff 12%) 292deg,
+      #fff2c8 306deg,
+      color-mix(in srgb,var(--updates-accent) 74%,transparent) 322deg,
+      transparent 346deg 360deg
+    )!important;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+  -webkit-mask-composite:xor!important;
+  mask-composite:exclude!important;
+  filter:drop-shadow(0 0 8px color-mix(in srgb,var(--updates-accent) 52%,transparent)) drop-shadow(0 0 18px color-mix(in srgb,var(--updates-accent) 18%,transparent));
+  animation:releaseOutlineOrbit 4.8s linear infinite!important;
+}
+body[data-page="updates"] .managed-update-card.is-latest::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  z-index:-1;
+  border-radius:30px;
+  pointer-events:none;
+  background:radial-gradient(circle at 16% 16%,color-mix(in srgb,var(--updates-accent) 10%,transparent),transparent 34%);
+  filter:blur(12px);
+  opacity:.7;
+}
+/* Remove the old static left accent strip. */
+body[data-page="updates"] .managed-update-card.is-latest> :first-child{position:relative;z-index:1}
+
+@keyframes releaseOutlineOrbit{to{--release-glow-angle:360deg}}
+
+/* If the legacy release list becomes the primary top card, give its first item the same glass emphasis. */
+body[data-page="updates"] .release-entry:first-child .release-card{
+  box-shadow:0 24px 68px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+
+@media(max-width:640px){
+  body[data-page="updates"] .updates-wrap{padding-top:48px!important}
+  body[data-page="updates"] .managed-update-card{border-radius:20px!important}
+  body[data-page="updates"] .release-card{border-radius:15px!important}
+  body[data-page="updates"] .release-toolbar{padding:16px 14px 13px!important;border-radius:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-page="updates"] .managed-update-card.is-latest::before{animation:none!important;--release-glow-angle:300deg}
+}

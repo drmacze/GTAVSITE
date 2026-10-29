@@ -40,56 +40,97 @@ function injectMeta(html, meta) {
   return html.replace(/<\/head>/i, `${tags}</head>`);
 }
 
-export async function onRequest(context) {
-  const { request, env } = context;
-  const url = new URL(request.url);
-  const assetResponse = await env.ASSETS.fetch(request);
-  const modId = String(url.searchParams.get('mod') || '').trim().slice(0, 100);
-
-  if (!modId || !env.VISITS_DB || !assetResponse.ok) return assetResponse;
-
-  let mod = null;
-  try {
-    mod = await env.VISITS_DB.prepare(`
-      SELECT id,title,category,subtitle,description,image_url,previews_json
-      FROM project_mods
-      WHERE id = ? AND published = 1
-      LIMIT 1
-    `).bind(modId).first();
-  } catch {
-    return assetResponse;
-  }
-  if (!mod) return assetResponse;
-
-  let previewUrls = [];
-  try { previewUrls = JSON.parse(mod.previews_json || '[]'); }
-  catch {}
-  if (!Array.isArray(previewUrls)) previewUrls = [];
-
-  const categoryLabels = {
-    modpack: 'Mod Pack',
-    dlc: 'DLC',
-    graphics: 'Graphics',
-    language: 'Language Pack'
-  };
-  const category = categoryLabels[mod.category] || 'Mod';
-  const image = absoluteUrl(previewUrls[0] || mod.image_url || '/assets/community-mark-512.png', url.origin);
-  const shareUrl = `${url.origin}/downloads.html?mod=${encodeURIComponent(mod.id)}#mods`;
-  const title = `${mod.title} | GTA V iOS Mods`;
-  const description = cleanDescription(mod);
-
-  const html = await assetResponse.text();
-  const output = injectMeta(html, {
-    title,
-    description,
-    url: shareUrl,
-    image,
-    imageAlt: `${mod.title} — ${category}`
-  });
-
+function respondHtml(assetResponse, output) {
   const headers = new Headers(assetResponse.headers);
   headers.set('Content-Type', 'text/html; charset=utf-8');
   headers.set('Cache-Control', 'no-store, max-age=0');
   headers.set('Vary', 'Accept-Encoding');
   return new Response(output, { status: assetResponse.status, headers });
+}
+
+export async function onRequest(context) {
+  const { request, env } = context;
+  const url = new URL(request.url);
+  const assetResponse = await env.ASSETS.fetch(request);
+  if (!assetResponse.ok) return assetResponse;
+
+  const modId = String(url.searchParams.get('mod') || '').trim().slice(0, 100);
+  if (!modId) return assetResponse;
+
+  const origin = url.origin;
+  const fallbackImage = absoluteUrl('/assets/community-mark-512.png', origin);
+  const shareUrl = `${origin}/downloads.html?mod=${encodeURIComponent(modId)}&share=2#mods`;
+  let meta = {
+    title: 'GTA V iOS Mods | Community Library',
+    description: 'Browse curated gameplay mods, graphics enhancements, DLC packs and translations for the GTA V native iOS project.',
+    url: shareUrl,
+    image: fallbackImage,
+    imageAlt: 'GTA V iOS Community Mods Library'
+  };
+
+  if (env.VISITS_DB) {
+    try {
+      if (modId === 'dlc-collection' || modId === 'language-collection') {
+        const category = modId === 'dlc-collection' ? 'dlc' : 'language';
+        const row = await env.VISITS_DB.prepare(`
+          SELECT COUNT(*) AS total
+          FROM project_mods
+          WHERE category = ? AND published = 1
+        `).bind(category).first();
+        const total = Number(row?.total || 0);
+        if (category === 'dlc') {
+          meta = {
+            title: 'DLC Collection | GTA V iOS Mods',
+            description: `${total || 4} curated GTA Online content packs organized for the GTA V native iOS project.`,
+            url: shareUrl,
+            image: fallbackImage,
+            imageAlt: 'GTA V iOS DLC Collection'
+          };
+        } else {
+          meta = {
+            title: 'Language Packs | GTA V iOS Mods',
+            description: `${total || 5} community translation packs for the GTA V native iOS project.`,
+            url: shareUrl,
+            image: fallbackImage,
+            imageAlt: 'GTA V iOS Language Packs'
+          };
+        }
+      } else {
+        const mod = await env.VISITS_DB.prepare(`
+          SELECT id,title,category,subtitle,description,image_url,previews_json
+          FROM project_mods
+          WHERE id = ? AND published = 1
+          LIMIT 1
+        `).bind(modId).first();
+
+        if (mod) {
+          let previewUrls = [];
+          try { previewUrls = JSON.parse(mod.previews_json || '[]'); }
+          catch {}
+          if (!Array.isArray(previewUrls)) previewUrls = [];
+
+          const categoryLabels = {
+            modpack: 'Mod Pack',
+            dlc: 'DLC',
+            graphics: 'Graphics',
+            language: 'Language Pack'
+          };
+          const category = categoryLabels[mod.category] || 'Mod';
+          const image = absoluteUrl(previewUrls[0] || mod.image_url || fallbackImage, origin);
+          meta = {
+            title: `${mod.title} | GTA V iOS Mods`,
+            description: cleanDescription(mod),
+            url: shareUrl,
+            image,
+            imageAlt: `${mod.title} — ${category}`
+          };
+        }
+      }
+    } catch {
+      // Keep the polished generic preview if metadata lookup is unavailable.
+    }
+  }
+
+  const html = await assetResponse.text();
+  return respondHtml(assetResponse, injectMeta(html, meta));
 }

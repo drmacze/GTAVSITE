@@ -33,7 +33,7 @@ function answer(raw){
  if(/(?:27 oct|27 october|reflection msaa|msaa 8x|8x msaa|reflection.*8x)/.test(q)){
   return reply(`The 27 Oct launcher update added a safety limit for Reflection MSAA on iPhone/iPad.\n\nReflection MSAA options are Off, 2x and 4x. If an older saved configuration contains 8x, the launcher displays it as 4x and writes 4x when Play is pressed. Apple GPUs should not be configured for 8x Reflection MSAA here.\n\nMain-frame MSAA is still not recommended; use FXAA or Temporal AA instead.`,'launcher-27-oct','updates.html');
  }
- const modsIntent=/(?:mods?|import mod|oiv|dlc\.rpf|zip|rar|7z|add[- ]?on car|add[- ]?on ped|ymap|script hook|scripthook|\.asi|\.dll|language mod|handling\.meta|vehicles\.meta|carcols\.meta|carvariations\.meta|popcycle|popgroups)/.test(q);
+ const modsIntent=/(?:mods?|import mod|oiv|dlc\.rpf|zip|rar|7z|add[- ]?on car|add[- ]?on ped|ymap|script hook|scripthook|\.asi|\.dll|language mod|handling\.meta|vehicles\.meta|carcols\.meta|carvariations\.meta|popcycle|popgroups|quantv|rweu|rhancer|r☆hancer|graphics mod|shader)/.test(q);
  if(modsIntent){
   if(/(?:script hook|scripthook|\.asi|\.dll|custom audio|audio archive|dlc_patch|dlc patch)/.test(q)){
    return reply(`For the current iOS launcher:\n\n• Script Hook V, .asi and .dll mods do not run in the current iOS build.\n• Custom audio archives are not read from the mods folder yet.\n• dlc_patch title-update patches are not read yet.\n• Some encrypted or PC-specific RPF archives need conversion on a computer before the launcher can use them.\n\nThe supported path is launcher-compatible add-on/DLC content or converted game-file mods imported through MODS › IMPORT MOD.`,'mods-guide','downloads.html#mods');
@@ -59,5 +59,6 @@ const install=()=>{
  const original=kb.answer?.bind(kb);kb.answer=async raw=>answer(raw)||(original?await original(raw):null);kb.__latestWrapped=true;
  const oldStatus=kb.status?.bind(kb);kb.status=()=>({...oldStatus?.(),latestSnapshot:'2026-10-28',latestBuild:'031BBA86'});return true;
 };
+document.addEventListener('franklin-connected',()=>install());
 if(!install()){const timer=setInterval(()=>{attempts++;if(install()||attempts>600)clearInterval(timer)},50);}
 })();

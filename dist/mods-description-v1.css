@@ -1,5 +1,6 @@
 /* Collapsible multi-line descriptions for Mods Library. */
-.library-card-description{
+.library-card-description,
+.collection-copy em{
   white-space:pre-line;
   line-height:1.65;
   overflow-wrap:anywhere;
@@ -28,6 +29,7 @@
 .library-description-wrap{margin:0 0 2px}
 .library-description-wrap .library-card-description{margin-bottom:0}
 @media(max-width:560px){
-  .library-card-description{line-height:1.6}
+  .library-card-description,
+  .collection-copy em{line-height:1.6}
   .library-description-toggle{font-size:.7rem;padding-top:7px}
 }

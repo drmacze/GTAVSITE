@@ -86,7 +86,7 @@
  // Installation metadata is declared once in HTML; never inject stale duplicate links.
  addMeta('apple-mobile-web-app-capable','yes');addMeta('apple-mobile-web-app-title','GTA V IOS');
  const admin=location.pathname.includes('release-publisher-8c2f71d4');
- if(admin){loadScript('/admin-push.js?v=20261027push2');loadScript('/admin-onboarding.js?v=20261027survey1');return}
+ if(admin){loadScript('/admin-push.js?v=20261027push2');loadScript('/admin-onboarding.js?v=20261027survey1');loadScript('/admin-download-stats-v1.js?v=20261029downloads1');return}
  const css=document.createElement('link');css.rel='stylesheet';css.href='/push-notifications.css?v=20261027push2';document.head.append(css);loadScript('/push-client.js?v=20261027push2');
  const loadFeedbackCommunity=()=>{if(!location.pathname.includes('feedback'))return;if(!document.head.querySelector('link[href^="/feedback-community.css"]')){const link=document.createElement('link');link.rel='stylesheet';link.href='/feedback-community.css?v=20261027voices1';document.head.append(link)}loadScript('/feedback-community.js?v=20261027voices1')};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadFeedbackCommunity,{once:true});else loadFeedbackCommunity();

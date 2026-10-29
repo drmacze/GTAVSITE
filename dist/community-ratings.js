@@ -12,7 +12,7 @@ function boot(){
  cleanup();
  if(!document.querySelector('script[src*="content-actions-v1.js"]')){
   const actions=document.createElement('script');
-  actions.src='/content-actions-v1.js?v=20261029a';
+  actions.src='/content-actions-v1.js?v=20261030savedmods';
   actions.defer=true;
   document.head.append(actions);
  }

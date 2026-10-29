@@ -6,6 +6,7 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','
 function emphasis(source){
  let html=escapeHtml(source);
  html=html.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
+ html=html.replace(/__([^_\n]+)__/g,'<u>$1</u>');
  html=html.replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
  return html;
 }

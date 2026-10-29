@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 if(window.__gtavAdminDownloadStatsV1)return;window.__gtavAdminDownloadStatsV1=true;
+const extra=document.createElement('script');extra.id='admin-additional-mods-loader';extra.src='/admin-additional-mods-v1.js?v=20261029additional1';extra.defer=true;document.head.append(extra);
 const TOKEN_KEY='gtav-admin-token-v2',API='/api/mod-downloads';
 const $=id=>document.getElementById(id);
 function token(){return sessionStorage.getItem(TOKEN_KEY)||''}

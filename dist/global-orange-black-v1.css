@@ -1,0 +1,59 @@
+/* Global orange + black visual system. Neutral white/gray text remains for readability. */
+:root{
+  --accent:#ff7a1a!important;
+  --site-accent:#ff7a1a!important;
+  --bg:#020202!important;
+  --panel:#0b0b0b!important;
+  --line:rgba(255,122,26,.18)!important;
+  --muted:#9c948d!important;
+  --theme-orange:#ff7a1a;
+  --theme-orange-bright:#ff9a45;
+  --theme-orange-soft:rgba(255,122,26,.12);
+  --theme-black:#020202;
+  --theme-black-soft:rgba(7,7,7,.72);
+}
+html,body{background:#020202!important}
+::selection{background:#ff7a1a!important;color:#050505!important}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline-color:#ff7a1a!important}
+
+/* Global interactive accents */
+a:hover,.subtle-link:hover,.drawer-nav a:hover,.drawer-nav a[aria-current=page],.desktop-nav a[aria-current=page]{color:#ff8b32}
+.desktop-nav a[aria-current=page]{text-decoration-color:#ff7a1a!important}
+.button.primary,
+button.primary,
+.badge.is-active,
+[aria-pressed="true"].filter-pill{
+  background:#ff7a1a!important;
+  border-color:#ff7a1a!important;
+  color:#080808!important;
+}
+.button.primary:hover,button.primary:hover{background:#ff9847!important;border-color:#ff9847!important}
+
+/* Glass surfaces should read black first, orange second. */
+.menu-panel,
+.settings-modal,
+.ask-franklin-panel,
+.franklin-connect-card,
+.feedback-gate,
+.support-group,
+.managed-update-card,
+.library-card{
+  --site-accent:#ff7a1a;
+}
+
+/* Replace legacy gold/brown accent borders where possible without flattening layouts. */
+.support-plus,
+.support-filter button[aria-pressed="true"],
+.release-view-toggle button[aria-pressed="true"],
+.library-view-toggle button[aria-pressed="true"]{
+  border-color:rgba(255,122,26,.42)!important;
+}
+.support-filter button[aria-pressed="true"],
+.release-view-toggle button[aria-pressed="true"],
+.library-view-toggle button[aria-pressed="true"]{
+  color:#ff9a45!important;
+  background:rgba(255,122,26,.10)!important;
+}
+
+/* Keep browser-style surfaces black even if old theme state exists in storage. */
+.site-header,.site-footer{color-scheme:dark}

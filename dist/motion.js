@@ -15,6 +15,21 @@
  addStyle('settings-minimal-v1.css?v=20261029settingsminimal1','settings-minimal-v1-style');
  if(document.body?.dataset.page==='get-started')addStyle('get-started-black-glass-v1.css?v=20261029blackglass1','get-started-black-glass-v1-style');
  if(document.body?.dataset.page==='home'){
+   if(!window.__gtavSoundToggleGuard){
+     window.__gtavSoundToggleGuard=true;
+     const nativeHeadAppend=document.head.append.bind(document.head);
+     document.head.append=(...nodes)=>{
+       for(const node of nodes){if(node?.tagName==='SCRIPT'&&/(?:^|\/)music\.js(?:\?|$)/.test(node.getAttribute('src')||''))node.src='music.js?v=20261029media4'}
+       return nativeHeadAppend(...nodes);
+     };
+     document.addEventListener('click',event=>{
+       const button=event.target instanceof Element?event.target.closest('#video-sound'):null;
+       if(!button)return;
+       event.preventDefault();
+       event.stopImmediatePropagation();
+       window.gtavHomeMusic?.toggle?.();
+     },true);
+   }
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
      requestAnimationFrame(()=>document.querySelector('.home-intro-v4')?.scrollIntoView({block:'start',behavior:'auto'}));
@@ -59,7 +74,6 @@
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
- /* Global visual system loads last so page-specific legacy colours cannot win. */
  addStyle('global-beams-v1.css?v=20261029beams2','global-beams-v1-style');
  addScript('global-beams-v1.js?v=20261029beams2','global-beams-v1-script');
  addStyle('global-orange-black-v1.css?v=20261029orange1','global-orange-black-v1-style');

@@ -2,6 +2,8 @@
 'use strict';
 if(window.__gtavAdminDownloadStatsV1)return;window.__gtavAdminDownloadStatsV1=true;
 const extra=document.createElement('script');extra.id='admin-additional-mods-loader';extra.src='/admin-additional-mods-v1.js?v=20261029additional1';extra.defer=true;document.head.append(extra);
+if(!document.getElementById('admin-mod-description-editor-style')){const link=document.createElement('link');link.id='admin-mod-description-editor-style';link.rel='stylesheet';link.href='/admin-mod-description-editor-v1.css?v=20261029richeditor1';document.head.append(link)}
+if(!document.getElementById('admin-mod-description-editor-script')){const script=document.createElement('script');script.id='admin-mod-description-editor-script';script.src='/admin-mod-description-editor-v1.js?v=20261029richeditor1';script.defer=true;document.head.append(script)}
 const TOKEN_KEY='gtav-admin-token-v2',API='/api/mod-downloads';
 const $=id=>document.getElementById(id);
 function token(){return sessionStorage.getItem(TOKEN_KEY)||''}

@@ -4,6 +4,8 @@
  const addStyle=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.append(l)};
  addStyle('sunset-theme-v1.css?v=20261028sunset3','sunset-theme-v1-loader');
  addStyle('franklin-glass-v2.css?v=20261029glass2','franklin-glass-v2-style');
+ addStyle('franklin-polish-v3.css?v=20261029polish3','franklin-polish-v3-style');
+ addScript('franklin-polish-v3.js?v=20261029polish3','franklin-polish-v3-script');
  addScript('franklin-ui-guard-v2.js?v=20261028polish3','franklin-ui-guard-v2-loader');
  addScript('franklin-primary-state-fix.js?v=20261028primary1','franklin-primary-state-fix-loader');
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');

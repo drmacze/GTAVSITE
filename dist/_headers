@@ -121,6 +121,9 @@
 /motion.js
   Cache-Control: no-store, max-age=0
 
+/global-beams-v1.js
+  Cache-Control: no-store, max-age=0
+
 /storage-policy-45-v1.js
   Cache-Control: no-store, max-age=0
 
@@ -175,6 +178,9 @@
 /feedback-admin.js
   Cache-Control: no-store, max-age=0
 
+/admin-site-icon-v1.js
+  Cache-Control: no-store, max-age=0
+
 /admin-mods-gallery-v1.js
   Cache-Control: no-store, max-age=0
 
@@ -197,8 +203,14 @@
   Cache-Control: no-cache, must-revalidate
   Service-Worker-Allowed: /
 
+/app.webmanifest
+  Cache-Control: no-store, max-age=0
+
+/install.webmanifest
+  Cache-Control: no-store, max-age=0
+
 /manifest.webmanifest
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, max-age=0
 
 /assets/notification-logo.jpeg
   Cache-Control: no-cache, must-revalidate
@@ -218,41 +230,3 @@
 /apple-touch-icon*
   Cache-Control: no-cache, must-revalidate
   Content-Type: image/png
-
-/assets/apple-icon-*
-  Cache-Control: no-cache, must-revalidate
-  Content-Type: image/png
-
-/assets/web-app-*
-  Cache-Control: no-cache, must-revalidate
-  Content-Type: image/png
-
-/install.webmanifest
-  Content-Type: application/manifest+json
-  Cache-Control: no-store
-
-/install
-  Cache-Control: no-store
-
-/community-icon.png
-  Content-Type: image/png
-  Cache-Control: no-store
-
-/app.webmanifest
-  Content-Type: application/manifest+json
-  Cache-Control: no-store
-
-/feedback*
-  Cache-Control: no-cache, must-revalidate
-
-/community-ratings.js
-  Cache-Control: no-cache, must-revalidate
-
-/rating-summary.css
-  Cache-Control: no-cache, must-revalidate
-
-/music.js
-  Cache-Control: no-cache, must-revalidate
-
-/music.css
-  Cache-Control: no-cache, must-revalidate

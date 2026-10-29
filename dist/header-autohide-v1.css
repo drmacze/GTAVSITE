@@ -1,0 +1,22 @@
+/* Sticky header that hides on downward scroll and returns on upward scroll. */
+.site-header{
+  position:sticky!important;
+  top:0!important;
+  z-index:1200!important;
+  will-change:transform;
+  transform:translate3d(0,0,0);
+  transition:transform .34s cubic-bezier(.22,1,.36,1),background-color .25s ease,box-shadow .25s ease!important;
+}
+.site-header.header-is-hidden{
+  transform:translate3d(0,calc(-100% - 2px),0)!important;
+  pointer-events:none;
+}
+.site-header.header-is-visible{
+  transform:translate3d(0,0,0)!important;
+}
+.site-header.header-has-scrolled{
+  box-shadow:0 12px 34px rgba(0,0,0,.24);
+}
+@media(prefers-reduced-motion:reduce){
+  .site-header{transition:none!important}
+}

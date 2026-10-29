@@ -172,6 +172,15 @@
 /admin-onboarding.js
   Cache-Control: no-cache, must-revalidate
 
+/admin-mods-gallery-v1.js
+  Cache-Control: no-store, max-age=0
+
+/admin-mods-gallery-v1.css
+  Cache-Control: no-store, max-age=0
+
+/release-publisher-8c2f71d4.html
+  Cache-Control: no-store, max-age=0
+
 /push-sw.js
   Cache-Control: no-cache, must-revalidate
   Service-Worker-Allowed: /

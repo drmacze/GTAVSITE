@@ -1,35 +1,38 @@
-/* Collapsible multi-line descriptions for Mods Library. */
+/* Rich, collapsible descriptions for Mods Library. */
 .library-card-description,
 .collection-copy em{
-  white-space:pre-line;
   line-height:1.65;
   overflow-wrap:anywhere;
 }
+.collection-copy em{white-space:pre-line}
 .library-card-description.is-collapsible:not(.is-expanded){
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:3;
+  max-height:5.15em;
   overflow:hidden;
 }
+.library-card-description.is-expanded{max-height:none;overflow:visible}
+.library-card-description.is-rich-description{white-space:normal}
+.library-card-description.is-rich-description p{margin:0 0 .62em}.library-card-description.is-rich-description p:last-child{margin-bottom:0}
+.library-card-description.is-rich-description strong{font-weight:800;color:color-mix(in srgb,currentColor 94%,#fff)}
+.library-card-description.is-rich-description em{font-style:italic;color:color-mix(in srgb,currentColor 88%,#fff)}
+.library-card-description.is-rich-description a{color:var(--site-accent,#e8b65e);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--site-accent,#e8b65e) 42%,transparent);font-weight:700}
+.library-card-description.is-rich-description a:hover,.library-card-description.is-rich-description a:focus-visible{border-bottom-color:currentColor}
+.library-card-description.is-rich-description ul{list-style:none;margin:.12em 0 .68em;padding:0;display:grid;gap:.24em}
+.library-card-description.is-rich-description li{position:relative;padding-left:1.05em}
+.library-card-description.is-rich-description li::before{content:"–";position:absolute;left:0;top:0;color:var(--site-accent,#e8b65e)}
+.library-card-description.is-rich-description hr{height:1px;border:0;margin:.8em 0;background:color-mix(in srgb,currentColor 15%,transparent)}
 .library-description-toggle{
   appearance:none;
   border:0;
   background:transparent;
   color:var(--site-accent,#e8b65e);
-  padding:6px 0 0;
+  padding:7px 0 0;
   margin:0;
   font:700 .68rem/1.2 inherit;
   letter-spacing:.01em;
   cursor:pointer;
   text-align:left;
 }
-.library-description-toggle:hover,
-.library-description-toggle:focus-visible{opacity:.82}
+.library-description-toggle:hover,.library-description-toggle:focus-visible{opacity:.82}
 .library-description-toggle:focus-visible{outline:1px solid currentColor;outline-offset:4px;border-radius:3px}
-.library-description-wrap{margin:0 0 2px}
-.library-description-wrap .library-card-description{margin-bottom:0}
-@media(max-width:560px){
-  .library-card-description,
-  .collection-copy em{line-height:1.6}
-  .library-description-toggle{font-size:.7rem;padding-top:7px}
-}
+.library-description-wrap{margin:0 0 2px}.library-description-wrap .library-card-description{margin-bottom:0}
+@media(max-width:560px){.library-card-description,.collection-copy em{line-height:1.6}.library-description-toggle{font-size:.7rem;padding-top:7px}}

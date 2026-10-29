@@ -1,6 +1,6 @@
 (()=>{'use strict';
 if(window.__franklinLegacyKBLoaded)return;window.__franklinLegacyKBLoaded=true;
-const FILES=Array.from({length:8},(_,i)=>`franklin-legacy-knowledge-${i+1}.json?v=20261030legacy351`);
+const FILES=Array.from({length:11},(_,i)=>`franklin-legacy-knowledge-${i+1}.json?v=20261030legacy501`);
 let entries=null,promise=null,lastId=null,lastTopic=null;
 
 const STOP=new Set('a an the is are was were be been being to of in on at for from with without and or but if then than so do does did can could would should will may might i me my mine you your yours we our ours they their it its this that these those what why how when where who which about please tell explain give show yang dan atau di ke dari untuk pada dengan ini itu saya aku gue kamu anda tentang apa bagaimana gimana kenapa apakah bisa tidak nggak ga gak tolong kasih jelaskan dong nya'.split(/\s+/));
@@ -30,13 +30,16 @@ const ALIAS={
   michael:'michael',franklin:'franklin',trevor:'trevor',
   final:'ending',ending:'ending',
   heist:'heist',heists:'heist',
-  collectibles:'collectible',koleksi:'collectible'
+  collectibles:'collectible',koleksi:'collectible',
+  cheat:'cheats',kode:'cheats',radio:'radio',musik:'radio',
+  rumah:'safehouse',safehouses:'safehouse',
+  toko:'store',rahasia:'secret',misteri:'secret',hantu:'ghost'
 };
 const norm=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/gta\s*5/g,'gta v').replace(/[^a-z0-9+$'.-]+/g,' ').replace(/\s+/g,' ').trim();
 const tokens=v=>[...new Set(norm(v).split(' ').flatMap(t=>{if(!t||STOP.has(t))return[];const a=ALIAS[t];return a&&a!==t?[t,a]:[t]}))];
 const overlap=(a,b)=>{if(!a.length||!b.length)return 0;const s=new Set(b);return a.filter(x=>s.has(x)).length/Math.max(1,a.length)};
 
-const QUERY_GATE=/\b(gta|grand theft auto|story|legacy|michael|franklin|trevor|lester|lamar|chop|amanda|jimmy|tracey|simeon|madrazo|merryweather|fib|iaa|ballas|families|vagos|aztecas|lost mc|o'?neil|los santos|blaine|vinewood|rockford|vespucci|sandy shores|paleto|grapeseed|chiliad|zancudo|mission|misi|character|karakter|map|peta|gang|geng|vehicle|mobil|car|motor|weapon|senjata|wanted|police|polisi|stock|saham|heist|property|properti|collectible|stunt|race|golf|tennis|darts|epsilon|altruist|z-type|adder|zentorno|entity|buffalo|tailgater|bodhi|bati|buzzard|lazer|carbine|sniper|minigun|rpg)\b/;
+const QUERY_GATE=/\b(gta|grand theft auto|story|legacy|michael|franklin|trevor|lester|lamar|chop|amanda|jimmy|tracey|simeon|madrazo|merryweather|fib|iaa|ballas|families|vagos|aztecas|lost mc|o'?neil|los santos|blaine|vinewood|rockford|vespucci|sandy shores|paleto|grapeseed|chiliad|zancudo|mission|misi|character|karakter|map|peta|gang|geng|vehicle|mobil|car|motor|weapon|senjata|wanted|police|polisi|stock|saham|heist|property|properti|collectible|stunt|race|golf|tennis|darts|epsilon|altruist|z-type|adder|zentorno|entity|buffalo|tailgater|bodhi|bati|buzzard|lazer|carbine|sniper|minigun|rpg|cheat|kode|radio|safehouse|rumah|ammu|customs|barber|tattoo|misteri|secret|ufo|alien|ghost|hantu|invincibility|painkiller|toolup|lawyerup|fugitive|skyfall|slowmo)\b/;
 const ONLINE_ONLY=/\b(gta online|online mode|multiplayer|bunker|nightclub|kosatka|agency|acid lab|salvage yard|bail office|garment factory|career builder|gta\+|cayo perico|diamond casino|ls car meet|terrorbyte|oppressor|securoserv|motorcycle club|mc business)\b/;
 const PROJECT=/\b(ios|iphone|ipad|macos|launcher|native port|port ios|gtav unsigned|session code|enter code|nearby|local network|upnp)\b/;
 const LEGACY_EXPLICIT=/\b(story mode|storymode|single player|singleplayer|legacy|campaign|michael|franklin|trevor|lester assassination|the big score|jewel store|paleto score|bureau raid|north yankton)\b/;
@@ -86,7 +89,12 @@ function related(topic){
   economy:['When should I do Lester assassinations?','How does the stock market work?'],
   activities:['What activities count for 100%?','How many stunt jumps are there?'],
   'special-abilities':['What is Franklin’s special ability?','Who is the best pilot?'],
-  wanted:['How do I lose a wanted level?','What is the maximum wanted level?']
+  wanted:['How do I lose a wanted level?','What is the maximum wanted level?'],
+  cheats:['Is there a money cheat?','What does PAINKILLER do?'],
+  radio:['What is Los Santos Rock Radio?','Does PC have custom music?'],
+  secrets:['Where is the Mount Gordo ghost?','How do I see the Mount Chiliad UFO?'],
+  'random-events':['How do I unlock Taliana?','How do I unlock Packie?'],
+  safehouses:['Where is Franklin’s new house?','What can I do in a safehouse?']
  }[topic]||[]);
 }
 function recommendationGuard(text,q){
@@ -125,5 +133,5 @@ function intent(q){
  return{project:PROJECT.test(n),online:ONLINE_ONLY.test(n),legacy:LEGACY_EXPLICIT.test(n)||QUERY_GATE.test(n)};
 }
 document.addEventListener('franklin-disconnect',()=>{lastId=null;lastTopic=null});
-window.FranklinLegacyKB={load,answer,rank,intent,status:()=>({loaded:!!entries,entries:entries?.length||0,lastId,lastTopic,version:'2026-10-30-legacy351'})};
+window.FranklinLegacyKB={load,answer,rank,intent,status:()=>({loaded:!!entries,entries:entries?.length||0,lastId,lastTopic,version:'2026-10-30-legacy501'})};
 })();

@@ -1,14 +1,20 @@
 /
   Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, follow
 
 /index.html
   Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, follow
 
 /home
   Cache-Control: no-store, max-age=0
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/home>; rel="canonical"
 
 /home.html
   Cache-Control: no-store, max-age=0
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/home>; rel="canonical"
 
 /home-intro-v1.css
   Cache-Control: no-store, max-age=0
@@ -90,6 +96,40 @@
 
 /updates.html
   Cache-Control: no-cache, must-revalidate
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/updates.html>; rel="canonical"
+
+/downloads.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/downloads.html>; rel="canonical"
+
+/get-started.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/get-started.html>; rel="canonical"
+
+/compatibility.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/compatibility.html>; rel="canonical"
+
+/guide.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/guide.html>; rel="canonical"
+
+/technicalities.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/technicalities.html>; rel="canonical"
+
+/faq.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/faq.html>; rel="canonical"
+
+/community.html
+  X-Robots-Tag: index, follow, max-image-preview:large
+  Link: <https://playgta5-1k8.pages.dev/community.html>; rel="canonical"
+
+/feedback.html
+  X-Robots-Tag: index, follow
+  Link: <https://playgta5-1k8.pages.dev/feedback.html>; rel="canonical"
 
 /compatibility-rules.js
   Cache-Control: no-cache, must-revalidate
@@ -169,6 +209,12 @@
 /profile.css
   Cache-Control: no-cache, must-revalidate
 
+/profile.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/install.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
 /admin-push.js
   Cache-Control: no-cache, must-revalidate
 
@@ -198,6 +244,18 @@
 
 /release-publisher-8c2f71d4.html
   Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/api/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/robots.txt
+  Cache-Control: public, max-age=3600
+  Content-Type: text/plain; charset=utf-8
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+  Content-Type: application/xml; charset=utf-8
 
 /push-sw.js
   Cache-Control: no-cache, must-revalidate

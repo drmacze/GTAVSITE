@@ -22,25 +22,23 @@
    addStyle('home-intro-sidebar-scope-v1.css?v=20261029intro-nav1','home-intro-sidebar-scope-v1-style');
    addStyle('community-welcome-v3.css?v=20261028communitywelcome4','community-welcome-v3-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
-
    window.__storyST5=true;
    addStyle('story-scrolltrigger-v3.css?v=20261029st7','story-scrolltrigger-v3-style');
    addScript('story-scrolltrigger-v3.js?v=20261029st7','story-scrolltrigger-v3-script');
    addStyle('home-scroll-refinements-v1.css?v=20261029refine1','home-scroll-refinements-v1-style');
-
    addStyle('home-chapter-lock-v1.css?v=20261029chapter4','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
-
    addScript('music.js?v=20261029media3','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
    addStyle('mods-library-v10.css?v=20261029library11','mods-library-v10-style');
    addScript('mods-library-v11.js?v=20261029library11','mods-library-v11-script');
-   addScript('mods-additional-v1.js?v=20261029additional2','mods-additional-v1-script');
    addStyle('mods-description-v1.css?v=20261029description3','mods-description-v1-style');
    addScript('mods-description-v1.js?v=20261029description3','mods-description-v1-script');
    addStyle('mods-preview-slider-v1.css?v=20261029preview1','mods-preview-slider-v1-style');
    addScript('mods-preview-slider-v1.js?v=20261029preview1','mods-preview-slider-v1-script');
+   addStyle('mods-multi-download-v1.css?v=20261029multidownload1','mods-multi-download-v1-style');
+   addScript('mods-multi-download-v1.js?v=20261029multidownload1','mods-multi-download-v1-script');
    addStyle('mods-share-v1.css?v=20261029share2','mods-share-v1-style');
    addScript('mods-share-v1.js?v=20261029share2','mods-share-v1-script');
    addStyle('mods-feedback-gate-v1.css?v=20261029feedbackgate1','mods-feedback-gate-v1-style');
@@ -54,7 +52,6 @@
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
-
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{

@@ -72,18 +72,20 @@ function syncAllBookmarkButtons(){
 function animateBookmarkToLibrary(source){
  const target=document.querySelector('.saved-mods-anchor');if(!source||!target)return;
  target.classList.remove('is-receiving');
- if(matchMedia('(prefers-reduced-motion: reduce)').matches){requestAnimationFrame(()=>target.classList.add('is-receiving'));setTimeout(()=>target.classList.remove('is-receiving'),360);return}
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches){requestAnimationFrame(()=>target.classList.add('is-receiving'));setTimeout(()=>target.classList.remove('is-receiving'),520);return}
  const a=source.getBoundingClientRect(),b=target.getBoundingClientRect();
  const flyer=document.createElement('span');flyer.className='bookmark-flyer';flyer.innerHTML=BOOKMARK_ICON;document.body.append(flyer);
  const sx=a.left+a.width/2-14,sy=a.top+a.height/2-14,tx=b.left+b.width/2-14,ty=b.top+b.height/2-14;
  flyer.style.left=sx+'px';flyer.style.top=sy+'px';
  const dx=tx-sx,dy=ty-sy;
  const anim=flyer.animate([
-  {transform:'translate3d(0,0,0) scale(.82)',opacity:1},
-  {transform:`translate3d(${dx*.46}px,${dy*.34-22}px,0) scale(.98)`,opacity:.96,offset:.52},
-  {transform:`translate3d(${dx}px,${dy}px,0) scale(.48)`,opacity:.08}
- ],{duration:560,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
- anim.onfinish=()=>{flyer.remove();target.classList.add('is-receiving');setTimeout(()=>target.classList.remove('is-receiving'),420)};
+  {transform:'translate3d(0,0,0) scale(.9)',opacity:1,offset:0},
+  {transform:`translate3d(${dx*.22}px,${dy*.12-18}px,0) scale(1.16)`,opacity:1,offset:.24},
+  {transform:`translate3d(${dx*.58}px,${dy*.42-30}px,0) scale(1.12)`,opacity:1,offset:.58},
+  {transform:`translate3d(${dx*.86}px,${dy*.78-12}px,0) scale(.96)`,opacity:.98,offset:.86},
+  {transform:`translate3d(${dx}px,${dy}px,0) scale(.58)`,opacity:.2,offset:1}
+ ],{duration:1120,easing:'cubic-bezier(.16,.72,.2,1)',fill:'forwards'});
+ anim.onfinish=()=>{flyer.remove();target.classList.add('is-receiving');pulse('tap');setTimeout(()=>target.classList.remove('is-receiving'),520)};
  anim.oncancel=()=>flyer.remove();
 }
 function makeBookmarkButton(card,index){

@@ -172,6 +172,9 @@
 /admin-onboarding.js
   Cache-Control: no-cache, must-revalidate
 
+/feedback-admin.js
+  Cache-Control: no-store, max-age=0
+
 /admin-mods-gallery-v1.js
   Cache-Control: no-store, max-age=0
 

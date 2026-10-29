@@ -6,6 +6,7 @@
  addScript('franklin-ui-guard-v2.js?v=20261028polish3','franklin-ui-guard-v2-loader');
  addScript('franklin-primary-state-fix.js?v=20261028primary1','franklin-primary-state-fix-loader');
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');
+ addScript('franklin-latest-kb-v1.js?v=20261029latestkb1','franklin-latest-kb-v1-loader');
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
  addStyle('settings-minimal-v1.css?v=20261029settingsminimal1','settings-minimal-v1-style');

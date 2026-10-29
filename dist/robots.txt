@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /release-publisher-8c2f71d4.html
+Disallow: /profile.html
+Disallow: /install.html
+
+Sitemap: https://playgta5-1k8.pages.dev/sitemap.xml

@@ -1,0 +1,51 @@
+/* Settings panel — keep only Haptic feedback and Notifications. */
+.site-settings .settings-intro,
+.site-settings fieldset,
+.site-settings .settings-saved{
+  display:none!important;
+}
+
+.site-settings{
+  width:min(430px,calc(100vw - 28px));
+}
+
+.site-settings .settings-heading{
+  margin-bottom:28px;
+}
+
+.site-settings .settings-haptic{
+  padding:22px 0;
+}
+
+.site-settings .settings-haptic + .settings-haptic{
+  border-top:0;
+}
+
+.site-settings .settings-haptic-label{
+  align-items:center;
+}
+
+.site-settings .settings-haptic h3{
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.site-settings .settings-haptic p{
+  max-width:250px;
+}
+
+@media(max-width:600px){
+  .site-settings{
+    width:calc(100vw - 32px);
+    padding:26px 24px;
+  }
+
+  .site-settings .settings-heading{
+    margin-bottom:22px;
+  }
+
+  .site-settings .settings-haptic{
+    gap:14px;
+    padding:20px 0;
+  }
+}

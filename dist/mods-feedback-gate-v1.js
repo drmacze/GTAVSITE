@@ -6,6 +6,12 @@ window.__gtavModsFeedbackGateV1=true;
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let pending=null,lastFocus=null;
 
+function trackDownload(item){
+ if(!item?.url)return;
+ const eventId=crypto.randomUUID?.()||`${Date.now()}-${Math.random().toString(36).slice(2)}`;
+ fetch('/api/mod-downloads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({eventId,modId:item.modId||'',title:item.title||'Mod',downloadUrl:item.url}),keepalive:true,cache:'no-store'}).catch(()=>{});
+}
+
 function ensureGate(){
  if(document.querySelector('.mods-feedback-gate'))return document.querySelector('.mods-feedback-gate');
  const root=document.createElement('div');
@@ -50,9 +56,10 @@ function ensureGate(){
  });
  download.addEventListener('click',()=>{
    if(!checkbox.checked||!pending)return;
-   const url=pending.url;
+   const item={...pending};
+   trackDownload(item);
    closeGate(false);
-   window.open(url,'_blank','noopener,noreferrer');
+   window.open(item.url,'_blank','noopener,noreferrer');
  });
  return root;
 }
@@ -73,7 +80,7 @@ function openGate(anchor){
  const card=anchor.closest('.library-card');
  const row=anchor.closest('.collection-row');
  const title=(row?.querySelector('strong')?.textContent||card?.querySelector('h3')?.textContent||'this mod').trim();
- pending={url:href,title};
+ pending={url:href,title,modId:row?.dataset.modId||card?.dataset.id||''};
  lastFocus=anchor;
  const root=ensureGate();
  const checkbox=root.querySelector('.mods-feedback-checkbox');

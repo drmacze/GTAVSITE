@@ -65,7 +65,7 @@ function ensureOnlineKB(){
   const existing=document.querySelector('script[data-franklin-online-kb]');
   if(existing){existing.addEventListener('load',()=>resolve(window.FranklinOnlineKB||null),{once:true});existing.addEventListener('error',()=>resolve(null),{once:true});return;}
   const script=document.createElement('script');
-  script.src='franklin-online-kb.js?v=20261030online100';
+  script.src='franklin-online-kb.js?v=20261030online150';
   script.async=true;
   script.dataset.franklinOnlineKb='true';
   script.onload=()=>resolve(window.FranklinOnlineKB||null);

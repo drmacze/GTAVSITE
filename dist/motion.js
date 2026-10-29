@@ -13,9 +13,7 @@
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
  addStyle('settings-minimal-v1.css?v=20261029settingsminimal1','settings-minimal-v1-style');
- if(document.body?.dataset.page==='get-started'){
-   addStyle('get-started-black-glass-v1.css?v=20261029blackglass1','get-started-black-glass-v1-style');
- }
+ if(document.body?.dataset.page==='get-started')addStyle('get-started-black-glass-v1.css?v=20261029blackglass1','get-started-black-glass-v1-style');
  if(document.body?.dataset.page==='home'){
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
@@ -33,7 +31,7 @@
    addStyle('home-scroll-refinements-v1.css?v=20261029refine1','home-scroll-refinements-v1-style');
    addStyle('home-chapter-lock-v1.css?v=20261029chapter4','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
-   addScript('music.js?v=20261029media3','home-music-scroll-loader');
+   addScript('music.js?v=20261029media4','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
    addStyle('mods-library-v10.css?v=20261029library11','mods-library-v10-style');
@@ -56,23 +54,20 @@
    addScript('updates.js?v=20261029latest28b','updates-latest28-script');
    addScript('updates-view-v1.js?v=20261029updatesview1','updates-view-v1-script');
  }
- if(document.body?.dataset.page==='faq'){
-   addStyle('faq-glass-v1.css?v=20261029faqglass1','faq-glass-v1-style');
- }
+ if(document.body?.dataset.page==='faq')addStyle('faq-glass-v1.css?v=20261029faqglass1','faq-glass-v1-style');
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
- /* Global background is loaded last so page-specific solid canvases cannot hide it. */
- addStyle('global-beams-v1.css?v=20261029beams1','global-beams-v1-style');
- addScript('global-beams-v1.js?v=20261029beams1','global-beams-v1-script');
+ /* Global visual system loads last so page-specific legacy colours cannot win. */
+ addStyle('global-beams-v1.css?v=20261029beams2','global-beams-v1-style');
+ addScript('global-beams-v1.js?v=20261029beams2','global-beams-v1-script');
+ addStyle('global-orange-black-v1.css?v=20261029orange1','global-orange-black-v1-style');
+ addStyle('header-autohide-v1.css?v=20261029header1','header-autohide-v1-style');
+ addScript('header-autohide-v1.js?v=20261029header1','header-autohide-v1-script');
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
- const applyChromeTint=()=>{
-   const tint='#020207';
-   if(meta.content!==tint)meta.content=tint;
-   root.style.backgroundColor=tint;
- };
+ const applyChromeTint=()=>{const tint='#020202';if(meta.content!==tint)meta.content=tint;root.style.backgroundColor=tint};
  applyChromeTint();
  new MutationObserver(applyChromeTint).observe(root,{attributes:true,attributeFilter:['data-mode']});
 })();

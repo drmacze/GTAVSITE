@@ -2,6 +2,18 @@
 'use strict';
 if(window.__gtavGlobalBeamsV1)return;
 window.__gtavGlobalBeamsV1=true;
+
+const applySiteIcon=()=>{
+  const href='/api/site-icon?v=20261029siteicon1';
+  let icon=document.head.querySelector('link[rel="icon"]');
+  if(!icon){icon=document.createElement('link');icon.rel='icon';document.head.append(icon)}
+  icon.type='image/png';icon.sizes='512x512';icon.href=href;
+  let apple=document.head.querySelector('link[rel="apple-touch-icon"]');
+  if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';document.head.append(apple)}
+  apple.sizes='512x512';apple.href=href;
+  document.head.querySelectorAll('link[rel="shortcut icon"]').forEach(link=>link.href=href);
+};
+
 const mount=()=>{
   if(document.querySelector('.global-beams-bg'))return;
   const layer=document.createElement('div');
@@ -29,7 +41,9 @@ const mount=()=>{
   document.body.prepend(layer);
 };
 const syncVisibility=()=>{if(document.body)document.body.dataset.beamsPaused=document.hidden?'true':'false'};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{mount();syncVisibility()},{once:true});else{mount();syncVisibility()}
+const init=()=>{applySiteIcon();mount();syncVisibility()};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
-window.addEventListener('pageshow',()=>{mount();syncVisibility()},{passive:true});
+window.addEventListener('pageshow',()=>{applySiteIcon();mount();syncVisibility()},{passive:true});
+window.addEventListener('gtav:site-icon-updated',applySiteIcon);
 })();

@@ -25,6 +25,7 @@
    addStyle('home-intro-v4-polish.css?v=20261028v4polish2','home-intro-v4-polish-style');
    addStyle('home-intro-sidebar-scope-v1.css?v=20261029intro-nav1','home-intro-sidebar-scope-v1-style');
    addStyle('community-welcome-v3.css?v=20261028communitywelcome4','community-welcome-v3-style');
+   addStyle('home-sound-icon-v1.css?v=20261029soundicon1','home-sound-icon-v1-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
    window.__storyST5=true;
    addStyle('story-scrolltrigger-v3.css?v=20261029st7','story-scrolltrigger-v3-style');
@@ -54,6 +55,9 @@
    addStyle('updates-view-v1.css?v=20261029updatesview1','updates-view-v1-style');
    addScript('updates.js?v=20261029latest28b','updates-latest28-script');
    addScript('updates-view-v1.js?v=20261029updatesview1','updates-view-v1-script');
+ }
+ if(document.body?.dataset.page==='faq'){
+   addStyle('faq-glass-v1.css?v=20261029faqglass1','faq-glass-v1-style');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

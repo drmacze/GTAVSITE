@@ -181,6 +181,15 @@
 /admin-mods-gallery-v1.css
   Cache-Control: no-store, max-age=0
 
+/admin-download-stats-v1.js
+  Cache-Control: no-store, max-age=0
+
+/admin-additional-mods-v1.js
+  Cache-Control: no-store, max-age=0
+
+/mods-additional-v1.js
+  Cache-Control: no-store, max-age=0
+
 /release-publisher-8c2f71d4.html
   Cache-Control: no-store, max-age=0
 

@@ -5,6 +5,7 @@ if(window.__gtavAdminModDescriptionEditorV1)return;window.__gtavAdminModDescript
 const TOOLBAR=[
  {id:'bold',label:'Bold',title:'Bold',markup:'B'},
  {id:'italic',label:'Italic',title:'Italic',markup:'I'},
+ {id:'underline',label:'Underline',title:'Underline',markup:'U'},
  {id:'link',label:'Link',title:'Insert link',markup:'↗'},
  {id:'list',label:'List',title:'Bullet list',markup:'≡'},
  {id:'divider',label:'Line',title:'Divider line',markup:'—'}
@@ -35,7 +36,7 @@ function applyList(textarea){
   if(!line.trim())return line;
   return already?line.replace(/^(\s*)-\s+/,'$1'):line.replace(/^(\s*)/,'$1- ');
  }).join('\n');
- replace(textarea,before,finish,formatted,before, before+formatted.length);
+ replace(textarea,before,finish,formatted,before,before+formatted.length);
 }
 function applyLink(textarea){
  const start=textarea.selectionStart,end=textarea.selectionEnd,selected=textarea.value.slice(start,end)||'link text';
@@ -54,6 +55,7 @@ function applyDivider(textarea){
 function applyTool(textarea,id){
  if(id==='bold')return wrap(textarea,'**','**','bold text');
  if(id==='italic')return wrap(textarea,'*','*','italic text');
+ if(id==='underline')return wrap(textarea,'__','__','underlined text');
  if(id==='link')return applyLink(textarea);
  if(id==='list')return applyList(textarea);
  if(id==='divider')return applyDivider(textarea);
@@ -71,7 +73,7 @@ function mount(){
   button.addEventListener('click',()=>applyTool(textarea,tool.id));
   toolbar.append(button);
  });
- const hint=document.createElement('small');hint.className='mod-description-editor-hint';hint.textContent='Format text with bold, italic, links, lists or divider lines.';
+ const hint=document.createElement('small');hint.className='mod-description-editor-hint';hint.textContent='Format text with bold, italic, underline, links, lists or divider lines.';
  textarea.parentNode.insertBefore(shell,textarea);shell.append(toolbar,textarea,hint);
  return true;
 }

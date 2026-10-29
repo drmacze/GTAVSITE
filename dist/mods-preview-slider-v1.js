@@ -12,7 +12,7 @@ let modMap=new Map(),observer=null;
 
 async function loadMods(){
  try{
-  const response=await fetch(API,{cache:'no-store'});
+  const response=await fetch(`${API}?preview=${Date.now()}`,{cache:'no-store',headers:{Accept:'application/json'}});
   if(!response.ok)throw new Error();
   const data=await response.json();
   if(Array.isArray(data.mods))modMap=new Map(data.mods.map(item=>[String(item.id),item]));
@@ -20,16 +20,21 @@ async function loadMods(){
 }
 
 function decorate(card){
- if(card.dataset.previewSliderReady)return;
  const id=String(card.dataset.id||'');
  const item=modMap.get(id);
  if(!item)return;
- let previews=itemPreviews(item);
- // Awesomekills intentionally has one static thumbnail.
- if(id==='awesomekills-graphics-ios')previews=previews.slice(0,1);
+ const previews=itemPreviews(item);
  const media=card.querySelector('.library-media');
  if(!media)return;
+
+ const currentCount=Number(card.dataset.previewSliderCount||0);
+ if(card.dataset.previewSliderReady&&currentCount===previews.length)return;
+ card.dataset.previewSliderReady='';
+ card.dataset.previewSliderCount=String(previews.length);
+
  if(previews.length<=1){
+  media.classList.remove('library-preview-slider');
+  media.removeAttribute('data-preview-count');
   card.dataset.previewSliderReady='single';
   return;
  }
@@ -79,10 +84,12 @@ function apply(){
 
 async function init(){
  await loadMods();
- if(apply())return;
- observer=new MutationObserver(()=>{if(apply()){observer?.disconnect();observer=null}});
+ apply();
+ observer=new MutationObserver(()=>apply());
  observer.observe(document.documentElement,{childList:true,subtree:true});
- setTimeout(()=>{apply();observer?.disconnect();observer=null},6000);
+ setTimeout(()=>apply(),1200);
+ setTimeout(()=>apply(),3500);
+ window.addEventListener('pageshow',async()=>{await loadMods();apply()});
 }
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();

@@ -75,23 +75,18 @@ body{
   100%{stroke-dashoffset:-1;opacity:0}
 }
 
-/* Keep all actual website UI above the global background. */
+/* Keep normal document surfaces above the global background without changing fixed overlays. */
 .site-header,
 main,
 .site-footer,
-footer,
-.menu-dialog,
-.lazy-franklin,
-.ask-franklin-panel,
-.franklin-connect-layer,
-.cookie-banner,
-.settings-modal{
+footer{
   position:relative;
   z-index:1;
 }
 .site-header{z-index:30}
 .menu-dialog,.ask-franklin-panel,.franklin-connect-layer,.settings-modal{z-index:1000}
 .lazy-franklin{z-index:900}
+.cookie-banner{z-index:800}
 
 /* Page canvases that previously painted a solid colour should now reveal Beams. */
 .page-wrap,

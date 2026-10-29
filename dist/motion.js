@@ -51,7 +51,9 @@
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');
    addStyle('updates-black-glass-v1.css?v=20261029updatesglass1','updates-black-glass-v1-style');
+   addStyle('updates-view-v1.css?v=20261029updatesview1','updates-view-v1-style');
    addScript('updates.js?v=20261029latest28b','updates-latest28-script');
+   addScript('updates-view-v1.js?v=20261029updatesview1','updates-view-v1-script');
  }
  if(document.body?.dataset.page==='feedback'){
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}

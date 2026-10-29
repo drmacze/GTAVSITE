@@ -8,6 +8,7 @@
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
+ addStyle('settings-minimal-v1.css?v=20261029settingsminimal1','settings-minimal-v1-style');
  if(document.body?.dataset.page==='get-started'){
    addStyle('get-started-black-glass-v1.css?v=20261029blackglass1','get-started-black-glass-v1-style');
  }

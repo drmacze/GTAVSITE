@@ -1,0 +1,33 @@
+/* Collapsible multi-line descriptions for Mods Library. */
+.library-card-description{
+  white-space:pre-line;
+  line-height:1.65;
+  overflow-wrap:anywhere;
+}
+.library-card-description.is-collapsible:not(.is-expanded){
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  overflow:hidden;
+}
+.library-description-toggle{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:var(--site-accent,#e8b65e);
+  padding:6px 0 0;
+  margin:0;
+  font:700 .68rem/1.2 inherit;
+  letter-spacing:.01em;
+  cursor:pointer;
+  text-align:left;
+}
+.library-description-toggle:hover,
+.library-description-toggle:focus-visible{opacity:.82}
+.library-description-toggle:focus-visible{outline:1px solid currentColor;outline-offset:4px;border-radius:3px}
+.library-description-wrap{margin:0 0 2px}
+.library-description-wrap .library-card-description{margin-bottom:0}
+@media(max-width:560px){
+  .library-card-description{line-height:1.6}
+  .library-description-toggle{font-size:.7rem;padding-top:7px}
+}

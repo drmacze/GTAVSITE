@@ -57,8 +57,39 @@ function release29Answer(raw){
  return null;
 }
 
-function patchDeveloperKnowledge(){const api=window.FranklinDeveloperKB;if(!api||api.__release29Wrapped)return false;const old=api.answer.bind(api);api.answer=async q=>release29Answer(q)||old(q);api.__release29Wrapped=true;return true;}
-if(!patchDeveloperKnowledge()){let tries=0;const timer=setInterval(()=>{if(patchDeveloperKnowledge()||++tries>40)clearInterval(timer)},50);}
+let onlineLoader=null;
+function ensureOnlineKB(){
+ if(window.FranklinOnlineKB)return Promise.resolve(window.FranklinOnlineKB);
+ if(onlineLoader)return onlineLoader;
+ onlineLoader=new Promise(resolve=>{
+  const existing=document.querySelector('script[data-franklin-online-kb]');
+  if(existing){existing.addEventListener('load',()=>resolve(window.FranklinOnlineKB||null),{once:true});existing.addEventListener('error',()=>resolve(null),{once:true});return;}
+  const script=document.createElement('script');
+  script.src='franklin-online-kb.js?v=20261030online100';
+  script.async=true;
+  script.dataset.franklinOnlineKb='true';
+  script.onload=()=>resolve(window.FranklinOnlineKB||null);
+  script.onerror=()=>resolve(null);
+  document.head.append(script);
+ });
+ return onlineLoader;
+}
+function patchDeveloperKnowledge(){
+ const api=window.FranklinDeveloperKB;
+ if(!api||api.__release29Wrapped)return false;
+ const old=api.answer.bind(api);
+ api.answer=async q=>{
+  const release=release29Answer(q);
+  if(release)return release;
+  const online=await ensureOnlineKB();
+  const onlineAnswer=await online?.answer?.(q);
+  return onlineAnswer||old(q);
+ };
+ api.__release29Wrapped=true;
+ return true;
+}
+ensureOnlineKB();
+if(!patchDeveloperKnowledge()){let tries=0;const timer=setInterval(()=>{if(patchDeveloperKnowledge()||++tries>60)clearInterval(timer)},50);}
 
-document.addEventListener('franklin-disconnect',()=>{last=null;});window.FranklinDataset={load,answer,outside,refusal,clarify,rank,release29Answer};
+document.addEventListener('franklin-disconnect',()=>{last=null;});window.FranklinDataset={load,answer,outside,refusal,clarify,rank,release29Answer,ensureOnlineKB};
 })();

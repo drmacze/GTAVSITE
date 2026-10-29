@@ -10,6 +10,12 @@ function cleanup(){
 
 function boot(){
  cleanup();
+ if(!document.querySelector('link[href*="saved-mods-compact-v2.css"]')){
+  const css=document.createElement('link');
+  css.rel='stylesheet';
+  css.href='/saved-mods-compact-v2.css?v=20261030b';
+  document.head.append(css);
+ }
  if(!document.querySelector('script[src*="content-actions-v1.js"]')){
   const actions=document.createElement('script');
   actions.src='/content-actions-v1.js?v=20261030savedmods';

@@ -1,0 +1,71 @@
+/* FAQ — glass surfaces over the global Beams background. */
+body[data-page="faq"] .support-search{
+  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018))!important;
+  border-color:rgba(255,255,255,.11)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.2)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(145%)!important;
+  backdrop-filter:blur(24px) saturate(145%)!important;
+}
+body[data-page="faq"] .support-filter button{
+  background:rgba(255,255,255,.028)!important;
+  border-color:rgba(255,255,255,.085)!important;
+  color:rgba(239,239,236,.68)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(135%)!important;
+  backdrop-filter:blur(16px) saturate(135%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+body[data-page="faq"] .support-filter button[aria-pressed="true"]{
+  background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(139,92,246,.06))!important;
+  border-color:rgba(255,255,255,.16)!important;
+  color:#f4f2ed!important;
+}
+body[data-page="faq"] .support-group{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.105)!important;
+  border-radius:20px!important;
+  background:linear-gradient(145deg,rgba(16,16,22,.58),rgba(7,7,12,.38))!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.31),inset 0 1px 0 rgba(255,255,255,.045)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(150%)!important;
+  backdrop-filter:blur(28px) saturate(150%)!important;
+}
+body[data-page="faq"] .support-group::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:radial-gradient(circle at 10% 0%,rgba(34,211,238,.055),transparent 32%),radial-gradient(circle at 90% 100%,rgba(139,92,246,.06),transparent 36%);
+}
+body[data-page="faq"] .support-group-heading{
+  background:linear-gradient(110deg,rgba(255,255,255,.045),rgba(255,255,255,.01))!important;
+  border-bottom-color:rgba(255,255,255,.075)!important;
+}
+body[data-page="faq"] .support-question{
+  border-bottom-color:rgba(255,255,255,.065)!important;
+}
+body[data-page="faq"] .support-question>summary{
+  color:rgba(241,239,233,.76)!important;
+}
+body[data-page="faq"] .support-question[open]>summary{
+  color:#fff!important;
+}
+body[data-page="faq"] .support-question[open]{
+  background:linear-gradient(90deg,rgba(255,255,255,.018),transparent)!important;
+}
+body[data-page="faq"] .support-question summary .support-plus{
+  border-color:rgba(255,255,255,.11)!important;
+  background:rgba(255,255,255,.035)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+  backdrop-filter:blur(14px)!important;
+}
+body[data-page="faq"] .support-plus:before,
+body[data-page="faq"] .support-plus:after{background:rgba(236,232,222,.72)!important}
+body[data-page="faq"] .answer-body p{color:rgba(225,223,216,.64)!important}
+body[data-page="faq"] .support-search-area,
+body[data-page="faq"] .support-help{border-color:rgba(255,255,255,.075)!important}
+@media(max-width:750px){
+  body[data-page="faq"] .support-group{border-radius:18px!important}
+  body[data-page="faq"] .support-group-heading{padding:20px 18px!important}
+}

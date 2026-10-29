@@ -50,6 +50,7 @@
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');
+   addStyle('updates-black-glass-v1.css?v=20261029updatesglass1','updates-black-glass-v1-style');
    addScript('updates.js?v=20261029latest28b','updates-latest28-script');
  }
  if(document.body?.dataset.page==='feedback'){
@@ -60,7 +61,7 @@
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{
    const page=document.body?.dataset.page||'';
-   const forceBlack=page==='downloads'||page==='get-started';
+   const forceBlack=page==='downloads'||page==='get-started'||page==='updates';
    const light=root.dataset.mode==='light';
    const tint=forceBlack?'#000000':(light?'#c7956f':'#6b432f');
    if(meta.content!==tint)meta.content=tint;

@@ -8,6 +8,9 @@
  addScript('franklin-flow-fix.js?v=20261028flowfix1','franklin-flow-fix-loader');
  addScript('storage-policy-45-v1.js?v=20261028storage45b','storage-policy-45-loader');
  addStyle('profile-glass-v1.css?v=20261028profileglass1','profile-glass-v1-loader');
+ if(document.body?.dataset.page==='get-started'){
+   addStyle('get-started-black-glass-v1.css?v=20261029blackglass1','get-started-black-glass-v1-style');
+ }
  if(document.body?.dataset.page==='home'){
    if(typeof window.showWelcomeNotifications!=='function')window.showWelcomeNotifications=result=>{
      window.dispatchEvent(new CustomEvent('gtav:onboarding-complete',{detail:result||{}}));
@@ -51,9 +54,10 @@
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{
-   const downloads=document.body?.dataset.page==='downloads';
+   const page=document.body?.dataset.page||'';
+   const forceBlack=page==='downloads'||page==='get-started';
    const light=root.dataset.mode==='light';
-   const tint=downloads?'#000000':(light?'#c7956f':'#6b432f');
+   const tint=forceBlack?'#000000':(light?'#c7956f':'#6b432f');
    if(meta.content!==tint)meta.content=tint;
    root.style.backgroundColor=tint;
  };

@@ -94,16 +94,21 @@
 /managed-updates.css
   Cache-Control: no-cache, must-revalidate
 
+/trust-safety.css
+  Cache-Control: no-cache, must-revalidate
+
 /updates.html
   Cache-Control: no-cache, must-revalidate
   X-Robots-Tag: index, follow, max-image-preview:large
   Link: <https://playgta5-1k8.pages.dev/updates.html>; rel="canonical"
 
 /downloads.html
+  Cache-Control: no-cache, must-revalidate
   X-Robots-Tag: index, follow, max-image-preview:large
   Link: <https://playgta5-1k8.pages.dev/downloads.html>; rel="canonical"
 
 /get-started.html
+  Cache-Control: no-cache, must-revalidate
   X-Robots-Tag: index, follow, max-image-preview:large
   Link: <https://playgta5-1k8.pages.dev/get-started.html>; rel="canonical"
 
@@ -112,6 +117,7 @@
   Link: <https://playgta5-1k8.pages.dev/compatibility.html>; rel="canonical"
 
 /guide.html
+  Cache-Control: no-cache, must-revalidate
   X-Robots-Tag: index, follow, max-image-preview:large
   Link: <https://playgta5-1k8.pages.dev/guide.html>; rel="canonical"
 
@@ -245,9 +251,17 @@
 /release-publisher-8c2f71d4.html
   Cache-Control: no-store, max-age=0
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
 
 /api/*
+  Cache-Control: no-store, max-age=0
   X-Robots-Tag: noindex, nofollow, noarchive
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
 
 /robots.txt
   Cache-Control: public, max-age=3600

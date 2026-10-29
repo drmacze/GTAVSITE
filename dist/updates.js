@@ -1,26 +1,69 @@
 (() => {
-  if (window.__updatesLatest28) return;
-  window.__updatesLatest28 = true;
+  if (window.__updatesLatest29) return;
+  window.__updatesLatest29 = true;
 
   const api = '/api/updates';
   const heading = document.querySelector('.updates-heading');
   if (!heading) return;
 
   const cleanupLegacyShells = () => {
-    document.querySelectorAll('.managed-updates:not(.latest-release-28)').forEach(node => node.remove());
+    document.querySelectorAll('.managed-updates:not(.latest-release-29)').forEach(node => node.remove());
   };
   cleanupLegacyShells();
   const legacyObserver = new MutationObserver(cleanupLegacyShells);
   legacyObserver.observe(document.body, { childList: true, subtree: true });
   window.addEventListener('pagehide', () => legacyObserver.disconnect(), { once: true });
 
-  const featured28 = {
+  const featured29 = {
     category: 'Latest release',
+    releaseDate: '2026-10-29',
+    title: 'GTA V for iPhone, iPad & Mac: 29 Oct update, GTA Online',
+    version: '29 Oct build',
+    summary: 'GTA Online arrives in the launcher with custom characters, jobs, peer-to-peer sessions for up to 32 players, session codes, Nearby discovery, new controls, and fixes.',
+    body: `**GTA Online**
+- **Your own Online character:** the creator opens the first time, with heritage, facial features, hair, clothing by shop name, and supported DLC-pack clothing.
+- **Free roam:** play without the story and use the trainer for everything.
+- **Jobs:** GTA Online races, deathmatches, survivals, and contact missions are under Trainer › GTA Online › Jobs.
+- **Sessions with friends:** up to 32 players. Sessions run on the players' own devices, with no project-hosted game servers.
+- **Play with friends anywhere:** the host creates a session and shares its code from Trainer › GTA Online. Friends choose ENTER CODE under Join.
+- **Nearby:** on the same Wi-Fi, available sessions can also appear under Nearby.
+- **Host-led jobs:** when the host starts a job in a session, everyone in that session goes with the host.
+
+**Also new**
+- **Trainer:** car upgrades can be changed one by one.
+- **Touch controls:** adjust touch-button opacity in Launcher › HUD & Controls.
+- **Pause map:** pinch to zoom.
+- **Add-on car audio:** vehicles without working custom sound use a stock-car sound from the matching class.
+- **Launcher startup:** the launcher opens at every start.
+
+**Fixes**
+- Fixed a crash when changing clothes with DLC packs installed.
+- Fixed a respawn loop after a vehicle is destroyed during a race.
+- Mod-import error messages can now be read in full.
+
+**Connection notes**
+- Some mobile networks block direct peer-to-peer connections. If a friend cannot connect, try Wi-Fi or enable UPnP on the host router.
+- Allow Local Network access when iOS asks, otherwise Nearby discovery may not work.
+
+**Privacy**
+- The app counts plays anonymously using device model, chip, and system version. The release notes state that names and accounts are not collected for this count.
+
+**How to update**
+- Your existing saves and mods stay as they are. Install the new build over the current installation.
+- **iPhone / iPad:** sign and install GTAV-unsigned.ipa as before.
+- **Mac:** unzip GTAV-mac.zip and open the app.`,
+    downloads: [
+      { label: 'Download iOS', meta: 'iPhone & iPad', url: 'https://gofile.io/d/aA176fns' },
+      { label: 'Download MacOS', meta: 'Apple silicon', url: 'https://gofile.io/d/MO6xjKqm' }
+    ]
+  };
+
+  const archive28 = {
+    category: 'Previous release',
     releaseDate: '2026-10-28',
     title: 'GTA V for iPhone, iPad & Mac: 28 Oct update',
     version: '28 Oct build',
     summary: 'GTA Online DLC Packs 1–4 for story mode, a launcher-first Mac flow, expanded trainer support, and new iOS / macOS builds.',
-    imageUrl: 'https://cdn.phototourl.com/member/2026-10-28-2e7c040f-d82c-4e91-b42f-814f001bea04.jpg',
     body: `**GTA Online DLC Packs 1–4**
 - All 31 GTA Online updates for story mode, from Festive Surprise 2014 through The Criminal Enterprises: 436 vehicles, their weapons, clothing and tattoos for the online characters.
 - Four downloads by release date: DLC Pack 1 (2014–2016), Pack 2 (2016–2018), Pack 3 (2018–2020), and Pack 4 (2020–2022), around 1.7–2 GB each.
@@ -48,13 +91,13 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
 
   const css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'managed-updates.css?v=20261029latest28b';
+  css.href = 'managed-updates.css?v=20261030latest29';
   document.head.append(css);
 
-  document.querySelector('.release-list > #release-2026-10-28')?.remove();
+  document.querySelector('.release-list > #release-2026-10-29')?.remove();
 
   const shell = document.createElement('section');
-  shell.className = 'managed-updates latest-release-28';
+  shell.className = 'managed-updates latest-release-29';
   shell.setAttribute('aria-label', 'Latest published update');
   heading.insertAdjacentElement('afterend', shell);
 
@@ -133,7 +176,7 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
 
     const card = document.createElement('article');
     card.className = 'managed-update-card is-latest';
-    card.id = 'release-2026-10-28';
+    card.id = `release-${item.releaseDate}`;
 
     const meta = document.createElement('div');
     meta.className = 'managed-update-meta';
@@ -162,15 +205,17 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
     summary.append(paragraphs(item.summary));
     card.append(summary);
 
-    const image = document.createElement('img');
-    image.className = 'managed-update-image';
-    image.src = item.imageUrl;
-    image.alt = 'GTA V for iPhone, iPad and Mac — 28 Oct update';
-    image.loading = 'eager';
-    image.decoding = 'async';
-    image.referrerPolicy = 'no-referrer';
-    image.addEventListener('error', () => image.remove(), { once: true });
-    card.append(image);
+    if (item.imageUrl) {
+      const image = document.createElement('img');
+      image.className = 'managed-update-image';
+      image.src = item.imageUrl;
+      image.alt = item.title;
+      image.loading = 'eager';
+      image.decoding = 'async';
+      image.referrerPolicy = 'no-referrer';
+      image.addEventListener('error', () => image.remove(), { once: true });
+      card.append(image);
+    }
 
     const details = document.createElement('details');
     details.className = 'managed-update-details';
@@ -191,7 +236,11 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
       link.href = download.url;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      link.innerHTML = `<span><small>${download.meta}</small>${download.label}</span>`;
+      const span = document.createElement('span');
+      const small = document.createElement('small');
+      small.textContent = download.meta;
+      span.append(small, document.createTextNode(download.label));
+      link.append(span);
       downloads.append(link);
     });
     card.append(downloads);
@@ -214,7 +263,7 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
 
   function renderArchiveItem(item) {
     const list = document.querySelector('.release-list');
-    if (!list || !item.releaseDate || item.releaseDate === '2026-10-28') return;
+    if (!list || !item.releaseDate || item.releaseDate === featured29.releaseDate) return;
     const id = `release-${item.releaseDate}`;
     if (document.getElementById(id)) return;
 
@@ -257,7 +306,25 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
     h3.textContent = 'Release notes';
     section.append(h3, paragraphs(item.body || item.summary || ''));
     body.append(section);
-    if (item.downloadUrl) {
+
+    if (Array.isArray(item.downloads) && item.downloads.length) {
+      const downloads = document.createElement('div');
+      downloads.className = 'release-download';
+      item.downloads.forEach(download => {
+        const link = document.createElement('a');
+        link.className = 'subtle-link';
+        link.href = download.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = `${download.label} ↗`;
+        downloads.append(link);
+      });
+      const top = document.createElement('a');
+      top.href = '#updates-top';
+      top.textContent = 'Back to top ↑';
+      downloads.append(top);
+      body.append(downloads);
+    } else if (item.downloadUrl) {
       const download = document.createElement('div');
       download.className = 'release-download';
       const link = document.createElement('a');
@@ -279,18 +346,18 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
     });
     if (next) list.insertBefore(article, next);
     else list.append(article);
-    ensureJumpLink(id, item.releaseDate === '2026-10-27' ? '27 Oct' : formatDate(item.releaseDate).replace(' 2026', ''));
+    ensureJumpLink(id, formatDate(item.releaseDate).replace(' 2026', ''));
   }
 
   function normalizeJumpOrder() {
     const jump = document.querySelector('.release-jump');
     if (!jump) return;
+    const link29 = ensureJumpLink('release-2026-10-29', '29 Oct');
     const link28 = ensureJumpLink('release-2026-10-28', '28 Oct');
-    const link27 = jump.querySelector('a[href="#release-2026-10-27"]');
-    if (link28) jump.prepend(link28);
-    if (link27) link28?.insertAdjacentElement('afterend', link27);
+    if (link29) jump.prepend(link29);
+    if (link28) link29?.insertAdjacentElement('afterend', link28);
     jump.querySelectorAll('a').forEach(link => link.removeAttribute('aria-current'));
-    link28?.setAttribute('aria-current', 'location');
+    link29?.setAttribute('aria-current', 'location');
   }
 
   function updateCount() {
@@ -304,14 +371,14 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
     const entries = [...document.querySelectorAll('.release-entry')];
     const links = [...document.querySelectorAll('.release-jump a')];
     const collapse = document.querySelector('#release-collapse');
-    const feature = document.querySelector('#release-2026-10-28');
+    const feature = document.querySelector('#release-2026-10-29');
     const markCurrent = id => links.forEach(link => {
       if (link.hash === '#' + id) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
     });
     const openHash = () => {
-      if (location.hash === '#release-2026-10-28') {
-        markCurrent('release-2026-10-28');
+      if (location.hash === '#release-2026-10-29') {
+        markCurrent('release-2026-10-29');
         feature?.scrollIntoView({ block: 'start' });
         return;
       }
@@ -321,8 +388,8 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
       markCurrent(entry.id);
     };
     links.forEach(link => link.addEventListener('click', () => {
-      if (link.hash === '#release-2026-10-28') {
-        markCurrent('release-2026-10-28');
+      if (link.hash === '#release-2026-10-29') {
+        markCurrent('release-2026-10-29');
         return;
       }
       const entry = entries.find(item => '#' + item.id === link.hash);
@@ -347,7 +414,8 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
     openHash();
   }
 
-  renderFeatured(featured28);
+  renderFeatured(featured29);
+  renderArchiveItem(archive28);
   normalizeJumpOrder();
 
   fetch(api, { headers: { Accept: 'application/json' }, cache: 'no-store' })
@@ -355,7 +423,7 @@ Send the entire GTA V › Logs folder. On Mac use ~/Library/Logs/GTA5 and mentio
     .then(data => {
       const items = Array.isArray(data.updates) ? data.updates : [];
       items
-        .filter(item => item.releaseDate !== '2026-10-28')
+        .filter(item => item.releaseDate !== featured29.releaseDate)
         .sort((a, b) => String(b.releaseDate).localeCompare(String(a.releaseDate)))
         .forEach(renderArchiveItem);
     })

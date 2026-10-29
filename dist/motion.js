@@ -15,6 +15,7 @@
    };
    addStyle('home-intro-v4.css?v=20261028homeintro4r3','home-intro-v4-style');
    addStyle('home-intro-v4-polish.css?v=20261028v4polish2','home-intro-v4-polish-style');
+   addStyle('home-intro-sidebar-scope-v1.css?v=20261029intro-nav1','home-intro-sidebar-scope-v1-style');
    addStyle('community-welcome-v3.css?v=20261028communitywelcome4','community-welcome-v3-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
 
@@ -26,7 +27,7 @@
    addStyle('home-chapter-lock-v1.css?v=20261029chapter4','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
 
-   addScript('music.js?v=20261029media2','home-music-scroll-loader');
+   addScript('music.js?v=20261029media3','home-music-scroll-loader');
  }
  if(document.body?.dataset.page==='downloads'){
    addStyle('mods-library-v10.css?v=20261029library11','mods-library-v10-style');

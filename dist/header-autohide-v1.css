@@ -1,22 +1,116 @@
-/* Sticky header that hides on downward scroll and returns on upward scroll. */
+/* Stable auto-hide header. Home stays hidden during cinematic chapters and activates on the main Home chapter. */
 .site-header{
   position:sticky!important;
   top:0!important;
   z-index:1200!important;
-  will-change:transform;
+  will-change:transform,opacity;
   transform:translate3d(0,0,0);
-  transition:transform .34s cubic-bezier(.22,1,.36,1),background-color .25s ease,box-shadow .25s ease!important;
+  opacity:1;
+  transition:transform .32s cubic-bezier(.22,1,.36,1),opacity .22s ease,background-color .25s ease,box-shadow .25s ease!important;
+  background:rgba(2,2,2,.70)!important;
+  border-bottom:1px solid rgba(255,122,26,.16)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(135%);
+  backdrop-filter:blur(22px) saturate(135%);
 }
+
+/* Home uses a fixed overlay so ScrollTrigger/sticky cinematic chapters cannot move the header. */
+body[data-page="home"] .site-header{
+  position:fixed!important;
+  inset:0 0 auto 0!important;
+  width:100%!important;
+}
+body[data-page="home"] .home-hero{min-height:100svh!important}
+
+/* The cinematic Welcome / GTA V iOS / Stories sequence has no header. */
+body[data-page="home"]:not(.home-chapter-locked) .site-header{
+  transform:translate3d(0,calc(-100% - 8px),0)!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body[data-page="home"].home-chapter-locked .site-header{
+  opacity:1;
+  pointer-events:auto;
+}
+
 .site-header.header-is-hidden{
-  transform:translate3d(0,calc(-100% - 2px),0)!important;
-  pointer-events:none;
+  transform:translate3d(0,calc(-100% - 8px),0)!important;
+  opacity:0!important;
+  pointer-events:none!important;
 }
 .site-header.header-is-visible{
   transform:translate3d(0,0,0)!important;
+  opacity:1!important;
+  pointer-events:auto!important;
 }
 .site-header.header-has-scrolled{
-  box-shadow:0 12px 34px rgba(0,0,0,.24);
+  background:rgba(2,2,2,.80)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.30),inset 0 -1px 0 rgba(255,122,26,.08);
 }
+
+/* Mobile header: fewer competing widths, consistent touch targets and alignment. */
+@media(max-width:760px){
+  .site-header{height:68px!important}
+  .site-header .header-inner{
+    height:68px!important;
+    padding:0 14px!important;
+    gap:10px!important;
+  }
+  .site-header .site-brand{
+    flex:0 0 auto;
+    gap:8px!important;
+    min-width:0;
+    font-size:15px!important;
+  }
+  .site-header .site-brand img{width:34px!important;height:34px!important}
+  .site-header .site-brand b{font-size:11px!important}
+  .site-header .header-actions{
+    margin-left:auto!important;
+    gap:7px!important;
+    min-width:0;
+  }
+  .site-header .header-actions>.button.compact{
+    min-height:42px!important;
+    padding:0 14px!important;
+    gap:9px!important;
+    border-radius:14px!important;
+    font-size:11px!important;
+    background:rgba(255,255,255,.035)!important;
+    border-color:rgba(255,122,26,.24)!important;
+    -webkit-backdrop-filter:blur(14px) saturate(130%);
+    backdrop-filter:blur(14px) saturate(130%);
+  }
+  .site-header .header-actions>.button.compact .icon{width:15px!important;height:15px!important}
+  .site-header .settings-trigger,
+  .site-header .menu-toggle,
+  .site-header .home-header-account{
+    width:40px!important;
+    height:40px!important;
+    min-width:40px!important;
+    flex:0 0 40px!important;
+    padding:0!important;
+    display:grid!important;
+    place-items:center!important;
+    border-radius:50%!important;
+  }
+  .site-header .settings-trigger svg,
+  .site-header .menu-toggle svg,
+  .site-header .home-header-account svg{width:21px!important;height:21px!important}
+}
+
+@media(max-width:520px){
+  /* Keep the GTA mark, but remove duplicate wordmark text on narrow phones. */
+  .site-header .site-brand span{display:none!important}
+  .site-header .header-inner{gap:8px!important}
+  .site-header .header-actions{gap:6px!important}
+  .site-header .header-actions>.button.compact{padding:0 12px!important;font-size:10.5px!important}
+}
+
+@media(max-width:385px){
+  .site-header .header-actions>.button.compact{width:42px!important;min-width:42px!important;padding:0!important}
+  .site-header .header-actions>.button.compact{font-size:0!important;gap:0!important}
+  .site-header .header-actions>.button.compact .icon{width:18px!important;height:18px!important}
+}
+
 @media(prefers-reduced-motion:reduce){
   .site-header{transition:none!important}
 }

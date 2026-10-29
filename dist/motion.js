@@ -35,6 +35,8 @@
    addScript('mods-preview-slider-v1.js?v=20261029preview1','mods-preview-slider-v1-script');
    addStyle('mods-share-v1.css?v=20261029share1','mods-share-v1-style');
    addScript('mods-share-v1.js?v=20261029share1','mods-share-v1-script');
+   addStyle('mods-feedback-gate-v1.css?v=20261029feedbackgate1','mods-feedback-gate-v1-style');
+   addScript('mods-feedback-gate-v1.js?v=20261029feedbackgate1','mods-feedback-gate-v1-script');
  }
  if(document.body?.dataset.page==='updates'){
    addStyle('managed-updates.css?v=20261029latest28b','managed-updates-latest28-style');

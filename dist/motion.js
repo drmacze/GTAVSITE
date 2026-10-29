@@ -59,13 +59,13 @@
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
+ /* Global background is loaded last so page-specific solid canvases cannot hide it. */
+ addStyle('global-beams-v1.css?v=20261029beams1','global-beams-v1-style');
+ addScript('global-beams-v1.js?v=20261029beams1','global-beams-v1-script');
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{
-   const page=document.body?.dataset.page||'';
-   const forceBlack=page==='downloads'||page==='get-started'||page==='updates';
-   const light=root.dataset.mode==='light';
-   const tint=forceBlack?'#000000':(light?'#c7956f':'#6b432f');
+   const tint='#020207';
    if(meta.content!==tint)meta.content=tint;
    root.style.backgroundColor=tint;
  };

@@ -31,37 +31,40 @@
 }
 .updates-view-toggle svg{width:18px;height:18px;display:block}
 
-/* Explicitly keep release details closed until the user opens them. */
 .managed-update-details:not([open]) .managed-update-body,
 .release-card:not([open]) .release-body{display:none}
 
-/* List is the clean editorial default. */
 html[data-updates-view="list"] .release-list{display:block}
 
-/* Grid turns the archive into a compact release library. */
 html[data-updates-view="grid"] .release-list{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:16px;
-  align-items:start;
+  gap:14px;
+  align-items:stretch;
 }
 html[data-updates-view="grid"] .release-entry{
   display:grid;
-  grid-template-columns:1fr;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:auto 1fr;
   gap:8px;
+  width:100%;
   min-width:0;
+  max-width:100%;
   margin:0;
+  align-self:stretch;
 }
 html[data-updates-view="grid"] .release-date{
   padding:0 4px;
   display:flex;
   align-items:center;
   min-height:24px;
+  min-width:0;
 }
 html[data-updates-view="grid"] .release-date time{
   flex-direction:row;
   align-items:center;
   gap:6px;
+  min-width:0;
 }
 html[data-updates-view="grid"] .release-date strong{
   font-size:11px;
@@ -75,24 +78,44 @@ html[data-updates-view="grid"] .release-date time>span{
   color:rgba(245,241,235,.38);
 }
 html[data-updates-view="grid"] .release-card{
-  height:auto;
+  width:100%;
   min-width:0;
+  max-width:100%;
+  height:auto;
+  box-sizing:border-box;
   border-radius:18px!important;
 }
+html[data-updates-view="grid"] .release-card:not([open]){height:100%}
 html[data-updates-view="grid"] .release-card>summary{
   min-height:176px;
+  height:100%;
+  box-sizing:border-box;
   padding:18px;
   align-items:flex-start;
   gap:10px;
+  min-width:0;
+}
+html[data-updates-view="grid"] .release-intro{
+  min-width:0;
+  max-width:100%;
+  overflow:hidden;
 }
 html[data-updates-view="grid"] .release-card .release-tag{
   margin-bottom:9px;
   font-size:7px;
 }
 html[data-updates-view="grid"] .release-intro h2{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:4;
+  overflow:hidden;
+  max-width:100%;
+  overflow-wrap:normal;
+  word-break:normal;
+  hyphens:none;
   font-size:16px;
-  line-height:1.28;
-  letter-spacing:-.3px;
+  line-height:1.22;
+  letter-spacing:-.25px;
   margin-bottom:8px;
 }
 html[data-updates-view="grid"] .release-intro p{
@@ -100,37 +123,40 @@ html[data-updates-view="grid"] .release-intro p{
   -webkit-box-orient:vertical;
   -webkit-line-clamp:3;
   overflow:hidden;
+  max-width:100%;
+  overflow-wrap:normal;
+  word-break:normal;
   font-size:10px;
   line-height:1.55;
 }
 html[data-updates-view="grid"] .release-chevron{
   width:26px;
   height:26px;
+  flex:0 0 26px;
 }
 html[data-updates-view="grid"] .release-body{padding:0 18px 20px}
 html[data-updates-view="grid"] .release-part{padding-top:18px;margin-top:18px}
 
-/* Featured release stays prominent, but grid mode makes it slightly tighter. */
-html[data-updates-view="grid"] .latest-release-28 .managed-update-card{
-  padding:20px!important;
-}
-html[data-updates-view="grid"] .latest-release-28 .managed-update-image{
-  max-height:440px;
-}
+html[data-updates-view="grid"] .managed-updates .managed-update-card{padding:20px!important}
+html[data-updates-view="grid"] .managed-updates .managed-update-image{max-height:440px}
 
 @media(max-width:700px){
   .managed-updates-heading{align-items:center!important}
   .updates-view-toggle{margin-left:auto;flex:0 0 auto}
   html[data-updates-view="grid"] .release-list{gap:10px}
-  html[data-updates-view="grid"] .release-card>summary{min-height:164px;padding:14px}
-  html[data-updates-view="grid"] .release-intro h2{font-size:14px}
-  html[data-updates-view="grid"] .release-intro p{-webkit-line-clamp:2;font-size:9px}
-  html[data-updates-view="grid"] .release-chevron{width:24px;height:24px}
+  html[data-updates-view="grid"] .release-entry{gap:7px}
+  html[data-updates-view="grid"] .release-card>summary{min-height:176px;padding:14px 12px}
+  html[data-updates-view="grid"] .release-intro h2{font-size:13px;line-height:1.24;-webkit-line-clamp:4}
+  html[data-updates-view="grid"] .release-intro p{-webkit-line-clamp:2;font-size:9px;line-height:1.5}
+  html[data-updates-view="grid"] .release-chevron{width:23px;height:23px;flex-basis:23px}
+  html[data-updates-view="grid"] .release-chevron .icon{width:11px;height:11px}
   html[data-updates-view="grid"] .release-body{padding:0 14px 16px}
   html[data-updates-view="grid"] .release-part li{font-size:10px}
 }
 @media(max-width:360px){
   html[data-updates-view="grid"] .release-list{grid-template-columns:1fr}
+  html[data-updates-view="grid"] .release-card>summary{min-height:150px}
+  html[data-updates-view="grid"] .release-intro h2{font-size:15px}
 }
 @media(prefers-reduced-motion:reduce){
   .updates-view-toggle button{transition:none}

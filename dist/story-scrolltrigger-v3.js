@@ -177,7 +177,7 @@ function buildMotion(section){
   gsap.killTweensOf([inner,heading,headingLine,...cards,...images.filter(Boolean),...actions.filter(Boolean),...auras.filter(Boolean)]);
 
   const isMobile=()=>matchMedia('(max-width:760px)').matches;
-  const offX=()=>Math.max(innerWidth*(isMobile()?.90:.80),isMobile()?520:650);
+  const offX=()=>Math.max(innerWidth*(isMobile() ? .90 : .80),isMobile() ? 520 : 650);
 
   gsap.set(inner,{opacity:1});
   gsap.set(heading,{opacity:0,y:28,scale:.985,filter:'none',transformOrigin:'50% 50%',force3D:false});
@@ -224,7 +224,7 @@ function buildMotion(section){
     trigger:section,
     start:'top top',
     end:'bottom bottom',
-    scrub:isMobile()?.08:.12,
+    scrub:isMobile() ? .08 : .12,
     invalidateOnRefresh:true,
     animation:tl,
     onEnter:()=>section.classList.add('is-in-view'),
@@ -238,7 +238,6 @@ function buildMotion(section){
     }
   });
 
-  // One settled refresh is enough. Repeated image-load refreshes can jump Safari's scroll geometry.
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     try{ScrollTrigger.refresh()}catch{}
     tl.progress(trigger.progress,false);

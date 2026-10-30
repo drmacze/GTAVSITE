@@ -92,8 +92,10 @@ function createDownloadDialog(){
 function isDownloadAction(link){
  if(!(link instanceof HTMLAnchorElement))return false;
  if(link.closest('.download-discord-gate'))return false;
+ const label=(link.textContent||'').trim();
  if(link.matches('.updates-download,.managed-update-download'))return true;
- if(link.closest('.release-download')&&!/^#/.test(link.getAttribute('href')||'')&&!/back to top/i.test(link.textContent||''))return true;
+ if(link.classList.contains('discord-link')&&/download/i.test(label))return true;
+ if(link.closest('.release-download')&&!/^#/.test(link.getAttribute('href')||'')&&!/back to top/i.test(label))return true;
  const href=link.getAttribute('href')||'';
  return /gofile\.io/i.test(href);
 }

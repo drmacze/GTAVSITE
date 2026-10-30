@@ -74,9 +74,9 @@
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
- addStyle('global-beams-v1.css?v=20261031beams3','global-beams-v1-style');
- addScript('global-beams-v1.js?v=20261031beams3','global-beams-v1-script');
- addStyle('global-orange-black-v1.css?v=20261029orange1','global-orange-black-v1-style');
+ addStyle('global-beams-v1.css?v=20261031beams4','global-beams-v1-style');
+ addScript('global-beams-v1.js?v=20261031beams5','global-beams-v1-script');
+ addStyle('global-orange-black-v1.css?v=20261031rockstaryellow2','global-orange-black-v1-style');
  addStyle('header-autohide-v1.css?v=20261029header1','header-autohide-v1-style');
  addScript('header-autohide-v1.js?v=20261029header1','header-autohide-v1-script');
  if(!location.pathname.includes('release-publisher-8c2f71d4')){
@@ -88,9 +88,9 @@
  }
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
- const applyChromeTint=()=>{const tint='#020202';if(meta.content!==tint)meta.content=tint;root.style.backgroundColor=tint};
+ const applyChromeTint=()=>{const tint='#000000';if(meta.content!==tint)meta.content=tint;root.style.backgroundColor=tint};
  applyChromeTint();
- new MutationObserver(applyChromeTint).observe(root,{attributes:true,attributeFilter:['data-mode']});
+ new MutationObserver(applyChromeTint).observe(root,{attributes:true,attributeFilter:['data-mode','data-theme']});
 })();
 
 (()=>{

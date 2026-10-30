@@ -41,8 +41,8 @@
    addStyle('home-sound-icon-v1.css?v=20261029soundicon1','home-sound-icon-v1-style');
    addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
    window.__storyST5=true;
-   addStyle('story-scrolltrigger-v3.css?v=20261029st7','story-scrolltrigger-v3-style');
-   addScript('story-scrolltrigger-v3.js?v=20261029st7','story-scrolltrigger-v3-script');
+   addStyle('story-scrolltrigger-v3.css?v=20261031st8','story-scrolltrigger-v3-style');
+   addScript('story-scrolltrigger-v3.js?v=20261031st8','story-scrolltrigger-v3-script');
    addStyle('home-scroll-refinements-v1.css?v=20261029refine1','home-scroll-refinements-v1-style');
    addStyle('home-chapter-lock-v1.css?v=20261029chapter4','home-chapter-lock-v1-style');
    addScript('home-chapter-lock-v1.js?v=20261029chapter3','home-chapter-lock-v1-script');
@@ -74,8 +74,8 @@
    if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261028uifix1';l.dataset.feedbackFixes='true';document.head.append(l)}
    addScript('feedback-fixes.js?v=20261028uifix1','feedback-fixes-loader');
  }
- addStyle('global-beams-v1.css?v=20261029beams2','global-beams-v1-style');
- addScript('global-beams-v1.js?v=20261029beams2','global-beams-v1-script');
+ addStyle('global-beams-v1.css?v=20261031beams3','global-beams-v1-style');
+ addScript('global-beams-v1.js?v=20261031beams3','global-beams-v1-script');
  addStyle('global-orange-black-v1.css?v=20261029orange1','global-orange-black-v1-style');
  addStyle('header-autohide-v1.css?v=20261029header1','header-autohide-v1-style');
  addScript('header-autohide-v1.js?v=20261029header1','header-autohide-v1-script');

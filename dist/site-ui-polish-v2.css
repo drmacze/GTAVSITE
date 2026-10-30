@@ -5,6 +5,10 @@
  initial-value:0deg;
 }
 
+:root{
+ --gta-online-heading-font:Impact,Haettenschweiler,'Arial Narrow Bold','Arial Black',sans-serif;
+}
+
 #site-menu .menu-panel{
  --sidebar-surface:var(--settings-bg,var(--panel,#171717));
  --sidebar-text:var(--settings-text,var(--fg-f5f5f5,#f5f5f5));
@@ -85,6 +89,11 @@
 .download-gate-cancel{border:1px solid var(--gate-line);background:transparent;color:var(--gate-text)}
 .download-gate-continue{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 16px;border:1px solid var(--gate-accent);background:var(--gate-accent);color:#111!important;text-decoration:none!important;box-shadow:none}
 .download-gate-continue .icon{width:15px;height:15px}
+
+/* Match the GTA Online display typeface across site titles without changing body copy. */
+:where(h1,h2,h3,h4,h5,h6,.title,[class$="-title"],[class*="-title "]){
+ font-family:var(--gta-online-heading-font)!important;
+}
 
 @media(max-width:520px){
  .download-gate-card{padding:23px 20px 20px;border-radius:16px}

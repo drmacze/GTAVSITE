@@ -1,9 +1,9 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV4)return;
-window.__gtavGlobalBeamsV4=true;
+if(window.__gtavGlobalBeamsV5)return;
+window.__gtavGlobalBeamsV5=true;
 
-const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar1';
+const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
 
 const applySiteIcon=()=>{
@@ -33,6 +33,8 @@ const ensureEffectsCss=()=>{
     link.rel='stylesheet';
     link.href=EFFECTS_HREF;
     document.head.append(link);
+  }else if(link.getAttribute('href')!==EFFECTS_HREF){
+    link.href=EFFECTS_HREF;
   }
   return link;
 };

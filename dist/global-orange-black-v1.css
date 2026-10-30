@@ -1,18 +1,18 @@
-/* Global orange + black visual system. Neutral white/gray text remains for readability. */
+/* Global orange + pure-black visual system. Neutral white/gray text remains for readability. */
 :root{
   --accent:#ff7a1a!important;
   --site-accent:#ff7a1a!important;
-  --bg:#020202!important;
+  --bg:#000!important;
   --panel:#0b0b0b!important;
   --line:rgba(255,122,26,.18)!important;
   --muted:#9c948d!important;
   --theme-orange:#ff7a1a;
   --theme-orange-bright:#ff9a45;
   --theme-orange-soft:rgba(255,122,26,.12);
-  --theme-black:#020202;
+  --theme-black:#000;
   --theme-black-soft:rgba(7,7,7,.72);
 }
-html,body{background:#020202!important}
+html,body{background:#000!important}
 ::selection{background:#ff7a1a!important;color:#050505!important}
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline-color:#ff7a1a!important}
 

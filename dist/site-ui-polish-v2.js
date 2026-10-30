@@ -17,6 +17,8 @@ function ensureCss(){
 
 function cleanHome(){
  document.querySelector('.home-device-link')?.remove();
+ const heroTitle=document.querySelector('.home-content h1 span');
+ if(heroTitle)heroTitle.textContent='iOS & macOS.';
 }
 
 function polishSidebar(){

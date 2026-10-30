@@ -1,8 +1,9 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV1)return;
-window.__gtavGlobalBeamsV1=true;
+if(window.__gtavGlobalBeamsV2)return;
+window.__gtavGlobalBeamsV2=true;
 
+const isHome=()=>document.body?.dataset.page==='home';
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
   let icon=document.head.querySelector('link[rel="icon"]');
@@ -19,7 +20,9 @@ const mount=()=>{
   const layer=document.createElement('div');
   layer.className='global-beams-bg';
   layer.setAttribute('aria-hidden','true');
-  layer.innerHTML=`
+  // Home uses a static gradient supplied by home-performance-v1.css. Avoid building
+  // a fixed animated SVG there because Safari/Chrome must composite it on every frame.
+  if(!isHome())layer.innerHTML=`
     <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true">
       <defs>
         <linearGradient id="globalBeamsGradient" x1="0" y1="0" x2="1" y2="1">

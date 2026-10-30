@@ -10,10 +10,10 @@
 
 (()=>{
  const ONBOARDING_KEY='gtav-community-onboarding';
- const TRANSITION_KEY='gtav-page-transition-v6';
+ const TRANSITION_KEY='gtav-page-transition-v5';
  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
- const LEAVE_MS=360;
- const ARRIVE_HOLD_MS=45;
+ const LEAVE_MS=1350;
+ const ARRIVE_HOLD_MS=520;
  function hasCompletedOnboarding(){try{const saved=JSON.parse(localStorage.getItem(ONBOARDING_KEY)||sessionStorage.getItem(ONBOARDING_KEY)||'null');return Boolean(saved&&['youtube','tiktok','browser','friends','other'].includes(saved.source)&&['android','ios'].includes(saved.device)&&(saved.device==='android'||saved.model))}catch{return false}}
  function shouldGate(){const path=(location.pathname||'/').replace(/\/+$/,'')||'/',isHome=path.endsWith('/home')||path.endsWith('/home.html');if(path==='/'||path.endsWith('/index.html')||isHome||path.includes('release-publisher-8c2f71d4'))return false;return !hasCompletedOnboarding()}
  if(shouldGate()){const target=location.pathname+location.search+location.hash;try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}location.replace('/?return='+encodeURIComponent(target));return}
@@ -26,7 +26,7 @@
  let navigating=false;
 
  function show(mode='leaving'){overlay.classList.remove('is-revealing','is-arriving');if(mode==='arriving')overlay.classList.add('is-arriving');overlay.classList.add('is-active')}
- function hide(){overlay.classList.add('is-revealing');setTimeout(()=>overlay.classList.remove('is-active','is-arriving','is-revealing'),reduceMotion.matches?0:180)}
+ function hide(){overlay.classList.add('is-revealing');setTimeout(()=>overlay.classList.remove('is-active','is-arriving','is-revealing'),reduceMotion.matches?0:460)}
 
  let arrived=false;
  try{arrived=sessionStorage.getItem(TRANSITION_KEY)==='1';sessionStorage.removeItem(TRANSITION_KEY)}catch{}

@@ -1,4 +1,4 @@
-/* Franklin launcher outline polish: animated feedback-style glow without covering the launcher content. */
+/* Franklin launcher outline polish: mirrors the Feedback sheet edge trace without covering launcher content. */
 @property --franklin-glow-angle{
   syntax:"<angle>";
   inherits:false;
@@ -20,21 +20,22 @@ html.franklin-unified-entry body .lazy-franklin.lazy-franklin::after{
   border-radius:inherit;
   pointer-events:none;
   z-index:1;
-  opacity:.92;
+  opacity:.96;
   background:conic-gradient(
     from var(--franklin-glow-angle),
-    transparent 0deg 282deg,
-    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 10%,transparent) 300deg,
-    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 64%,#fff 36%) 325deg,
-    #fff 338deg,
-    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 74%,#fff 26%) 348deg,
-    transparent 360deg
+    transparent 0deg 276deg,
+    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 20%,transparent) 286deg,
+    var(--site-accent,var(--accent,#e8b65e)) 306deg,
+    #fff2c7 317deg,
+    var(--site-accent,var(--accent,#e8b65e)) 326deg,
+    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 24%,transparent) 340deg,
+    transparent 350deg 360deg
   );
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;
   mask-composite:exclude;
-  filter:drop-shadow(0 0 4px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 58%,transparent)) drop-shadow(0 0 9px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 24%,transparent));
-  animation:franklinGlowOutline 3.2s linear infinite;
+  filter:drop-shadow(0 0 4px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 46%,transparent)) drop-shadow(0 0 10px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 20%,transparent));
+  animation:franklinGlowOutline 4.2s linear infinite;
 }
 
 html.franklin-unified-entry body .lazy-franklin.lazy-franklin > *{
@@ -67,6 +68,6 @@ html.franklin-unified-entry body .lazy-franklin.lazy-franklin:hover{
 @media(prefers-reduced-motion:reduce){
   html.franklin-unified-entry body .lazy-franklin.lazy-franklin::after{
     animation:none;
-    --franklin-glow-angle:330deg;
+    --franklin-glow-angle:315deg;
   }
 }

@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV7)return;
-window.__siteUiPolishV7=true;
+if(window.__siteUiPolishV8)return;
+window.__siteUiPolishV8=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
@@ -35,6 +35,23 @@ function cleanUpdates(root=document){
  if(root instanceof Element&&root.matches('.updates-heading .updates-download'))targets.push(root);
  root.querySelectorAll?.('.updates-heading .updates-download').forEach(node=>targets.push(node));
  targets.forEach(node=>node.remove());
+}
+
+function cleanCommunityLinks(root=document){
+ const links=[];
+ if(root instanceof Element&&root.matches('a[href]'))links.push(root);
+ root.querySelectorAll?.('a[href]').forEach(link=>links.push(link));
+ links.forEach(link=>{
+  const href=(link.getAttribute('href')||'').trim();
+  if(!/^(?:\.\/)?community\.html(?:$|[#?])/.test(href))return;
+  if(link.closest('.desktop-nav')||link.closest('#site-menu .drawer-nav')||link.closest('.site-footer nav')){
+   link.remove();
+   return;
+  }
+  link.href=DISCORD;
+  link.target='_blank';
+  link.rel='noopener noreferrer';
+ });
 }
 
 function polishSidebar(){
@@ -206,6 +223,7 @@ function boot(){
  ensureCss();
  cleanHome();
  cleanUpdates();
+ cleanCommunityLinks();
  polishSidebar();
  polishDownloads(document);
  createDownloadDialog();
@@ -216,6 +234,7 @@ function boot(){
     if(!(node instanceof Element))continue;
     if(node.matches('.home-device-link'))node.remove();
     cleanUpdates(node);
+    cleanCommunityLinks(node);
     polishDownloads(node);
    }
   }

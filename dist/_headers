@@ -16,6 +16,15 @@
   X-Robots-Tag: index, follow, max-image-preview:large
   Link: <https://playgta5-1k8.pages.dev/home>; rel="canonical"
 
+/app.js
+  Cache-Control: no-store, max-age=0
+
+/music.js
+  Cache-Control: no-store, max-age=0
+
+/franklin-helper-glow-v1.css
+  Cache-Control: no-store, max-age=0
+
 /home-intro-v1.css
   Cache-Control: no-store, max-age=0
 

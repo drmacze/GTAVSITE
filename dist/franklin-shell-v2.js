@@ -8,26 +8,30 @@ const STORAGE='gtav_franklin_shell_position_v2';
 const AVATAR='assets/avatars/franklin.jpg';
 const LEGACY='.lazy-franklin,.franklin-connect-layer,.ask-franklin-launcher,.franklin-sheet-dock,.franklin-nudge';
 const ENGINE_SCRIPTS=[
- 'franklin-conversation.js?v=20261030shell2',
- 'franklin-typing.js?v=20261030shell2',
- 'franklin-dataset-engine.js?v=20261030shell2',
- 'franklin-claude-rag.js?v=20261030shell2',
- 'franklin-site-rag.js?v=20261030shell2',
- 'franklin-webllm.js?v=20261030shell2',
- 'franklin-support-context.js?v=20261030shell2',
- 'franklin-developer-kb.js?v=20261030shell2',
- 'franklin-log-files.js?v=20261030shell2',
- 'franklin-engine-extra.js?v=20261030shell2',
- 'franklin-engine.js?v=20261030shell2',
- 'franklin-policy.js?v=20261030shell2'
+ 'franklin-conversation.js?v=20261030shell4',
+ 'franklin-typing.js?v=20261030shell4',
+ 'franklin-dataset-engine.js?v=20261030shell4',
+ 'franklin-claude-rag.js?v=20261030shell4',
+ 'franklin-site-rag.js?v=20261030shell4',
+ 'franklin-webllm.js?v=20261030shell4',
+ 'franklin-support-context.js?v=20261030shell4',
+ 'franklin-release-29-v1.js?v=20261030release29',
+ 'franklin-developer-kb.js?v=20261030shell4',
+ 'franklin-log-files.js?v=20261030shell4',
+ 'franklin-engine-extra.js?v=20261030shell4',
+ 'franklin-engine.js?v=20261030shell4',
+ 'franklin-policy.js?v=20261030shell4'
 ];
-const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 let enginePromise=null;
+let engineReady=false;
 let drag=null;
 let suppressClickUntil=0;
 let sheetDrag=null;
+let connecting=false;
+let launcherState='compact';
 
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
 function purgeLegacy(root=document){
  const nodes=[];
@@ -47,8 +51,12 @@ function script(src){
   const base=src.split('?')[0];
   const existing=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith(base));
   if(existing){
-   if(existing.dataset.loaded==='true'||existing.readyState==='complete')resolve();
-   else{existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});setTimeout(resolve,1200)}
+   if(existing.dataset.loaded==='true'||existing.readyState==='complete'){resolve();return;}
+   let settled=false;
+   const done=()=>{if(settled)return;settled=true;resolve()};
+   existing.addEventListener('load',done,{once:true});
+   existing.addEventListener('error',()=>{if(settled)return;settled=true;reject(new Error('Unable to load '+base))},{once:true});
+   setTimeout(done,1200);
    return;
   }
   const el=document.createElement('script');
@@ -60,13 +68,23 @@ function script(src){
  });
 }
 
-async function ensureEngine(){
- if(enginePromise)return enginePromise;
+async function ensureEngine(onProgress=()=>{}){
+ if(engineReady){onProgress(1,'Ready');return true;}
+ if(enginePromise){await enginePromise;onProgress(1,'Ready');return true;}
  enginePromise=(async()=>{
-  for(const src of ENGINE_SCRIPTS)await script(src);
+  for(let i=0;i<ENGINE_SCRIPTS.length;i++){
+   const file=ENGINE_SCRIPTS[i];
+   const pct=i/ENGINE_SCRIPTS.length;
+   const label=i<3?'Loading interface':i<8?'Loading support context':'Loading knowledge engine';
+   onProgress(pct,label);
+   await script(file);
+  }
+  onProgress(.94,'Preparing Franklin');
   try{await window.FranklinEngine?.preload?.()}catch{}
+  engineReady=true;
+  onProgress(1,'Ready');
   return true;
- })().catch(error=>{enginePromise=null;throw error});
+ })().catch(error=>{enginePromise=null;engineReady=false;throw error});
  return enginePromise;
 }
 
@@ -75,9 +93,17 @@ purgeLegacy();
 const launcher=document.createElement('button');
 launcher.type='button';
 launcher.className='franklin-shell-launcher';
-launcher.setAttribute('aria-label','Open Franklin helper. Drag to move.');
-launcher.innerHTML=`<span class="franklin-shell-launcher-avatar" aria-hidden="true"><img src="${AVATAR}" alt=""><i></i></span>`;
+launcher.dataset.state='compact';
+launcher.setAttribute('aria-label','Expand Franklin helper. Drag to move.');
+launcher.innerHTML=`
+ <span class="franklin-shell-launcher-avatar" aria-hidden="true"><img src="${AVATAR}" alt=""><i></i></span>
+ <span class="franklin-shell-launcher-copy"><small>COMMUNITY HELPER</small><strong>Ask Franklin</strong><em>Tap again to connect</em></span>
+ <span class="franklin-shell-launcher-arrow" aria-hidden="true">${svg('arrow-right')}</span>
+ <span class="franklin-shell-launcher-progress" aria-hidden="true"><i></i></span>`;
 document.body.append(launcher);
+
+const launcherCopy=launcher.querySelector('.franklin-shell-launcher-copy');
+const launcherProgress=launcher.querySelector('.franklin-shell-launcher-progress i');
 
 const backdrop=document.createElement('div');
 backdrop.className='franklin-shell-backdrop';
@@ -100,10 +126,10 @@ panel.innerHTML=`
    <button type="button" class="franklin-shell-icon-button franklin-shell-close" aria-label="Close Franklin">${svg('close')}</button>
   </div>
  </header>
- <p class="franklin-shell-status">Franklin is ready when you are.</p>
+ <p class="franklin-shell-status" hidden></p>
  <div class="ask-franklin-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
  <form class="ask-franklin-form">
-  <textarea class="ask-franklin-input" rows="1" maxlength="32000" placeholder="Ask Franklin…" aria-label="Message Franklin"></textarea>
+  <textarea class="ask-franklin-input" rows="1" maxlength="32000" placeholder="Ask Franklin about GTA V iOS…" aria-label="Message Franklin"></textarea>
   <button class="ask-franklin-send" type="submit" disabled aria-label="Send message">${svg('arrow-right')}</button>
  </form>`;
 document.body.append(panel);
@@ -115,24 +141,68 @@ const grip=panel.querySelector('.franklin-shell-grip');
 const header=panel.querySelector('.franklin-shell-header');
 
 function setStatus(text,hidden=false){status.textContent=text;status.hidden=hidden}
+function setLauncherState(state){
+ launcherState=state;
+ launcher.dataset.state=state;
+ if(state==='compact'){
+  launcher.setAttribute('aria-label','Expand Franklin helper. Drag to move.');
+  launcherCopy.querySelector('small').textContent='COMMUNITY HELPER';
+  launcherCopy.querySelector('strong').textContent='Ask Franklin';
+  launcherCopy.querySelector('em').textContent='Tap again to connect';
+  launcherProgress.style.transform='scaleX(0)';
+ }
+ if(state==='expanded'){
+  launcher.setAttribute('aria-label','Connect to Franklin. Drag to move.');
+  launcherCopy.querySelector('small').textContent='COMMUNITY HELPER';
+  launcherCopy.querySelector('strong').textContent='Ask Franklin';
+  launcherCopy.querySelector('em').textContent='Tap again to connect';
+ }
+ if(state==='connecting')launcher.setAttribute('aria-label','Connecting to Franklin');
+ requestAnimationFrame(()=>keepLauncherInBounds());
+}
+function setConnectingProgress(value,label){
+ launcherCopy.querySelector('small').textContent='CONNECTING TO FRANKLIN';
+ launcherCopy.querySelector('strong').textContent=label||'Loading';
+ launcherCopy.querySelector('em').textContent=Math.round(Math.max(0,Math.min(1,value))*100)+'%';
+ launcherProgress.style.transform=`scaleX(${Math.max(0,Math.min(1,value))})`;
+}
 function openPanel(){
  if(panel.classList.contains('is-open'))return;
  panel.classList.add('is-open');
  backdrop.classList.add('is-open');
  document.documentElement.classList.add('franklin-shell-open');
- setStatus('Connecting to Franklin…');
- ensureEngine().then(()=>{
-  setStatus('Connected',true);
-  window.dispatchEvent(new CustomEvent('franklin-connected'));
-  document.dispatchEvent(new CustomEvent('franklin-connected'));
-  requestAnimationFrame(()=>panel.querySelector('.helper-setup:not([hidden]) h2')?.focus?.({preventScroll:true}));
- }).catch(()=>setStatus('Franklin could not connect. Close and try again.'));
+ setStatus('',true);
+ window.dispatchEvent(new CustomEvent('franklin-connected'));
+ document.dispatchEvent(new CustomEvent('franklin-connected'));
+ requestAnimationFrame(()=>panel.querySelector('.helper-setup:not([hidden]) h2')?.focus?.({preventScroll:true}));
+}
+async function connectAndOpen(){
+ if(connecting)return;
+ connecting=true;
+ setLauncherState('connecting');
+ const started=performance.now();
+ try{
+  await ensureEngine((progress,label)=>setConnectingProgress(progress,label));
+  const elapsed=performance.now()-started;
+  if(elapsed<560)await sleep(560-elapsed);
+  setConnectingProgress(1,'Ready');
+  await sleep(120);
+  openPanel();
+  setLauncherState('compact');
+ }catch{
+  launcherCopy.querySelector('small').textContent='CONNECTION FAILED';
+  launcherCopy.querySelector('strong').textContent='Try again';
+  launcherCopy.querySelector('em').textContent='Tap to retry';
+  launcherProgress.style.transform='scaleX(0)';
+  setLauncherState('expanded');
+ }finally{connecting=false;}
 }
 function closePanel(){
  panel.style.removeProperty('transform');
  panel.classList.remove('is-dragging','is-open');
  backdrop.classList.remove('is-open');
  document.documentElement.classList.remove('franklin-shell-open');
+ setLauncherState('compact');
 }
 function disconnect(){
  document.dispatchEvent(new CustomEvent('franklin-disconnect'));
@@ -148,7 +218,7 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&panel.class
 input.addEventListener('input',()=>{
  send.disabled=!input.value.trim();
  input.style.height='auto';
- input.style.height=Math.min(input.scrollHeight,116)+'px';
+ input.style.height=Math.min(input.scrollHeight,112)+'px';
 });
 input.addEventListener('keydown',event=>{
  if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();if(!send.disabled)panel.querySelector('.ask-franklin-form').requestSubmit();}
@@ -159,7 +229,7 @@ const clamp=(v,min,max)=>Math.min(Math.max(v,min),Math.max(min,max));
 function applyLauncher(left,top){
  const rect=launcher.getBoundingClientRect();
  const {w,h}=viewport();
- const width=rect.width||60,height=rect.height||60;
+ const width=rect.width||62,height=rect.height||62;
  const pos={left:clamp(left,12,w-width-12),top:clamp(top,12,h-height-12)};
  launcher.style.setProperty('left',Math.round(pos.left)+'px');
  launcher.style.setProperty('top',Math.round(pos.top)+'px');
@@ -197,7 +267,11 @@ function endLauncherDrag(event){
 }
 launcher.addEventListener('pointerup',endLauncherDrag);
 launcher.addEventListener('pointercancel',endLauncherDrag);
-launcher.addEventListener('click',event=>{if(performance.now()<suppressClickUntil){event.preventDefault();return}openPanel()});
+launcher.addEventListener('click',event=>{
+ if(performance.now()<suppressClickUntil){event.preventDefault();return;}
+ if(launcherState==='compact'){setLauncherState('expanded');return;}
+ if(launcherState==='expanded'){connectAndOpen();return;}
+});
 
 function startSheetDrag(event){
  if(event.target.closest('button,a,input,textarea,select'))return;
@@ -234,7 +308,11 @@ const legacyObserver=new MutationObserver(records=>{
 });
 legacyObserver.observe(document.body,{childList:true,subtree:true});
 
-const keepLauncherInBounds=()=>{if(launcher.style.top){const rect=launcher.getBoundingClientRect();applyLauncher(rect.left,rect.top)}};
+function keepLauncherInBounds(){
+ if(!launcher.style.top)return;
+ const rect=launcher.getBoundingClientRect();
+ applyLauncher(rect.left,rect.top);
+}
 addEventListener('resize',keepLauncherInBounds,{passive:true});
 visualViewport?.addEventListener('resize',keepLauncherInBounds,{passive:true});
 addEventListener('pagehide',()=>legacyObserver.disconnect(),{once:true});

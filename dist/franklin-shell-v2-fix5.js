@@ -62,10 +62,20 @@ function syncConnecting(){
 
 function versionButtons(list){return [...list.querySelectorAll(':scope > .helper-setup-choice')];}
 function optionLabel(button){return (button.textContent||'').replace(/✓/g,'').replace(/\s+/g,' ').trim();}
+function uniqueVersionButtons(list){
+ const seen=new Set();
+ return versionButtons(list).filter(button=>{
+  const label=optionLabel(button).toLowerCase();
+  if(!label||seen.has(label))return false;
+  seen.add(label);
+  return true;
+ });
+}
 function enhanceVersionPicker(){
  const list=document.querySelector('.helper-build-list');
  if(!list)return;
- const buttons=versionButtons(list);
+ const sourceButtons=versionButtons(list);
+ const buttons=uniqueVersionButtons(list);
  const signature=buttons.map(optionLabel).join('|');
  let field=list.previousElementSibling;
  if(!field?.classList?.contains('franklin-version-field')){
@@ -85,15 +95,16 @@ function enhanceVersionPicker(){
   return;
  }
  if(signature!==field.dataset.signature){
-  const selectedButton=buttons.find(b=>b.getAttribute('aria-pressed')==='true');
+  const selectedButton=sourceButtons.find(b=>b.getAttribute('aria-pressed')==='true');
   const currentLabel=selectedButton?optionLabel(selectedButton):'';
+  sourceButtons.forEach(button=>button.removeAttribute('data-franklin-select-value'));
   select.replaceChildren();
   const placeholder=new Option('Select app version','');placeholder.disabled=true;placeholder.selected=!currentLabel;select.append(placeholder);
   buttons.forEach((button,index)=>{
    const value='v'+index;
    button.dataset.franklinSelectValue=value;
    const option=new Option(optionLabel(button),value);
-   if(button===selectedButton)option.selected=true;
+   if(currentLabel&&optionLabel(button)===currentLabel)option.selected=true;
    select.append(option);
   });
   field.dataset.signature=signature;
@@ -106,17 +117,20 @@ function enhanceVersionPicker(){
  }
  syncVersionSelect(list,select);
  versionSignature=signature;
- const forget=buttons.find(b=>/forget saved os/i.test(optionLabel(b)));
- if(forget)forget.classList.add('franklin-forget-os');
 }
 function syncVersionSelect(list,select){
  const selected=list.querySelector('.helper-setup-choice[aria-pressed="true"]');
- if(selected?.dataset.franklinSelectValue&&select.value!==selected.dataset.franklinSelectValue)select.value=selected.dataset.franklinSelectValue;
+ if(!selected)return;
+ const selectedLabel=optionLabel(selected);
+ const matching=[...select.options].find(option=>option.textContent===selectedLabel);
+ if(matching&&select.value!==matching.value)select.value=matching.value;
 }
 
-function markForgetSavedOS(){
+function cleanSavedOSDetails(){
+ document.querySelector('.helper-setup-platform')?.remove();
+ document.querySelector('.helper-profile-note')?.remove();
  document.querySelectorAll('.helper-setup-unsure').forEach(button=>{
-  if(/forget saved os/i.test(button.textContent||''))button.classList.add('franklin-forget-os');
+  if(/forget saved os/i.test(button.textContent||''))button.remove();
  });
 }
 function tidyComposer(){
@@ -128,7 +142,7 @@ function syncAll(){
  syncViewport();
  syncConnecting();
  enhanceVersionPicker();
- markForgetSavedOS();
+ cleanSavedOSDetails();
  tidyComposer();
 }
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(syncAll)}

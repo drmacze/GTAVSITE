@@ -1,60 +1,75 @@
-/* Franklin helper button: feedback-style animated outline, content always above the glow. */
+/* Franklin helper button: animated Feedback-style border trace loaded after the primary Franklin guard. */
 @property --franklin-helper-angle{
   syntax:'<angle>';
   initial-value:0deg;
   inherits:false;
 }
 
-.lazy-franklin{
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin{
+  --franklin-helper-angle:0deg;
   position:fixed!important;
   isolation:isolate!important;
-  border-color:rgba(255,255,255,.12)!important;
-}
-
-.lazy-franklin::after{
-  content:""!important;
-  position:absolute!important;
-  inset:-1px!important;
-  padding:1.35px!important;
-  border-radius:inherit!important;
-  pointer-events:none!important;
-  z-index:1!important;
-  background:conic-gradient(
-    from var(--franklin-helper-angle),
-    transparent 0deg 276deg,
-    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 20%,transparent) 286deg,
-    var(--site-accent,var(--accent,#e8b65e)) 306deg,
-    #fff2c7 317deg,
-    var(--site-accent,var(--accent,#e8b65e)) 326deg,
-    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 24%,transparent) 340deg,
-    transparent 350deg 360deg
-  )!important;
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
-  -webkit-mask-composite:xor!important;
-  mask-composite:exclude!important;
-  box-shadow:0 0 14px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 12%,transparent)!important;
+  border:1px solid transparent!important;
+  background:
+    linear-gradient(110deg,color-mix(in srgb,var(--panel,#171717) 78%,transparent),color-mix(in srgb,var(--panel,#171717) 60%,var(--site-accent,var(--accent,#e8b65e)) 5%)) padding-box,
+    conic-gradient(
+      from var(--franklin-helper-angle),
+      transparent 0deg 276deg,
+      color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 20%,transparent) 286deg,
+      var(--site-accent,var(--accent,#e8b65e)) 306deg,
+      #fff2c7 317deg,
+      var(--site-accent,var(--accent,#e8b65e)) 326deg,
+      color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 24%,transparent) 340deg,
+      transparent 350deg 360deg
+    ) border-box!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.09),0 0 18px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 10%,transparent)!important;
   animation:franklin-helper-edge 4.2s linear infinite!important;
 }
 
-.lazy-franklin > *,
-.lazy-franklin .lazy-franklin-avatar,
-.lazy-franklin .lazy-franklin-copy,
-.lazy-franklin .lazy-franklin-copy small,
-.lazy-franklin .lazy-franklin-copy strong,
-.lazy-franklin .lazy-franklin-arrow{
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin:hover{
+  border-color:transparent!important;
+  background:
+    linear-gradient(110deg,color-mix(in srgb,var(--panel,#171717) 76%,transparent),color-mix(in srgb,var(--panel,#171717) 57%,var(--site-accent,var(--accent,#e8b65e)) 7%)) padding-box,
+    conic-gradient(
+      from var(--franklin-helper-angle),
+      transparent 0deg 268deg,
+      color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 26%,transparent) 282deg,
+      var(--site-accent,var(--accent,#e8b65e)) 304deg,
+      #fff6dc 317deg,
+      var(--site-accent,var(--accent,#e8b65e)) 330deg,
+      transparent 352deg 360deg
+    ) border-box!important;
+  box-shadow:0 20px 54px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.11),0 0 24px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 14%,transparent)!important;
+}
+
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin::after{
+  content:none!important;
+  display:none!important;
+}
+
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin > *,
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-avatar,
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-copy,
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-copy small,
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-copy strong,
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-arrow{
   position:relative!important;
-  z-index:3!important;
+  z-index:4!important;
 }
 
-.lazy-franklin .lazy-franklin-copy{
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-copy{
   min-width:0!important;
-  overflow:visible!important;
+  overflow:hidden!important;
+  padding-right:2px!important;
 }
 
-.lazy-franklin .lazy-franklin-copy small,
-.lazy-franklin .lazy-franklin-copy strong{
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-copy small,
+html.franklin-unified-entry body .lazy-franklin.lazy-franklin .lazy-franklin-copy strong{
   display:block!important;
-  isolation:isolate!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
 }
 
 @keyframes franklin-helper-edge{
@@ -62,7 +77,7 @@
 }
 
 @media(prefers-reduced-motion:reduce){
-  .lazy-franklin::after{
+  html.franklin-unified-entry body .lazy-franklin.lazy-franklin{
     animation:none!important;
     --franklin-helper-angle:315deg;
   }

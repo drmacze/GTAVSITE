@@ -1,0 +1,6 @@
+.site-brand img.site-brand-kommodo-logo{object-fit:contain!important;object-position:center!important;background:transparent!important}
+.gta-online-menu-dock.gta-online-has-brand-logo{padding-left:94px}
+.gta-online-dock-brand-logo{position:absolute!important;left:18px;top:50%;z-index:3;width:60px;height:60px;display:grid;place-items:center;overflow:hidden;border-radius:16px;transform:translateY(-50%);background:color-mix(in srgb,var(--gta-text) 2%,transparent);border:1px solid color-mix(in srgb,var(--gta-text) 10%,transparent)}
+.gta-online-dock-brand-logo img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+@media(max-width:760px){.gta-online-menu-dock.gta-online-has-brand-logo{padding-left:86px}.gta-online-dock-brand-logo{left:15px;width:58px;height:58px;border-radius:15px}}
+@media(max-width:390px){.gta-online-menu-dock.gta-online-has-brand-logo{padding-left:80px}.gta-online-dock-brand-logo{left:14px;width:54px;height:54px;border-radius:14px}}

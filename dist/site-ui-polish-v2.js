@@ -100,22 +100,38 @@ function isDownloadAction(link){
  return /gofile\.io/i.test(href);
 }
 
+function cleanedLabel(link){
+ const clone=link.cloneNode(true);
+ clone.querySelectorAll('small,svg,.download-gated-icon').forEach(node=>node.remove());
+ let label=(clone.textContent||'Download').replace(/[↗↑⬆️🔗]+/g,'').replace(/\s+/g,' ').trim();
+ if(!label)label='Download';
+ if(!/discord/i.test(label)&&!/^download/i.test(label))label=`Download ${label}`;
+ return label;
+}
+
 function modernizeDownload(link){
  if(!isDownloadAction(link)||link.dataset.downloadGate==='true')return;
+ const meta=link.querySelector('small')?.textContent?.trim()||'';
+ const label=cleanedLabel(link);
  link.dataset.downloadGate='true';
  link.dataset.originalDownloadHref=link.getAttribute('href')||'';
  link.href=DISCORD;
  link.target='_blank';
  link.rel='noopener noreferrer';
  link.classList.add('download-gated-link');
-
- let label=(link.textContent||'Download').replace(/[↗↑⬆️🔗]+/g,'').replace(/\s+/g,' ').trim();
- if(!label)label='Download';
- if(!/discord/i.test(label)&&!/^download/i.test(label))label=`Download ${label}`;
  link.replaceChildren();
- const text=document.createElement('span');
- text.textContent=label;
- link.append(text);
+
+ if(meta){
+  const copy=document.createElement('span');
+  const small=document.createElement('small');
+  small.textContent=meta;
+  copy.append(small,document.createTextNode(label));
+  link.append(copy);
+ }else{
+  const text=document.createElement('span');
+  text.textContent=label;
+  link.append(text);
+ }
  const iconWrap=document.createElement('span');
  iconWrap.className='download-gated-icon';
  iconWrap.innerHTML=svg('download-modern');

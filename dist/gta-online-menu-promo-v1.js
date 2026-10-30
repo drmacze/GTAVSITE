@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__gtaOnlineMenuPromoV3)return;
-window.__gtaOnlineMenuPromoV3=true;
+if(window.__gtaOnlineMenuPromoV4)return;
+window.__gtaOnlineMenuPromoV4=true;
 if(document.body?.dataset.page!=='home')return;
 
 const SHARE_URL='https://screenapp.io/app/share/HtRxbVRx8lWo-LxRpIfC4Ak8?t=0';
@@ -12,7 +12,7 @@ if(!hero)return;
 if(!document.querySelector('link[data-gta-online-menu-promo]')){
  const css=document.createElement('link');
  css.rel='stylesheet';
- css.href='gta-online-menu-promo-v1.css?v=20261030onlinepromo3';
+ css.href='gta-online-menu-promo-v1.css?v=20261030onlinepromo4';
  css.dataset.gtaOnlineMenuPromo='true';
  document.head.append(css);
 }
@@ -31,20 +31,18 @@ card.innerHTML=`
   <iframe title="GTA Online for GTA V iOS video preview" data-src="${SHARE_URL}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
   <div class="gta-online-menu-media-shade" aria-hidden="true"></div>
   <span class="gta-online-menu-video-label"><i></i>VIDEO PREVIEW</span>
-  <a class="gta-online-menu-preview-link" href="${SHARE_URL}" target="_blank" rel="noopener noreferrer" aria-label="Open GTA Online video preview">
-   <span>Open video</span>
-   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
-  </a>
  </div>
  <div class="gta-online-menu-copy">
   <div class="gta-online-menu-kicker"><span></span>NEW MODE</div>
   <div class="gta-online-menu-title-row">
-   <div><h3 id="gta-online-menu-title">GTA Online</h3><p class="gta-online-menu-subtitle">New mode for GTA V iOS</p></div>
+   <div>
+    <h3 id="gta-online-menu-title"><span class="gta-online-title-gta">GTA</span> <span class="gta-online-title-online">ONLINE</span></h3>
+    <p class="gta-online-menu-subtitle">New mode for GTA V iOS</p>
+   </div>
    <span class="gta-online-menu-platform">iOS</span>
   </div>
   <p class="gta-online-menu-description">Create your Online character, join sessions with friends, and launch supported Online jobs from the trainer.</p>
   <div class="gta-online-menu-footer">
-   <span class="gta-online-menu-build">29 OCT BUILD</span>
    <a class="gta-online-menu-play" href="${RELEASE_URL}" aria-label="Play Now — open the GTA Online release">
     <span>Play Now</span>
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>

@@ -79,6 +79,7 @@
  addStyle('global-orange-black-v1.css?v=20261029orange1','global-orange-black-v1-style');
  addStyle('header-autohide-v1.css?v=20261029header1','header-autohide-v1-style');
  addScript('header-autohide-v1.js?v=20261029header1','header-autohide-v1-script');
+ if(!location.pathname.includes('release-publisher-8c2f71d4'))addStyle('sidebar-glass-system-v1.css?v=20261031glass1','sidebar-glass-system-v1-style');
  const root=document.documentElement;
  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
  const applyChromeTint=()=>{const tint='#020202';if(meta.content!==tint)meta.content=tint;root.style.backgroundColor=tint};

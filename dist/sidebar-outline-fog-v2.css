@@ -1,0 +1,195 @@
+/* Sidebar edge language + smooth black/orange fog background. */
+@property --sidebar-fx-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+
+:root{
+ --sidebar-fx-surface:var(--settings-bg,var(--panel,#101010));
+ --sidebar-fx-text:var(--settings-text,var(--fg-f5f5f5,#f5f5f5));
+ --sidebar-fx-line:color-mix(in srgb,var(--sidebar-fx-text) 12%,transparent);
+ --sidebar-fx-accent:var(--site-accent,var(--accent,#ff7a1a));
+ --sidebar-fx-fill:color-mix(in srgb,var(--sidebar-fx-surface) 74%,transparent);
+ --sidebar-fx-highlight:color-mix(in srgb,var(--sidebar-fx-text) 5%,transparent);
+ --sidebar-fx-blur:blur(28px) saturate(1.12);
+ --bg:#000!important;
+ --theme-black:#000!important;
+}
+
+html,body{background:#000!important}
+body[data-page] main,
+body[data-page] .page-wrap,
+body[data-page] .updates-wrap,
+body[data-page] .start-wrap,
+body[data-page] .feedback-wrap,
+body[data-page] .compatibility-wrap,
+body[data-page] .guide-wrap,
+body[data-page] .technical-wrap,
+body[data-page] .community-wrap,
+body[data-page] .faq-wrap,
+body[data-page] .downloads-wrap,
+body[data-page] .mods-library,
+body[data-page] .mods-library-shell,
+body[data-page] .site-footer{background:transparent!important}
+
+/* Replace fixed SVG beams with two cheap, soft fog fields. */
+.global-beams-bg{
+ position:fixed!important;
+ inset:0!important;
+ z-index:0!important;
+ overflow:hidden!important;
+ pointer-events:none!important;
+ background:#000!important;
+ contain:strict!important;
+ isolation:isolate!important;
+}
+.global-beams-bg svg{display:none!important}
+.global-beams-bg::before,
+.global-beams-bg::after{
+ content:""!important;
+ position:absolute!important;
+ top:-18vh!important;
+ width:min(82vw,980px)!important;
+ height:136vh!important;
+ pointer-events:none!important;
+ opacity:.72;
+ will-change:transform,opacity;
+ backface-visibility:hidden;
+ transform:translate3d(0,0,0) scale(1.02);
+}
+.global-beams-bg::before{
+ left:min(-34vw,-300px)!important;
+ background:
+  radial-gradient(ellipse at 38% 18%,rgba(255,137,54,.22) 0,rgba(255,122,26,.105) 25%,rgba(255,92,12,.045) 43%,transparent 64%),
+  radial-gradient(ellipse at 64% 49%,rgba(255,88,0,.16) 0,rgba(255,122,26,.07) 28%,transparent 61%),
+  radial-gradient(ellipse at 30% 80%,rgba(255,154,69,.135) 0,rgba(184,77,0,.055) 30%,transparent 64%)!important;
+ animation:sidebarFogLeft 18s cubic-bezier(.45,0,.55,1) infinite alternate;
+}
+.global-beams-bg::after{
+ right:min(-35vw,-320px)!important;
+ background:
+  radial-gradient(ellipse at 62% 22%,rgba(255,122,26,.19) 0,rgba(255,103,20,.085) 27%,transparent 62%),
+  radial-gradient(ellipse at 35% 52%,rgba(255,154,69,.14) 0,rgba(255,122,26,.06) 28%,transparent 62%),
+  radial-gradient(ellipse at 66% 82%,rgba(184,77,0,.14) 0,rgba(255,92,12,.05) 32%,transparent 66%)!important;
+ animation:sidebarFogRight 21s cubic-bezier(.45,0,.55,1) infinite alternate;
+}
+body[data-beams-paused="true"] .global-beams-bg::before,
+body[data-beams-paused="true"] .global-beams-bg::after{animation-play-state:paused!important}
+
+@keyframes sidebarFogLeft{
+ 0%{transform:translate3d(-4%,-2%,0) scale(1.00);opacity:.58}
+ 35%{transform:translate3d(4%,2%,0) scale(1.08);opacity:.78}
+ 70%{transform:translate3d(0,6%,0) scale(.99);opacity:.65}
+ 100%{transform:translate3d(7%,-1%,0) scale(1.06);opacity:.74}
+}
+@keyframes sidebarFogRight{
+ 0%{transform:translate3d(5%,4%,0) scale(1.05);opacity:.60}
+ 33%{transform:translate3d(-3%,-1%,0) scale(.99);opacity:.75}
+ 72%{transform:translate3d(3%,-6%,0) scale(1.08);opacity:.64}
+ 100%{transform:translate3d(-6%,3%,0) scale(1.02);opacity:.78}
+}
+
+/* Pure sidebar-style edge. The conic gradient exists only inside the masked border. */
+.ask-franklin-panel[data-franklin-shell-v2]{
+ --sidebar-fx-angle:0deg;
+ background:var(--sidebar-fx-fill)!important;
+ border:1px solid var(--sidebar-fx-line)!important;
+ border-bottom:0!important;
+ box-shadow:0 -24px 70px rgba(0,0,0,.30),inset 0 1px 0 var(--sidebar-fx-highlight)!important;
+ backdrop-filter:var(--sidebar-fx-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-fx-blur)!important;
+ animation:none!important;
+ isolation:isolate!important;
+}
+.ask-franklin-panel[data-franklin-shell-v2]::before{
+ content:""!important;
+ display:block!important;
+ position:absolute!important;
+ inset:0!important;
+ padding:1.25px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:80!important;
+ opacity:1!important;
+ background:conic-gradient(
+  from var(--sidebar-fx-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-fx-accent) 28%,transparent) 296deg,
+  var(--sidebar-fx-accent) 314deg,
+  color-mix(in srgb,#fff 70%,var(--sidebar-fx-accent)) 322deg,
+  var(--sidebar-fx-accent) 330deg,
+  transparent 346deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-fx-accent) 32%,transparent))!important;
+ animation:sidebarFxTrace 4.2s linear infinite!important;
+}
+.ask-franklin-panel[data-franklin-shell-v2]>*{position:relative;z-index:2}
+
+.franklin-shell-launcher{--sidebar-fx-angle:0deg}
+.franklin-shell-launcher::before{
+ background:conic-gradient(from var(--sidebar-fx-angle),transparent 0 286deg,color-mix(in srgb,var(--sidebar-fx-accent) 28%,transparent) 296deg,var(--sidebar-fx-accent) 314deg,color-mix(in srgb,#fff 70%,var(--sidebar-fx-accent)) 322deg,var(--sidebar-fx-accent) 330deg,transparent 346deg 360deg)!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-fx-accent) 32%,transparent))!important;
+ animation:sidebarFxTrace 4.2s linear infinite!important;
+}
+
+/* Restore GTA Online edge explicitly. Keep it above media and glass content. */
+.gta-online-menu-dock,
+.gta-online-menu-promo{
+ --sidebar-fx-angle:0deg;
+ background:var(--sidebar-fx-fill)!important;
+ border-color:var(--sidebar-fx-line)!important;
+ box-shadow:0 24px 70px rgba(0,0,0,.28),inset 0 1px 0 var(--sidebar-fx-highlight)!important;
+ backdrop-filter:var(--sidebar-fx-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-fx-blur)!important;
+ isolation:isolate!important;
+}
+.gta-online-menu-dock::before,
+.gta-online-menu-promo::before{
+ content:""!important;
+ display:block!important;
+ position:absolute!important;
+ inset:0!important;
+ padding:1.25px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:90!important;
+ opacity:1!important;
+ visibility:visible!important;
+ background:conic-gradient(
+  from var(--sidebar-fx-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-fx-accent) 28%,transparent) 296deg,
+  var(--sidebar-fx-accent) 314deg,
+  color-mix(in srgb,#fff 70%,var(--sidebar-fx-accent)) 322deg,
+  var(--sidebar-fx-accent) 330deg,
+  transparent 346deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-fx-accent) 32%,transparent))!important;
+ animation:sidebarFxTrace 4.2s linear infinite!important;
+}
+
+@keyframes sidebarFxTrace{to{--sidebar-fx-angle:360deg}}
+
+@media(max-width:760px){
+ :root{--sidebar-fx-blur:blur(24px) saturate(1.10)}
+ .global-beams-bg::before,.global-beams-bg::after{width:104vw!important;height:124vh!important;top:-10vh!important;opacity:.60}
+ .global-beams-bg::before{left:-66vw!important}
+ .global-beams-bg::after{right:-68vw!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .global-beams-bg::before,.global-beams-bg::after{animation:none!important;opacity:.58!important;transform:none!important}
+ .ask-franklin-panel[data-franklin-shell-v2]::before,
+ .franklin-shell-launcher::before,
+ .gta-online-menu-dock::before,
+ .gta-online-menu-promo::before{animation:none!important;--sidebar-fx-angle:318deg}
+}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ .ask-franklin-panel[data-franklin-shell-v2],
+ .gta-online-menu-dock,
+ .gta-online-menu-promo{background:rgba(12,12,12,.94)!important}
+}

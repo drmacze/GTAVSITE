@@ -1,0 +1,76 @@
+/* Safari-stable GTA Online animated outline. Avoids WebKit mask-composite artifacts. */
+@property --gta-stable-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+
+.gta-online-menu-dock::before,
+.gta-online-menu-promo::before{
+ content:none!important;
+ display:none!important;
+ animation:none!important;
+ filter:none!important;
+ -webkit-mask:none!important;
+ mask:none!important;
+}
+
+.gta-online-menu-dock{
+ --gta-stable-angle:0deg;
+ border:1px solid transparent!important;
+ border-bottom:0!important;
+ background:
+  linear-gradient(color-mix(in srgb,var(--gta-surface) 96%,transparent),color-mix(in srgb,var(--gta-surface) 96%,transparent)) padding-box,
+  conic-gradient(
+   from var(--gta-stable-angle),
+   transparent 0 286deg,
+   color-mix(in srgb,var(--gta-accent) 28%,transparent) 296deg,
+   var(--gta-accent) 314deg,
+   color-mix(in srgb,#fff 70%,var(--gta-accent)) 322deg,
+   var(--gta-accent) 330deg,
+   transparent 346deg 360deg
+  ) border-box!important;
+ background-origin:border-box!important;
+ background-clip:padding-box,border-box!important;
+ animation:gtaStableOutlineTrace 4.2s linear infinite!important;
+ box-shadow:0 -18px 54px rgba(0,0,0,.28),inset 0 1px 0 color-mix(in srgb,var(--gta-text) 6%,transparent),0 0 8px color-mix(in srgb,var(--gta-accent) 10%,transparent)!important;
+}
+
+.gta-online-menu-promo{
+ --gta-stable-angle:0deg;
+ border:1px solid transparent!important;
+ background:
+  linear-gradient(color-mix(in srgb,var(--gta-surface) 98%,transparent),color-mix(in srgb,var(--gta-surface) 98%,transparent)) padding-box,
+  conic-gradient(
+   from var(--gta-stable-angle),
+   transparent 0 286deg,
+   color-mix(in srgb,var(--gta-accent) 24%,transparent) 297deg,
+   var(--gta-accent) 314deg,
+   color-mix(in srgb,#fff 72%,var(--gta-accent)) 322deg,
+   var(--gta-accent) 331deg,
+   transparent 347deg 360deg
+  ) border-box!important;
+ background-origin:border-box!important;
+ background-clip:padding-box,border-box!important;
+ animation:gtaStableOutlineTrace 4.2s linear infinite!important;
+ box-shadow:0 28px 90px rgba(0,0,0,.48),inset 0 1px 0 color-mix(in srgb,var(--gta-text) 5%,transparent),0 0 8px color-mix(in srgb,var(--gta-accent) 9%,transparent)!important;
+}
+
+@keyframes gtaStableOutlineTrace{to{--gta-stable-angle:360deg}}
+
+@media(max-width:760px){
+ .gta-online-menu-dock{
+  border-left:0!important;
+  border-right:0!important;
+  border-bottom:0!important;
+ }
+ .gta-online-menu-promo{
+  border-left:0!important;
+  border-right:0!important;
+  border-bottom:0!important;
+ }
+}
+
+@media(prefers-reduced-motion:reduce){
+ .gta-online-menu-dock,
+ .gta-online-menu-promo{
+  animation:none!important;
+  --gta-stable-angle:318deg;
+ }
+}

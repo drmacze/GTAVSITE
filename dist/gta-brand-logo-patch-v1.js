@@ -1,21 +1,20 @@
 (()=>{
 'use strict';
-if(window.__gtaBrandLogoPatchV4)return;
-window.__gtaBrandLogoPatchV4=true;
+if(window.__gtaBrandLogoPatchV5)return;
+window.__gtaBrandLogoPatchV5=true;
 if(document.body?.dataset.page!=='home')return;
 
 const HEADER_LOGO='https://cdn.phototourl.com/member/2026-10-30-4a5422ca-95e0-47e2-ab64-a891f266d209.png';
-const ONLINE_LOGO='https://cdn.phototourl.com/member/2026-10-30-a765632e-959f-46e8-999f-4cd96dfa7d8c.jpg';
+const ONLINE_LOGO='https://cdn.phototourl.com/member/2026-10-30-06aec448-60e4-4b7c-acc6-386b6badfc60.png';
 
 function applyHeaderLogo(){
  const img=document.querySelector('.site-brand img');
  if(!img)return false;
- if(img.dataset.brandLogoV4==='true')return true;
- img.dataset.brandLogoV4='true';
+ img.dataset.brandLogoV5='true';
  img.classList.add('site-brand-kommodo-logo');
  img.alt='GTA V';
  img.decoding='async';
- img.src=HEADER_LOGO;
+ if(img.src!==HEADER_LOGO)img.src=HEADER_LOGO;
  return true;
 }
 
@@ -25,7 +24,11 @@ function applyOnlineLogo(){
  let logo=dock.querySelector('.gta-online-dock-brand-logo');
  if(logo){
   const existing=logo.querySelector('img');
-  if(existing&&existing.src!==ONLINE_LOGO)existing.src=ONLINE_LOGO;
+  if(existing&&existing.src!==ONLINE_LOGO){
+   logo.classList.remove('is-loaded');
+   existing.src=ONLINE_LOGO;
+   existing.addEventListener('load',()=>{logo.classList.add('is-loaded');dock.classList.add('gta-online-has-brand-logo')},{once:true});
+  }
   return true;
  }
  logo=document.createElement('div');

@@ -5,9 +5,25 @@ window.__franklinShellFix5=true;
 if(document.body?.dataset.page!=='home')return;
 
 const AVATAR='assets/avatars/franklin.jpg';
+const versionPickerStyle=document.createElement('style');
+versionPickerStyle.textContent=`
+.franklin-version-field{position:relative!important;display:block!important;margin-top:2px!important}
+.franklin-version-trigger{box-sizing:border-box;width:100%;min-height:48px;margin:0;padding:0 42px 0 12px;border:1px solid #414141;border-radius:7px;background:#212121;color:#eee;font:500 12px/1.2 'DM Sans',Arial,sans-serif;text-align:left;position:relative;cursor:pointer;transition:border-color .18s ease,background .18s ease}
+.franklin-version-trigger:hover,.franklin-version-trigger:focus-visible{border-color:color-mix(in srgb,var(--franklin-shell-accent) 68%,#414141);outline:none}
+.franklin-version-trigger:disabled{opacity:.55;cursor:default}
+.franklin-version-trigger::after{content:'';position:absolute;right:16px;top:50%;width:7px;height:7px;border-right:1.5px solid #d8d5d0;border-bottom:1.5px solid #d8d5d0;transform:translateY(-68%) rotate(45deg);transition:transform .2s ease}
+.franklin-version-field[data-open="true"] .franklin-version-trigger::after{transform:translateY(-30%) rotate(225deg)}
+.franklin-version-menu{display:none;grid-template-columns:1fr;gap:5px;max-height:min(248px,32vh);margin-top:8px;padding:6px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(25,25,25,.96);box-shadow:0 18px 44px rgba(0,0,0,.36);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.franklin-version-menu::-webkit-scrollbar{display:none}
+.franklin-version-field[data-open="true"] .franklin-version-menu{display:grid}
+.franklin-version-option{position:relative;width:100%;min-height:42px;padding:10px 34px 10px 11px;border:1px solid transparent;border-radius:7px;background:transparent;color:#d9d6d1;font:500 11px/1.25 'DM Sans',Arial,sans-serif;text-align:left;cursor:pointer}
+.franklin-version-option:hover,.franklin-version-option:focus-visible{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.045);outline:none}
+.franklin-version-option.is-selected{border-color:color-mix(in srgb,var(--franklin-shell-accent) 42%,transparent);background:color-mix(in srgb,var(--franklin-shell-accent) 8%,transparent);color:#fff}
+.franklin-version-option.is-selected::after{content:'';position:absolute;right:14px;top:50%;width:6px;height:6px;border-radius:50%;background:var(--franklin-shell-accent);transform:translateY(-50%)}
+`;
+document.head.append(versionPickerStyle);
 let scheduled=false;
 let connectRAF=0;
-let versionSignature='';
 
 function syncViewport(){
  const h=Math.max(320,Math.round(window.visualViewport?.height||window.innerHeight||720));
@@ -71,6 +87,13 @@ function uniqueVersionButtons(list){
   return true;
  });
 }
+function closeVersionPickers(except=null){
+ document.querySelectorAll('.franklin-version-field[data-open="true"]').forEach(field=>{
+  if(field===except)return;
+  field.dataset.open='false';
+  field.querySelector('.franklin-version-trigger')?.setAttribute('aria-expanded','false');
+ });
+}
 function enhanceVersionPicker(){
  const list=document.querySelector('.helper-build-list');
  if(!list)return;
@@ -79,52 +102,76 @@ function enhanceVersionPicker(){
  const signature=buttons.map(optionLabel).join('|');
  let field=list.previousElementSibling;
  if(!field?.classList?.contains('franklin-version-field')){
-  field=document.createElement('div');field.className='franklin-version-field';
+  field=document.createElement('div');field.className='franklin-version-field';field.dataset.open='false';
   const label=document.createElement('label');label.textContent='App version';
-  const select=document.createElement('select');select.className='franklin-version-select';select.setAttribute('aria-label','App version');
-  field.append(label,select);list.before(field);
+  const trigger=document.createElement('button');trigger.type='button';trigger.className='franklin-version-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
+  const triggerText=document.createElement('span');triggerText.textContent='Select app version';trigger.append(triggerText);
+  const menu=document.createElement('div');menu.className='franklin-version-menu';menu.setAttribute('role','listbox');menu.setAttribute('aria-label','App version');
+  trigger.addEventListener('click',()=>{
+   const willOpen=field.dataset.open!=='true';
+   closeVersionPickers(field);
+   field.dataset.open=String(willOpen);
+   trigger.setAttribute('aria-expanded',String(willOpen));
+   if(willOpen)requestAnimationFrame(()=>menu.querySelector('.is-selected')?.scrollIntoView({block:'nearest'}));
+  });
+  field.append(label,trigger,menu);list.before(field);
  }
- const select=field.querySelector('.franklin-version-select');
+ const trigger=field.querySelector('.franklin-version-trigger');
+ const triggerText=trigger.querySelector('span');
+ const menu=field.querySelector('.franklin-version-menu');
  list.classList.add('franklin-version-original');
  if(!buttons.length){
-  if(select.options.length!==1||select.options[0].textContent!=='Loading versions…'){
-   select.replaceChildren(new Option('Loading versions…',''));
-  }
-  select.disabled=true;
+  triggerText.textContent='Loading versions…';
+  trigger.disabled=true;
+  menu.replaceChildren();
   window.FranklinSupportContext?.load?.().catch?.(()=>{});
   return;
  }
  if(signature!==field.dataset.signature){
-  const selectedButton=sourceButtons.find(b=>b.getAttribute('aria-pressed')==='true');
-  const currentLabel=selectedButton?optionLabel(selectedButton):'';
   sourceButtons.forEach(button=>button.removeAttribute('data-franklin-select-value'));
-  select.replaceChildren();
-  const placeholder=new Option('Select app version','');placeholder.disabled=true;placeholder.selected=!currentLabel;select.append(placeholder);
+  menu.replaceChildren();
   buttons.forEach((button,index)=>{
    const value='v'+index;
+   const label=optionLabel(button);
    button.dataset.franklinSelectValue=value;
-   const option=new Option(optionLabel(button),value);
-   if(currentLabel&&optionLabel(button)===currentLabel)option.selected=true;
-   select.append(option);
+   const option=document.createElement('button');
+   option.type='button';option.className='franklin-version-option';option.dataset.value=value;option.setAttribute('role','option');option.setAttribute('aria-selected','false');option.textContent=label;
+   option.addEventListener('click',()=>{
+    button.click();
+    field.dataset.open='false';
+    trigger.setAttribute('aria-expanded','false');
+    requestAnimationFrame(()=>syncVersionPicker(list,field));
+   });
+   menu.append(option);
   });
   field.dataset.signature=signature;
-  field.dataset.ready='true';
-  select.disabled=false;
-  select.onchange=()=>{
-   const button=list.querySelector(`[data-franklin-select-value="${CSS.escape(select.value)}"]`);
-   if(button){button.click();requestAnimationFrame(()=>syncVersionSelect(list,select));}
-  };
  }
- syncVersionSelect(list,select);
- versionSignature=signature;
+ trigger.disabled=false;
+ syncVersionPicker(list,field);
 }
-function syncVersionSelect(list,select){
+function syncVersionPicker(list,field){
  const selected=list.querySelector('.helper-setup-choice[aria-pressed="true"]');
- if(!selected)return;
+ const triggerText=field.querySelector('.franklin-version-trigger span');
+ const options=[...field.querySelectorAll('.franklin-version-option')];
+ if(!selected){
+  triggerText.textContent='Select app version';
+  options.forEach(option=>{option.classList.remove('is-selected');option.setAttribute('aria-selected','false');});
+  return;
+ }
  const selectedLabel=optionLabel(selected);
- const matching=[...select.options].find(option=>option.textContent===selectedLabel);
- if(matching&&select.value!==matching.value)select.value=matching.value;
+ triggerText.textContent=selectedLabel;
+ options.forEach(option=>{
+  const active=option.textContent===selectedLabel;
+  option.classList.toggle('is-selected',active);
+  option.setAttribute('aria-selected',String(active));
+ });
 }
+
+document.addEventListener('pointerdown',event=>{
+ const target=event.target instanceof Element?event.target:null;
+ if(!target?.closest('.franklin-version-field'))closeVersionPickers();
+});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeVersionPickers();});
 
 function cleanSavedOSDetails(){
  document.querySelector('.helper-setup-platform')?.remove();

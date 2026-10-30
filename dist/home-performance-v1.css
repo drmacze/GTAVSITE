@@ -1,8 +1,13 @@
+body[data-page=home].home-perf-v1 .global-beams-bg svg{display:none!important}
+body[data-page=home].home-perf-v1 .global-beams-bg{background:radial-gradient(70% 55% at 8% 4%,rgba(255,122,26,.065),transparent 62%),radial-gradient(62% 58% at 88% 24%,rgba(255,154,69,.055),transparent 65%),radial-gradient(55% 52% at 45% 96%,rgba(184,77,0,.045),transparent 66%),#020202!important}
 body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-heading{filter:none!important;will-change:transform,opacity!important}
-body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-aura{animation:none!important;filter:none!important;will-change:auto!important;opacity:.58;box-shadow:0 0 28px rgba(255,166,111,.18),0 0 46px rgba(121,92,219,.08)}
-body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card.is-current .story-showcase-v1-aura{filter:none!important;opacity:.72;box-shadow:0 0 34px rgba(255,172,116,.24),0 0 50px rgba(121,92,219,.10)}
-body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card::after{filter:none!important;opacity:.56;background:radial-gradient(ellipse,rgba(0,0,0,.62),transparent 70%)}
-body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-art img{filter:none!important;will-change:auto!important}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card{transform-style:flat!important;backface-visibility:hidden!important}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-art{transform:none!important;backface-visibility:hidden!important;isolation:isolate}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card::before{transform:none!important}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-aura{inset:-2px!important;padding:0!important;border:1px solid rgba(255,211,184,.30)!important;border-radius:inherit!important;background:transparent!important;-webkit-mask:none!important;mask:none!important;animation:none!important;filter:none!important;will-change:auto!important;opacity:.58;box-shadow:0 0 18px rgba(255,166,111,.13),0 0 30px rgba(121,92,219,.05)}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card.is-current .story-showcase-v1-aura{filter:none!important;opacity:.72;border-color:rgba(255,220,198,.42)!important;box-shadow:0 0 22px rgba(255,172,116,.18),0 0 34px rgba(121,92,219,.07)}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card::after{filter:none!important;opacity:.46;background:radial-gradient(ellipse,rgba(0,0,0,.58),transparent 70%)}
+body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-art img{filter:none!important;will-change:auto!important;backface-visibility:hidden!important;transform-origin:center center!important}
 body[data-page=home].home-perf-v1 .story-st6.is-perf-visible .story-showcase-v1-card,
 body[data-page=home].home-perf-v1 .story-st6.is-perf-visible .story-showcase-v1-art img{will-change:transform,opacity!important}
 body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-get{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(38,35,34,.88)!important}
@@ -20,12 +25,11 @@ body[data-page=home].home-perf-v1.perf-page-hidden .story-showcase-v1 *{animatio
  body[data-page=home].home-perf-v1 .gameplay-section,
  body[data-page=home].home-perf-v1 .project-credits{content-visibility:visible!important;contain-intrinsic-size:none!important;contain:none!important}
  body[data-page=home].home-perf-v1 .gameplay-slide img{will-change:auto!important}
+ body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card{box-shadow:0 26px 62px rgba(0,0,0,.48)!important}
+ body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-aura{box-shadow:0 0 16px rgba(255,166,111,.11)!important}
 }
 @media (min-width:761px){
  body[data-page=home].home-perf-v1.perf-chrome-mac .story-st6 .story-showcase-v1-card{box-shadow:0 30px 78px rgba(0,0,0,.52)!important;transform-style:flat!important}
- body[data-page=home].home-perf-v1.perf-chrome-mac .story-st6 .story-showcase-v1-art{transform:none!important}
- body[data-page=home].home-perf-v1.perf-chrome-mac .story-st6 .story-showcase-v1-card::before{transform:none!important}
- body[data-page=home].home-perf-v1.perf-chrome-mac .story-st6 .story-showcase-v1-actions{transform:none}
  body[data-page=home].home-perf-v1.perf-chrome-mac .home-intro-v5-stage{transform:none!important;transition:opacity .72s ease!important;backface-visibility:hidden}
  body[data-page=home].home-perf-v1.perf-chrome-mac .home-intro-v5-cover img{transform:none!important}
  body[data-page=home].home-perf-v1.perf-chrome-mac .home-intro-v5-mark svg{filter:none!important}

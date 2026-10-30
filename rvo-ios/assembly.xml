@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package version="2.2" id="{7D5F1C80-54F6-4A70-A48C-9A608F5FBA21}" target="Five">
+  <metadata>
+    <name>RVO iOS - Realistic Visual Overhaul v1</name>
+    <version><major>1</major><minor>0</minor><tag>iOS</tag></version>
+    <author><displayName>RVO iOS</displayName></author>
+    <description><![CDATA[Original launcher-safe visual tuning for GTA V Legacy/iOS. Realistic neutral lighting, controlled bloom, cleaner nights, stronger but natural vehicle lights. No ScriptHook, DLL, ASI or custom timecycle files.]]></description>
+  </metadata>
+  <colors>
+    <headerBackground useBlackTextColor="False">$FF15181C</headerBackground>
+    <iconBackground>$FF20252B</iconBackground>
+  </colors>
+  <content>
+    <archive path="update\update.rpf" createIfNotExist="False" type="RPF7">
+      <text path="common\data\visualsettings.dat" createIfNotExist="False">
+        <replace line="defaultmotionblur.enabled" condition="StartWith">defaultmotionblur.enabled 0</replace>
+        <replace line="defaultmotionblur.strength" condition="StartWith">defaultmotionblur.strength 0.0</replace>
+        <replace line="bloom.threshold.min" condition="StartWith">bloom.threshold.min 0.62</replace>
+        <replace line="bloom.threshold.expsoure.diff.min" condition="StartWith">bloom.threshold.expsoure.diff.min 0.0</replace>
+        <replace line="bloom.threshold.expsoure.diff.max" condition="StartWith">bloom.threshold.expsoure.diff.max 0.0</replace>
+        <replace line="bloom.threshold.power" condition="StartWith">bloom.threshold.power 1.05</replace>
+        <replace line="bloom.blurblendmult.large" condition="StartWith">bloom.blurblendmult.large 0.78</replace>
+        <replace line="bloom.blurblendmult.med" condition="StartWith">bloom.blurblendmult.med 1.05</replace>
+        <replace line="bloom.blurblendmult.small" condition="StartWith">bloom.blurblendmult.small 0.72</replace>
+        <replace line="distantlights.carlight.HDRIntensity" condition="StartWith">distantlights.carlight.HDRIntensity 2.35</replace>
+        <replace line="distantlights.streetlight.HDRIntensity" condition="StartWith">distantlights.streetlight.HDRIntensity 4.20</replace>
+        <replace line="distantlights.streetlight.color.red" condition="StartWith">distantlights.streetlight.color.red 1.00</replace>
+        <replace line="distantlights.streetlight.color.green" condition="StartWith">distantlights.streetlight.color.green 0.78</replace>
+        <replace line="distantlights.streetlight.color.blue" condition="StartWith">distantlights.streetlight.color.blue 0.58</replace>
+        <replace line="car.headlight.day.emissive.on" condition="StartWith">car.headlight.day.emissive.on 7.00</replace>
+        <replace line="car.headlight.night.emissive.on" condition="StartWith">car.headlight.night.emissive.on 6.00</replace>
+        <replace line="car.headlight.day.emissive.off" condition="StartWith">car.headlight.day.emissive.off 0.03</replace>
+        <replace line="car.headlight.night.emissive.off" condition="StartWith">car.headlight.night.emissive.off 0.01</replace>
+        <replace line="car.taillight.day.emissive.on" condition="StartWith">car.taillight.day.emissive.on 12.00</replace>
+        <replace line="car.taillight.night.emissive.on" condition="StartWith">car.taillight.night.emissive.on 10.00</replace>
+        <replace line="car.indicator.day.emissive.on" condition="StartWith">car.indicator.day.emissive.on 8.00</replace>
+        <replace line="car.indicator.night.emissive.on" condition="StartWith">car.indicator.night.emissive.on 7.00</replace>
+        <replace line="car.reversinglight.day.emissive.on" condition="StartWith">car.reversinglight.day.emissive.on 6.00</replace>
+        <replace line="car.reversinglight.night.emissive.on" condition="StartWith">car.reversinglight.night.emissive.on 5.00</replace>
+        <replace line="car.brakelight.day.emissive.on" condition="StartWith">car.brakelight.day.emissive.on 16.00</replace>
+        <replace line="car.brakelight.night.emissive.on" condition="StartWith">car.brakelight.night.emissive.on 14.00</replace>
+        <replace line="car.middlebrakelight.day.emissive.on" condition="StartWith">car.middlebrakelight.day.emissive.on 15.00</replace>
+        <replace line="car.middlebrakelight.night.emissive.on" condition="StartWith">car.middlebrakelight.night.emissive.on 13.00</replace>
+        <replace line="car.extralight.day.emissive.on" condition="StartWith">car.extralight.day.emissive.on 5.00</replace>
+        <replace line="car.extralight.night.emissive.on" condition="StartWith">car.extralight.night.emissive.on 4.50</replace>
+        <replace line="car.emissiveMultiplier" condition="StartWith">car.emissiveMultiplier 1.35</replace>
+        <replace line="train.light.intensity" condition="StartWith">train.light.intensity 2.60</replace>
+        <replace line="train.light.falloffmax" condition="StartWith">train.light.falloffmax 2.30</replace>
+        <replace line="train.light.fadingdistance" condition="StartWith">train.light.fadingdistance 120.0</replace>
+      </text>
+    </archive>
+  </content>
+</package>

@@ -1,9 +1,10 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV3)return;
-window.__gtavGlobalBeamsV3=true;
+if(window.__gtavGlobalBeamsV4)return;
+window.__gtavGlobalBeamsV4=true;
 
-const EFFECTS_HREF='sidebar-outline-fog-v2.css?v=20261031fog1';
+const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar1';
+const EFFECTS_ID='rockstar-black-yellow-v1-style';
 
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
@@ -17,10 +18,11 @@ const applySiteIcon=()=>{
 };
 
 const ensureEffectsCss=()=>{
-  let link=document.getElementById('sidebar-outline-fog-v2-style');
+  document.getElementById('sidebar-outline-fog-v2-style')?.remove();
+  let link=document.getElementById(EFFECTS_ID);
   if(!link){
     link=document.createElement('link');
-    link.id='sidebar-outline-fog-v2-style';
+    link.id=EFFECTS_ID;
     link.rel='stylesheet';
     link.href=EFFECTS_HREF;
     document.head.append(link);
@@ -43,7 +45,6 @@ const mount=()=>{
     layer.setAttribute('aria-hidden','true');
     document.body.prepend(layer);
   }
-  // Old builds may have inserted the animated SVG. The new background is CSS fog only.
   layer.replaceChildren();
 };
 

@@ -1,16 +1,17 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV4)return;
-window.__siteUiPolishV4=true;
+if(window.__siteUiPolishV5)return;
+window.__siteUiPolishV5=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function ensureCss(){
  if(document.querySelector('link[data-site-ui-polish-v2]'))return;
  const link=document.createElement('link');
  link.rel='stylesheet';
- link.href='site-ui-polish-v2.css?v=20261030ui4';
+ link.href='site-ui-polish-v2.css?v=20261030ui5';
  link.dataset.siteUiPolishV2='true';
  document.head.append(link);
 }
@@ -19,6 +20,13 @@ function cleanHome(){
  document.querySelector('.home-device-link')?.remove();
  const heroTitle=document.querySelector('.home-content h1 span');
  if(heroTitle)heroTitle.textContent='iOS & macOS.';
+}
+
+function cleanUpdates(root=document){
+ const targets=[];
+ if(root instanceof Element&&root.matches('.updates-heading .updates-download'))targets.push(root);
+ root.querySelectorAll?.('.updates-heading .updates-download').forEach(node=>targets.push(node));
+ targets.forEach(node=>node.remove());
 }
 
 function polishSidebar(){
@@ -61,6 +69,26 @@ function polishSidebar(){
  nav.append(details);
 }
 
+function closeDownloadDialog(dialog,result='cancel'){
+ if(!dialog?.open||dialog.classList.contains('is-closing'))return;
+ dialog.classList.add('is-closing');
+ dialog.classList.remove('is-visible');
+ const finish=()=>{
+  if(!dialog.open)return;
+  try{dialog.close(result)}catch{}
+ };
+ if(reduceMotion.matches){finish();return}
+ clearTimeout(dialog.__closeTimer);
+ dialog.__closeTimer=setTimeout(finish,300);
+}
+
+function showDownloadDialog(dialog){
+ clearTimeout(dialog.__closeTimer);
+ dialog.classList.remove('is-closing','is-visible');
+ if(!dialog.open)dialog.showModal();
+ requestAnimationFrame(()=>requestAnimationFrame(()=>dialog.classList.add('is-visible')));
+}
+
 function createDownloadDialog(){
  let dialog=document.querySelector('#download-discord-gate');
  if(dialog)return dialog;
@@ -69,23 +97,33 @@ function createDownloadDialog(){
  dialog.className='download-discord-gate';
  dialog.setAttribute('aria-labelledby','download-gate-title');
  dialog.innerHTML=`
-  <form method="dialog" class="download-gate-card">
-   <button class="download-gate-close" value="cancel" aria-label="Close download dialog">${svg('close')}</button>
+  <form class="download-gate-card">
+   <button type="button" class="download-gate-close" aria-label="Close download dialog">${svg('close')}</button>
    <div class="download-gate-icon">${svg('download-modern')}</div>
    <p class="download-gate-kicker">DOWNLOAD ACCESS</p>
    <h2 id="download-gate-title">Continue to Discord?</h2>
    <p class="download-gate-copy">Current GTA V iOS builds are distributed through the community Discord. Continue only if you want to open Discord in a new tab.</p>
    <div class="download-gate-actions">
-    <button type="submit" value="cancel" class="download-gate-cancel">Cancel</button>
+    <button type="button" class="download-gate-cancel">Cancel</button>
     <a class="download-gate-continue" href="${DISCORD}" target="_blank" rel="noopener noreferrer"><span>Continue to Discord</span>${svg('arrow-up-right')}</a>
    </div>
   </form>`;
  document.body.append(dialog);
- dialog.addEventListener('click',event=>{
-  if(event.target===dialog)dialog.close('cancel');
+ dialog.addEventListener('cancel',event=>{
+  event.preventDefault();
+  closeDownloadDialog(dialog,'cancel');
  });
+ dialog.addEventListener('click',event=>{
+  if(event.target===dialog)closeDownloadDialog(dialog,'cancel');
+ });
+ dialog.querySelector('.download-gate-close')?.addEventListener('click',()=>closeDownloadDialog(dialog,'cancel'));
+ dialog.querySelector('.download-gate-cancel')?.addEventListener('click',()=>closeDownloadDialog(dialog,'cancel'));
  dialog.querySelector('.download-gate-continue')?.addEventListener('click',()=>{
-  setTimeout(()=>{try{dialog.close('continue')}catch{}},0);
+  setTimeout(()=>closeDownloadDialog(dialog,'continue'),0);
+ });
+ dialog.addEventListener('close',()=>{
+  clearTimeout(dialog.__closeTimer);
+  dialog.classList.remove('is-visible','is-closing');
  });
  return dialog;
 }
@@ -150,12 +188,13 @@ function openDownloadGate(event){
  if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
  event.preventDefault();
  const dialog=createDownloadDialog();
- if(!dialog.open)dialog.showModal();
+ showDownloadDialog(dialog);
 }
 
 function boot(){
  ensureCss();
  cleanHome();
+ cleanUpdates();
  polishSidebar();
  polishDownloads(document);
  createDownloadDialog();
@@ -165,6 +204,7 @@ function boot(){
    for(const node of record.addedNodes){
     if(!(node instanceof Element))continue;
     if(node.matches('.home-device-link'))node.remove();
+    cleanUpdates(node);
     polishDownloads(node);
    }
   }

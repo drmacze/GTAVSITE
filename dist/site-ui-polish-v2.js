@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV2)return;
-window.__siteUiPolishV2=true;
+if(window.__siteUiPolishV3)return;
+window.__siteUiPolishV3=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
@@ -10,7 +10,7 @@ function ensureCss(){
  if(document.querySelector('link[data-site-ui-polish-v2]'))return;
  const link=document.createElement('link');
  link.rel='stylesheet';
- link.href='site-ui-polish-v2.css?v=20261030ui2';
+ link.href='site-ui-polish-v2.css?v=20261030ui3';
  link.dataset.siteUiPolishV2='true';
  document.head.append(link);
 }

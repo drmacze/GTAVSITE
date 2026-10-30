@@ -3,16 +3,16 @@
 
 :root,
 html{
- --accent:#f6c800!important;
- --site-accent:#f6c800!important;
- --palette-color:#f6c800!important;
+ --accent:#ffab00!important;
+ --site-accent:#ffab00!important;
+ --palette-color:#ffab00!important;
  --bg:#000!important;
  --panel:#0b0b0b!important;
- --line:rgba(246,200,0,.18)!important;
- --muted:#9e9a8d!important;
- --rockstar-yellow:#f6c800;
- --rockstar-yellow-bright:#ffdd3b;
- --rockstar-yellow-deep:#c89a00;
+ --line:rgba(255,171,0,.18)!important;
+ --muted:#9e998b!important;
+ --rockstar-yellow:#ffab00;
+ --rockstar-yellow-bright:#ffc247;
+ --rockstar-yellow-deep:#c98700;
  --rockstar-surface:var(--settings-bg,var(--panel,#0b0b0b));
  --rockstar-text:var(--settings-text,var(--fg-f5f5f5,#f5f5f5));
  --rockstar-line:color-mix(in srgb,var(--rockstar-text) 12%,transparent);
@@ -54,7 +54,7 @@ a:hover,.subtle-link:hover,.drawer-nav a:hover,.drawer-nav a[aria-current=page],
 }
 .button.primary:hover,button.primary:hover{background:var(--rockstar-yellow-bright)!important;border-color:var(--rockstar-yellow-bright)!important}
 
-/* Smooth yellow fog on pure black. */
+/* Smooth amber-yellow fog on pure black. */
 .global-beams-bg{
  position:fixed!important;
  inset:0!important;
@@ -81,17 +81,17 @@ a:hover,.subtle-link:hover,.drawer-nav a:hover,.drawer-nav a[aria-current=page],
 .global-beams-bg::before{
  left:min(-34vw,-300px)!important;
  background:
-  radial-gradient(ellipse at 38% 18%,rgba(255,221,59,.22) 0,rgba(246,200,0,.105) 25%,rgba(200,154,0,.045) 43%,transparent 64%),
-  radial-gradient(ellipse at 64% 49%,rgba(246,200,0,.16) 0,rgba(255,221,59,.065) 28%,transparent 61%),
-  radial-gradient(ellipse at 30% 80%,rgba(255,214,32,.13) 0,rgba(200,154,0,.05) 30%,transparent 64%)!important;
+  radial-gradient(ellipse at 38% 18%,rgba(255,194,71,.22) 0,rgba(255,171,0,.11) 25%,rgba(201,135,0,.05) 43%,transparent 64%),
+  radial-gradient(ellipse at 64% 49%,rgba(255,171,0,.17) 0,rgba(255,194,71,.07) 28%,transparent 61%),
+  radial-gradient(ellipse at 30% 80%,rgba(255,184,32,.14) 0,rgba(201,135,0,.055) 30%,transparent 64%)!important;
  animation:rockstarFogLeft 18s cubic-bezier(.45,0,.55,1) infinite alternate;
 }
 .global-beams-bg::after{
  right:min(-35vw,-320px)!important;
  background:
-  radial-gradient(ellipse at 62% 22%,rgba(246,200,0,.19) 0,rgba(255,221,59,.08) 27%,transparent 62%),
-  radial-gradient(ellipse at 35% 52%,rgba(255,221,59,.14) 0,rgba(246,200,0,.055) 28%,transparent 62%),
-  radial-gradient(ellipse at 66% 82%,rgba(200,154,0,.13) 0,rgba(246,200,0,.045) 32%,transparent 66%)!important;
+  radial-gradient(ellipse at 62% 22%,rgba(255,171,0,.20) 0,rgba(255,194,71,.085) 27%,transparent 62%),
+  radial-gradient(ellipse at 35% 52%,rgba(255,194,71,.15) 0,rgba(255,171,0,.06) 28%,transparent 62%),
+  radial-gradient(ellipse at 66% 82%,rgba(201,135,0,.14) 0,rgba(255,171,0,.05) 32%,transparent 66%)!important;
  animation:rockstarFogRight 21s cubic-bezier(.45,0,.55,1) infinite alternate;
 }
 body[data-beams-paused="true"] .global-beams-bg::before,
@@ -131,7 +131,7 @@ body[data-beams-paused="true"] .global-beams-bg::after{animation-play-state:paus
  box-shadow:0 18px 42px rgba(0,0,0,.42),inset 0 1px 0 var(--rockstar-highlight)!important;
 }
 
-/* Feedback becomes the sidebar glass language, including the travelling outline. */
+/* Feedback uses sidebar glass with travelling outline. */
 .feedback-sheet{
  --rockstar-outline-angle:0deg;
  position:relative!important;
@@ -201,7 +201,7 @@ body[data-page="feedback"] .feedback-sheet-dock:not([hidden])::before{
 }
 @keyframes rockstarOutlineTrace{to{--rockstar-outline-angle:360deg}}
 
-/* GTA Online retains the sidebar-style outline, now in Rockstar yellow. */
+/* GTA Online keeps the sidebar-style outline in #FFAB00. */
 .gta-online-menu-dock,.gta-online-menu-promo{
  --rockstar-outline-angle:0deg;
  background:var(--rockstar-fill)!important;

@@ -38,13 +38,25 @@ function decorate(){
  patchContext();
  const list=document.querySelector('.helper-build-list');
  if(!list)return;
- const platform=document.querySelector('.helper-setup-platform')?.textContent||'';
+ const supportOS=window.FranklinSupportContext?.get?.().os||'';
+ const platform=supportOS||document.querySelector('.helper-setup-platform')?.textContent||'';
  if(/macOS/i.test(platform)){
   selected=false;
-  list.querySelector('[data-release-29]')?.remove();
+  list.querySelectorAll('[data-release-29]').forEach(item=>item.remove());
   return;
  }
- if(list.querySelector('[data-release-29]'))return;
+
+ const injected=[...list.querySelectorAll('[data-release-29]')];
+ injected.slice(1).forEach(item=>item.remove());
+ const native29=[...list.querySelectorAll('.helper-setup-choice:not([data-release-29])')]
+  .find(item=>/\b29\s+Oct\s+2026\b/i.test(item.textContent||''));
+ if(native29){
+  selected=false;
+  injected.forEach(item=>item.remove());
+  return;
+ }
+ if(injected.length)return;
+
  const button=document.createElement('button');
  button.type='button';
  button.className='helper-setup-choice';

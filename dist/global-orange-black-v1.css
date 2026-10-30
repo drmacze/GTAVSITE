@@ -1,34 +1,33 @@
 /* Global Rockstar black + yellow visual system. Neutral white/gray text remains for readability. */
 :root{
-  --accent:#f6c800!important;
-  --site-accent:#f6c800!important;
-  --palette-color:#f6c800!important;
+  --accent:#ffab00!important;
+  --site-accent:#ffab00!important;
+  --palette-color:#ffab00!important;
   --bg:#000!important;
   --panel:#0b0b0b!important;
-  --line:rgba(246,200,0,.18)!important;
-  --muted:#9e9a8d!important;
-  --theme-orange:#f6c800;
-  --theme-orange-bright:#ffdd3b;
-  --theme-orange-soft:rgba(246,200,0,.12);
+  --line:rgba(255,171,0,.18)!important;
+  --muted:#9e998b!important;
+  --theme-orange:#ffab00;
+  --theme-orange-bright:#ffc247;
+  --theme-orange-soft:rgba(255,171,0,.12);
   --theme-black:#000;
   --theme-black-soft:rgba(7,7,7,.72);
 }
 html,body{background:#000!important}
-::selection{background:#f6c800!important;color:#050505!important}
-a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline-color:#f6c800!important}
+::selection{background:#ffab00!important;color:#050505!important}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline-color:#ffab00!important}
 
-/* Global interactive accents */
-a:hover,.subtle-link:hover,.drawer-nav a:hover,.drawer-nav a[aria-current=page],.desktop-nav a[aria-current=page]{color:#ffdd3b!important}
-.desktop-nav a[aria-current=page]{text-decoration-color:#f6c800!important}
+a:hover,.subtle-link:hover,.drawer-nav a:hover,.drawer-nav a[aria-current=page],.desktop-nav a[aria-current=page]{color:#ffc247!important}
+.desktop-nav a[aria-current=page]{text-decoration-color:#ffab00!important}
 .button.primary,
 button.primary,
 .badge.is-active,
 [aria-pressed="true"].filter-pill{
-  background:#f6c800!important;
-  border-color:#f6c800!important;
+  background:#ffab00!important;
+  border-color:#ffab00!important;
   color:#080808!important;
 }
-.button.primary:hover,button.primary:hover{background:#ffdd3b!important;border-color:#ffdd3b!important}
+.button.primary:hover,button.primary:hover{background:#ffc247!important;border-color:#ffc247!important}
 
 .menu-panel,
 .settings-modal,
@@ -38,21 +37,21 @@ button.primary,
 .support-group,
 .managed-update-card,
 .library-card{
-  --site-accent:#f6c800!important;
-  --accent:#f6c800!important;
+  --site-accent:#ffab00!important;
+  --accent:#ffab00!important;
 }
 
 .support-plus,
 .support-filter button[aria-pressed="true"],
 .release-view-toggle button[aria-pressed="true"],
 .library-view-toggle button[aria-pressed="true"]{
-  border-color:rgba(246,200,0,.42)!important;
+  border-color:rgba(255,171,0,.42)!important;
 }
 .support-filter button[aria-pressed="true"],
 .release-view-toggle button[aria-pressed="true"],
 .library-view-toggle button[aria-pressed="true"]{
-  color:#ffdd3b!important;
-  background:rgba(246,200,0,.10)!important;
+  color:#ffc247!important;
+  background:rgba(255,171,0,.10)!important;
 }
 
 .site-header,.site-footer{color-scheme:dark}

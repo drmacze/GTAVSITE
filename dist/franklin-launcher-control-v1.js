@@ -60,7 +60,7 @@ function keepSingleVisual(){
  const buttons=[...document.querySelectorAll(ANY)];
  if(!buttons.length)return null;
  const primary=buttons.find(el=>el.matches(PRIMARY))||buttons.find(el=>el.dataset.unifiedFallback!=='true')||buttons[0];
- buttons.forEach(el=>{if(el!==primary&&el.dataset.franklinPrimary!=='true')el.remove()});
+ buttons.forEach(el=>{if(el!==primary)el.remove()});
  return primary;
 }
 
@@ -132,7 +132,9 @@ function sync(){
 }
 
 const observer=new MutationObserver(()=>requestAnimationFrame(sync));
-observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+observer.observe(document.body,{childList:true,subtree:true});
+const bodyObserver=new MutationObserver(()=>requestAnimationFrame(sync));
+bodyObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
 window.addEventListener('resize',()=>{
  if(!activeButton?.isConnected||activeButton.dataset.launcherPlaced!=='true')return;
  const rect=activeButton.getBoundingClientRect();
@@ -143,7 +145,7 @@ window.visualViewport?.addEventListener('resize',()=>{
  const rect=activeButton.getBoundingClientRect();
  applyPosition(activeButton,rect.left,rect.top);
 },{passive:true});
-window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+window.addEventListener('pagehide',()=>{observer.disconnect();bodyObserver.disconnect()},{once:true});
 
 sync();
 })();

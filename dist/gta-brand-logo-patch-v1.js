@@ -1,50 +1,46 @@
 (()=>{
 'use strict';
-if(window.__gtaBrandLogoPatchV2)return;
-window.__gtaBrandLogoPatchV2=true;
+if(window.__gtaBrandLogoPatchV3)return;
+window.__gtaBrandLogoPatchV3=true;
 if(document.body?.dataset.page!=='home')return;
 
-const HEADER_LOGO_REMOTE='https://kommodo.ai/i/jFvjP5sfDrtQ020DR4Pi';
-const HEADER_LOGO_FALLBACK='assets/gtav-logo.jpeg';
-const ONLINE_LOGO='https://kommodo.ai/i/YOtH3dfNwGBwvgtWyYAu';
+const HEADER_LOGO='https://cdn.phototourl.com/member/2026-10-30-a765632e-959f-46e8-999f-4cd96dfa7d8c.jpg';
+const ONLINE_LOGO='https://cdn.phototourl.com/member/2026-10-30-4a5422ca-95e0-47e2-ab64-a891f266d209.png';
 
 function applyHeaderLogo(){
  const img=document.querySelector('.site-brand img');
  if(!img)return false;
- if(img.dataset.brandLogoReady==='true')return true;
- img.dataset.brandLogoReady='true';
+ if(img.dataset.brandLogoV3==='true')return true;
+ img.dataset.brandLogoV3='true';
  img.classList.add('site-brand-kommodo-logo');
  img.alt='GTA V';
  img.decoding='async';
- img.referrerPolicy='no-referrer';
- let fellBack=false;
- img.addEventListener('error',()=>{
-  if(fellBack)return;
-  fellBack=true;
-  img.src=HEADER_LOGO_FALLBACK;
- },{once:false});
- img.src=HEADER_LOGO_REMOTE;
+ img.src=HEADER_LOGO;
  return true;
 }
 
 function applyOnlineLogo(){
  const dock=document.querySelector('.gta-online-menu-dock');
  if(!dock)return false;
- if(dock.querySelector('.gta-online-dock-brand-logo'))return true;
- const logo=document.createElement('div');
+ let logo=dock.querySelector('.gta-online-dock-brand-logo');
+ if(logo){
+  const existing=logo.querySelector('img');
+  if(existing&&existing.src!==ONLINE_LOGO)existing.src=ONLINE_LOGO;
+  return true;
+ }
+ logo=document.createElement('div');
  logo.className='gta-online-dock-brand-logo';
  logo.setAttribute('aria-hidden','true');
  const img=document.createElement('img');
  img.src=ONLINE_LOGO;
  img.alt='';
  img.decoding='async';
- img.referrerPolicy='no-referrer';
  img.addEventListener('load',()=>{
   logo.classList.add('is-loaded');
   dock.classList.add('gta-online-has-brand-logo');
  },{once:true});
  img.addEventListener('error',()=>{
-  logo.remove();
+  logo.classList.remove('is-loaded');
   dock.classList.remove('gta-online-has-brand-logo');
  },{once:true});
  logo.append(img);
@@ -59,7 +55,7 @@ function apply(){
 }
 
 apply();
-const observer=new MutationObserver(()=>apply());
+const observer=new MutationObserver(apply);
 observer.observe(document.body,{childList:true,subtree:true});
 window.addEventListener('pageshow',apply,{passive:true});
 window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});

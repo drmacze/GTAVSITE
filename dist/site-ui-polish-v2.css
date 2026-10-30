@@ -54,6 +54,25 @@
 }
 @keyframes sidebarOutlineTrace{to{--sidebar-outline-angle:360deg}}
 
+/* GTA Online typography for the sidebar's primary level only. */
+#site-menu .menu-top h2,
+#site-menu .drawer-nav> a,
+#site-menu .drawer-nav> details>summary,
+#site-menu .menu-bottom>span,
+#site-menu .menu-bottom>a{
+ font-family:var(--gta-online-heading-font)!important;
+ text-transform:uppercase;
+}
+
+/* Keep dropdown contents in their original UI typeface and casing. */
+#site-menu .drawer-nav .download-submenu,
+#site-menu .drawer-nav .download-submenu a,
+#site-menu .drawer-nav .before-start-submenu,
+#site-menu .drawer-nav .before-start-submenu a{
+ font-family:'DM Sans',Arial,sans-serif!important;
+ text-transform:none!important;
+}
+
 .before-start-menu{position:relative;order:99}
 .before-start-menu>summary{cursor:pointer}
 .before-start-menu.is-current>summary{color:var(--site-accent,var(--accent,#ff7a1a))}

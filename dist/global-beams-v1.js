@@ -1,10 +1,12 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV5)return;
-window.__gtavGlobalBeamsV5=true;
+if(window.__gtavGlobalBeamsV6)return;
+window.__gtavGlobalBeamsV6=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
+const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail1';
+const HOME_DETAIL_ID='home-rockstar-detail-v1-style';
 
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
@@ -39,10 +41,25 @@ const ensureEffectsCss=()=>{
   return link;
 };
 
+const ensureHomeDetailCss=()=>{
+  if(document.body?.dataset.page!=='home')return null;
+  let link=document.getElementById(HOME_DETAIL_ID);
+  if(!link){
+    link=document.createElement('link');
+    link.id=HOME_DETAIL_ID;
+    link.rel='stylesheet';
+    link.href=HOME_DETAIL_HREF;
+    document.head.append(link);
+  }else if(link.getAttribute('href')!==HOME_DETAIL_HREF){
+    link.href=HOME_DETAIL_HREF;
+  }
+  return link;
+};
+
 const promoteEffectsCss=()=>{
-  const link=ensureEffectsCss();
+  const links=[ensureEffectsCss(),ensureHomeDetailCss()].filter(Boolean);
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    if(link.isConnected)document.head.append(link);
+    links.forEach(link=>{if(link.isConnected)document.head.append(link)});
   }));
 };
 
@@ -65,6 +82,7 @@ const init=()=>{
   applySiteIcon();
   applyChromeTint();
   ensureEffectsCss();
+  ensureHomeDetailCss();
   mount();
   syncVisibility();
 };
@@ -73,6 +91,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
 new MutationObserver(applyChromeTint).observe(document.documentElement,{attributes:true,attributeFilter:['data-mode','data-theme']});
 window.addEventListener('load',()=>{applyChromeTint();promoteEffectsCss()},{once:true});
-window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();mount();syncVisibility();promoteEffectsCss()},{passive:true});
+window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();mount();syncVisibility();promoteEffectsCss()},{passive:true});
 window.addEventListener('gtav:site-icon-updated',applySiteIcon);
 })();

@@ -1,0 +1,69 @@
+/* Franklin helper button: feedback-style animated outline, content always above the glow. */
+@property --franklin-helper-angle{
+  syntax:'<angle>';
+  initial-value:0deg;
+  inherits:false;
+}
+
+.lazy-franklin{
+  position:fixed!important;
+  isolation:isolate!important;
+  border-color:rgba(255,255,255,.12)!important;
+}
+
+.lazy-franklin::after{
+  content:""!important;
+  position:absolute!important;
+  inset:-1px!important;
+  padding:1.35px!important;
+  border-radius:inherit!important;
+  pointer-events:none!important;
+  z-index:1!important;
+  background:conic-gradient(
+    from var(--franklin-helper-angle),
+    transparent 0deg 276deg,
+    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 20%,transparent) 286deg,
+    var(--site-accent,var(--accent,#e8b65e)) 306deg,
+    #fff2c7 317deg,
+    var(--site-accent,var(--accent,#e8b65e)) 326deg,
+    color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 24%,transparent) 340deg,
+    transparent 350deg 360deg
+  )!important;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+  -webkit-mask-composite:xor!important;
+  mask-composite:exclude!important;
+  box-shadow:0 0 14px color-mix(in srgb,var(--site-accent,var(--accent,#e8b65e)) 12%,transparent)!important;
+  animation:franklin-helper-edge 4.2s linear infinite!important;
+}
+
+.lazy-franklin > *,
+.lazy-franklin .lazy-franklin-avatar,
+.lazy-franklin .lazy-franklin-copy,
+.lazy-franklin .lazy-franklin-copy small,
+.lazy-franklin .lazy-franklin-copy strong,
+.lazy-franklin .lazy-franklin-arrow{
+  position:relative!important;
+  z-index:3!important;
+}
+
+.lazy-franklin .lazy-franklin-copy{
+  min-width:0!important;
+  overflow:visible!important;
+}
+
+.lazy-franklin .lazy-franklin-copy small,
+.lazy-franklin .lazy-franklin-copy strong{
+  display:block!important;
+  isolation:isolate!important;
+}
+
+@keyframes franklin-helper-edge{
+  to{--franklin-helper-angle:360deg}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .lazy-franklin::after{
+    animation:none!important;
+    --franklin-helper-angle:315deg;
+  }
+}

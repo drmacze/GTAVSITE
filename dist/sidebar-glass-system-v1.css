@@ -1,0 +1,438 @@
+/* Unified public glass system. The sidebar is the visual source of truth. */
+@property --sidebar-glass-angle{
+ syntax:"<angle>";
+ inherits:false;
+ initial-value:0deg;
+}
+
+:root{
+ --sidebar-glass-surface:var(--settings-bg,var(--panel,#171717));
+ --sidebar-glass-text:var(--settings-text,var(--fg-f5f5f5,#f5f5f5));
+ --sidebar-glass-muted:var(--settings-muted,var(--muted,#a5a5a5));
+ --sidebar-glass-line:var(--settings-line,var(--line,#ffffff1c));
+ --sidebar-glass-accent:var(--site-accent,var(--accent,#ff7a1a));
+ --sidebar-glass-fill:color-mix(in srgb,var(--sidebar-glass-surface) 74%,transparent);
+ --sidebar-glass-fill-strong:color-mix(in srgb,var(--sidebar-glass-surface) 82%,transparent);
+ --sidebar-glass-border:color-mix(in srgb,var(--sidebar-glass-text) 12%,transparent);
+ --sidebar-glass-highlight:color-mix(in srgb,var(--sidebar-glass-text) 5%,transparent);
+ --sidebar-glass-shadow:0 24px 70px rgba(0,0,0,.28),inset 0 1px 0 var(--sidebar-glass-highlight);
+ --sidebar-glass-blur:blur(28px) saturate(1.12);
+}
+
+/* Keep the reference surface itself locked to the same tokens used everywhere else. */
+#site-menu .menu-panel{
+ --sidebar-surface:var(--sidebar-glass-surface)!important;
+ --sidebar-text:var(--sidebar-glass-text)!important;
+ --sidebar-line:var(--sidebar-glass-line)!important;
+ --sidebar-accent:var(--sidebar-glass-accent)!important;
+ background:var(--sidebar-glass-fill)!important;
+ border-bottom-color:var(--sidebar-glass-border)!important;
+ box-shadow:var(--sidebar-glass-shadow)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+
+/* Full-size glass cards and dialogs. */
+:is(
+ .site-settings,
+ .cookie-banner,
+ .cookie-dialog,
+ .onboarding-dialog,
+ .community-toast,
+ .push-subscribe-toast,
+ .mods-feedback-sheet,
+ .saved-mods-popover,
+ body[data-page="faq"] .support-search,
+ body[data-page="faq"] .support-group,
+ body[data-page="updates"] .managed-update-card,
+ body[data-page="updates"] .release-card
+){
+ --sidebar-glass-angle:0deg;
+ position:relative!important;
+ isolation:isolate!important;
+ color:var(--sidebar-glass-text);
+ border:1px solid var(--sidebar-glass-border)!important;
+ background:var(--sidebar-glass-fill)!important;
+ box-shadow:var(--sidebar-glass-shadow)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+
+/* Interactive/open cards get a slightly denser surface, still matching the sidebar. */
+body[data-page="updates"] .release-card:is([open],:hover,:focus-within),
+body[data-page="faq"] .support-group:focus-within,
+.saved-mods-popover:focus-within{
+ background:var(--sidebar-glass-fill-strong)!important;
+ border-color:color-mix(in srgb,var(--sidebar-glass-text) 16%,transparent)!important;
+}
+
+/* Compact glass surfaces use the same material with less expensive blur. */
+:is(
+ body[data-page="updates"] .release-toolbar,
+ .profile-avatar-picker,
+ .profile-name-wrap input,
+ .helper-file-toast
+){
+ background:color-mix(in srgb,var(--sidebar-glass-surface) 68%,transparent)!important;
+ border-color:var(--sidebar-glass-border)!important;
+ box-shadow:inset 0 1px 0 var(--sidebar-glass-highlight),0 12px 34px rgba(0,0,0,.16)!important;
+ backdrop-filter:blur(20px) saturate(1.10)!important;
+ -webkit-backdrop-filter:blur(20px) saturate(1.10)!important;
+}
+
+/* Sidebar-style travelling outline for primary standalone surfaces. */
+:is(
+ .site-settings,
+ .cookie-banner,
+ .cookie-dialog,
+ .onboarding-dialog,
+ .community-toast,
+ .push-subscribe-toast,
+ .mods-feedback-sheet,
+ .saved-mods-popover,
+ body[data-page="faq"] .support-search
+)::before{
+ content:""!important;
+ position:absolute!important;
+ inset:-1px!important;
+ padding:1.25px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:4!important;
+ background:conic-gradient(
+  from var(--sidebar-glass-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-glass-accent) 28%,transparent) 296deg,
+  var(--sidebar-glass-accent) 314deg,
+  color-mix(in srgb,#fff 70%,var(--sidebar-glass-accent)) 322deg,
+  var(--sidebar-glass-accent) 330deg,
+  transparent 346deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-glass-accent) 32%,transparent))!important;
+ animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
+}
+
+:is(
+ .site-settings,
+ .cookie-banner,
+ .cookie-dialog,
+ .onboarding-dialog,
+ .community-toast,
+ .push-subscribe-toast,
+ .mods-feedback-sheet,
+ .saved-mods-popover,
+ body[data-page="faq"] .support-search
+)>*{
+ position:relative;
+ z-index:5;
+}
+
+/* FAQ group keeps its existing ambient ::before layer and receives the sidebar trace on ::after. */
+body[data-page="faq"] .support-group::after{
+ content:""!important;
+ position:absolute!important;
+ inset:-1px!important;
+ padding:1.25px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:4!important;
+ background:conic-gradient(
+  from var(--sidebar-glass-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-glass-accent) 24%,transparent) 296deg,
+  var(--sidebar-glass-accent) 314deg,
+  color-mix(in srgb,#fff 68%,var(--sidebar-glass-accent)) 322deg,
+  var(--sidebar-glass-accent) 330deg,
+  transparent 346deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-glass-accent) 28%,transparent))!important;
+ animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
+ animation-play-state:paused!important;
+}
+body[data-page="faq"] .support-group:is(:hover,:focus-within)::after{animation-play-state:running!important}
+
+/* Repeated release cards stay cheap until the user interacts with them. */
+body[data-page="updates"] .release-card::before{
+ content:""!important;
+ position:absolute!important;
+ inset:-1px!important;
+ padding:1.1px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:4!important;
+ background:conic-gradient(
+  from var(--sidebar-glass-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-glass-accent) 22%,transparent) 298deg,
+  var(--sidebar-glass-accent) 315deg,
+  color-mix(in srgb,#fff 66%,var(--sidebar-glass-accent)) 323deg,
+  var(--sidebar-glass-accent) 331deg,
+  transparent 347deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ filter:drop-shadow(0 0 4px color-mix(in srgb,var(--sidebar-glass-accent) 24%,transparent))!important;
+ animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
+ animation-play-state:paused!important;
+}
+body[data-page="updates"] .release-card:is([open],:hover,:focus-within)::before{animation-play-state:running!important}
+body[data-page="updates"] .release-card>*{position:relative;z-index:5}
+
+/* Managed update cards already give the latest release its own orbit. Normalize all others. */
+body[data-page="updates"] .managed-update-card:not(.is-latest)::after{
+ content:""!important;
+ position:absolute!important;
+ inset:-1px!important;
+ padding:1.1px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:4!important;
+ background:conic-gradient(
+  from var(--sidebar-glass-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-glass-accent) 22%,transparent) 298deg,
+  var(--sidebar-glass-accent) 315deg,
+  color-mix(in srgb,#fff 66%,var(--sidebar-glass-accent)) 323deg,
+  var(--sidebar-glass-accent) 331deg,
+  transparent 347deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
+ animation-play-state:paused!important;
+}
+body[data-page="updates"] .managed-update-card:not(.is-latest):is(:hover,:focus-within)::after{animation-play-state:running!important}
+
+/* Existing animated-edge components keep their mechanics, but now use the exact sidebar material. */
+.profile-sheet{
+ background:linear-gradient(180deg,var(--sidebar-glass-fill),color-mix(in srgb,var(--sidebar-glass-surface) 78%,transparent))!important;
+ border-color:var(--sidebar-glass-border)!important;
+ box-shadow:0 -24px 70px rgba(0,0,0,.30),inset 0 1px 0 var(--sidebar-glass-highlight)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+.profile-sheet-edge path{
+ stroke:var(--sidebar-glass-accent)!important;
+ stroke-width:1.25!important;
+ stroke-dasharray:92 908!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-glass-accent) 32%,transparent))!important;
+ animation-duration:4.2s!important;
+}
+
+.ask-franklin-panel[data-franklin-shell-v2]{
+ --franklin-shell-surface:var(--sidebar-glass-surface)!important;
+ --franklin-shell-text:var(--sidebar-glass-text)!important;
+ --franklin-shell-muted:var(--sidebar-glass-muted)!important;
+ --franklin-shell-line:var(--sidebar-glass-line)!important;
+ --franklin-shell-accent:var(--sidebar-glass-accent)!important;
+ background:
+  linear-gradient(var(--sidebar-glass-fill),var(--sidebar-glass-fill)) padding-box,
+  conic-gradient(from var(--franklin-shell-edge),transparent 0 286deg,color-mix(in srgb,var(--sidebar-glass-accent) 28%,transparent) 296deg,var(--sidebar-glass-accent) 314deg,color-mix(in srgb,#fff 70%,var(--sidebar-glass-accent)) 322deg,var(--sidebar-glass-accent) 330deg,transparent 346deg 360deg) border-box!important;
+ box-shadow:0 -24px 70px rgba(0,0,0,.30),inset 0 1px 0 var(--sidebar-glass-highlight)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+.franklin-shell-launcher{
+ --franklin-shell-surface:var(--sidebar-glass-surface)!important;
+ --franklin-shell-accent:var(--sidebar-glass-accent)!important;
+ background:var(--sidebar-glass-fill)!important;
+ border-color:var(--sidebar-glass-border)!important;
+ box-shadow:0 14px 38px rgba(0,0,0,.30),inset 0 1px 0 var(--sidebar-glass-highlight),0 0 18px color-mix(in srgb,var(--sidebar-glass-accent) 8%,transparent)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+
+.feedback-sheet{
+ --feedback-surface:var(--sidebar-glass-surface)!important;
+ background:
+  linear-gradient(var(--sidebar-glass-fill),var(--sidebar-glass-fill)) padding-box,
+  conic-gradient(from var(--feedback-edge-angle),transparent 0 286deg,color-mix(in srgb,var(--sidebar-glass-accent) 28%,transparent) 296deg,var(--sidebar-glass-accent) 314deg,color-mix(in srgb,#fff 70%,var(--sidebar-glass-accent)) 322deg,var(--sidebar-glass-accent) 330deg,transparent 346deg 360deg) border-box!important;
+ box-shadow:0 -24px 70px rgba(0,0,0,.30),inset 0 1px 0 var(--sidebar-glass-highlight)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+.feedback-sheet-dock:not([hidden]){
+ background:var(--sidebar-glass-fill)!important;
+ border-color:var(--sidebar-glass-border)!important;
+ box-shadow:0 -18px 54px rgba(0,0,0,.26),inset 0 1px 0 var(--sidebar-glass-highlight)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+
+.gta-online-menu-dock,
+.gta-online-menu-promo{
+ --gta-surface:var(--sidebar-glass-surface)!important;
+ --gta-text:var(--sidebar-glass-text)!important;
+ --gta-muted:var(--sidebar-glass-muted)!important;
+ --gta-line:var(--sidebar-glass-line)!important;
+ --gta-accent:var(--sidebar-glass-accent)!important;
+ background:var(--sidebar-glass-fill)!important;
+ border-color:var(--sidebar-glass-border)!important;
+ box-shadow:var(--sidebar-glass-shadow)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+.gta-online-menu-dock::before,
+.gta-online-menu-promo::before{
+ background:conic-gradient(from var(--gta-sheet-angle),transparent 0 286deg,color-mix(in srgb,var(--sidebar-glass-accent) 28%,transparent) 296deg,var(--sidebar-glass-accent) 314deg,color-mix(in srgb,#fff 70%,var(--sidebar-glass-accent)) 322deg,var(--sidebar-glass-accent) 330deg,transparent 346deg 360deg)!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-glass-accent) 32%,transparent))!important;
+ animation-duration:4.2s!important;
+}
+
+/* Download gate keeps its outer trace, but the actual panel is now sidebar glass instead of opaque. */
+.download-discord-gate .download-gate-inner{
+ background:var(--sidebar-glass-fill)!important;
+ box-shadow:inset 0 1px 0 var(--sidebar-glass-highlight)!important;
+ backdrop-filter:var(--sidebar-glass-blur)!important;
+ -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
+}
+.download-discord-gate .download-gate-card{
+ box-shadow:var(--sidebar-glass-shadow),0 0 18px color-mix(in srgb,var(--sidebar-glass-accent) 7%,transparent)!important;
+}
+
+/* Backdrops follow the sidebar dialog treatment instead of using unrelated opacity/blur values. */
+:is(
+ #site-menu,
+ .site-settings,
+ .cookie-dialog,
+ .onboarding-dialog,
+ .download-discord-gate
+)::backdrop{
+ background:rgba(0,0,0,.45)!important;
+ backdrop-filter:blur(12px) saturate(1.04)!important;
+ -webkit-backdrop-filter:blur(12px) saturate(1.04)!important;
+}
+.profile-backdrop,
+.franklin-shell-backdrop,
+.mods-feedback-backdrop{
+ background:rgba(0,0,0,.45)!important;
+ backdrop-filter:blur(12px) saturate(1.04)!important;
+ -webkit-backdrop-filter:blur(12px) saturate(1.04)!important;
+}
+
+/* Small controls inside glass stay translucent rather than becoming nested opaque boxes. */
+:is(
+ .settings-close,
+ .cookie-close,
+ .onboarding-close,
+ .push-toast-close,
+ .mods-feedback-close,
+ .profile-close,
+ .gta-online-dismiss,
+ .franklin-shell-icon-button,
+ .download-gate-close
+){
+ background:color-mix(in srgb,var(--sidebar-glass-text) 4%,transparent)!important;
+ border-color:var(--sidebar-glass-border)!important;
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--sidebar-glass-text) 4%,transparent)!important;
+ backdrop-filter:blur(12px) saturate(1.08)!important;
+ -webkit-backdrop-filter:blur(12px) saturate(1.08)!important;
+}
+
+/* Light mode uses the same material instead of switching to opaque white cards. */
+html[data-mode="light"] :is(
+ .site-settings,
+ .cookie-banner,
+ .cookie-dialog,
+ .onboarding-dialog,
+ .community-toast,
+ .push-subscribe-toast,
+ .mods-feedback-sheet,
+ .saved-mods-popover,
+ body[data-page="faq"] .support-search,
+ body[data-page="faq"] .support-group,
+ body[data-page="updates"] .managed-update-card,
+ body[data-page="updates"] .release-card,
+ .profile-sheet,
+ .feedback-sheet-dock:not([hidden]),
+ .gta-online-menu-dock,
+ .gta-online-menu-promo
+){
+ color:var(--sidebar-glass-text)!important;
+ background:color-mix(in srgb,var(--sidebar-glass-surface) 74%,transparent)!important;
+ box-shadow:0 24px 70px rgba(24,28,24,.16),inset 0 1px 0 rgba(255,255,255,.52)!important;
+}
+html[data-mode="light"] .download-discord-gate .download-gate-inner{
+ background:color-mix(in srgb,var(--sidebar-glass-surface) 74%,transparent)!important;
+}
+
+@keyframes sidebarGlassOutlineTrace{to{--sidebar-glass-angle:360deg}}
+
+/* Mobile keeps the same look but trims blur slightly to avoid Safari repaint spikes. */
+@media(max-width:760px){
+ :root{--sidebar-glass-blur:blur(24px) saturate(1.10)}
+ :is(
+  .site-settings,
+  .cookie-banner,
+  .cookie-dialog,
+  .onboarding-dialog,
+  .community-toast,
+  .push-subscribe-toast,
+  .mods-feedback-sheet,
+  .saved-mods-popover,
+  body[data-page="faq"] .support-search,
+  body[data-page="faq"] .support-group,
+  body[data-page="updates"] .managed-update-card,
+  body[data-page="updates"] .release-card
+ ){
+  box-shadow:0 18px 54px rgba(0,0,0,.25),inset 0 1px 0 var(--sidebar-glass-highlight)!important;
+ }
+}
+
+@media(prefers-reduced-motion:reduce){
+ :is(
+  .site-settings,
+  .cookie-banner,
+  .cookie-dialog,
+  .onboarding-dialog,
+  .community-toast,
+  .push-subscribe-toast,
+  .mods-feedback-sheet,
+  .saved-mods-popover,
+  body[data-page="faq"] .support-search
+ )::before,
+ body[data-page="faq"] .support-group::after,
+ body[data-page="updates"] .release-card::before,
+ body[data-page="updates"] .managed-update-card:not(.is-latest)::after{
+  animation:none!important;
+  --sidebar-glass-angle:318deg;
+ }
+}
+
+@media(prefers-reduced-transparency:reduce){
+ :root{--sidebar-glass-fill:color-mix(in srgb,var(--sidebar-glass-surface) 96%,#000 2%);--sidebar-glass-fill-strong:var(--sidebar-glass-fill)}
+ :is(
+  #site-menu .menu-panel,
+  .site-settings,
+  .cookie-banner,
+  .cookie-dialog,
+  .onboarding-dialog,
+  .community-toast,
+  .push-subscribe-toast,
+  .mods-feedback-sheet,
+  .saved-mods-popover,
+  body[data-page="faq"] .support-search,
+  body[data-page="faq"] .support-group,
+  body[data-page="updates"] .managed-update-card,
+  body[data-page="updates"] .release-card,
+  .profile-sheet,
+  .feedback-sheet,
+  .feedback-sheet-dock:not([hidden]),
+  .gta-online-menu-dock,
+  .gta-online-menu-promo,
+  .ask-franklin-panel[data-franklin-shell-v2],
+  .franklin-shell-launcher,
+  .download-discord-gate .download-gate-inner
+ ){
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+ }
+}

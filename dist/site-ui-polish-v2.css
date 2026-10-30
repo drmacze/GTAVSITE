@@ -191,6 +191,27 @@
  .download-discord-gate.is-closing .download-gate-card{transform:translateY(24px) scale(.988)}
 }
 
+/* Franklin launcher is a Home-only surface. */
+body:not([data-page="home"]) .lazy-franklin,
+body:not([data-page="home"]) .ask-franklin-launcher,
+body:not([data-page="home"]) .franklin-sheet-dock,
+body:not([data-page="home"]) .franklin-nudge,
+body:not([data-page="home"]) .franklin-connect-layer{
+ display:none!important;
+ visibility:hidden!important;
+ opacity:0!important;
+ pointer-events:none!important;
+}
+
+/* Critical mobile grid guard. Kept here because this stylesheet is no-store. */
+html[data-updates-view="grid"] .release-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important}
+html[data-updates-view="grid"] .release-entry{min-width:0!important;width:100%!important;max-width:100%!important}
+html[data-updates-view="grid"] .release-card{min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+html[data-updates-view="grid"] .release-card:not([open]){height:100%!important}
+html[data-updates-view="grid"] .release-intro{min-width:0!important;max-width:100%!important;overflow:hidden!important}
+html[data-updates-view="grid"] .release-intro h2{overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important}
+@media(max-width:360px){html[data-updates-view="grid"] .release-list{grid-template-columns:1fr!important}}
+
 @media(prefers-reduced-motion:reduce){
  .download-gated-icon,.download-gate-close{transition:none}
  #site-menu .menu-panel::before{animation:none;--sidebar-outline-angle:318deg}

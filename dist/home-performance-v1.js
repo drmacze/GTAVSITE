@@ -1,11 +1,12 @@
 (()=>{
 'use strict';
-if(window.__homePerformanceV2||document.body?.dataset.page!=='home')return;
-window.__homePerformanceV2=true;
+if(window.__homePerformanceV3||document.body?.dataset.page!=='home')return;
+window.__homePerformanceV3=true;
 const body=document.body;
 const ua=navigator.userAgent||'';
 const isMac=/Macintosh|Mac OS X/i.test(ua);
 const isChrome=/(?:Chrome|CriOS)\//i.test(ua)&&!/Edg\//i.test(ua);
+const mobile=matchMedia('(max-width:760px)');
 body.classList.add('home-perf-v1');
 if(isMac&&isChrome)body.classList.add('perf-chrome-mac');
 
@@ -17,6 +18,8 @@ let mountObserver=null;
 let mountTimer=0;
 let tuneTimer=0;
 let tuneAttempts=0;
+let resizeTimer=0;
+let orientationTimer=0;
 
 function watchSection(section){
  if(!section||watchedSections.has(section))return;
@@ -79,12 +82,10 @@ function tuneStoryMotion(){
    gsap.killTweensOf(heading,'filter');
    heading.style.setProperty('filter','none','important');
   }
-  if(isMac&&isChrome){
-   const cards=[...document.querySelectorAll('.story-st6 .story-showcase-v1-card')];
-   const images=[...document.querySelectorAll('.story-st6 .story-showcase-v1-art img')];
-   gsap.set(cards,{force3D:false});
-   gsap.set(images,{force3D:false});
-  }
+  const cards=[...document.querySelectorAll('.story-st6 .story-showcase-v1-card')];
+  const images=[...document.querySelectorAll('.story-st6 .story-showcase-v1-art img')];
+  gsap.set(cards,{force3D:false,rotation:0});
+  gsap.set(images,{force3D:false});
  }catch{}
 }
 
@@ -105,26 +106,31 @@ mountTimer=setTimeout(()=>{
  mountObserver?.disconnect();
  mountObserver=null;
  scan();
-},12000);
+},10000);
 tuneStoryMotion();
 
-let resizeTimer=0;
-const onResize=()=>{
+// Desktop window resizing can change ScrollTrigger geometry. Mobile browser chrome resize must not refresh mid-scroll.
+const refreshAfterResize=()=>{
  clearTimeout(resizeTimer);
- resizeTimer=setTimeout(()=>{
-  try{window.ScrollTrigger?.refresh?.()}catch{}
- },220);
+ resizeTimer=setTimeout(()=>{try{window.ScrollTrigger?.refresh?.()}catch{}},240);
 };
-window.addEventListener('resize',onResize,{passive:true});
+const refreshAfterOrientation=()=>{
+ clearTimeout(orientationTimer);
+ orientationTimer=setTimeout(()=>{try{window.ScrollTrigger?.refresh?.()}catch{}},420);
+};
+if(!mobile.matches)window.addEventListener('resize',refreshAfterResize,{passive:true});
+window.addEventListener('orientationchange',refreshAfterOrientation,{passive:true});
 
 window.addEventListener('pagehide',()=>{
  clearTimeout(mountTimer);
  clearTimeout(tuneTimer);
  clearTimeout(resizeTimer);
+ clearTimeout(orientationTimer);
  mountObserver?.disconnect();
  sectionObservers.forEach(observer=>observer.disconnect());
  videoObservers.forEach(observer=>observer.disconnect());
  document.removeEventListener('visibilitychange',onVisibility);
- window.removeEventListener('resize',onResize);
+ window.removeEventListener('resize',refreshAfterResize);
+ window.removeEventListener('orientationchange',refreshAfterOrientation);
 },{once:true});
 })();

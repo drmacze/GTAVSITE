@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__gtaOnlineHomeLoaderV5)return;
-window.__gtaOnlineHomeLoaderV5=true;
+if(window.__gtaOnlineHomeLoaderV6)return;
+window.__gtaOnlineHomeLoaderV6=true;
 if(document.body?.dataset.page!=='home')return;
 if(!document.querySelector('link[data-gta-online-menu-promo]')){
  const css=document.createElement('link');
@@ -10,9 +10,16 @@ if(!document.querySelector('link[data-gta-online-menu-promo]')){
  css.dataset.gtaOnlineMenuPromo='true';
  document.head.append(css);
 }
-if(!document.getElementById('gta-online-menu-promo-v5')){
+if(!document.querySelector('link[data-gta-online-outline-stable]')){
+ const outline=document.createElement('link');
+ outline.rel='stylesheet';
+ outline.href='gta-online-outline-stable-v1.css?v=20261030outlinefix1';
+ outline.dataset.gtaOnlineOutlineStable='true';
+ document.head.append(outline);
+}
+if(!document.getElementById('gta-online-menu-promo-v6')){
  const script=document.createElement('script');
- script.id='gta-online-menu-promo-v5';
+ script.id='gta-online-menu-promo-v6';
  script.src='gta-online-menu-promo-v1.js?v=20261030onlinepromo5';
  document.head.append(script);
 }

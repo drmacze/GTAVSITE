@@ -10,6 +10,7 @@
  const loadGlow=()=>{
    if(document.getElementById('franklin-ui-guard-v2-style')||window.__franklinUiGuardV2Loaded||tries++>100){
      addStyle('franklin-helper-glow-v1.css?v=20261030helperglow2','franklin-helper-glow-v1-style');
+     add('franklin-launcher-control-v1.js?v=20261030drag1','franklin-launcher-control-v1-loader');
      return;
    }
    setTimeout(loadGlow,20);

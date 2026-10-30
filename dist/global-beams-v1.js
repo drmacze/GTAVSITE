@@ -17,6 +17,13 @@ const applySiteIcon=()=>{
   document.head.querySelectorAll('link[rel="shortcut icon"]').forEach(link=>link.href=href);
 };
 
+const applyChromeTint=()=>{
+  const root=document.documentElement;
+  const meta=document.querySelector('meta[name="theme-color"]')||(()=>{const m=document.createElement('meta');m.name='theme-color';document.head.append(m);return m})();
+  meta.content='#000000';
+  root.style.backgroundColor='#000000';
+};
+
 const ensureEffectsCss=()=>{
   document.getElementById('sidebar-outline-fog-v2-style')?.remove();
   let link=document.getElementById(EFFECTS_ID);
@@ -54,6 +61,7 @@ const syncVisibility=()=>{
 
 const init=()=>{
   applySiteIcon();
+  applyChromeTint();
   ensureEffectsCss();
   mount();
   syncVisibility();
@@ -61,7 +69,7 @@ const init=()=>{
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
-window.addEventListener('load',promoteEffectsCss,{once:true});
-window.addEventListener('pageshow',()=>{applySiteIcon();ensureEffectsCss();mount();syncVisibility();promoteEffectsCss()},{passive:true});
+window.addEventListener('load',()=>{applyChromeTint();promoteEffectsCss()},{once:true});
+window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();mount();syncVisibility();promoteEffectsCss()},{passive:true});
 window.addEventListener('gtav:site-icon-updated',applySiteIcon);
 })();

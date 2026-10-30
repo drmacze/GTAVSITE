@@ -1,96 +1,104 @@
 (()=>{
 'use strict';
-if(window.__gtaOnlineMenuPromoV1)return;
-window.__gtaOnlineMenuPromoV1=true;
+if(window.__gtaOnlineMenuPromoV2)return;
+window.__gtaOnlineMenuPromoV2=true;
 if(document.body?.dataset.page!=='home')return;
 
 const SHARE_URL='https://screenapp.io/app/share/HtRxbVRx8lWo-LxRpIfC4Ak8?t=0';
 const RELEASE_URL='updates.html#release-2026-10-29';
-const menu=document.querySelector('#site-menu');
-const panel=menu?.querySelector('.menu-panel');
-const nav=panel?.querySelector('.drawer-nav');
-if(!menu||!panel||!nav)return;
+const hero=document.querySelector('.home-hero');
+if(!hero)return;
 
 if(!document.querySelector('link[data-gta-online-menu-promo]')){
  const css=document.createElement('link');
  css.rel='stylesheet';
- css.href='gta-online-menu-promo-v1.css?v=20261030onlinepromo1';
+ css.href='gta-online-menu-promo-v1.css?v=20261030onlinepromo2';
  css.dataset.gtaOnlineMenuPromo='true';
  document.head.append(css);
 }
 
-const card=document.createElement('section');
+const card=document.createElement('aside');
 card.className='gta-online-menu-promo';
 card.setAttribute('aria-labelledby','gta-online-menu-title');
+card.setAttribute('data-lenis-prevent','');
 card.innerHTML=`
  <div class="gta-online-menu-media">
   <div class="gta-online-menu-media-placeholder" aria-hidden="true">
-   <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"></circle><path d="m20 17 12 7-12 7Z"></path></svg>
-   <strong>GTA ONLINE</strong>
+   <div class="gta-online-menu-playmark"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"></circle><path d="m20 16.5 13 7.5-13 7.5Z"></path></svg></div>
+   <span>GTA ONLINE</span>
   </div>
-  <iframe title="GTA Online for GTA V iOS video preview" data-src="${SHARE_URL}" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-  <div class="gta-online-menu-media-label" aria-hidden="true"><i></i>VIDEO PREVIEW</div>
-  <a class="gta-online-menu-preview-link" href="${SHARE_URL}" target="_blank" rel="noopener noreferrer" aria-label="Open GTA Online video preview in a new tab">
-   <span>Open preview</span>
+  <iframe title="GTA Online for GTA V iOS video preview" data-src="${SHARE_URL}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div class="gta-online-menu-media-shade" aria-hidden="true"></div>
+  <span class="gta-online-menu-video-label"><i></i>VIDEO PREVIEW</span>
+  <a class="gta-online-menu-preview-link" href="${SHARE_URL}" target="_blank" rel="noopener noreferrer" aria-label="Open GTA Online video preview">
+   <span>Open video</span>
    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
   </a>
  </div>
  <div class="gta-online-menu-copy">
   <div class="gta-online-menu-kicker"><span></span>NEW MODE</div>
-  <h3 id="gta-online-menu-title">GTA Online</h3>
-  <p>A new mode for GTA V iOS. Create your Online character, join sessions with friends, and launch supported Online jobs from the trainer.</p>
-  <div class="gta-online-menu-meta">29 OCT BUILD <span></span> iPHONE · iPAD · MAC</div>
-  <a class="gta-online-menu-play" href="${RELEASE_URL}" aria-label="Play Now — open the latest GTA Online release">
-   <span>Play Now</span>
-   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-  </a>
+  <div class="gta-online-menu-title-row">
+   <div><h3 id="gta-online-menu-title">GTA Online</h3><p class="gta-online-menu-subtitle">New mode for GTA V iOS</p></div>
+   <span class="gta-online-menu-platform">iOS</span>
+  </div>
+  <p class="gta-online-menu-description">Create your Online character, join sessions with friends, and launch supported Online jobs from the trainer.</p>
+  <div class="gta-online-menu-footer">
+   <span class="gta-online-menu-build">29 OCT BUILD</span>
+   <a class="gta-online-menu-play" href="${RELEASE_URL}" aria-label="Play Now — open the GTA Online release">
+    <span>Play Now</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+   </a>
+  </div>
  </div>`;
-nav.insertAdjacentElement('beforebegin',card);
+document.body.append(card);
 
 const iframe=card.querySelector('iframe');
-let loadTimer=0;
 let mediaLoaded=false;
+let loadTimer=0;
+let visible=false;
 
 const loadMedia=()=>{
+ if(mediaLoaded||!visible)return;
  clearTimeout(loadTimer);
- if(mediaLoaded||!menu.open)return;
  loadTimer=setTimeout(()=>{
-  if(mediaLoaded||!menu.open)return;
+  if(mediaLoaded||!visible)return;
   const src=iframe.dataset.src;
   if(!src)return;
   mediaLoaded=true;
   iframe.src=src;
- },180);
+ },260);
 };
 
-const unloadMedia=()=>{
- clearTimeout(loadTimer);
- if(!mediaLoaded)return;
- mediaLoaded=false;
- card.classList.remove('media-ready');
- iframe.removeAttribute('src');
+const setVisible=next=>{
+ visible=!!next;
+ card.classList.toggle('is-visible',visible);
+ card.setAttribute('aria-hidden',visible?'false':'true');
+ if(visible)loadMedia();
 };
 
 iframe.addEventListener('load',()=>{
- if(menu.open&&iframe.getAttribute('src'))card.classList.add('media-ready');
+ if(iframe.getAttribute('src'))card.classList.add('media-ready');
 });
 
-const syncMenuState=()=>{
- if(menu.open)loadMedia();
- else unloadMedia();
-};
+const observer=new IntersectionObserver(entries=>{
+ const entry=entries[0];
+ if(!entry)return;
+ setVisible(entry.isIntersecting&&entry.intersectionRatio>.12);
+},{threshold:[0,.12,.25,.5]});
+observer.observe(hero);
 
-const observer=new MutationObserver(syncMenuState);
-observer.observe(menu,{attributes:true,attributeFilter:['open']});
-menu.addEventListener('close',unloadMedia);
-card.querySelector('.gta-online-menu-play')?.addEventListener('click',()=>{
- try{if(menu.open)menu.close()}catch{}
+const helperObserver=new MutationObserver(()=>{
+ const helperOpen=!!document.querySelector('.ask-franklin-panel.is-open');
+ card.classList.toggle('helper-is-open',helperOpen);
 });
+helperObserver.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
 
-syncMenuState();
+card.querySelector('.gta-online-menu-play')?.addEventListener('click',()=>card.classList.add('is-leaving'));
+
 window.addEventListener('pagehide',()=>{
  clearTimeout(loadTimer);
  observer.disconnect();
- unloadMedia();
+ helperObserver.disconnect();
+ if(mediaLoaded)iframe.removeAttribute('src');
 },{once:true});
 })();

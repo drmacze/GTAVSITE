@@ -120,6 +120,7 @@ const syncUi=()=>{
  sheet.classList.toggle('is-open',showSheet);
  sheet.setAttribute('aria-hidden',showSheet?'false':'true');
  sheet.inert=!showSheet;
+ document.documentElement.classList.toggle('gta-online-sheet-open',showSheet);
  if(showSheet)loadMedia();
  else if(mediaLoaded)setTimeout(()=>{if(!opened)unloadMedia()},260);
 };
@@ -146,6 +147,7 @@ const dismiss=()=>{
  dock.setAttribute('aria-hidden','true');
  sheet.setAttribute('aria-hidden','true');
  sheet.inert=true;
+ document.documentElement.classList.remove('gta-online-sheet-open');
  unloadMedia();
 };
 
@@ -207,7 +209,7 @@ function bindSwipe(surface,direction,action,isDock=false){
   if(Math.abs(dy)<4||Math.abs(dy)<dx)return;
   if(isDock){
    const lift=Math.max(-34,Math.min(0,dy));
-   dock.style.transform=`translateY(${lift}px)`;
+   dock.style.transform=matchMedia('(max-width:760px)').matches?`translateY(${lift}px)`:`translate(-50%,${lift}px)`;
   }else{
    const drop=Math.max(0,Math.min(150,dy));
    sheet.style.transform=`translateY(${drop}px)`;
@@ -257,6 +259,7 @@ window.addEventListener('pagehide',()=>{
  window.removeEventListener('resize',scheduleSync);
  window.removeEventListener('pageshow',scheduleSync);
  window.removeEventListener('gtav:intro-loader-complete',scheduleSync);
+ document.documentElement.classList.remove('gta-online-sheet-open');
  unloadMedia();
 },{once:true});
 })();

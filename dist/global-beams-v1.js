@@ -69,6 +69,7 @@ const init=()=>{
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
+new MutationObserver(applyChromeTint).observe(document.documentElement,{attributes:true,attributeFilter:['data-mode','data-theme']});
 window.addEventListener('load',()=>{applyChromeTint();promoteEffectsCss()},{once:true});
 window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();mount();syncVisibility();promoteEffectsCss()},{passive:true});
 window.addEventListener('gtav:site-icon-updated',applySiteIcon);

@@ -55,6 +55,18 @@
 /home-intro-v5.js
   Cache-Control: no-store, max-age=0
 
+/home-performance-v1.css
+  Cache-Control: no-store, max-age=0
+
+/home-performance-v1.js
+  Cache-Control: no-store, max-age=0
+
+/gameplay.css
+  Cache-Control: no-store, max-age=0
+
+/gameplay.js
+  Cache-Control: no-store, max-age=0
+
 /assets/home-intro-cover-v5.svg
   Cache-Control: no-store, max-age=0
 

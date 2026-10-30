@@ -1,19 +1,8 @@
 (()=>{
- 'use strict';
- if(window.__franklinUiGuardLegacyShim)return;
- window.__franklinUiGuardLegacyShim=true;
- const add=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;document.head.append(s)};
- const addStyle=(href,id)=>{if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.append(l)};
- add('franklin-ui-guard-v2.js?v=20261028polish3','franklin-ui-guard-v2-loader');
- add('franklin-primary-state-fix.js?v=20261028primary1','franklin-primary-state-fix-loader');
- let tries=0;
- const loadGlow=()=>{
-   if(document.getElementById('franklin-ui-guard-v2-style')||window.__franklinUiGuardV2Loaded||tries++>100){
-     addStyle('franklin-helper-glow-v1.css?v=20261030helperglow2','franklin-helper-glow-v1-style');
-     add('franklin-launcher-control-v1.js?v=20261030drag1','franklin-launcher-control-v1-loader');
-     return;
-   }
-   setTimeout(loadGlow,20);
- };
- loadGlow();
+'use strict';
+if(window.__franklinUiGuardLegacyShim)return;
+window.__franklinUiGuardLegacyShim=true;
+if(document.body?.dataset.page!=='home')return;
+if(!document.querySelector('link[data-franklin-shell-v2]')){const l=document.createElement('link');l.rel='stylesheet';l.href='franklin-shell-v2.css?v=20261030shell2';l.dataset.franklinShellV2='true';document.head.append(l)}
+if(!document.getElementById('franklin-shell-v2-loader')){const s=document.createElement('script');s.id='franklin-shell-v2-loader';s.src='franklin-shell-v2.js?v=20261030shell2';s.defer=true;document.head.append(s)}
 })();

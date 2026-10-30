@@ -4,8 +4,13 @@
   const slides = [...track.querySelectorAll('.gameplay-slide')];
   const thumbs = [...document.querySelectorAll('.gameplay-thumb')];
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ua = navigator.userAgent || '';
+  const isiOSSafari = /iP(?:hone|ad|od)/i.test(ua) && /WebKit/i.test(ua) && !/(?:CriOS|FxiOS|EdgiOS|OPiOS)/i.test(ua);
   let current = 0;
   let frame = 0;
+  let switchTimer = 0;
+  let switching = false;
+
   function update(index) {
     current = index;
     thumbs.forEach((button, i) => {
@@ -17,11 +22,36 @@
       if ('inert' in slide) slide.inert = i !== index;
     });
   }
+
+  function targetLeft(index) {
+    return slides[index].offsetLeft - slides[0].offsetLeft;
+  }
+
+  function settleIOS(next) {
+    if (switching) return;
+    switching = true;
+    clearTimeout(switchTimer);
+    track.classList.add('is-switching');
+    switchTimer = setTimeout(() => {
+      track.scrollTo({left: targetLeft(next), behavior: 'instant'});
+      update(next);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        track.classList.remove('is-switching');
+        switchTimer = setTimeout(() => { switching = false; }, 150);
+      }));
+    }, 90);
+  }
+
   function goTo(index) {
     const next = (index + slides.length) % slides.length;
-    track.scrollTo({left: slides[next].offsetLeft - slides[0].offsetLeft, behavior: reducedMotion.matches ? 'instant' : 'smooth'});
+    if (isiOSSafari && !reducedMotion.matches) {
+      settleIOS(next);
+      return;
+    }
+    track.scrollTo({left: targetLeft(next), behavior: reducedMotion.matches ? 'instant' : 'smooth'});
     update(next);
   }
+
   thumbs.forEach(button => button.addEventListener('click', () => goTo(Number(button.dataset.shot))));
   document.querySelector('.gameplay-prev').addEventListener('click', () => goTo(current - 1));
   document.querySelector('.gameplay-next').addEventListener('click', () => goTo(current + 1));
@@ -34,12 +64,14 @@
   track.addEventListener('scroll', () => {
     cancelAnimationFrame(frame);
     frame = requestAnimationFrame(() => {
-      const index = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / slides[0].getBoundingClientRect().width)));
+      const width = slides[0].getBoundingClientRect().width || 1;
+      const index = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / width)));
       update(index);
     });
   }, {passive: true});
   if ('ResizeObserver' in window) new ResizeObserver(() => {
-    track.scrollTo({left: slides[current].offsetLeft - slides[0].offsetLeft, behavior: 'instant'});
+    track.scrollTo({left: targetLeft(current), behavior: 'instant'});
   }).observe(track);
+  window.addEventListener('pagehide', () => clearTimeout(switchTimer), {once: true});
   update(0);
 })();

@@ -10,11 +10,11 @@
 
 (()=>{
  const ONBOARDING_KEY='gtav-community-onboarding';
- const TRANSITION_KEY='gtav-page-transition-outline-v7';
+ const TRANSITION_KEY='gtav-page-transition-outline-v8';
  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
- const ARRIVE_HOLD_MS=120;
- const SHINE_FALLBACK_MS=3400;
- const INTRO_ASSET_FALLBACK_MS=7200;
+ const ARRIVE_HOLD_MS=45;
+ const NAVIGATION_HOLD_MS=360;
+ const HOME_BOOT_HOLD_MS=320;
  function hasCompletedOnboarding(){try{const saved=JSON.parse(localStorage.getItem(ONBOARDING_KEY)||sessionStorage.getItem(ONBOARDING_KEY)||'null');return Boolean(saved&&['youtube','tiktok','browser','friends','other'].includes(saved.source)&&['android','ios'].includes(saved.device)&&(saved.device==='android'||saved.model))}catch{return false}}
  function shouldGate(){const path=(location.pathname||'/').replace(/\/+$/,'')||'/',isHome=path.endsWith('/home')||path.endsWith('/home.html');if(path==='/'||path.endsWith('/index.html')||isHome||path.includes('release-publisher-8c2f71d4'))return false;return !hasCompletedOnboarding()}
  if(shouldGate()){const target=location.pathname+location.search+location.hash;try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}location.replace('/?return='+encodeURIComponent(target));return}
@@ -30,27 +30,30 @@
   if(mode==='arriving')overlay.classList.add('is-arriving');
   overlay.classList.add('is-active');
  }
- function hide(){overlay.classList.add('is-revealing');setTimeout(()=>overlay.classList.remove('is-active','is-arriving','is-leaving','is-revealing'),reduceMotion.matches?0:420)}
+ function hide(){overlay.classList.add('is-revealing');setTimeout(()=>overlay.classList.remove('is-active','is-arriving','is-leaving','is-revealing'),reduceMotion.matches?0:190)}
  let arrived=false;
  try{arrived=sessionStorage.getItem(TRANSITION_KEY)==='1';sessionStorage.removeItem(TRANSITION_KEY)}catch{}
  if(arrived){show('arriving');if(reduceMotion.matches)hide();else setTimeout(hide,ARRIVE_HOLD_MS)}
 
+ // Home must never wait for optional intro assets. Reveal quickly, then let secondary UI hydrate lazily.
  if(document.body?.dataset.page==='home'&&!arrived){
-  let shineDone=reduceMotion.matches,assetsReady=window.__gtavHomeIntroAssetsReady===true,finished=false,fallback=0;
-  const cleanup=()=>{window.removeEventListener('gtav:intro-assets-ready',onAssetsReady);glint.removeEventListener('animationend',onShineEnd);if(fallback)clearTimeout(fallback)};
-  const announceIntro=()=>{window.__gtavIntroLoaderComplete=true;window.dispatchEvent(new CustomEvent('gtav:intro-loader-complete'))};
-  const finish=()=>{
-   if(finished||!shineDone||!assetsReady)return;
-   finished=true;cleanup();hide();
-   if(reduceMotion.matches)announceIntro();else setTimeout(announceIntro,280);
+  let finished=false;
+  const announceIntro=()=>{
+   window.__gtavIntroLoaderComplete=true;
+   window.dispatchEvent(new CustomEvent('gtav:intro-loader-complete'));
   };
-  const onAssetsReady=()=>{assetsReady=true;finish()};
-  const onShineEnd=event=>{if(event.animationName!=='outline-v6-shine-once')return;shineDone=true;finish()};
-  window.addEventListener('gtav:intro-assets-ready',onAssetsReady,{once:true});
-  glint.addEventListener('animationend',onShineEnd);
+  const finish=()=>{
+   if(finished)return;
+   finished=true;
+   hide();
+   announceIntro();
+  };
   show();
-  if(reduceMotion.matches){requestAnimationFrame(finish)}else{void glint.getBoundingClientRect();requestAnimationFrame(()=>overlay.classList.add('is-leaving'))}
-  fallback=setTimeout(()=>{shineDone=true;assetsReady=true;finish()},INTRO_ASSET_FALLBACK_MS);
+  if(reduceMotion.matches){requestAnimationFrame(finish)}else{
+   void glint.getBoundingClientRect();
+   requestAnimationFrame(()=>overlay.classList.add('is-leaving'));
+   setTimeout(finish,HOME_BOOT_HOLD_MS);
+  }
  }
 
  const prefetched=new Set();
@@ -68,13 +71,9 @@
   show();
   const go=()=>{location.href=url.href};
   if(reduceMotion.matches){go();return}
-  let finished=false;let fallback=0;
-  const finish=()=>{if(finished)return;finished=true;if(fallback)clearTimeout(fallback);go()};
-  const onAnimationEnd=event=>{if(event.animationName!=='outline-v6-shine-once')return;glint.removeEventListener('animationend',onAnimationEnd);finish()};
-  glint.addEventListener('animationend',onAnimationEnd);
   void glint.getBoundingClientRect();
   requestAnimationFrame(()=>overlay.classList.add('is-leaving'));
-  fallback=setTimeout(()=>{glint.removeEventListener('animationend',onAnimationEnd);finish()},SHINE_FALLBACK_MS);
+  setTimeout(go,NAVIGATION_HOLD_MS);
  });
  window.addEventListener('pageshow',e=>{navigating=false;if(e.persisted)overlay.classList.remove('is-active','is-arriving','is-leaving','is-revealing')});
  window.addEventListener('pagehide',()=>{navigating=false});

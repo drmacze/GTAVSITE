@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__storyCoverIntegrityV3)return;
-window.__storyCoverIntegrityV3=true;
+if(window.__storyCoverIntegrityV4)return;
+window.__storyCoverIntegrityV4=true;
 if(document.body?.dataset.page!=='home')return;
 
 const COVERS={
@@ -12,6 +12,9 @@ const FALLBACK={
  vice:'assets/story-covers/vice-city-stories.webp',
  liberty:'assets/story-covers/liberty-city-stories.webp'
 };
+let sectionObserver=null;
+let mountObserver=null;
+let settleTimer=0;
 
 function typeFor(card){
  const label=(card?.getAttribute('aria-label')||'').toLowerCase();
@@ -24,10 +27,10 @@ function repairCard(card){
  if(!(card instanceof Element))return;
  const type=typeFor(card);
  if(!type)return;
- const expected=COVERS[type];
  const image=card.querySelector('.story-showcase-v1-art img');
- if(!image||!expected)return;
- if((image.getAttribute('src')||'')!==expected){
+ if(!image)return;
+ const expected=COVERS[type];
+ if((image.getAttribute('src')||'')!==expected&&image.dataset.storyFallback!=='1'){
   image.src=expected;
   image.removeAttribute('srcset');
   image.removeAttribute('referrerpolicy');
@@ -42,26 +45,54 @@ function repairCard(card){
  };
 }
 
-function repair(root=document){
- const cards=[];
- if(root instanceof Element&&root.matches('[data-story-card]'))cards.push(root);
- root.querySelectorAll?.('[data-story-card]').forEach(card=>cards.push(card));
- cards.forEach(repairCard);
+function repair(section){
+ section?.querySelectorAll?.('[data-story-card]').forEach(repairCard);
 }
 
-repair();
-const observer=new MutationObserver(records=>{
- for(const record of records){
-  if(record.type==='attributes'){
-   const image=record.target;
-   const card=image instanceof Element?image.closest('[data-story-card]'):null;
-   if(card)repairCard(card);
-   continue;
+function observeSection(section){
+ if(!section)return false;
+ mountObserver?.disconnect();
+ mountObserver=null;
+ sectionObserver?.disconnect();
+ repair(section);
+ sectionObserver=new MutationObserver(records=>{
+  let needsRepair=false;
+  for(const record of records){
+   if(record.type==='attributes'){needsRepair=true;break}
+   if(record.addedNodes.length){needsRepair=true;break}
   }
-  record.addedNodes.forEach(node=>{if(node instanceof Element)repair(node)});
- }
-});
-observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
-window.addEventListener('pageshow',()=>repair(),{passive:true});
-window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+  if(needsRepair)repair(section);
+ });
+ sectionObserver.observe(section,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
+ clearTimeout(settleTimer);
+ // Other home scripts finish mounting quickly. Stop observing after the carousel has settled.
+ settleTimer=setTimeout(()=>{
+  repair(section);
+  sectionObserver?.disconnect();
+  sectionObserver=null;
+ },12000);
+ return true;
+}
+
+function boot(){
+ const section=document.querySelector('.story-showcase-v1');
+ if(observeSection(section))return;
+ mountObserver=new MutationObserver(()=>{
+  const mounted=document.querySelector('.story-showcase-v1');
+  if(mounted)observeSection(mounted);
+ });
+ mountObserver.observe(document.body,{childList:true,subtree:true});
+ setTimeout(()=>mountObserver?.disconnect(),12000);
+}
+
+boot();
+window.addEventListener('pageshow',()=>{
+ const section=document.querySelector('.story-showcase-v1');
+ if(section)repair(section);
+},{passive:true});
+window.addEventListener('pagehide',()=>{
+ clearTimeout(settleTimer);
+ sectionObserver?.disconnect();
+ mountObserver?.disconnect();
+},{once:true});
 })();

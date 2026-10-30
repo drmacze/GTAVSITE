@@ -19,7 +19,7 @@
  --sidebar-glass-blur:blur(28px) saturate(1.12);
 }
 
-/* Keep the reference surface itself locked to the same tokens used everywhere else. */
+/* Sidebar reference surface. */
 #site-menu .menu-panel{
  --sidebar-surface:var(--sidebar-glass-surface)!important;
  --sidebar-text:var(--sidebar-glass-text)!important;
@@ -31,8 +31,32 @@
  backdrop-filter:var(--sidebar-glass-blur)!important;
  -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
 }
+#site-menu .menu-panel::before{
+ content:""!important;
+ position:absolute!important;
+ inset:0!important;
+ padding:1.25px!important;
+ border-radius:inherit!important;
+ pointer-events:none!important;
+ z-index:1!important;
+ background:conic-gradient(
+  from var(--sidebar-glass-angle),
+  transparent 0 286deg,
+  color-mix(in srgb,var(--sidebar-glass-accent) 28%,transparent) 296deg,
+  var(--sidebar-glass-accent) 314deg,
+  color-mix(in srgb,#fff 70%,var(--sidebar-glass-accent)) 322deg,
+  var(--sidebar-glass-accent) 330deg,
+  transparent 346deg 360deg
+ )!important;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+ -webkit-mask-composite:xor!important;
+ mask-composite:exclude!important;
+ filter:drop-shadow(0 0 5px color-mix(in srgb,var(--sidebar-glass-accent) 32%,transparent))!important;
+ animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
+}
+#site-menu .menu-panel>*{position:relative;z-index:2}
 
-/* Full-size glass cards and dialogs. */
+/* Plain glass surfaces that previously used unrelated materials. */
 :is(
  .site-settings,
  .cookie-banner,
@@ -42,6 +66,7 @@
  .push-subscribe-toast,
  .mods-feedback-sheet,
  .saved-mods-popover,
+ .asset-loader>div,
  body[data-page="faq"] .support-search,
  body[data-page="faq"] .support-group,
  body[data-page="updates"] .managed-update-card,
@@ -58,7 +83,8 @@
  -webkit-backdrop-filter:var(--sidebar-glass-blur)!important;
 }
 
-/* Interactive/open cards get a slightly denser surface, still matching the sidebar. */
+.community-toast{--sidebar-glass-accent:var(--toast-accent,var(--site-accent,var(--accent,#ff7a1a)))}
+
 body[data-page="updates"] .release-card:is([open],:hover,:focus-within),
 body[data-page="faq"] .support-group:focus-within,
 .saved-mods-popover:focus-within{
@@ -66,7 +92,7 @@ body[data-page="faq"] .support-group:focus-within,
  border-color:color-mix(in srgb,var(--sidebar-glass-text) 16%,transparent)!important;
 }
 
-/* Compact glass surfaces use the same material with less expensive blur. */
+/* Compact nested glass keeps the same tone without stacking expensive 28px filters. */
 :is(
  body[data-page="updates"] .release-toolbar,
  .profile-avatar-picker,
@@ -80,7 +106,7 @@ body[data-page="faq"] .support-group:focus-within,
  -webkit-backdrop-filter:blur(20px) saturate(1.10)!important;
 }
 
-/* Sidebar-style travelling outline for primary standalone surfaces. */
+/* Sidebar trace for standalone dialogs, popovers and notifications. */
 :is(
  .site-settings,
  .cookie-banner,
@@ -90,6 +116,7 @@ body[data-page="faq"] .support-group:focus-within,
  .push-subscribe-toast,
  .mods-feedback-sheet,
  .saved-mods-popover,
+ .asset-loader>div,
  body[data-page="faq"] .support-search
 )::before{
  content:""!important;
@@ -98,7 +125,7 @@ body[data-page="faq"] .support-group:focus-within,
  padding:1.25px!important;
  border-radius:inherit!important;
  pointer-events:none!important;
- z-index:4!important;
+ z-index:20!important;
  background:conic-gradient(
   from var(--sidebar-glass-angle),
   transparent 0 286deg,
@@ -115,22 +142,7 @@ body[data-page="faq"] .support-group:focus-within,
  animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
 }
 
-:is(
- .site-settings,
- .cookie-banner,
- .cookie-dialog,
- .onboarding-dialog,
- .community-toast,
- .push-subscribe-toast,
- .mods-feedback-sheet,
- .saved-mods-popover,
- body[data-page="faq"] .support-search
-)>*{
- position:relative;
- z-index:5;
-}
-
-/* FAQ group keeps its existing ambient ::before layer and receives the sidebar trace on ::after. */
+/* FAQ keeps its ambient ::before glow. The animated edge lives on ::after. */
 body[data-page="faq"] .support-group::after{
  content:""!important;
  position:absolute!important;
@@ -138,7 +150,7 @@ body[data-page="faq"] .support-group::after{
  padding:1.25px!important;
  border-radius:inherit!important;
  pointer-events:none!important;
- z-index:4!important;
+ z-index:20!important;
  background:conic-gradient(
   from var(--sidebar-glass-angle),
   transparent 0 286deg,
@@ -157,7 +169,7 @@ body[data-page="faq"] .support-group::after{
 }
 body[data-page="faq"] .support-group:is(:hover,:focus-within)::after{animation-play-state:running!important}
 
-/* Repeated release cards stay cheap until the user interacts with them. */
+/* Repeated release cards only animate while active to avoid many simultaneous paints. */
 body[data-page="updates"] .release-card::before{
  content:""!important;
  position:absolute!important;
@@ -165,7 +177,7 @@ body[data-page="updates"] .release-card::before{
  padding:1.1px!important;
  border-radius:inherit!important;
  pointer-events:none!important;
- z-index:4!important;
+ z-index:20!important;
  background:conic-gradient(
   from var(--sidebar-glass-angle),
   transparent 0 286deg,
@@ -183,9 +195,8 @@ body[data-page="updates"] .release-card::before{
  animation-play-state:paused!important;
 }
 body[data-page="updates"] .release-card:is([open],:hover,:focus-within)::before{animation-play-state:running!important}
-body[data-page="updates"] .release-card>*{position:relative;z-index:5}
 
-/* Managed update cards already give the latest release its own orbit. Normalize all others. */
+/* Latest managed release already has a dedicated orbit. Other managed cards trace only on interaction. */
 body[data-page="updates"] .managed-update-card:not(.is-latest)::after{
  content:""!important;
  position:absolute!important;
@@ -193,7 +204,7 @@ body[data-page="updates"] .managed-update-card:not(.is-latest)::after{
  padding:1.1px!important;
  border-radius:inherit!important;
  pointer-events:none!important;
- z-index:4!important;
+ z-index:20!important;
  background:conic-gradient(
   from var(--sidebar-glass-angle),
   transparent 0 286deg,
@@ -206,12 +217,13 @@ body[data-page="updates"] .managed-update-card:not(.is-latest)::after{
  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
  -webkit-mask-composite:xor!important;
  mask-composite:exclude!important;
+ filter:drop-shadow(0 0 4px color-mix(in srgb,var(--sidebar-glass-accent) 24%,transparent))!important;
  animation:sidebarGlassOutlineTrace 4.2s linear infinite!important;
  animation-play-state:paused!important;
 }
 body[data-page="updates"] .managed-update-card:not(.is-latest):is(:hover,:focus-within)::after{animation-play-state:running!important}
 
-/* Existing animated-edge components keep their mechanics, but now use the exact sidebar material. */
+/* Components that already own a moving edge keep their mechanics, but now use the sidebar material. */
 .profile-sheet{
  background:linear-gradient(180deg,var(--sidebar-glass-fill),color-mix(in srgb,var(--sidebar-glass-surface) 78%,transparent))!important;
  border-color:var(--sidebar-glass-border)!important;
@@ -287,7 +299,7 @@ body[data-page="updates"] .managed-update-card:not(.is-latest):is(:hover,:focus-
  animation-duration:4.2s!important;
 }
 
-/* Download gate keeps its outer trace, but the actual panel is now sidebar glass instead of opaque. */
+/* Download gate keeps its outer edge and gets the same translucent interior. */
 .download-discord-gate .download-gate-inner{
  background:var(--sidebar-glass-fill)!important;
  box-shadow:inset 0 1px 0 var(--sidebar-glass-highlight)!important;
@@ -298,27 +310,22 @@ body[data-page="updates"] .managed-update-card:not(.is-latest):is(:hover,:focus-
  box-shadow:var(--sidebar-glass-shadow),0 0 18px color-mix(in srgb,var(--sidebar-glass-accent) 7%,transparent)!important;
 }
 
-/* Backdrops follow the sidebar dialog treatment instead of using unrelated opacity/blur values. */
-:is(
- #site-menu,
- .site-settings,
- .cookie-dialog,
- .onboarding-dialog,
- .download-discord-gate
-)::backdrop{
+/* Backdrops use the sidebar dialog treatment. */
+:is(#site-menu,.site-settings,.cookie-dialog,.onboarding-dialog,.download-discord-gate)::backdrop{
  background:rgba(0,0,0,.45)!important;
  backdrop-filter:blur(12px) saturate(1.04)!important;
  -webkit-backdrop-filter:blur(12px) saturate(1.04)!important;
 }
 .profile-backdrop,
 .franklin-shell-backdrop,
-.mods-feedback-backdrop{
+.mods-feedback-backdrop,
+.asset-loader{
  background:rgba(0,0,0,.45)!important;
  backdrop-filter:blur(12px) saturate(1.04)!important;
  -webkit-backdrop-filter:blur(12px) saturate(1.04)!important;
 }
 
-/* Small controls inside glass stay translucent rather than becoming nested opaque boxes. */
+/* Small controls inside glass remain translucent rather than creating opaque nested boxes. */
 :is(
  .settings-close,
  .cookie-close,
@@ -337,36 +344,9 @@ body[data-page="updates"] .managed-update-card:not(.is-latest):is(:hover,:focus-
  -webkit-backdrop-filter:blur(12px) saturate(1.08)!important;
 }
 
-/* Light mode uses the same material instead of switching to opaque white cards. */
-html[data-mode="light"] :is(
- .site-settings,
- .cookie-banner,
- .cookie-dialog,
- .onboarding-dialog,
- .community-toast,
- .push-subscribe-toast,
- .mods-feedback-sheet,
- .saved-mods-popover,
- body[data-page="faq"] .support-search,
- body[data-page="faq"] .support-group,
- body[data-page="updates"] .managed-update-card,
- body[data-page="updates"] .release-card,
- .profile-sheet,
- .feedback-sheet-dock:not([hidden]),
- .gta-online-menu-dock,
- .gta-online-menu-promo
-){
- color:var(--sidebar-glass-text)!important;
- background:color-mix(in srgb,var(--sidebar-glass-surface) 74%,transparent)!important;
- box-shadow:0 24px 70px rgba(24,28,24,.16),inset 0 1px 0 rgba(255,255,255,.52)!important;
-}
-html[data-mode="light"] .download-discord-gate .download-gate-inner{
- background:color-mix(in srgb,var(--sidebar-glass-surface) 74%,transparent)!important;
-}
-
 @keyframes sidebarGlassOutlineTrace{to{--sidebar-glass-angle:360deg}}
 
-/* Mobile keeps the same look but trims blur slightly to avoid Safari repaint spikes. */
+/* Mobile keeps the same visual language with a slightly cheaper filter for Safari. */
 @media(max-width:760px){
  :root{--sidebar-glass-blur:blur(24px) saturate(1.10)}
  :is(
@@ -378,6 +358,7 @@ html[data-mode="light"] .download-discord-gate .download-gate-inner{
   .push-subscribe-toast,
   .mods-feedback-sheet,
   .saved-mods-popover,
+  .asset-loader>div,
   body[data-page="faq"] .support-search,
   body[data-page="faq"] .support-group,
   body[data-page="updates"] .managed-update-card,
@@ -388,6 +369,7 @@ html[data-mode="light"] .download-discord-gate .download-gate-inner{
 }
 
 @media(prefers-reduced-motion:reduce){
+ #site-menu .menu-panel::before,
  :is(
   .site-settings,
   .cookie-banner,
@@ -397,6 +379,7 @@ html[data-mode="light"] .download-discord-gate .download-gate-inner{
   .push-subscribe-toast,
   .mods-feedback-sheet,
   .saved-mods-popover,
+  .asset-loader>div,
   body[data-page="faq"] .support-search
  )::before,
  body[data-page="faq"] .support-group::after,
@@ -419,6 +402,7 @@ html[data-mode="light"] .download-discord-gate .download-gate-inner{
   .push-subscribe-toast,
   .mods-feedback-sheet,
   .saved-mods-popover,
+  .asset-loader>div,
   body[data-page="faq"] .support-search,
   body[data-page="faq"] .support-group,
   body[data-page="updates"] .managed-update-card,

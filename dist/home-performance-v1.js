@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__homePerformanceV1||document.body?.dataset.page!=='home')return;
-window.__homePerformanceV1=true;
+if(window.__homePerformanceV2||document.body?.dataset.page!=='home')return;
+window.__homePerformanceV2=true;
 const body=document.body;
 const ua=navigator.userAgent||'';
 const isMac=/Macintosh|Mac OS X/i.test(ua);
@@ -15,6 +15,8 @@ const watchedSections=new WeakSet();
 const watchedVideos=new WeakSet();
 let mountObserver=null;
 let mountTimer=0;
+let tuneTimer=0;
+let tuneAttempts=0;
 
 function watchSection(section){
  if(!section||watchedSections.has(section))return;
@@ -61,6 +63,31 @@ function scan(root=document){
  videos.forEach(watchVideo);
 }
 
+function tuneStoryMotion(){
+ tuneAttempts++;
+ const gsap=window.gsap;
+ const ScrollTrigger=window.ScrollTrigger;
+ const trigger=ScrollTrigger?.getById?.('stories-st7');
+ if(!gsap||!ScrollTrigger||!trigger){
+  if(tuneAttempts<40)tuneTimer=setTimeout(tuneStoryMotion,200);
+  return;
+ }
+ try{
+  ScrollTrigger.config({limitCallbacks:true,ignoreMobileResize:true});
+  const heading=document.querySelector('.story-st6 .story-showcase-v1-heading');
+  if(heading){
+   gsap.killTweensOf(heading,'filter');
+   heading.style.setProperty('filter','none','important');
+  }
+  if(isMac&&isChrome){
+   const cards=[...document.querySelectorAll('.story-st6 .story-showcase-v1-card')];
+   const images=[...document.querySelectorAll('.story-st6 .story-showcase-v1-art img')];
+   gsap.set(cards,{force3D:false});
+   gsap.set(images,{force3D:false});
+  }
+ }catch{}
+}
+
 function onVisibility(){
  body.classList.toggle('perf-page-hidden',document.hidden);
  document.querySelectorAll('video').forEach(video=>document.hidden?pauseVideo(video):resumeVideo(video));
@@ -78,20 +105,21 @@ mountTimer=setTimeout(()=>{
  mountObserver?.disconnect();
  mountObserver=null;
  scan();
-},15000);
+},12000);
+tuneStoryMotion();
 
-// Avoid a resize storm from browser chrome / macOS window resizing. Refresh ScrollTrigger once after resizing settles.
 let resizeTimer=0;
 const onResize=()=>{
  clearTimeout(resizeTimer);
  resizeTimer=setTimeout(()=>{
   try{window.ScrollTrigger?.refresh?.()}catch{}
- },180);
+ },220);
 };
 window.addEventListener('resize',onResize,{passive:true});
 
 window.addEventListener('pagehide',()=>{
  clearTimeout(mountTimer);
+ clearTimeout(tuneTimer);
  clearTimeout(resizeTimer);
  mountObserver?.disconnect();
  sectionObservers.forEach(observer=>observer.disconnect());

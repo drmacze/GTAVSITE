@@ -30,7 +30,8 @@ function syncSessionLabel(){
  const label=document.querySelector('.helper-session-label');
  if(!label)return;
  const os=window.FranklinSupportContext?.get?.().os||'OS not specified';
- label.textContent=os+' · '+LABEL;
+ const next=os+' · '+LABEL;
+ if(label.textContent!==next)label.textContent=next;
 }
 
 function decorate(){
@@ -80,7 +81,12 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('franklin-disconnect',()=>{selected=false;document.querySelector('.ask-franklin-panel')?.removeAttribute('data-release29');});
 
-const observer=new MutationObserver(()=>{decorate();if(selected)syncSessionLabel();});
+let scheduled=false;
+const observer=new MutationObserver(()=>{
+ if(scheduled)return;
+ scheduled=true;
+ requestAnimationFrame(()=>{scheduled=false;decorate();if(selected)syncSessionLabel();});
+});
 observer.observe(document.body,{childList:true,subtree:true});
 decorate();
 addEventListener('pagehide',()=>observer.disconnect(),{once:true});

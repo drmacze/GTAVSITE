@@ -24,6 +24,12 @@ function addCurrent(list){
  catalogPatched=true;
  return true;
 }
+function blockOldLatestWrapper(){
+ const kb=window.FranklinDeveloperKB;
+ if(!kb)return false;
+ kb.__latestWrapped=true;
+ return true;
+}
 function refreshSetup(){
  if(rerendered)return;
  const panel=document.querySelector('.ask-franklin-panel');
@@ -53,22 +59,27 @@ const nativeAppend=document.head?.append?.bind(document.head);
 if(nativeAppend&&!document.head.__releaseStateV2AppendPatched){
  document.head.append=(...nodes)=>{
   for(const node of nodes){
-   if(node instanceof HTMLScriptElement&&/franklin-support-context\.js(?:\?|$)/.test(node.src||'')){
-    node.addEventListener('load',()=>setTimeout(patchContext,0),{once:true});
-   }
+   if(!(node instanceof HTMLScriptElement))continue;
+   const src=node.src||'';
+   if(/franklin-support-context\.js(?:\?|$)/.test(src))node.addEventListener('load',()=>setTimeout(patchContext,0),{once:true});
+   if(/franklin-developer-kb\.js(?:\?|$)/.test(src))node.addEventListener('load',blockOldLatestWrapper,{once:true});
   }
   return nativeAppend(...nodes);
  };
  document.head.__releaseStateV2AppendPatched=true;
 }
 
-document.addEventListener('franklin-connected',patchContext);
-const timer=setInterval(()=>{if(patchContext()&&catalogPatched)clearInterval(timer)},100);
+document.addEventListener('franklin-connected',()=>{blockOldLatestWrapper();patchContext();});
+const timer=setInterval(()=>{
+ blockOldLatestWrapper();
+ if(patchContext()&&catalogPatched&&window.FranklinDeveloperKB)clearInterval(timer);
+},50);
 addEventListener('pagehide',()=>clearInterval(timer),{once:true});
+blockOldLatestWrapper();
 patchContext();
 
 window.FranklinReleaseStateV2={
  current:{...CURRENT},
- status:()=>({catalogPatched,currentKey:CURRENT.key,currentLabel:'29 Oct 2026'})
+ status:()=>({catalogPatched,currentKey:CURRENT.key,currentLabel:'29 Oct 2026',staleLatestBlocked:!!window.FranklinDeveloperKB?.__latestWrapped})
 };
 })();

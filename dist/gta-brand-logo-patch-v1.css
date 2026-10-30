@@ -1,14 +1,14 @@
 .site-brand img.site-brand-kommodo-logo{object-fit:contain!important;object-position:center!important;background:transparent!important}
 
 /* GTA Online logo is a transparent brand asset. Keep it unframed and clean. */
-.gta-online-menu-dock.gta-online-has-brand-logo{padding-left:98px}
+.gta-online-menu-dock.gta-online-has-brand-logo{padding-left:126px}
 .gta-online-dock-brand-logo{
  position:absolute!important;
  left:18px;
  top:50%;
  z-index:3;
- width:66px;
- height:58px;
+ width:94px;
+ height:76px;
  display:grid;
  place-items:center;
  overflow:visible;
@@ -37,10 +37,10 @@
  filter:none!important;
 }
 @media(max-width:760px){
- .gta-online-menu-dock.gta-online-has-brand-logo{padding-left:92px}
- .gta-online-dock-brand-logo{left:16px;width:64px;height:56px}
+ .gta-online-menu-dock.gta-online-has-brand-logo{padding-left:118px}
+ .gta-online-dock-brand-logo{left:16px;width:90px;height:72px}
 }
 @media(max-width:390px){
- .gta-online-menu-dock.gta-online-has-brand-logo{padding-left:86px}
- .gta-online-dock-brand-logo{left:14px;width:60px;height:52px}
+ .gta-online-menu-dock.gta-online-has-brand-logo{padding-left:110px}
+ .gta-online-dock-brand-logo{left:14px;width:84px;height:68px}
 }

@@ -1,26 +1,17 @@
 (()=>{
 'use strict';
-if(window.__storyCoverIntegrityV2)return;
-window.__storyCoverIntegrityV2=true;
+if(window.__storyCoverIntegrityV3)return;
+window.__storyCoverIntegrityV3=true;
 if(document.body?.dataset.page!=='home')return;
 
+const COVERS={
+ vice:'https://cdn.phototourl.com/member/2026-10-30-2ac3266c-508e-45cf-8d6a-885a3776a1d1.jpg',
+ liberty:'https://cdn.phototourl.com/member/2026-10-30-4dd8d394-ba44-49cd-88b7-ff99308a3943.jpg'
+};
 const FALLBACK={
  vice:'assets/story-covers/vice-city-stories.webp',
  liberty:'assets/story-covers/liberty-city-stories.webp'
 };
-const PARTS={
- vice:[
-  'assets/story-covers/vice.b64.1.txt',
-  'assets/story-covers/vice.b64.2.txt',
-  'assets/story-covers/vice.b64.3.txt'
- ],
- liberty:[
-  'assets/story-covers/liberty.b64.1.txt',
-  'assets/story-covers/liberty.b64.2.txt',
-  'assets/story-covers/liberty.b64.3.txt'
- ]
-};
-const COVERS={...FALLBACK};
 
 function typeFor(card){
  const label=(card?.getAttribute('aria-label')||'').toLowerCase();
@@ -36,8 +27,7 @@ function repairCard(card){
  const expected=COVERS[type];
  const image=card.querySelector('.story-showcase-v1-art img');
  if(!image||!expected)return;
- const current=image.getAttribute('src')||'';
- if(current!==expected){
+ if((image.getAttribute('src')||'')!==expected){
   image.src=expected;
   image.removeAttribute('srcset');
   image.removeAttribute('referrerpolicy');
@@ -45,6 +35,11 @@ function repairCard(card){
  image.loading='eager';
  image.decoding='async';
  image.dataset.storyCover=type;
+ image.onerror=()=>{
+  if(image.dataset.storyFallback==='1')return;
+  image.dataset.storyFallback='1';
+  image.src=FALLBACK[type];
+ };
 }
 
 function repair(root=document){
@@ -54,23 +49,7 @@ function repair(root=document){
  cards.forEach(repairCard);
 }
 
-async function loadHQ(type){
- const files=PARTS[type];
- if(!files)return;
- const chunks=await Promise.all(files.map(async file=>{
-  const response=await fetch(file,{cache:'force-cache'});
-  if(!response.ok)throw new Error(`Story cover chunk failed: ${file}`);
-  return(await response.text()).trim();
- }));
- const base64=chunks.join('');
- if(!base64.startsWith('UklG'))throw new Error(`Invalid ${type} WebP payload`);
- COVERS[type]=`data:image/webp;base64,${base64}`;
- repair();
-}
-
 repair();
-Promise.allSettled([loadHQ('vice'),loadHQ('liberty')]).then(()=>repair());
-
 const observer=new MutationObserver(records=>{
  for(const record of records){
   if(record.type==='attributes'){

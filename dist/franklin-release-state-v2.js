@@ -2,6 +2,9 @@
 'use strict';
 if(window.__franklinReleaseStateV2)return;
 window.__franklinReleaseStateV2=true;
+/* Block the obsolete cached latest-KB v1 before Franklin starts. The new
+   29-Oct KB uses its own v2 guard and still loads normally. */
+window.__gtavFranklinLatestKBV1=true;
 
 const CURRENT={
  key:'release-20261029-ios',

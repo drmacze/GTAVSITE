@@ -1,7 +1,7 @@
 (()=>{
  'use strict';
- if(window.__release27PolishV1)return;
- window.__release27PolishV1=true;
+ if(window.__release27PolishV2)return;
+ window.__release27PolishV2=true;
  if(document.body?.dataset.page!=='updates')return;
 
  const EMOJI=/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u2600-\u27BF]\uFE0F?/gu;
@@ -21,7 +21,7 @@
  function polish(){
   const release=document.getElementById('release-2026-10-27');
   if(!release)return false;
-  release.classList.add('release-27-redesign');
+  release.classList.remove('release-27-redesign');
   release.querySelectorAll('.release-intro h2,.release-intro p,.release-callout,.release-part').forEach(cleanNodeText);
   return true;
  }

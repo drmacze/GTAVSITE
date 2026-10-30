@@ -7,7 +7,7 @@
  --gta-muted:var(--settings-muted,var(--muted,#a5a5a5));
  --gta-line:var(--settings-line,var(--line,#ffffff1c));
  --gta-accent:var(--site-accent,var(--accent,#ff7a1a));
- --gta-online-brand:#ff376b;
+ --gta-online-brand:#ff2a2a;
  color:var(--gta-text);
  font-family:'DM Sans',Arial,sans-serif;
  box-sizing:border-box;

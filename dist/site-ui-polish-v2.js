@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV9)return;
-window.__siteUiPolishV9=true;
+if(window.__siteUiPolishV10)return;
+window.__siteUiPolishV10=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
@@ -11,7 +11,7 @@ function ensureCss(){
  if(!document.querySelector('link[data-site-ui-polish-v2]')){
   const link=document.createElement('link');
   link.rel='stylesheet';
-  link.href='site-ui-polish-v2.css?v=20261030ui6';
+  link.href='site-ui-polish-v2.css?v=20261030ui7';
   link.dataset.siteUiPolishV2='true';
   document.head.append(link);
  }
@@ -22,20 +22,12 @@ function ensureCss(){
   gate.dataset.discordGateOnline='true';
   document.head.append(gate);
  }
- if(document.body?.dataset.page==='updates'){
-  if(!document.querySelector('link[data-release-27-redesign]')){
-   const releaseCss=document.createElement('link');
-   releaseCss.rel='stylesheet';
-   releaseCss.href='release-27-redesign-v1.css?v=20261030r27a';
-   releaseCss.dataset.release27Redesign='true';
-   document.head.append(releaseCss);
-  }
-  if(!document.getElementById('release-27-polish-v1')){
-   const releaseScript=document.createElement('script');
-   releaseScript.id='release-27-polish-v1';
-   releaseScript.src='release-27-polish-v1.js?v=20261030r27a';
-   document.head.append(releaseScript);
-  }
+ if(document.body?.dataset.page==='updates'&&!document.getElementById('release-27-polish-v2')){
+  document.querySelector('link[data-release-27-redesign]')?.remove();
+  const releaseScript=document.createElement('script');
+  releaseScript.id='release-27-polish-v2';
+  releaseScript.src='release-27-polish-v1.js?v=20261030r27b';
+  document.head.append(releaseScript);
  }
 }
 

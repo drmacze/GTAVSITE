@@ -1,0 +1,58 @@
+/* Home-only Rockstar detail pass. */
+:root{
+ --home-gta-red:#e3342f;
+ --home-rockstar-yellow:#ffab00;
+ --home-rockstar-yellow-deep:#c98700;
+}
+
+body[data-page="home"] .story-showcase-v1-heading h2 span:last-child{
+ color:var(--home-gta-red)!important;
+ -webkit-text-fill-color:var(--home-gta-red)!important;
+ text-shadow:0 10px 30px rgba(227,52,47,.18),0 12px 34px rgba(0,0,0,.32)!important;
+}
+
+body[data-page="home"] .site-footer{
+ background:
+  linear-gradient(145deg,#ffb51f 0%,var(--home-rockstar-yellow) 52%,#e99b00 100%)!important;
+ border-top:1px solid rgba(255,210,92,.8)!important;
+ color:#090909!important;
+ box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.28),
+  0 -18px 60px rgba(255,171,0,.10)!important;
+}
+body[data-page="home"] .site-footer .footer-inner{
+ color:#090909!important;
+}
+body[data-page="home"] .site-footer .footer-brand{
+ color:#090909!important;
+}
+body[data-page="home"] .site-footer .footer-brand span{
+ color:var(--home-gta-red)!important;
+ font-weight:650!important;
+ opacity:1!important;
+}
+body[data-page="home"] .site-footer nav,
+body[data-page="home"] .site-footer nav a,
+body[data-page="home"] .site-footer .cookie-settings-link{
+ color:rgba(9,9,9,.72)!important;
+}
+body[data-page="home"] .site-footer nav a:hover,
+body[data-page="home"] .site-footer .cookie-settings-link:hover{
+ color:#000!important;
+}
+body[data-page="home"] .site-footer p{
+ color:rgba(9,9,9,.58)!important;
+}
+
+body[data-page="home"] .credit-platform .credit-apple span::after{
+ content:" + macOS";
+ color:inherit;
+ font:inherit;
+ letter-spacing:inherit;
+}
+
+@media(max-width:750px){
+ body[data-page="home"] .site-footer{
+  background:linear-gradient(150deg,#ffb51f 0%,#ffab00 56%,#e99b00 100%)!important;
+ }
+}

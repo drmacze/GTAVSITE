@@ -114,15 +114,86 @@
  font-family:var(--gta-online-heading-font)!important;
 }
 
+/* Remove the redundant top-level Updates download CTA. Release-level download actions remain available. */
+.updates-heading .updates-download{display:none!important}
+
+/* Feedback-style glass Discord confirmation with Safari-stable animated border. */
+@property --download-gate-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+.download-discord-gate{
+ opacity:0;
+ transition:opacity .26s ease;
+}
+.download-discord-gate::backdrop{
+ background:rgba(0,0,0,.48);
+ opacity:0;
+ backdrop-filter:blur(12px) saturate(1.05);
+ -webkit-backdrop-filter:blur(12px) saturate(1.05);
+ transition:opacity .28s ease;
+}
+.download-discord-gate.is-visible{opacity:1}
+.download-discord-gate.is-visible::backdrop{opacity:1}
+.download-discord-gate.is-closing{opacity:0}
+.download-discord-gate.is-closing::backdrop{opacity:0}
+.download-gate-card{
+ --download-gate-angle:0deg;
+ border:1px solid transparent!important;
+ background:
+  linear-gradient(color-mix(in srgb,var(--gate-surface) 76%,transparent),color-mix(in srgb,var(--gate-surface) 76%,transparent)) padding-box,
+  conic-gradient(
+   from var(--download-gate-angle),
+   transparent 0 278deg,
+   color-mix(in srgb,var(--gate-accent) 20%,transparent) 289deg,
+   var(--gate-accent) 307deg,
+   color-mix(in srgb,#fff 72%,var(--gate-accent)) 318deg,
+   var(--gate-accent) 329deg,
+   color-mix(in srgb,var(--gate-accent) 20%,transparent) 341deg,
+   transparent 352deg 360deg
+  ) border-box!important;
+ color:var(--gate-text);
+ box-shadow:0 28px 86px rgba(0,0,0,.38),inset 0 1px 0 color-mix(in srgb,var(--gate-text) 7%,transparent),0 0 20px color-mix(in srgb,var(--gate-accent) 7%,transparent)!important;
+ backdrop-filter:blur(30px) saturate(1.16);
+ -webkit-backdrop-filter:blur(30px) saturate(1.16);
+ transform:translateY(22px) scale(.975);
+ opacity:0;
+ transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .24s ease,box-shadow .24s ease;
+ animation:downloadGateTrace 4.2s linear infinite;
+ will-change:transform,opacity;
+ isolation:isolate;
+}
+.download-discord-gate.is-visible .download-gate-card{
+ transform:translateY(0) scale(1);
+ opacity:1;
+}
+.download-discord-gate.is-closing .download-gate-card{
+ transform:translateY(18px) scale(.982);
+ opacity:0;
+}
+.download-gate-card::before{display:none!important}
+.download-gate-close,.download-gate-icon,.download-gate-cancel{
+ background:color-mix(in srgb,var(--gate-text) 4%,transparent)!important;
+ backdrop-filter:blur(12px);
+ -webkit-backdrop-filter:blur(12px);
+}
+.download-gate-cancel{transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.download-gate-cancel:hover{background:color-mix(in srgb,var(--gate-text) 8%,transparent)!important;border-color:color-mix(in srgb,var(--gate-text) 24%,transparent)}
+.download-gate-cancel:active{transform:scale(.98)}
+@keyframes downloadGateTrace{to{--download-gate-angle:360deg}}
+
 @media(max-width:520px){
- .download-gate-card{padding:23px 20px 20px;border-radius:16px}
+ .download-gate-card{padding:23px 20px 20px;border-radius:18px}
  .download-gate-actions{grid-template-columns:1fr}
  .download-gate-actions>*{width:100%}
  .download-gate-cancel{order:2}
  .download-gate-continue{order:1}
+ .download-discord-gate{width:min(94vw,470px)}
+ .download-gate-card{transform:translateY(28px) scale(.985)}
+ .download-discord-gate.is-visible .download-gate-card{transform:none}
+ .download-discord-gate.is-closing .download-gate-card{transform:translateY(24px) scale(.988)}
 }
 
 @media(prefers-reduced-motion:reduce){
  .download-gated-icon,.download-gate-close{transition:none}
  #site-menu .menu-panel::before{animation:none;--sidebar-outline-angle:318deg}
+ .download-discord-gate,.download-discord-gate::backdrop,.download-gate-card{transition:none!important}
+ .download-gate-card{animation:none!important;--download-gate-angle:318deg}
 }

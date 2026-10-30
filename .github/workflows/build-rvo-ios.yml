@@ -1,0 +1,31 @@
+name: Build RVO iOS OIV
+
+on:
+  push:
+    branches: [rvo-ios-build]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rvo-ios-build
+      - name: Build OIV
+        run: |
+          rm -rf dist
+          mkdir -p dist
+          cd rvo-ios
+          zip -9 -r ../dist/RVO_iOS_Realistic_Visual_Overhaul_v1.oiv assembly.xml content
+          cd ..
+      - name: Commit package
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dist/RVO_iOS_Realistic_Visual_Overhaul_v1.oiv
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Build RVO iOS v1 OIV [skip ci]"
+          git push origin HEAD:rvo-ios-build

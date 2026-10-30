@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV10)return;
-window.__siteUiPolishV10=true;
+if(window.__siteUiPolishV11)return;
+window.__siteUiPolishV11=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
@@ -166,6 +166,7 @@ function createDownloadDialog(){
 function isDownloadAction(link){
  if(!(link instanceof HTMLAnchorElement))return false;
  if(link.closest('.download-discord-gate'))return false;
+ if(link.closest('.mods-studio'))return false;
  const label=(link.textContent||'').trim();
  if(link.matches('.updates-download,.managed-update-download'))return true;
  if(link.classList.contains('discord-link')&&/download/i.test(label))return true;

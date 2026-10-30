@@ -1,19 +1,27 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV6)return;
-window.__siteUiPolishV6=true;
+if(window.__siteUiPolishV7)return;
+window.__siteUiPolishV7=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function ensureCss(){
- if(document.querySelector('link[data-site-ui-polish-v2]'))return;
- const link=document.createElement('link');
- link.rel='stylesheet';
- link.href='site-ui-polish-v2.css?v=20261030ui6';
- link.dataset.siteUiPolishV2='true';
- document.head.append(link);
+ if(!document.querySelector('link[data-site-ui-polish-v2]')){
+  const link=document.createElement('link');
+  link.rel='stylesheet';
+  link.href='site-ui-polish-v2.css?v=20261030ui6';
+  link.dataset.siteUiPolishV2='true';
+  document.head.append(link);
+ }
+ if(!document.querySelector('link[data-discord-gate-online]')){
+  const gate=document.createElement('link');
+  gate.rel='stylesheet';
+  gate.href='discord-gate-online-v1.css?v=20261030gate1';
+  gate.dataset.discordGateOnline='true';
+  document.head.append(gate);
+ }
 }
 
 function cleanHome(){

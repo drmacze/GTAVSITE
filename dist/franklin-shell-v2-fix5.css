@@ -1,0 +1,165 @@
+/* Franklin shell v2.2: stable edge trace, connecting glass card, compact native version picker. */
+@property --franklin-v5-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+
+:root{--franklin-v5-angle:0deg}
+
+/* Safari-stable animated edge. Keep the trace in the border, never in the panel surface. */
+.franklin-shell-launcher{
+ --franklin-v5-angle:0deg;
+ border:1px solid transparent!important;
+ background:
+  linear-gradient(rgba(15,15,15,.94),rgba(15,15,15,.94)) padding-box,
+  conic-gradient(from var(--franklin-v5-angle),transparent 0 286deg,color-mix(in srgb,var(--franklin-shell-accent) 24%,transparent) 297deg,var(--franklin-shell-accent) 315deg,color-mix(in srgb,#fff 70%,var(--franklin-shell-accent)) 323deg,var(--franklin-shell-accent) 332deg,transparent 348deg 360deg) border-box!important;
+ background-origin:border-box!important;
+ background-clip:padding-box,border-box!important;
+ animation:franklinV5Trace 4.2s linear infinite!important;
+}
+.franklin-shell-launcher::before,.franklin-shell-launcher::after{display:none!important;content:none!important}
+
+.ask-franklin-panel[data-franklin-shell-v2]{
+ --franklin-v5-angle:0deg;
+ position:fixed!important;
+ left:50%!important;
+ bottom:0!important;
+ top:auto!important;
+ width:min(760px,100%)!important;
+ height:min(720px,calc(var(--franklin-visible-height,100dvh) - 74px))!important;
+ max-height:calc(var(--franklin-visible-height,100dvh) - 74px)!important;
+ min-height:0!important;
+ border:1px solid transparent!important;
+ border-bottom:0!important;
+ background:
+  linear-gradient(rgba(10,10,10,.965),rgba(10,10,10,.965)) padding-box,
+  conic-gradient(from var(--franklin-v5-angle),transparent 0 287deg,color-mix(in srgb,var(--franklin-shell-accent) 20%,transparent) 298deg,var(--franklin-shell-accent) 315deg,color-mix(in srgb,#fff 68%,var(--franklin-shell-accent)) 323deg,var(--franklin-shell-accent) 331deg,transparent 347deg 360deg) border-box!important;
+ background-origin:border-box!important;
+ background-clip:padding-box,border-box!important;
+ animation:franklinV5Trace 4.2s linear infinite!important;
+ box-shadow:0 -20px 68px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.ask-franklin-panel[data-franklin-shell-v2]::before,.ask-franklin-panel[data-franklin-shell-v2]::after{display:none!important;content:none!important}
+
+/* Actual lazy-load card. Mirrors the GTA Online glass sheet language. */
+.franklin-connect-card-v5{
+ --franklin-v5-angle:0deg;
+ position:fixed;
+ left:50%;
+ bottom:max(22px,calc(env(safe-area-inset-bottom) + 14px));
+ z-index:12020;
+ width:min(430px,calc(100vw - 28px));
+ padding:12px 14px 14px;
+ border:1px solid transparent;
+ border-radius:22px;
+ color:#f4f2ef;
+ background:
+  linear-gradient(rgba(16,16,16,.86),rgba(11,11,11,.93)) padding-box,
+  conic-gradient(from var(--franklin-v5-angle),transparent 0 287deg,color-mix(in srgb,var(--franklin-shell-accent) 22%,transparent) 298deg,var(--franklin-shell-accent) 315deg,color-mix(in srgb,#fff 68%,var(--franklin-shell-accent)) 323deg,var(--franklin-shell-accent) 331deg,transparent 347deg 360deg) border-box;
+ background-origin:border-box;
+ background-clip:padding-box,border-box;
+ box-shadow:0 22px 74px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07);
+ backdrop-filter:blur(28px) saturate(1.18);
+ -webkit-backdrop-filter:blur(28px) saturate(1.18);
+ transform:translate(-50%,24px) scale(.985);
+ opacity:0;
+ visibility:hidden;
+ pointer-events:none;
+ transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .26s ease,visibility 0s linear .46s;
+ animation:franklinV5Trace 4.2s linear infinite;
+}
+.franklin-connect-card-v5.is-open{transform:translate(-50%,0) scale(1);opacity:1;visibility:visible;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .26s ease}
+.franklin-connect-card-v5 .franklin-connect-grip{display:grid;place-items:center;height:12px;margin:-2px 0 6px}
+.franklin-connect-card-v5 .franklin-connect-grip i{width:38px;height:3px;border-radius:99px;background:rgba(255,255,255,.18)}
+.franklin-connect-row{display:flex;align-items:center;gap:11px}
+.franklin-connect-avatar{position:relative;width:43px;height:43px;flex:0 0 43px}
+.franklin-connect-avatar img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 12%}
+.franklin-connect-avatar i{position:absolute;right:-1px;bottom:2px;width:9px;height:9px;border-radius:50%;background:#79ad59;border:2px solid #111}
+.franklin-connect-copy{min-width:0;flex:1}
+.franklin-connect-copy small,.franklin-connect-copy strong,.franklin-connect-copy span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.franklin-connect-copy small{margin-bottom:4px;color:#8e8b88;font:700 7px/1 'DM Sans',Arial,sans-serif;letter-spacing:1.45px}
+.franklin-connect-copy strong{color:#f5f3ef;font:700 15px/1.1 'DM Sans',Arial,sans-serif;letter-spacing:-.25px}
+.franklin-connect-copy span{margin-top:4px;color:#817d79;font:600 8px/1.1 'DM Sans',Arial,sans-serif}
+.franklin-connect-percent{font:700 9px/1 'DM Sans',Arial,sans-serif;color:#aaa6a1}
+.franklin-connect-progress{height:2px;margin-top:12px;overflow:hidden;border-radius:99px;background:rgba(255,255,255,.07)}
+.franklin-connect-progress i{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left;background:var(--franklin-shell-accent);transition:transform .22s ease}
+.franklin-shell-launcher[data-state="connecting"]{opacity:0!important;pointer-events:none!important}
+
+/* App-version picker follows first-run iPhone model selection: one compact native select. */
+.helper-build-list.franklin-version-original{display:none!important}
+.franklin-version-field{display:block;margin-top:2px}
+.franklin-version-field label{display:block;margin:0 0 9px!important;color:#aaa6a1!important;font:600 9px/1.2 'DM Sans',Arial,sans-serif!important}
+.franklin-version-select{
+ box-sizing:border-box;
+ width:100%;
+ min-height:48px;
+ margin:0;
+ padding:0 38px 0 12px;
+ border:1px solid #414141;
+ border-radius:7px;
+ background:#212121;
+ color:#eee;
+ color-scheme:dark;
+ font:500 12px/1.2 'DM Sans',Arial,sans-serif;
+ outline:none;
+ cursor:pointer;
+}
+.franklin-version-select:focus{border-color:color-mix(in srgb,var(--franklin-shell-accent) 68%,#414141);box-shadow:0 0 0 1px color-mix(in srgb,var(--franklin-shell-accent) 12%,transparent)}
+.franklin-version-select:disabled{opacity:.55}
+.helper-profile-note{margin-top:14px!important}
+.helper-setup-unsure.franklin-forget-os{min-height:auto!important;margin-top:10px!important;padding:7px 0!important;border:0!important;background:transparent!important;color:#aaa6a1!important;font-size:9px!important}
+.helper-setup-unsure.franklin-forget-os::after{display:none!important}
+.helper-setup-actions{
+ position:static!important;
+ bottom:auto!important;
+ margin:24px 0 0!important;
+ padding:0!important;
+ background:none!important;
+}
+.helper-setup{padding-bottom:max(24px,calc(env(safe-area-inset-bottom) + 18px))!important}
+
+/* Smaller, cleaner composer. 16px input prevents Safari focus zoom but visual weight is reduced. */
+.ask-franklin-form{
+ box-sizing:border-box!important;
+ grid-template-columns:minmax(0,1fr) 38px 38px 42px!important;
+ gap:6px!important;
+ padding:9px 10px max(10px,env(safe-area-inset-bottom))!important;
+ align-items:center!important;
+}
+.ask-franklin-input{
+ box-sizing:border-box!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:42px!important;
+ max-height:92px!important;
+ padding:10px 11px!important;
+ border-radius:11px!important;
+ font-family:'DM Sans',Arial,sans-serif!important;
+ font-size:16px!important;
+ font-weight:450!important;
+ line-height:1.18!important;
+ letter-spacing:-.18px!important;
+ overflow-y:auto!important;
+}
+.ask-franklin-input::placeholder{font-size:14px!important;line-height:1.2!important;color:#6f6b67!important}
+.ask-franklin-send,.helper-attach,.helper-paste{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;border-radius:10px!important}
+.ask-franklin-send{width:42px!important;min-width:42px!important}
+.ask-franklin-send .icon,.helper-attach .icon,.helper-paste .icon{width:15px!important;height:15px!important}
+
+@keyframes franklinV5Trace{to{--franklin-v5-angle:360deg}}
+
+@media(max-width:520px){
+ .ask-franklin-panel[data-franklin-shell-v2]{
+  height:calc(var(--franklin-visible-height,100dvh) - 70px)!important;
+  max-height:calc(var(--franklin-visible-height,100dvh) - 70px)!important;
+  border-left:0!important;border-right:0!important;
+ }
+ .franklin-connect-card-v5{width:calc(100vw - 22px);bottom:max(14px,calc(env(safe-area-inset-bottom) + 8px));border-radius:20px}
+ .helper-setup{padding-top:22px!important}
+ .helper-setup h2{font-size:29px!important}
+ .ask-franklin-form{grid-template-columns:minmax(0,1fr) 36px 36px 40px!important;padding-left:8px!important;padding-right:8px!important}
+ .ask-franklin-send,.helper-attach,.helper-paste{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}
+ .ask-franklin-send{width:40px!important;min-width:40px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .franklin-shell-launcher,.ask-franklin-panel[data-franklin-shell-v2],.franklin-connect-card-v5{animation:none!important;--franklin-v5-angle:318deg}
+ .franklin-connect-card-v5{transition:none!important}
+}

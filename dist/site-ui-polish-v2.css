@@ -11,25 +11,34 @@
 .download-gated-icon .icon{width:13px;height:13px;stroke-width:1.8}
 .download-gated-link:hover .download-gated-icon{transform:translateY(1px);opacity:1;background:color-mix(in srgb,currentColor 7%,transparent)}
 
-.download-discord-gate{width:min(470px,calc(100vw - 28px));max-width:470px;padding:0;border:0;background:transparent;color:#f5f2eb;overflow:visible}
-.download-discord-gate::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.download-gate-card{position:relative;margin:0;padding:28px;border:1px solid rgba(255,255,255,.11);border-radius:20px;background:linear-gradient(180deg,#171512 0%,#0f0e0c 100%);box-shadow:0 30px 90px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden}
-.download-gate-card::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,var(--site-accent,var(--accent,#ff7a1a)),transparent 46%);box-shadow:0 0 20px color-mix(in srgb,var(--site-accent,var(--accent,#ff7a1a)) 28%,transparent)}
-.download-gate-close{position:absolute;right:16px;top:16px;width:36px;height:36px;border:1px solid rgba(255,255,255,.11);border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.035);color:rgba(255,255,255,.72)}
+.download-discord-gate{
+ --gate-surface:var(--settings-bg,var(--panel,#171717));
+ --gate-text:var(--settings-text,var(--fg-f5f5f5,#f5f5f5));
+ --gate-muted:var(--settings-muted,var(--muted,#a5a5a5));
+ --gate-line:var(--settings-line,var(--line,#ffffff1c));
+ --gate-accent:var(--site-accent,var(--accent,#ff7a1a));
+ width:min(470px,calc(100vw - 28px));max-width:470px;padding:0;border:0;background:transparent;color:var(--gate-text);overflow:visible
+}
+.download-discord-gate::backdrop{background:rgba(0,0,0,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.download-gate-card{position:relative;margin:0;padding:28px;border:1px solid var(--gate-line);border-radius:18px;background:var(--gate-surface);color:var(--gate-text);box-shadow:0 26px 74px rgba(0,0,0,.42),inset 0 1px 0 color-mix(in srgb,var(--gate-text) 5%,transparent);overflow:hidden}
+.download-gate-card::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--gate-line)}
+.download-gate-close{position:absolute;right:16px;top:16px;width:36px;height:36px;border:1px solid var(--gate-line);border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--gate-text) 3%,transparent);color:var(--gate-muted);transition:background .2s,color .2s,border-color .2s,transform .2s}
+.download-gate-close:hover{background:color-mix(in srgb,var(--gate-text) 7%,transparent);color:var(--gate-text);border-color:color-mix(in srgb,var(--gate-text) 22%,transparent)}
+.download-gate-close:active{transform:scale(.94)}
 .download-gate-close .icon{width:15px;height:15px}
-.download-gate-icon{width:46px;height:46px;display:grid;place-items:center;margin-bottom:22px;border:1px solid color-mix(in srgb,var(--site-accent,var(--accent,#ff7a1a)) 48%,transparent);border-radius:13px;background:color-mix(in srgb,var(--site-accent,var(--accent,#ff7a1a)) 8%,transparent);color:var(--site-accent,var(--accent,#ff7a1a));box-shadow:0 0 28px color-mix(in srgb,var(--site-accent,var(--accent,#ff7a1a)) 9%,transparent)}
-.download-gate-icon .icon{width:22px;height:22px}
-.download-gate-kicker{margin:0 0 10px;font:700 9px/1 'DM Sans',Arial,sans-serif;letter-spacing:1.8px;color:var(--site-accent,var(--accent,#ff7a1a))}
-.download-gate-card h2{margin:0 44px 12px 0;font:700 clamp(25px,6vw,34px)/1.05 'DM Sans',Arial,sans-serif;letter-spacing:-1.1px;color:#fff}
-.download-gate-copy{margin:0;color:rgba(255,255,255,.58);font:500 13px/1.65 'DM Sans',Arial,sans-serif;max-width:390px}
-.download-gate-actions{display:grid;grid-template-columns:.82fr 1.45fr;gap:10px;margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)}
-.download-gate-actions>*{min-height:48px;border-radius:10px;font:700 11px/1 'DM Sans',Arial,sans-serif}
-.download-gate-cancel{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.035);color:rgba(255,255,255,.78)}
-.download-gate-continue{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 16px;border:1px solid var(--site-accent,var(--accent,#ff7a1a));background:var(--site-accent,var(--accent,#ff7a1a));color:#15110b!important;text-decoration:none!important;box-shadow:0 10px 30px color-mix(in srgb,var(--site-accent,var(--accent,#ff7a1a)) 18%,transparent)}
+.download-gate-icon{width:44px;height:44px;display:grid;place-items:center;margin-bottom:22px;border:1px solid var(--gate-line);border-radius:12px;background:color-mix(in srgb,var(--gate-text) 3%,transparent);color:var(--gate-text)}
+.download-gate-icon .icon{width:21px;height:21px}
+.download-gate-kicker{margin:0 0 10px;font:700 9px/1 'DM Sans',Arial,sans-serif;letter-spacing:1.7px;color:var(--gate-accent)}
+.download-gate-card h2{margin:0 44px 12px 0;font:700 clamp(25px,6vw,34px)/1.05 'DM Sans',Arial,sans-serif;letter-spacing:-1.1px;color:var(--gate-text)}
+.download-gate-copy{margin:0;color:var(--gate-muted);font:500 13px/1.65 'DM Sans',Arial,sans-serif;max-width:390px}
+.download-gate-actions{display:grid;grid-template-columns:.82fr 1.45fr;gap:10px;margin-top:26px;padding-top:20px;border-top:1px solid var(--gate-line)}
+.download-gate-actions>*{min-height:48px;border-radius:9px;font:700 11px/1 'DM Sans',Arial,sans-serif}
+.download-gate-cancel{border:1px solid var(--gate-line);background:transparent;color:var(--gate-text)}
+.download-gate-continue{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 16px;border:1px solid var(--gate-accent);background:var(--gate-accent);color:#111!important;text-decoration:none!important;box-shadow:none}
 .download-gate-continue .icon{width:15px;height:15px}
 
 @media(max-width:520px){
- .download-gate-card{padding:23px 20px 20px;border-radius:17px}
+ .download-gate-card{padding:23px 20px 20px;border-radius:16px}
  .download-gate-actions{grid-template-columns:1fr}
  .download-gate-actions>*{width:100%}
  .download-gate-cancel{order:2}
@@ -37,5 +46,5 @@
 }
 
 @media(prefers-reduced-motion:reduce){
- .download-gated-icon{transition:none}
+ .download-gated-icon,.download-gate-close{transition:none}
 }

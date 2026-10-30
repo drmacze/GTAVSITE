@@ -1,17 +1,17 @@
 (()=>{
 'use strict';
-if(window.__gtaBrandLogoPatchV3)return;
-window.__gtaBrandLogoPatchV3=true;
+if(window.__gtaBrandLogoPatchV4)return;
+window.__gtaBrandLogoPatchV4=true;
 if(document.body?.dataset.page!=='home')return;
 
-const HEADER_LOGO='https://cdn.phototourl.com/member/2026-10-30-a765632e-959f-46e8-999f-4cd96dfa7d8c.jpg';
-const ONLINE_LOGO='https://cdn.phototourl.com/member/2026-10-30-4a5422ca-95e0-47e2-ab64-a891f266d209.png';
+const HEADER_LOGO='https://cdn.phototourl.com/member/2026-10-30-4a5422ca-95e0-47e2-ab64-a891f266d209.png';
+const ONLINE_LOGO='https://cdn.phototourl.com/member/2026-10-30-a765632e-959f-46e8-999f-4cd96dfa7d8c.jpg';
 
 function applyHeaderLogo(){
  const img=document.querySelector('.site-brand img');
  if(!img)return false;
- if(img.dataset.brandLogoV3==='true')return true;
- img.dataset.brandLogoV3='true';
+ if(img.dataset.brandLogoV4==='true')return true;
+ img.dataset.brandLogoV4='true';
  img.classList.add('site-brand-kommodo-logo');
  img.alt='GTA V';
  img.decoding='async';

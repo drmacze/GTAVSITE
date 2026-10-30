@@ -1,5 +1,5 @@
 /* GTA VI-reference polish for the restored v4 collage intro. */
-.home-intro-v4{height:400svh!important;min-height:2350px!important}
+.home-intro-v4{height:220svh!important;min-height:1350px!important}
 
 /* Announcement bar: same visual hierarchy as the reference, but theme-aware instead of pink. */
 .home-intro-v4-announcement{
@@ -78,7 +78,7 @@ body.intro4-revealed .home-intro-v4-cover{transform:none!important}
 .home-intro-v4-message h1 span{font-weight:700!important}
 
 @media(max-width:760px){
-  .home-intro-v4{height:400svh!important;min-height:2250px!important}
+  .home-intro-v4{height:220svh!important;min-height:1320px!important}
   .home-intro-v4-announcement{height:62px!important;padding:0 40px!important;font-size:8px!important;letter-spacing:1.9px!important}
   .home-intro-v4-nav{top:82px!important;left:6.2%!important;right:6.2%!important}
   .home-intro-v4-mark{width:54px!important;height:54px!important}.home-intro-v4-mark svg{width:48px!important;height:48px!important}
@@ -90,9 +90,33 @@ body.intro4-revealed .home-intro-v4-cover{transform:none!important}
   .home-intro-v4-cue{gap:10px!important}.home-intro-v4-cue-pill{min-width:180px!important;height:50px!important;font-size:13px!important}.home-intro-v4-chevron{transform:scale(.84)}
 }
 @media(max-width:390px){
-  .home-intro-v4{height:410svh!important;min-height:2250px!important}
+  .home-intro-v4{height:220svh!important;min-height:1280px!important}
   .home-intro-v4-cover-phase{padding-top:145px!important}.home-intro-v4-cover{width:min(65vw,292px)!important}
   .home-intro-v4-status{font-size:32px!important}.home-intro-v4-mark{width:52px!important;height:52px!important}.home-intro-v4-mark svg{width:46px!important;height:46px!important}
   .home-intro-v4-cue-pill{height:47px!important;min-width:166px!important}
 }
 @media(prefers-reduced-motion:reduce){.home-intro-v4-chevron{animation:none!important}}
+
+/* Clean intro: keep only the cover phase, then hand off directly to Home. */
+.home-intro-v4-announcement,
+.home-intro-v4-message-phase,
+.home-intro-v4-mark,
+.home-intro-v4-account{display:none!important}
+.home-intro-v4-nav{justify-content:flex-end!important}
+.home-intro-v4-nav-actions{margin-left:auto!important}
+.home-intro-v4-cover-phase{
+  opacity:calc(1 - var(--intro4-exit,0))!important;
+  pointer-events:auto!important;
+}
+
+/* Franklin belongs to the main Home only, never to the intro cover. */
+html.franklin-unified-entry body[data-page="home"].intro4-active .lazy-franklin.lazy-franklin,
+html.franklin-unified-entry body[data-page="home"].intro4-active .ask-franklin-launcher,
+html.franklin-unified-entry body[data-page="home"].intro4-active .franklin-sheet-dock,
+html.franklin-unified-entry body[data-page="home"].intro4-active .franklin-nudge,
+html.franklin-unified-entry body[data-page="home"].intro4-active .franklin-connect-layer{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}

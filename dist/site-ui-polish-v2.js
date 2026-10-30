@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__siteUiPolishV3)return;
-window.__siteUiPolishV3=true;
+if(window.__siteUiPolishV4)return;
+window.__siteUiPolishV4=true;
 
 const DISCORD='https://discord.gg/HgcbPjcyJ';
 const svg=name=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#${name}"></use></svg>`;
@@ -10,7 +10,7 @@ function ensureCss(){
  if(document.querySelector('link[data-site-ui-polish-v2]'))return;
  const link=document.createElement('link');
  link.rel='stylesheet';
- link.href='site-ui-polish-v2.css?v=20261030ui3';
+ link.href='site-ui-polish-v2.css?v=20261030ui4';
  link.dataset.siteUiPolishV2='true';
  document.head.append(link);
 }
@@ -29,35 +29,34 @@ function polishSidebar(){
 
  const details=document.createElement('details');
  details.className='download-menu before-start-menu';
- details.style.setProperty('--order','5');
+ details.style.setProperty('--order','99');
+ details.style.order='99';
  if(compatibility.hasAttribute('aria-current')||guide.hasAttribute('aria-current')){
   details.classList.add('is-current');
   details.open=true;
  }
 
  const summary=document.createElement('summary');
- summary.innerHTML=`<span>Before You Start</span>${svg('chevron-down')}`;
- summary.querySelector('svg')?.classList.add('download-chevron');
+ summary.textContent='Before You Start';
 
  const submenu=document.createElement('div');
  submenu.className='download-submenu before-start-submenu';
- const makeLink=(href,title,iconName,current)=>{
+ const makeLink=(href,title,current)=>{
   const link=document.createElement('a');
   link.href=href;
   if(current)link.setAttribute('aria-current','page');
-  link.innerHTML=`<span class="before-start-copy"><span class="before-start-icon">${svg(iconName)}</span><span>${title}</span></span>${svg('arrow-right')}`;
+  link.textContent=title;
   return link;
  };
  submenu.append(
-  makeLink('compatibility.html','Device Compatibility','cpu',compatibility.hasAttribute('aria-current')),
-  makeLink('guide.html','Installation Guide','check',guide.hasAttribute('aria-current'))
+  makeLink('compatibility.html','Device Compatibility',compatibility.hasAttribute('aria-current')),
+  makeLink('guide.html','Installation Guide',guide.hasAttribute('aria-current'))
  );
  details.append(summary,submenu);
 
- const feedback=links.find(link=>/feedback\.html(?:$|[#?])/.test(link.getAttribute('href')||''));
- if(feedback)nav.insertBefore(details,feedback);else nav.append(details);
  compatibility.remove();
  guide.remove();
+ nav.append(details);
 }
 
 function createDownloadDialog(){

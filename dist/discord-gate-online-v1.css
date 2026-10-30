@@ -1,0 +1,239 @@
+/* Discord download confirmation using the GTA Online sheet language. */
+@property --discord-gate-edge-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+
+.download-discord-gate{
+ --gate-surface:var(--settings-bg,var(--panel,#171717));
+ --gate-text:var(--settings-text,var(--fg-f5f5f5,#f5f5f5));
+ --gate-muted:var(--settings-muted,var(--muted,#a5a5a5));
+ --gate-line:var(--settings-line,var(--line,#ffffff1c));
+ --gate-accent:var(--site-accent,var(--accent,#ff7a1a));
+ position:fixed!important;
+ inset:auto 22px 20px auto!important;
+ width:min(430px,calc(100vw - 44px))!important;
+ max-width:430px!important;
+ max-height:none!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ background:transparent!important;
+ color:var(--gate-text)!important;
+ overflow:visible!important;
+ opacity:0!important;
+ transition:opacity .22s ease!important;
+}
+.download-discord-gate::backdrop{
+ background:rgba(0,0,0,.48)!important;
+ opacity:0!important;
+ backdrop-filter:blur(12px) saturate(1.04)!important;
+ -webkit-backdrop-filter:blur(12px) saturate(1.04)!important;
+ transition:opacity .32s ease!important;
+}
+.download-discord-gate.is-visible{opacity:1!important}
+.download-discord-gate.is-visible::backdrop{opacity:1!important}
+.download-discord-gate.is-closing{opacity:0!important}
+.download-discord-gate.is-closing::backdrop{opacity:0!important}
+
+.download-discord-gate .download-gate-card{
+ --discord-gate-edge-angle:0deg;
+ position:relative!important;
+ margin:0!important;
+ padding:1px!important;
+ border:0!important;
+ border-radius:22px!important;
+ overflow:hidden!important;
+ background:conic-gradient(
+  from var(--discord-gate-edge-angle),
+  transparent 0 282deg,
+  color-mix(in srgb,var(--gate-accent) 22%,transparent) 293deg,
+  var(--gate-accent) 309deg,
+  color-mix(in srgb,#fff 72%,var(--gate-accent)) 319deg,
+  var(--gate-accent) 329deg,
+  color-mix(in srgb,var(--gate-accent) 20%,transparent) 341deg,
+  transparent 351deg 360deg
+ )!important;
+ box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 18px color-mix(in srgb,var(--gate-accent) 7%,transparent)!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ transform:translateY(28px) scale(.985)!important;
+ opacity:0!important;
+ transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .23s ease!important;
+ animation:discordGateEdgeTrace 4.2s linear infinite!important;
+ will-change:transform,opacity;
+ isolation:isolate;
+}
+.download-discord-gate.is-visible .download-gate-card{
+ transform:translateY(0) scale(1)!important;
+ opacity:1!important;
+}
+.download-discord-gate.is-closing .download-gate-card{
+ transform:translateY(22px) scale(.988)!important;
+ opacity:0!important;
+}
+.download-discord-gate .download-gate-card::before{display:none!important}
+
+.download-gate-inner{
+ position:relative;
+ min-height:100%;
+ padding:42px 22px 22px;
+ border-radius:21px;
+ background:color-mix(in srgb,var(--gate-surface) 96%,#101010 4%);
+ color:var(--gate-text);
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--gate-text) 6%,transparent);
+ overflow:hidden;
+}
+.download-gate-inner::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ pointer-events:none;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--gate-text) 3%,transparent),transparent 26%);
+ opacity:.8;
+}
+.download-gate-inner>*{position:relative;z-index:2}
+
+.download-gate-grip{
+ position:absolute!important;
+ left:50%;
+ top:12px;
+ width:52px;
+ height:5px;
+ transform:translateX(-50%);
+ border-radius:99px;
+ background:color-mix(in srgb,var(--gate-text) 24%,transparent);
+ z-index:4!important;
+}
+.download-gate-grip span{display:none}
+
+.download-discord-gate .download-gate-icon{display:none!important}
+.download-discord-gate .download-gate-close{
+ position:absolute!important;
+ right:18px!important;
+ top:24px!important;
+ width:38px!important;
+ height:38px!important;
+ border:1px solid var(--gate-line)!important;
+ border-radius:50%!important;
+ display:grid!important;
+ place-items:center!important;
+ background:color-mix(in srgb,var(--gate-text) 3%,transparent)!important;
+ color:var(--gate-muted)!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease!important;
+}
+.download-discord-gate .download-gate-close:hover{
+ background:color-mix(in srgb,var(--gate-text) 7%,transparent)!important;
+ color:var(--gate-text)!important;
+ border-color:color-mix(in srgb,var(--gate-text) 22%,transparent)!important;
+}
+.download-discord-gate .download-gate-close:active{transform:scale(.94)!important}
+.download-discord-gate .download-gate-close:focus-visible{
+ outline:1px solid color-mix(in srgb,var(--gate-text) 34%,transparent)!important;
+ outline-offset:3px!important;
+}
+
+.download-discord-gate .download-gate-kicker{
+ margin:2px 54px 10px 0!important;
+ font:800 8px/1 'DM Sans',Arial,sans-serif!important;
+ letter-spacing:1.65px!important;
+ color:var(--gate-accent)!important;
+}
+.download-discord-gate .download-gate-card h2{
+ margin:0 54px 12px 0!important;
+ font-family:var(--gta-online-heading-font,Impact,Haettenschweiler,'Arial Narrow Bold','Arial Black',sans-serif)!important;
+ font-size:clamp(29px,7vw,38px)!important;
+ font-weight:900!important;
+ line-height:.98!important;
+ letter-spacing:.005em!important;
+ color:var(--gate-text)!important;
+}
+.download-discord-gate .download-gate-copy{
+ margin:0!important;
+ max-width:350px!important;
+ color:var(--gate-muted)!important;
+ font:500 12px/1.65 'DM Sans',Arial,sans-serif!important;
+}
+.download-discord-gate .download-gate-actions{
+ display:grid!important;
+ grid-template-columns:1fr!important;
+ gap:10px!important;
+ margin-top:22px!important;
+ padding-top:18px!important;
+ border-top:1px solid var(--gate-line)!important;
+}
+.download-discord-gate .download-gate-actions>*{
+ width:100%!important;
+ min-height:50px!important;
+ border-radius:10px!important;
+ font:800 11px/1 'DM Sans',Arial,sans-serif!important;
+}
+.download-discord-gate .download-gate-continue{
+ order:1!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:space-between!important;
+ gap:22px!important;
+ padding:0 17px!important;
+ border:1px solid var(--gate-accent)!important;
+ background:var(--gate-accent)!important;
+ color:#111!important;
+ text-decoration:none!important;
+ box-shadow:0 10px 28px color-mix(in srgb,var(--gate-accent) 14%,transparent)!important;
+ transition:transform .2s ease,filter .2s ease,box-shadow .2s ease!important;
+}
+.download-discord-gate .download-gate-continue:hover{
+ transform:translateY(-1px)!important;
+ filter:brightness(1.04);
+ box-shadow:0 13px 32px color-mix(in srgb,var(--gate-accent) 20%,transparent)!important;
+}
+.download-discord-gate .download-gate-cancel{
+ order:2!important;
+ border:1px solid var(--gate-line)!important;
+ background:color-mix(in srgb,var(--gate-text) 3%,transparent)!important;
+ color:var(--gate-text)!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ transition:background .2s ease,border-color .2s ease,transform .2s ease!important;
+}
+.download-discord-gate .download-gate-cancel:hover{
+ background:color-mix(in srgb,var(--gate-text) 7%,transparent)!important;
+ border-color:color-mix(in srgb,var(--gate-text) 22%,transparent)!important;
+}
+.download-discord-gate .download-gate-cancel:active{transform:scale(.985)!important}
+
+@keyframes discordGateEdgeTrace{to{--discord-gate-edge-angle:360deg}}
+
+@media(max-width:760px){
+ .download-discord-gate{
+  inset:auto 0 0 0!important;
+  width:100%!important;
+  max-width:none!important;
+ }
+ .download-discord-gate .download-gate-card{
+  width:100%!important;
+  border-radius:22px 22px 0 0!important;
+  transform:translateY(105%)!important;
+  box-shadow:0 -18px 58px rgba(0,0,0,.42),0 0 18px color-mix(in srgb,var(--gate-accent) 7%,transparent)!important;
+ }
+ .download-discord-gate.is-visible .download-gate-card{transform:none!important}
+ .download-discord-gate.is-closing .download-gate-card{transform:translateY(105%)!important}
+ .download-gate-inner{
+  padding:44px 24px max(20px,calc(env(safe-area-inset-bottom) + 16px));
+  border-radius:21px 21px 0 0;
+ }
+ .download-discord-gate .download-gate-close{right:20px!important;top:25px!important}
+ .download-discord-gate .download-gate-copy{max-width:560px!important}
+}
+
+@media(max-width:390px){
+ .download-gate-inner{padding-left:18px;padding-right:18px}
+ .download-discord-gate .download-gate-card h2{font-size:29px!important}
+ .download-discord-gate .download-gate-copy{font-size:11px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .download-discord-gate,.download-discord-gate::backdrop,.download-discord-gate .download-gate-card{transition:none!important}
+ .download-discord-gate .download-gate-card{animation:none!important;--discord-gate-edge-angle:318deg}
+}

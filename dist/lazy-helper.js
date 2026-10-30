@@ -10,6 +10,7 @@ addStyle('franklin-shell-v2-stability.css?v=20261030shell5','franklin-shell-v2-s
 addStyle('franklin-shell-v2-polish.css?v=20261030shell5','franklin-shell-v2-polish');
 addStyle('franklin-shell-v2-fix5.css?v=20261030shell5','franklin-shell-v2-fix5');
 addScript('franklin-context-intelligence-v1.js?v=20261030context2','franklin-context-intelligence-v1-loader');
+addScript('franklin-context-triage-v1.js?v=20261030contexttriage1','franklin-context-triage-v1-loader');
 addScript('franklin-shell-v2.js?v=20261030shell5','franklin-shell-v2-loader');
 addScript('franklin-shell-v2-fix5.js?v=20261030shell5','franklin-shell-v2-fix5-loader');
 })();

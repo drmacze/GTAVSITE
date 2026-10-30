@@ -1,0 +1,10 @@
+.franklin-shell-launcher{
+ --franklin-shell-edge:0deg;
+ border:1px solid transparent!important;
+ background:
+  linear-gradient(color-mix(in srgb,var(--franklin-shell-surface) 82%,transparent),color-mix(in srgb,var(--franklin-shell-surface) 82%,transparent)) padding-box,
+  conic-gradient(from var(--franklin-shell-edge),transparent 0 286deg,color-mix(in srgb,var(--franklin-shell-accent) 24%,transparent) 298deg,var(--franklin-shell-accent) 316deg,#fff1d5 324deg,var(--franklin-shell-accent) 333deg,transparent 349deg 360deg) border-box!important;
+ animation:franklinShellEdge 4.2s linear infinite!important;
+}
+.franklin-shell-launcher::before{display:none!important;content:none!important}
+@media(prefers-reduced-motion:reduce){.franklin-shell-launcher{animation:none!important;--franklin-shell-edge:318deg}}

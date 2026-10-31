@@ -9,6 +9,7 @@ addStyle('franklin-shell-v2.css?v=20261030shell5','franklin-shell-v2');
 addStyle('franklin-shell-v2-stability.css?v=20261030shell5','franklin-shell-v2-stability');
 addStyle('franklin-shell-v2-polish.css?v=20261030shell5','franklin-shell-v2-polish');
 addStyle('franklin-shell-v2-fix5.css?v=20261030shell5','franklin-shell-v2-fix5');
+addStyle('franklin-connect-no-outline-v1.css?v=20261031connectplain1','franklin-connect-no-outline-v1');
 addScript('franklin-release-state-v2.js?v=20261031release29state3','franklin-release-state-v2-loader');
 addScript('franklin-latest-kb-v1.js?v=20261031latest29v2','franklin-latest-kb-v2-loader');
 addScript('franklin-context-intelligence-v1.js?v=20261030context2','franklin-context-intelligence-v1-loader');

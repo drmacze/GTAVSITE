@@ -1,11 +1,11 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV6)return;
-window.__gtavGlobalBeamsV6=true;
+if(window.__gtavGlobalBeamsV7)return;
+window.__gtavGlobalBeamsV7=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
-const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail1';
+const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail2';
 const HOME_DETAIL_ID='home-rockstar-detail-v1-style';
 
 const applySiteIcon=()=>{

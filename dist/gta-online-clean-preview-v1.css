@@ -1,40 +1,31 @@
-/* Clean native GTA Online video preview. */
+/* Clean native GTA Online preview with a controlled loading state. */
 .gta-online-menu-media{
- position:relative!important;
- width:100%!important;
- aspect-ratio:16/9!important;
- height:auto!important;
- overflow:hidden!important;
- background:#050505!important;
- border-bottom:1px solid var(--gta-line);
+ position:relative!important;width:100%!important;aspect-ratio:16/9!important;height:auto!important;overflow:hidden!important;
+ background:linear-gradient(145deg,#080808,#020202)!important;border-bottom:1px solid var(--gta-line);cursor:pointer;
 }
-.gta-online-menu-media-frame{
- position:absolute!important;
- inset:0!important;
- overflow:hidden!important;
- background:#050505!important;
-}
+.gta-online-menu-media:focus-visible{outline:2px solid var(--site-accent,var(--accent));outline-offset:-3px}
+.gta-online-menu-media-frame{position:absolute!important;inset:0!important;overflow:hidden!important;background:transparent!important}
 .gta-online-native-preview{
- position:absolute!important;
- inset:0!important;
- width:100%!important;
- height:100%!important;
- display:block!important;
- object-fit:cover!important;
- object-position:center!important;
- border:0!important;
- outline:0!important;
- background:#050505!important;
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:center!important;
+ border:0!important;outline:0!important;background:#050505!important;opacity:0!important;transition:opacity .22s ease!important;
 }
-.gta-online-menu-media-shade{
- pointer-events:none!important;
- background:linear-gradient(0deg,rgba(0,0,0,.10),transparent 28%)!important;
+.gta-online-menu-promo.media-ready .gta-online-native-preview{opacity:1!important}
+.gta-online-menu-media-placeholder{
+ z-index:3!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:9px!important;
+ background:radial-gradient(circle at 50% 44%,rgba(255,171,0,.10),transparent 38%),linear-gradient(145deg,#0b0b0b,#030303)!important;
+ opacity:1!important;transition:opacity .2s ease!important;pointer-events:none!important;
 }
+.gta-online-menu-media-placeholder>span{font-weight:800!important;letter-spacing:.08em!important}
+.gta-online-menu-media-placeholder>small{font-size:10px!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:var(--muted)!important}
+.gta-online-menu-playmark{opacity:.86!important;transform:scale(.92)!important;transition:transform .2s ease,opacity .2s ease!important}
+.gta-online-menu-media:hover .gta-online-menu-playmark{transform:scale(1)!important;opacity:1!important}
+.gta-online-menu-promo.media-loading:not(.media-ready) .gta-online-menu-playmark{animation:gtaPreviewPulse 1.3s ease-in-out infinite!important}
 .gta-online-menu-promo.media-ready .gta-online-menu-media-placeholder{opacity:0!important;pointer-events:none!important}
-
+.gta-online-menu-media-shade{pointer-events:none!important;background:linear-gradient(0deg,rgba(0,0,0,.14),transparent 28%)!important}
+@keyframes gtaPreviewPulse{0%,100%{opacity:.48;transform:scale(.9)}50%{opacity:1;transform:scale(1)}}
 @media(max-width:760px){
  .gta-online-menu-media{aspect-ratio:16/9!important}
+ .gta-online-native-preview{transition-duration:.16s!important}
+ .gta-online-menu-playmark{transition:none!important}
 }
-@media(max-width:390px){
- .gta-online-menu-media{aspect-ratio:16/9!important}
-}
+@media(prefers-reduced-motion:reduce){.gta-online-native-preview,.gta-online-menu-media-placeholder,.gta-online-menu-playmark{transition:none!important}.gta-online-menu-promo.media-loading .gta-online-menu-playmark{animation:none!important}}

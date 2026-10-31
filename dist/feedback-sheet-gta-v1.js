@@ -85,9 +85,7 @@ function closeSheet(reason='manual'){
  if(reason!=='success')requestAnimationFrame(()=>dock.focus({preventScroll:true}));
 }
 
-function reopen(){
- openSheet({focus:true});
-}
+function reopen(){openSheet({focus:true});}
 
 close.addEventListener('click',()=>closeSheet('manual'));
 backdrop.addEventListener('click',()=>closeSheet('manual'));
@@ -100,8 +98,9 @@ function beginDrag(event){
  if(!sheet.classList.contains('is-open'))return;
  if(event.button!==undefined&&event.button!==0)return;
  if(event.target instanceof Element&&event.target.closest('button,a,input,textarea,select,label'))return;
- drag={id:event.pointerId,startY:event.clientY,lastY:event.clientY,lastT:performance.now(),dy:0,velocity:0};
- try{sheet.setPointerCapture(event.pointerId)}catch{}
+ const capture=event.currentTarget;
+ drag={id:event.pointerId,startY:event.clientY,lastY:event.clientY,lastT:performance.now(),dy:0,velocity:0,capture};
+ try{capture.setPointerCapture(event.pointerId)}catch{}
  sheet.classList.add('is-dragging');
  grip?.classList.add('is-dragging');
  top?.classList.add('is-dragging');
@@ -121,7 +120,8 @@ function moveDrag(event){
 }
 function endDrag(event){
  if(!drag||event.pointerId!==drag.id)return;
- try{sheet.releasePointerCapture(event.pointerId)}catch{}
+ const capture=drag.capture;
+ try{capture.releasePointerCapture(event.pointerId)}catch{}
  const shouldClose=drag.dy>110||(drag.dy>42&&drag.velocity>.55);
  drag=null;
  sheet.style.removeProperty('transform');

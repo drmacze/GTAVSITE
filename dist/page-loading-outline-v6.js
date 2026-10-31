@@ -18,6 +18,9 @@
  const SHINE_FALLBACK_MS=3400;
  const INTRO_ASSET_FALLBACK_MS=7200;
  const isHome=document.body?.dataset.page==='home';
+ const ua=navigator.userAgent||'';
+ const iOS=/iP(?:hone|ad|od)/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const mobileSafari=iOS&&/WebKit/i.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
  function hasCompletedOnboarding(){try{const saved=JSON.parse(localStorage.getItem(ONBOARDING_KEY)||sessionStorage.getItem(ONBOARDING_KEY)||'null');return Boolean(saved&&['youtube','tiktok','browser','friends','other'].includes(saved.source)&&['android','ios'].includes(saved.device)&&(saved.device==='android'||saved.model))}catch{return false}}
  function shouldGate(){const path=(location.pathname||'/').replace(/\/+$/,'')||'/',isHomePath=path.endsWith('/home')||path.endsWith('/home.html');if(path==='/'||path.endsWith('/index.html')||isHomePath||path.includes('release-publisher-8c2f71d4'))return false;return !hasCompletedOnboarding()}
  if(shouldGate()){const target=location.pathname+location.search+location.hash;try{sessionStorage.setItem('gtav-onboarding-return',target)}catch{}location.replace('/?return='+encodeURIComponent(target));return}
@@ -45,25 +48,27 @@
  try{arrived=sessionStorage.getItem(TRANSITION_KEY)==='1';sessionStorage.removeItem(TRANSITION_KEY)}catch{}
  if(arrived){
   show('arriving');
-  if(reduceMotion.matches){hide();announceIntro()}
+  if(reduceMotion.matches||mobileSafari){hide();announceIntro()}
   else setTimeout(()=>{hide();announceIntro()},ARRIVE_HOLD_MS);
  }
 
  if(isHome&&!arrived){
-  let shineDone=reduceMotion.matches,assetsReady=window.__gtavHomeIntroAssetsReady===true,finished=false,fallback=0;
+  let shineDone=reduceMotion.matches||mobileSafari;
+  let assetsReady=mobileSafari||window.__gtavHomeIntroAssetsReady===true;
+  let finished=false,fallback=0;
   const cleanup=()=>{window.removeEventListener('gtav:intro-assets-ready',onAssetsReady);glint.removeEventListener('animationend',onShineEnd);if(fallback)clearTimeout(fallback)};
   const finish=()=>{
    if(finished||!shineDone||!assetsReady)return;
    finished=true;cleanup();hide();
-   if(reduceMotion.matches)announceIntro();else setTimeout(announceIntro,280);
+   if(reduceMotion.matches||mobileSafari)announceIntro();else setTimeout(announceIntro,280);
   };
   const onAssetsReady=()=>{assetsReady=true;finish()};
   const onShineEnd=event=>{if(event.animationName!=='outline-v6-shine-once')return;shineDone=true;finish()};
   window.addEventListener('gtav:intro-assets-ready',onAssetsReady,{once:true});
   glint.addEventListener('animationend',onShineEnd);
   show();
-  if(reduceMotion.matches){requestAnimationFrame(finish)}else{void glint.getBoundingClientRect();requestAnimationFrame(()=>overlay.classList.add('is-leaving'))}
-  fallback=setTimeout(()=>{shineDone=true;assetsReady=true;finish()},INTRO_ASSET_FALLBACK_MS);
+  if(reduceMotion.matches||mobileSafari){requestAnimationFrame(finish)}else{void glint.getBoundingClientRect();requestAnimationFrame(()=>overlay.classList.add('is-leaving'))}
+  fallback=setTimeout(()=>{shineDone=true;assetsReady=true;finish()},mobileSafari?1200:INTRO_ASSET_FALLBACK_MS);
  }
 
  const prefetched=new Set();
@@ -80,7 +85,7 @@
   try{sessionStorage.setItem(TRANSITION_KEY,'1')}catch{}
   show();
   const go=()=>{location.href=url.href};
-  if(reduceMotion.matches){go();return}
+  if(reduceMotion.matches||mobileSafari){go();return}
   let finished=false;let fallback=0;
   const finish=()=>{if(finished)return;finished=true;if(fallback)clearTimeout(fallback);go()};
   const onAnimationEnd=event=>{if(event.animationName!=='outline-v6-shine-once')return;glint.removeEventListener('animationend',onAnimationEnd);finish()};

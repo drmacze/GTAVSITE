@@ -27,7 +27,7 @@ body[data-page="home"] .site-footer .footer-brand{
  color:#090909!important;
 }
 body[data-page="home"] .site-footer .footer-brand span{
- color:var(--home-gta-red)!important;
+ color:#fff!important;
  font-weight:650!important;
  opacity:1!important;
 }
@@ -45,7 +45,7 @@ body[data-page="home"] .site-footer p{
 }
 
 body[data-page="home"] .credit-platform .credit-apple span::after{
- content:" + macOS";
+ content:" | macOS";
  color:inherit;
  font:inherit;
  letter-spacing:inherit;

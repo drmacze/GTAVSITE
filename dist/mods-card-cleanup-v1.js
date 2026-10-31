@@ -1,8 +1,13 @@
 (()=>{
 'use strict';
-if(window.__modsCardCleanupV1)return;
-window.__modsCardCleanupV1=true;
+if(window.__modsCardCleanupV2)return;
+window.__modsCardCleanupV2=true;
 if(document.body?.dataset.page!=='downloads')return;
+
+const style=document.createElement('style');
+style.id='mods-card-cleanup-v2-style';
+style.textContent='.library-card-meta>span+span{display:none!important}.library-card-meta.download-count-removed{justify-content:flex-start!important}';
+document.head.append(style);
 
 function clean(root=document){
  const cards=[];

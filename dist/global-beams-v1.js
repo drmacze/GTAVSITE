@@ -1,11 +1,11 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV12)return;
-window.__gtavGlobalBeamsV12=true;
+if(window.__gtavGlobalBeamsV13)return;
+window.__gtavGlobalBeamsV13=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
-const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail2';
+const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail3';
 const HOME_DETAIL_ID='home-rockstar-detail-v1-style';
 const RELEASE30_SRC='release30-site-v1.js?v=20261031release30site2';
 const RELEASE30_ID='release30-site-v2-loader';
@@ -13,6 +13,8 @@ const APP_DOWNLOAD_SRC='app-download-discord-v1.js?v=20261031discordapps1';
 const APP_DOWNLOAD_ID='app-download-discord-v1-loader';
 const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods2';
 const RELEASE30_MODS_ID='release30-mods-v1-loader';
+const MODS_CLEANUP_SRC='mods-card-cleanup-v1.js?v=20261031modscard1';
+const MODS_CLEANUP_ID='mods-card-cleanup-v1-loader';
 
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
@@ -55,6 +57,7 @@ const ensureScript=(id,src)=>{
 const ensureRelease30=()=>ensureScript(RELEASE30_ID,RELEASE30_SRC);
 const ensureAppDownloadRouting=()=>ensureScript(APP_DOWNLOAD_ID,APP_DOWNLOAD_SRC);
 const ensureRelease30Mods=()=>{if(document.body?.dataset.page==='downloads')ensureScript(RELEASE30_MODS_ID,RELEASE30_MODS_SRC)};
+const ensureModsCleanup=()=>{if(document.body?.dataset.page==='downloads')ensureScript(MODS_CLEANUP_ID,MODS_CLEANUP_SRC)};
 const ensureFranklin30=()=>{
   if(document.body?.dataset.page!=='home')return;
   ensureScript('franklin-release-state-v4-direct','franklin-release-state-v2.js?v=20261031release30state4');
@@ -76,12 +79,12 @@ const mount=()=>{
 const syncVisibility=()=>{if(document.body)document.body.dataset.beamsPaused=document.hidden?'true':'false'};
 
 const init=()=>{
-  applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureFranklin30();mount();syncVisibility();
+  applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();mount();syncVisibility();
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
 new MutationObserver(applyChromeTint).observe(document.documentElement,{attributes:true,attributeFilter:['data-mode','data-theme']});
-window.addEventListener('load',()=>{applyChromeTint();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureFranklin30();promoteEffectsCss()},{once:true});
-window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureFranklin30();mount();syncVisibility();promoteEffectsCss()},{passive:true});
+window.addEventListener('load',()=>{applyChromeTint();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();promoteEffectsCss()},{once:true});
+window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();mount();syncVisibility();promoteEffectsCss()},{passive:true});
 window.addEventListener('gtav:site-icon-updated',applySiteIcon);
 })();

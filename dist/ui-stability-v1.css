@@ -1,0 +1,119 @@
+/* Mobile stability + professional UI pass. Keep the visual language, remove repaint-heavy behavior. */
+html,body{overflow-x:clip}
+
+/* Page transition: short, quiet and compositor-safe. */
+.page-transition{
+ background:#000!important;
+ transition:opacity .16s ease-out,visibility 0s linear .16s!important;
+}
+.page-transition.is-active{transition-delay:0s!important}
+.page-transition-mark{width:82px!important;transition:opacity .16s ease-out,transform .16s ease-out!important}
+.page-transition-mark::before,.page-transition-mark::after,.page-v-halo,.page-v-glint{display:none!important;animation:none!important;filter:none!important}
+.page-v-outline{opacity:.38!important;stroke-width:2!important}
+.page-v-inner{opacity:.13!important}
+.page-transition.is-active .page-transition-mark{animation:none!important;transform:none!important}
+.page-transition.is-revealing .page-transition-mark{transform:none!important;opacity:0!important}
+
+/* Feedback is an inline workflow on phones. Fixed nested sheets caused visualViewport jumps and repaint flicker. */
+@media(max-width:760px){
+ body[data-page="feedback"]{min-height:100dvh!important}
+ body[data-page="feedback"].feedback-page-locked{
+  position:static!important;top:auto!important;left:auto!important;right:auto!important;width:auto!important;overflow:visible!important
+ }
+ body[data-page="feedback"] .feedback-main{max-width:none!important;margin:0!important;padding:32px 0 58px!important}
+ body[data-page="feedback"] .feedback-intro{padding:0 20px!important;margin:0 0 24px!important}
+ body[data-page="feedback"] .feedback-sheet{
+  position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  z-index:2!important;width:calc(100% - 32px)!important;height:auto!important;max-height:none!important;
+  margin:0 16px 34px!important;padding:18px 18px 24px!important;
+  overflow:visible!important;overscroll-behavior:auto!important;-webkit-overflow-scrolling:auto!important;
+  transform:none!important;opacity:1!important;visibility:visible!important;will-change:auto!important;
+  border-radius:22px!important;touch-action:auto!important;
+ }
+ body[data-page="feedback"] .feedback-sheet.is-open,
+ body[data-page="feedback"] .feedback-sheet.is-dragging{transform:none!important;transition:none!important}
+ body[data-page="feedback"] .feedback-sheet-dock{display:none!important;visibility:hidden!important;pointer-events:none!important}
+ body[data-page="feedback"] .feedback-sheet .sheet-grip{display:none!important;pointer-events:none!important}
+ body[data-page="feedback"] .feedback-sheet .sheet-top{touch-action:auto!important;cursor:default!important;user-select:auto!important;-webkit-user-select:auto!important}
+ body[data-page="feedback"] .feedback-sheet::after{display:none!important}
+ body[data-page="feedback"] .feedback-sheet::before{
+  animation-duration:8s!important;filter:none!important;box-shadow:none!important
+ }
+ body[data-page="feedback"] .feedback-aside{margin:22px 20px 0!important;padding-bottom:0!important}
+ body[data-page="feedback"] .flow-actions{gap:12px!important;align-items:center!important}
+ body[data-page="feedback"] .feedback-next,
+ body[data-page="feedback"] .feedback-back{border-radius:14px!important;min-height:48px!important}
+ body[data-page="feedback"] .experience-choice{border-radius:14px!important}
+ body[data-page="feedback"] .kind-options label{border-radius:12px!important}
+}
+
+/* Keep the yellow fog, but stop animating huge fixed layers on phones. */
+@media(max-width:760px){
+ :root{--rockstar-blur:blur(20px) saturate(1.08)!important}
+ .global-beams-bg::before,.global-beams-bg::after{
+  animation:none!important;will-change:auto!important;transform:none!important;backface-visibility:visible!important;opacity:.58!important
+ }
+ .feedback-sheet::before,
+ .gta-online-menu-dock::before,.gta-online-menu-promo::before{
+  animation-duration:8s!important;filter:none!important
+ }
+ .gta-online-menu-promo{max-height:min(82dvh,720px)!important;border-radius:22px 22px 0 0!important}
+ .gta-online-menu-dock{border-radius:18px 18px 0 0!important}
+}
+
+/* Updates: clearer hierarchy and less rounded-card clutter. */
+body[data-page="updates"] .managed-updates{margin-top:28px!important}
+body[data-page="updates"] .managed-update-card{
+ border-radius:22px!important;
+ box-shadow:0 18px 52px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+body[data-page="updates"] .managed-update-version{border-radius:9px!important}
+body[data-page="updates"] .managed-update-details>summary{min-height:54px!important;padding-block:16px!important}
+body[data-page="updates"] .managed-update-downloads{gap:10px!important}
+body[data-page="updates"] .managed-update-download{
+ min-height:58px!important;border-radius:14px!important;padding:11px 14px!important
+}
+body[data-page="updates"] .release-card{border-radius:18px!important;box-shadow:none!important}
+body[data-page="updates"] .release-toolbar{border-radius:16px!important}
+body[data-page="updates"] .release-jump a{border-radius:12px!important}
+@media(max-width:760px){
+ body[data-page="updates"] .updates-wrap{padding-left:16px!important;padding-right:16px!important}
+ body[data-page="updates"] .managed-update-card{padding:18px!important;border-radius:18px!important}
+ body[data-page="updates"] .managed-update-card h3{font-size:clamp(27px,8.2vw,36px)!important;line-height:1.02!important}
+ body[data-page="updates"] .managed-update-summary{font-size:13px!important;line-height:1.65!important}
+ body[data-page="updates"] .managed-update-downloads{grid-template-columns:1fr!important}
+ body[data-page="updates"] .managed-update-download{min-height:54px!important}
+ body[data-page="updates"] .release-list{gap:18px!important}
+ body[data-page="updates"] .release-card{border-radius:16px!important}
+ body[data-page="updates"] .release-card summary{padding:18px!important}
+}
+
+/* FAQ/search: reduce layered-box feeling while keeping the sidebar glass language. */
+body[data-page="faq"] .support-search{border-radius:14px!important}
+body[data-page="faq"] .support-filter button{border-radius:10px!important}
+body[data-page="faq"] .support-group{border-radius:18px!important}
+body[data-page="faq"] .support-question{border-radius:0!important}
+
+/* Touch states should not leave hover transforms stuck on iOS. */
+@media(hover:none){
+ a:hover,button:hover,.experience-choice:hover,.managed-update-download:hover{transform:none!important}
+}
+
+/* Mobile Safari-specific reductions. */
+html[data-mobile-safari="true"] .global-beams-bg::before,
+html[data-mobile-safari="true"] .global-beams-bg::after{animation:none!important;will-change:auto!important}
+html[data-mobile-safari="true"] .page-transition-mark{display:none!important}
+html[data-mobile-safari="true"] .ask-franklin-panel,
+html[data-mobile-safari="true"] #site-menu .menu-panel,
+html[data-mobile-safari="true"] .feedback-sheet,
+html[data-mobile-safari="true"] .gta-online-menu-promo,
+html[data-mobile-safari="true"] .gta-online-menu-dock{
+ -webkit-backdrop-filter:blur(18px) saturate(1.06)!important;
+ backdrop-filter:blur(18px) saturate(1.06)!important;
+}
+
+@media(prefers-reduced-motion:reduce){
+ .page-transition,.page-transition-mark{transition:none!important}
+ .global-beams-bg::before,.global-beams-bg::after,
+ .feedback-sheet::before,.gta-online-menu-dock::before,.gta-online-menu-promo::before{animation:none!important}
+}

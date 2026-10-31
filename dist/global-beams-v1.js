@@ -19,7 +19,7 @@ const MODS_CLEANUP_ID='mods-card-cleanup-v3-loader';
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
   let icon=document.head.querySelector('link[rel="icon"]');
-  if(!icon){icon=document.createElement('link');icon.id='site-icon';icon.rel='icon';document.head.append(icon)}
+  if(!icon){icon=document.createElement('link');icon.rel='icon';document.head.append(icon)}
   icon.type='image/png';icon.sizes='512x512';icon.href=href;
   let apple=document.head.querySelector('link[rel="apple-touch-icon"]');
   if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';document.head.append(apple)}

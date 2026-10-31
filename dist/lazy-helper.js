@@ -14,6 +14,7 @@ addScript('franklin-release-state-v2.js?v=20261031release30state5','franklin-rel
 addScript('franklin-latest-kb-v1.js?v=20261031latest30v4','franklin-latest-kb-v2-loader');
 addScript('franklin-context-intelligence-v1.js?v=20261030context2','franklin-context-intelligence-v1-loader');
 addScript('franklin-context-triage-v1.js?v=20261030contexttriage1','franklin-context-triage-v1-loader');
+addScript('franklin-log-intelligence-v3-loader.js?v=20261031knowledge4','franklin-log-intelligence-v3-loader');
 addScript('franklin-dialogue-guard-v1.js?v=20261031dialogue3','franklin-dialogue-guard-v1-loader');
 addScript('franklin-shell-v2.js?v=20261031shell7','franklin-shell-v2-loader');
 addScript('franklin-shell-v2-fix5.js?v=20261031shell7','franklin-shell-v2-fix5-loader');

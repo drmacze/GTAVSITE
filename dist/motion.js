@@ -75,8 +75,8 @@
    addScript('feedback-fixes.js?v=20261031feedbacksheet2','feedback-fixes-loader');
    addStyle('feedback-sheet-gta-v1.css?v=20261031feedbacksheet2','feedback-sheet-gta-v1-style');
    addScript('feedback-sheet-gta-v1.js?v=20261031feedbacksheet2','feedback-sheet-gta-v1-script');
-   addStyle('feedback-sheet-mobile-fix-v1.css?v=20261031feedbackmobile1','feedback-sheet-mobile-fix-v1-style');
-   addScript('feedback-sheet-mobile-fix-v1.js?v=20261031feedbackmobile1','feedback-sheet-mobile-fix-v1-script');
+   addStyle('feedback-sheet-mobile-fix-v1.css?v=20261031feedbackmobile2','feedback-sheet-mobile-fix-v1-style');
+   addScript('feedback-sheet-mobile-fix-v1.js?v=20261031feedbackmobile2','feedback-sheet-mobile-fix-v1-script');
  }
  addStyle('global-beams-v1.css?v=20261031beams4','global-beams-v1-style');
  addScript('global-beams-v1.js?v=20261031beams5','global-beams-v1-script');

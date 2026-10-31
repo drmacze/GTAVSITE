@@ -1,0 +1,109 @@
+(()=>{
+'use strict';
+if(window.__franklinLogIntelligenceV2)return;
+window.__franklinLogIntelligenceV2=true;
+
+const state={last:null,lastAt:0};
+const clean=v=>String(v||'').replace(/\r/g,'');
+const has=(text,re)=>re.test(text);
+const one=(text,re)=>text.match(re)?.[1]||'';
+const context=()=>{try{return window.FranklinSupportContext?.get?.()||{}}catch{return{}}};
+
+function parseFrames(text){
+ return text.split('\n').map(line=>{
+  const m=line.match(/^\s*\d+\s+([^\s]+)\s+0x[0-9a-f]+\s+(.+)$/i);
+  return m?{module:m[1],symbol:m[2].trim()}:null;
+ }).filter(Boolean);
+}
+function analyze(raw){
+ const text=clean(raw);if(!text.trim())return null;
+ const frames=parseFrames(text);
+ const signal=one(text,/crashed:\s*(SIG[A-Z0-9]+)/i)||one(text,/\b(SIG(?:SEGV|TRAP|ABRT|BUS|ILL|FPE))\b/i);
+ const headerPlatform=one(text,/\*\*\*\s*GTA V\s*\(([^)]+)\)\s*crashed/i);
+ const thread=one(text,/crashed:\s*SIG[A-Z0-9]+[^\n]*thread\s+(\d+)/i);
+ const uuid=one(text,/GTA5\s+(?:UUID\s*[:=]?\s*)?([A-F0-9]{8}(?:-[A-F0-9-]{4,})?)/i);
+ const compatBuilt=one(text,/compat built\s+([^\n;]+)/i);
+ const modules=[...new Set(frames.map(x=>x.module))];
+ const c=context();
+ let result={
+  kind:'unknown',title:'Crash signature not identified',confidence:'low',confidenceScore:.25,
+  signal,thread,headerPlatform,uuid,compatBuilt,modules,sessionOS:c.os||'',
+  evidence:[],meaning:'The file is a GTA V diagnostic log, but this analyzer does not have enough evidence to identify a subsystem confidently.',
+  next:['Attach run.log from the same launch.','If run.log was replaced after reopening the game, attach run.prev.log instead.'],
+  needsRunLog:true,developerMatch:'',rootCauseKnown:false
+ };
+ const dxmtInit=has(text,/d3d11\.dylib/i)&&has(text,/(InternalCommandLibrary|CreateDXMTDevice|D3D11CreateDevice(?:AndSwapChain)?)/i)&&has(text,/(SettingsDefaults|GetDisplayInfo|GenerateDefaultSettings|CSettingsManager)/i);
+ const thirdParty=has(text,/(d3dr1\.dylib|libposthook\.dylib|metalshade\.log|\[proxy\])/i);
+ const missingArchive=has(text,/Unable to find critical archive/i);
+ const wheel=has(text,/CVehicleStreamRenderGfx/i)&&has(text,/SIGTRAP/i);
+ const graphicsOverhaul=has(text,/(guard word trashed|HasExpired|cloud hat)/i);
+ const hung=one(text,/Game hung for\s+([\d.]+)\s*s/i);
+ const memory=text.match(/memory:\s*footprint\s+(\d+)\s*MB.*?(\d+)\s*MB left/i);
+ const sample=one(text,/sample count[^\n]*/i);
+
+ if(dxmtInit&&signal==='SIGABRT'){
+  result={...result,
+   kind:'dxmt-device-init',title:'DXMT / D3D11 graphics-device initialization crash',confidence:'high',confidenceScore:.96,
+   evidence:[
+    'Crash signal is SIGABRT.',
+    'The crashing stack enters d3d11.dylib through DXMT InternalCommandLibrary / CommandQueue / CreateDXMTDevice.',
+    'GTA V is still in SettingsDefaults / GetDisplayInfo / GenerateDefaultSettings, so the failure happens during graphics initialization before normal gameplay.'
+   ],
+   meaning:'The failing subsystem is the DXMT/D3D11 graphics initialization path. The crash report identifies where the abort happens, but it does not include the DXMT or Metal message that explains why that code called abort().',
+   next:[
+    'Attach run.log from the exact same launch. I need the lines immediately before the abort to identify the actual DXMT/Metal error.',
+    'If run.log was overwritten after reopening the game, attach run.prev.log instead.',
+    'If you use a graphics overhaul, test with only one overhaul enabled. The developer KB specifically says overlapping graphics overhauls should not be stacked.',
+    'Do not delete saves. This stack fails while the graphics device and default display settings are being initialized, before gameplay.'
+   ],needsRunLog:true,rootCauseKnown:false
+  };
+ }else if(missingArchive){
+  result={...result,kind:'missing-archive',title:'Missing critical game archive',confidence:'high',confidenceScore:.98,evidence:['The log contains “Unable to find critical archive”.'],meaning:'The game cannot find required game data at startup.',next:['Verify the complete game data is installed in the expected folder.','Attach run.log if you need the exact archive name/path checked.'],needsRunLog:false,rootCauseKnown:true};
+ }else if(wheel){
+  result={...result,kind:'vehicle-wheel-crash',title:'Vehicle wheel rendering crash signature',confidence:'high',confidenceScore:.95,evidence:['The log contains CVehicleStreamRenderGfx together with SIGTRAP.'],meaning:'This matches the developer-KB signature for the Benny’s/Open Wheel/online-rim crash fixed in the 30 Oct release.',next:['Confirm you are on the 30 Oct release or newer.','If it still reproduces on that build, attach run.log and the crash report so the developer can compare the exact vehicle/wheel state.'],needsRunLog:false,rootCauseKnown:true,developerMatch:'CRASH-09'};
+ }else if(graphicsOverhaul){
+  result={...result,kind:'graphics-overhaul-crash',title:'Graphics overhaul startup crash signature',confidence:'high',confidenceScore:.94,evidence:['The log contains a developer-KB signature used for graphics-overhaul crashes.'],meaning:'This matches the QuantV / NaturalVision Remastered / MaxedV startup-crash family documented by the developer.',next:['Use the 30 Oct release or newer.','Enable only one graphics overhaul at a time.','If the crash remains, attach run.log from the same launch.'],needsRunLog:false,rootCauseKnown:true,developerMatch:'CRASH-08'};
+ }else if(thirdParty){
+  result={...result,kind:'third-party-hook',title:'Third-party graphics hook detected',confidence:'high',confidenceScore:.95,evidence:['The log contains a MetalShade/posthook signature.'],meaning:'The developer KB treats MetalShade/posthook as a third-party modification, not part of the port.',next:['Reinstall the plain public release over the current app so saves/data stay, then reproduce once without the hook.','If the plain build still crashes, send its new run.log and crash report.'],needsRunLog:false,rootCauseKnown:true,developerMatch:'THIRD-01'};
+ }else if(hung){
+  result={...result,kind:'hang',title:'Game hang detected',confidence:'medium',confidenceScore:.72,evidence:[`The log records a ${hung}-second hang.`],meaning:'The game stopped responding, but a hang duration alone does not identify whether the cause is I/O, graphics, scripting, memory, or another subsystem.',next:['Attach run.log from the same launch so I can inspect the lines before the hang.'],needsRunLog:true,rootCauseKnown:false};
+ }else if(memory){
+  const left=Number(memory[2]);
+  result={...result,kind:'memory-pressure',title:left<150?'Very low recorded memory headroom':'Memory state recorded',confidence:left<150?'medium':'low',confidenceScore:left<150?.78:.48,evidence:[`Recorded memory footprint: ${memory[1]} MB; remaining app memory: ${memory[2]} MB.`],meaning:left<150?'The recorded remaining app memory is very low and could contribute to instability, but this line alone does not prove that memory caused the crash.':'The log includes memory information, but the values alone do not prove the crash cause.',next:['Attach the crash report and run.log together so the failure line can be compared with the memory state.'],needsRunLog:true,rootCauseKnown:false};
+ }else if(sample){
+  result={...result,kind:'graphics-sample-count',title:'Graphics sample-count compatibility error',confidence:'medium',confidenceScore:.78,evidence:[sample],meaning:'The graphics configuration is requesting an unsupported sample-count/MSAA combination.',next:['Disable MSAA and Reflection MSAA, then reproduce once.','If it still crashes, attach the new run.log.'],needsRunLog:false,rootCauseKnown:true};
+ }
+ state.last=result;state.lastAt=Date.now();
+ window.dispatchEvent(new CustomEvent('franklin-log-analysis',{detail:result}));
+ return result;
+}
+
+function platformNote(a){
+ const selected=String(a.sessionOS||'');
+ if(!a.headerPlatform||!selected)return'';
+ const selectedMac=/macos/i.test(selected),headerMac=/macos/i.test(a.headerPlatform);
+ if(selectedMac===headerMac)return'';
+ return `Platform note: the support session is set to ${selected}, while the crash header says “${a.headerPlatform}”. I will not treat that label alone as proof of the wrong build, but it is worth checking together with the GTA5 UUID/build lines.`;
+}
+function format(a){
+ if(!a)return'I could not read this log.';
+ const blocks=[];
+ blocks.push(`${a.title}\nConfidence: ${a.confidence}.`);
+ if(a.signal||a.thread)blocks.push(`Crash: ${[a.signal,a.thread?`thread ${a.thread}`:''].filter(Boolean).join(' · ')}`);
+ if(a.evidence.length)blocks.push('What I found:\n'+a.evidence.map((x,i)=>`${i+1}. ${x}`).join('\n'));
+ blocks.push('What it means:\n'+a.meaning);
+ const note=platformNote(a);if(note)blocks.push(note);
+ if(a.next.length)blocks.push('What to do next:\n'+a.next.map((x,i)=>`${i+1}. ${x}`).join('\n'));
+ if(a.needsRunLog)blocks.push('Important: this crash report is enough to identify the failing area, but not always the root cause. run.log or run.prev.log usually contains the message immediately before the crash.');
+ if(a.developerMatch)blocks.push(`Developer KB match: ${a.developerMatch}.`);
+ return blocks.join('\n\n');
+}
+function followUp(q){
+ if(!state.last||Date.now()-state.lastAt>30*60*1000)return null;
+ const n=String(q||'').toLowerCase();
+ if(!/(what next|what should i do|anything else|how to fix|fix it|why|what does|meaning|maksud|selanjutnya|harus apa|perbaiki|penyebab)/i.test(n))return null;
+ const a=state.last;
+ return {text:format(a),topic:'log-analysis',grounded:true,requiresLog:!!a.needsRunLog,suggestions:a.needsRunLog?['Where can I find run.log?','What should I attach next?']:[]};
+}
+window.FranklinLogIntelligence={analyze,format,followUp,getLast:()=>state.last,status:()=>({lastKind:state.last?.kind||'',lastConfidence:state.last?.confidence||'',lastAt:state.lastAt})};
+})();

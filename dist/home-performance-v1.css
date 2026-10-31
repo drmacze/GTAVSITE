@@ -16,13 +16,14 @@ body[data-page=home].home-perf-v1 .home-intro-v5-cover-phase,
 body[data-page=home].home-perf-v1 .home-intro-v5-message-phase{will-change:auto!important}
 body[data-page=home].home-perf-v1 .home-intro-v5.is-perf-visible .home-intro-v5-cover-phase,
 body[data-page=home].home-perf-v1 .home-intro-v5.is-perf-visible .home-intro-v5-message-phase{will-change:transform,opacity!important}
-body[data-page=home].home-perf-v1 .gameplay-section,
 body[data-page=home].home-perf-v1 .project-credits{content-visibility:auto;contain-intrinsic-size:auto 900px}
-body[data-page=home].home-perf-v1 .gameplay-slide img{backface-visibility:hidden}
+body[data-page=home].home-perf-v1 .gameplay-section{content-visibility:visible!important;contain-intrinsic-size:none!important;contain:none!important}
+body[data-page=home].home-perf-v1 .gameplay-track{contain:paint;isolation:isolate;scroll-behavior:auto!important}
+body[data-page=home].home-perf-v1 .gameplay-slide,
+body[data-page=home].home-perf-v1 .gameplay-slide img{filter:none!important;transform:none!important;opacity:1!important;will-change:auto!important;backface-visibility:hidden!important}
 body[data-page=home].home-perf-v1.perf-page-hidden .home-intro-v5 *,
 body[data-page=home].home-perf-v1.perf-page-hidden .story-showcase-v1 *{animation-play-state:paused!important}
 @media(max-width:760px){
- body[data-page=home].home-perf-v1 .gameplay-section,
  body[data-page=home].home-perf-v1 .project-credits{content-visibility:visible!important;contain-intrinsic-size:none!important;contain:none!important}
  body[data-page=home].home-perf-v1 .gameplay-slide img{will-change:auto!important}
  body[data-page=home].home-perf-v1 .story-st6 .story-showcase-v1-card{box-shadow:0 26px 62px rgba(0,0,0,.48)!important}
@@ -34,6 +35,10 @@ body[data-page=home].home-perf-v1.perf-page-hidden .story-showcase-v1 *{animatio
  body[data-page=home].home-perf-v1.perf-chrome-mac .home-intro-v5-cover img{transform:none!important}
  body[data-page=home].home-perf-v1.perf-chrome-mac .home-intro-v5-mark svg{filter:none!important}
  body[data-page=home].home-perf-v1.perf-chrome-mac .home-intro-v5-cover{box-shadow:0 26px 64px rgba(0,0,0,.34)!important}
+ body[data-page=home].home-perf-v1.perf-chrome-mac .gameplay-section{content-visibility:visible!important;contain:none!important}
+ body[data-page=home].home-perf-v1.perf-chrome-mac .gameplay-track,
+ body[data-page=home].home-perf-v1.perf-chrome-mac .gameplay-slide,
+ body[data-page=home].home-perf-v1.perf-chrome-mac .gameplay-slide img{transform:none!important;filter:none!important;will-change:auto!important}
 }
 @media(prefers-reduced-motion:reduce){
  body[data-page=home].home-perf-v1 .story-showcase-v1 *,body[data-page=home].home-perf-v1 .home-intro-v5 *{animation:none!important}

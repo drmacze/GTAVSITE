@@ -62,7 +62,7 @@ function remember(q,r){
  state.lastAt=Date.now();
  try{window.FranklinConversation?.remember?.(q,r)}catch{}
 }
-function contextualReply(q){
+function contextualReply(){
  const last=state.lastResult;if(!last||Date.now()-state.lastAt>30*60*1000)return null;
  if(last.topic==='crash-intake'||last.requiresLog){
   return {text:'The next useful check is the log itself. Attach run.log or the newest crash-*.txt from that crash. Until I can read the failure lines, I should not guess whether the cause is memory, game data, a mod, signing, graphics, or something else.',topic:'crash-intake',grounded:true,requiresLog:true,suggestions:['Where can I find the logs?','What files should I attach?']};
@@ -78,11 +78,17 @@ function installDeveloper(){
  if(!kb||kb.__dialogueGuardV1||typeof kb.answer!=='function')return false;
  const old=kb.answer.bind(kb);
  kb.answer=async raw=>{
-  const q=String(raw||'');
-  if(asksLogLocation(q))return logHelp();
-  if(asksAttach(q))return attachHelp();
-  if(crashIntent(q)&&!logEvidence(q))return crashIntake();
-  return await old(raw);
+  const q=String(raw||'').trim();
+  let r=null;
+  if(asksLogLocation(q))r=logHelp();
+  else if(asksAttach(q))r=attachHelp();
+  else if(crashIntent(q)&&!logEvidence(q))r=crashIntake();
+  else if(genericFollow(q)&&state.lastQuestion){
+   r=contextualReply();
+   if(!r)r=await old(`Regarding the previous GTA V question: ${state.lastQuestion}. Follow-up: ${q}`);
+  }else r=await old(raw);
+  remember(q,r);
+  return r;
  };
  kb.__dialogueGuardV1=true;
  return true;
@@ -99,7 +105,7 @@ function installExtended(){
   if(asksAttach(q)){const r=attachHelp();remember(q,r);return r;}
   if(crashIntent(q)&&!logEvidence(q)){const r=crashIntake();remember(q,r);return r;}
   if(genericFollow(q)&&state.lastQuestion){
-   const direct=contextualReply(q);
+   const direct=contextualReply();
    if(direct){remember(q,direct);return direct;}
    const enriched=`Regarding my previous GTA V question: ${state.lastQuestion}. Follow-up: ${q}`;
    const r=await old(enriched);remember(q,r);return r;

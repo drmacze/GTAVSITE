@@ -17,11 +17,13 @@ function fileType(text,filename=''){
  if(/^crash-.*\.txt$/.test(n)||/\*\*\*\s*GTA V\s*\([^)]+\)\s*crashed:/i.test(text))return'crash-report';
  if(/run\.prev\.log$/.test(n))return'run-prev';
  if(/run\.log$/.test(n))return'run-log';
+ if(!/\*\*\*\s*GTA V\s*\([^)]+\)\s*crashed:/i.test(text)&&/(?:\[macport\]|\[RAGE\]|GTA5 UUID|compat built|memory:\s*footprint)/i.test(text))return'run-log';
  return'log';
 }
 function supportContext(){const c=context();return{sessionOS:c.os||'',sessionBuild:c.build?.label||'',sessionBuildPlatform:c.build?.platform||'',sessionUUID:c.uuid||''};}
 function base(text,opts={}){
  const frames=parseFrames(text),ctx=supportContext();
+ const detectedBuild=window.FranklinDeveloperKB?.detectBuild?.(text)||null;
  const signal=one(text,/crashed:\s*(SIG[A-Z0-9]+)/i)||one(text,/\b(SIG(?:SEGV|TRAP|ABRT|BUS|ILL|FPE))\b/i);
  const headerPlatform=one(text,/\*\*\*\s*GTA V\s*\(([^)]+)\)\s*crashed/i);
  const thread=one(text,/crashed:\s*SIG[A-Z0-9]+[^\n]*thread\s+(\d+)/i);
@@ -34,7 +36,7 @@ function base(text,opts={}){
  return{
   kind:'unknown',title:'Crash signature not identified',diagnosis:'No confirmed root cause yet',confidenceScore:.25,confidence:'low',
   fileType:fileType(text,opts.filename),filename:opts.filename||'',signal,thread,headerPlatform,uuid,compatBuilt,
-  modules:uniq(frames.map(x=>x.module)),frames, ...ctx, memory,thermal,
+  modules:uniq(frames.map(x=>x.module)),frames, ...ctx, memory,thermal,logBuild:detectedBuild,
   evidence:[],supporting:[],notIndicated:[],meaning:'The log is valid GTA V diagnostic data, but there is not enough evidence yet to identify the root cause confidently.',
   next:['Attach run.log from the same incident.','If run.log was replaced after reopening the game, attach run.prev.log instead.'],
   needsRunLog:true,rootCauseKnown:false,developerMatch:'',severity:'diagnostic',exactFiles:[],notableLines:[]
@@ -80,6 +82,9 @@ function analyze(raw,opts={}){
  const overhaul=/(guard word trashed|HasExpired|cloud hat)/i.test(text);
  const hang=one(text,/Game hung for\s+([\d.]+)\s*s/i);
  const sample=text.match(/sample count[^\n]*/i)?.[0]||'';
+ const missionMap=[['trevor3','Friends Reunited'],['docks_heista','The Merryweather Heist'],['fbi3','By the Book'],['gunclub_shop','Ammu-Nation']];
+ const missions=missionMap.filter(([id])=>new RegExp('\\b'+id+'\\b','i').test(text)).map(([,name])=>name);
+ if(missions.length)r.supporting.push('Running-script context points to: '+uniq(missions).join(', ')+'.');
 
  if(missingArchives.length){
   r.kind='missing-archive';r.title='Required game archive is missing';r.diagnosis=`Cause found: ${missingArchives.length===1?missingArchives[0]:'required game archives'} could not be found`;r.exactFiles=missingArchives;r.rootCauseKnown=true;r.needsRunLog=false;r.developerMatch='DATA-02';
@@ -140,11 +145,13 @@ function format(a){
  if(!a)return'I could not read this log.';
  const b=[];b.push(`Diagnosis: ${a.diagnosis}\nConfidence: ${a.confidence}.`);
  const session=[a.sessionOS,a.sessionBuild].filter(Boolean).join(' · ');if(session)b.push(`Session context: ${session}.`);
+ if(a.logBuild)b.push(`Build detected from log: ${a.logBuild.label} · ${a.logBuild.platform} · GTA5 UUID ${a.logBuild.uuid}.${a.logBuild.current?' Current public build.':' Older build.'}`);
  if(a.signal||a.thread)b.push(`Crash: ${[a.signal,a.thread?`thread ${a.thread}`:''].filter(Boolean).join(' · ')}`);
  if(a.evidence.length)b.push('Evidence:\n'+a.evidence.map((x,i)=>`${i+1}. ${x}`).join('\n'));
  if(a.supporting.length)b.push('Supporting context:\n'+a.supporting.map(x=>'• '+x).join('\n'));
  if(a.notIndicated.length)b.push('Not indicated by this log:\n'+a.notIndicated.map(x=>'• '+x).join('\n'));
  b.push('What it means:\n'+a.meaning);
+ if(a.logBuild&&a.sessionBuild&&a.logBuild.label!==a.sessionBuild)b.push(`Build note: the selected session build is ${a.sessionBuild}, but the log identifies ${a.logBuild.label}. I use the log build as stronger evidence for this incident.`);
  const note=platformNote(a);if(note)b.push(note);
  if(a.next.length)b.push('What to do next:\n'+a.next.map((x,i)=>`${i+1}. ${x}`).join('\n'));
  if(a.needsRunLog)b.push('Still needed: run.log or run.prev.log from the same incident can contain the message immediately before the failure.');

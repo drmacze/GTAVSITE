@@ -3,9 +3,9 @@
  const addScript=(src,id)=>{if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;document.head.append(s)};
  const addStyle=(href,key)=>{if(document.querySelector(`link[data-${key}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.setAttribute(`data-${key}`,'true');document.head.append(l)};
  addScript('franklin-ui-guard-v2.js?v=20261031release30state3','franklin-ui-guard-v2-loader');
- addScript('site-ui-polish-v2.js?v=20261030ui2','site-ui-polish-v2-loader');
- addStyle('ui-stability-v1.css?v=20261031stability1','ui-stability-v1');
- addScript('ui-stability-v1.js?v=20261031stability1','ui-stability-v1-loader');
+ addScript('site-ui-polish-v2.js?v=20261031ui8','site-ui-polish-v2-loader');
+ addStyle('ui-stability-v1.css?v=20261031stability2','ui-stability-v1');
+ addScript('ui-stability-v1.js?v=20261031stability2','ui-stability-v1-loader');
  if(document.body?.dataset.page==='feedback'){
   addStyle('feedback-fixes.css?v=20261028unified5','feedback-fixes');
   addScript('feedback-fixes.js?v=20261028unified5','feedback-fixes-loader');
@@ -27,8 +27,6 @@
  document.addEventListener('pointerover',e=>{const a=e.target.closest?.('a[href]');if(a)prefetch(a)},{passive:true});
  document.addEventListener('touchstart',e=>{const a=e.target.closest?.('a[href]');if(a)prefetch(a)},{passive:true});
 
- /* Mobile Safari was visibly flashing because the old full-screen V transition held the page for ~1.9s.
-    Phones now use native navigation over the site's black base. */
  if(mobile||reduceMotion.matches)return;
 
  const overlay=document.createElement('div');

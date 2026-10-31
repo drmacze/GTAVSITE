@@ -1,12 +1,15 @@
 (()=>{
 'use strict';
-if(window.__gtavUiStabilityV2)return;
-window.__gtavUiStabilityV2=true;
+if(window.__gtavUiStabilityV3)return;
+window.__gtavUiStabilityV3=true;
 
 const mobile=()=>matchMedia('(max-width:760px)').matches;
-const ios=/iP(?:hone|ad|od)/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
-const safari=/Safari/i.test(navigator.userAgent)&&!/CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
+const ua=navigator.userAgent||'';
+const ios=/iP(?:hone|ad|od)/.test(ua)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
+const safari=/Safari/i.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
+const chromeMac=/Macintosh|Mac OS X/i.test(ua)&&/Chrome|Chromium/i.test(ua)&&!/Edg|OPR/i.test(ua);
 if(ios&&safari)document.documentElement.dataset.mobileSafari='true';
+if(chromeMac)document.documentElement.dataset.chromeMac='true';
 document.documentElement.dataset.uiStable='true';
 
 function promoteCss(){

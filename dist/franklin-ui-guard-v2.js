@@ -11,6 +11,7 @@ addStyle('franklin-shell-v2-polish.css?v=20261031shell6','franklin-shell-v2-poli
 addStyle('franklin-shell-v2-fix5.css?v=20261031shell6','franklin-shell-v2-fix5');
 addScript('franklin-release-state-v2.js?v=20261031release30state5','franklin-release-state-v5-loader');
 addScript('franklin-developer-kb.js?v=20261031developerkb2','franklin-developer-kb-v2-loader');
+addScript('franklin-developer-kb-20261031.js?v=20261031overlay1','franklin-developer-kb-20261031-loader');
 addScript('franklin-latest-kb-v1.js?v=20261031latest30v4','franklin-latest-kb-v4-loader');
 addScript('franklin-context-intelligence-v1.js?v=20261030context2','franklin-context-intelligence-v1-loader');
 addScript('franklin-context-triage-v1.js?v=20261030contexttriage1','franklin-context-triage-v1-loader');

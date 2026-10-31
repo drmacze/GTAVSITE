@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV8)return;
-window.__gtavGlobalBeamsV8=true;
+if(window.__gtavGlobalBeamsV9)return;
+window.__gtavGlobalBeamsV9=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
@@ -9,6 +9,10 @@ const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail2';
 const HOME_DETAIL_ID='home-rockstar-detail-v1-style';
 const RELEASE30_SRC='release30-site-v1.js?v=20261031release30site1';
 const RELEASE30_ID='release30-site-v1-loader';
+const APP_DOWNLOAD_SRC='app-download-discord-v1.js?v=20261031discordapps1';
+const APP_DOWNLOAD_ID='app-download-discord-v1-loader';
+const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods1';
+const RELEASE30_MODS_ID='release30-mods-v1-loader';
 
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
@@ -31,78 +35,46 @@ const applyChromeTint=()=>{
 const ensureEffectsCss=()=>{
   document.getElementById('sidebar-outline-fog-v2-style')?.remove();
   let link=document.getElementById(EFFECTS_ID);
-  if(!link){
-    link=document.createElement('link');
-    link.id=EFFECTS_ID;
-    link.rel='stylesheet';
-    link.href=EFFECTS_HREF;
-    document.head.append(link);
-  }else if(link.getAttribute('href')!==EFFECTS_HREF){
-    link.href=EFFECTS_HREF;
-  }
+  if(!link){link=document.createElement('link');link.id=EFFECTS_ID;link.rel='stylesheet';link.href=EFFECTS_HREF;document.head.append(link)}
+  else if(link.getAttribute('href')!==EFFECTS_HREF)link.href=EFFECTS_HREF;
   return link;
 };
 
 const ensureHomeDetailCss=()=>{
   if(document.body?.dataset.page!=='home')return null;
   let link=document.getElementById(HOME_DETAIL_ID);
-  if(!link){
-    link=document.createElement('link');
-    link.id=HOME_DETAIL_ID;
-    link.rel='stylesheet';
-    link.href=HOME_DETAIL_HREF;
-    document.head.append(link);
-  }else if(link.getAttribute('href')!==HOME_DETAIL_HREF){
-    link.href=HOME_DETAIL_HREF;
-  }
+  if(!link){link=document.createElement('link');link.id=HOME_DETAIL_ID;link.rel='stylesheet';link.href=HOME_DETAIL_HREF;document.head.append(link)}
+  else if(link.getAttribute('href')!==HOME_DETAIL_HREF)link.href=HOME_DETAIL_HREF;
   return link;
 };
 
-const ensureRelease30=()=>{
-  if(document.getElementById(RELEASE30_ID))return;
-  const script=document.createElement('script');
-  script.id=RELEASE30_ID;
-  script.src=RELEASE30_SRC;
-  script.defer=true;
-  document.head.append(script);
+const ensureScript=(id,src)=>{
+  if(document.getElementById(id))return;
+  const script=document.createElement('script');script.id=id;script.src=src;script.defer=true;document.head.append(script);
 };
+const ensureRelease30=()=>ensureScript(RELEASE30_ID,RELEASE30_SRC);
+const ensureAppDownloadRouting=()=>ensureScript(APP_DOWNLOAD_ID,APP_DOWNLOAD_SRC);
+const ensureRelease30Mods=()=>{if(document.body?.dataset.page==='downloads')ensureScript(RELEASE30_MODS_ID,RELEASE30_MODS_SRC)};
 
 const promoteEffectsCss=()=>{
   const links=[ensureEffectsCss(),ensureHomeDetailCss()].filter(Boolean);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    links.forEach(link=>{if(link.isConnected)document.head.append(link)});
-  }));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>links.forEach(link=>{if(link.isConnected)document.head.append(link)})));
 };
 
 const mount=()=>{
   let layer=document.querySelector('.global-beams-bg');
-  if(!layer){
-    layer=document.createElement('div');
-    layer.className='global-beams-bg';
-    layer.setAttribute('aria-hidden','true');
-    document.body.prepend(layer);
-  }
+  if(!layer){layer=document.createElement('div');layer.className='global-beams-bg';layer.setAttribute('aria-hidden','true');document.body.prepend(layer)}
   layer.replaceChildren();
 };
-
-const syncVisibility=()=>{
-  if(document.body)document.body.dataset.beamsPaused=document.hidden?'true':'false';
-};
+const syncVisibility=()=>{if(document.body)document.body.dataset.beamsPaused=document.hidden?'true':'false'};
 
 const init=()=>{
-  applySiteIcon();
-  applyChromeTint();
-  ensureEffectsCss();
-  ensureHomeDetailCss();
-  ensureRelease30();
-  mount();
-  syncVisibility();
+  applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();mount();syncVisibility();
 };
-
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
 new MutationObserver(applyChromeTint).observe(document.documentElement,{attributes:true,attributeFilter:['data-mode','data-theme']});
-window.addEventListener('load',()=>{applyChromeTint();ensureRelease30();promoteEffectsCss()},{once:true});
-window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();mount();syncVisibility();promoteEffectsCss()},{passive:true});
+window.addEventListener('load',()=>{applyChromeTint();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();promoteEffectsCss()},{once:true});
+window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();mount();syncVisibility();promoteEffectsCss()},{passive:true});
 window.addEventListener('gtav:site-icon-updated',applySiteIcon);
 })();

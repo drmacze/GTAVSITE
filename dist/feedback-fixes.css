@@ -1,5 +1,7 @@
 body[data-page="feedback"] #feedback-toast{display:none!important}
 body[data-page="feedback"] .franklin-nudge{display:none!important}
+body[data-page="feedback"] .feedback-sheet-backdrop{appearance:none;-webkit-appearance:none;border:0;padding:0;margin:0;font:inherit}
+body[data-page="feedback"] .feedback-sheet-dock{appearance:none;-webkit-appearance:none;font:inherit;text-align:left}
 
 .feedback-inline-error{
   display:block;

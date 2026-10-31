@@ -1,0 +1,28 @@
+/* Franklin connecting card: plain glass, no travelling outline effect. */
+.franklin-connect-card-v5,
+.franklin-connect-card-v5.is-open{
+ border:1px solid rgba(255,255,255,.11)!important;
+ background:linear-gradient(rgba(16,16,16,.88),rgba(11,11,11,.94))!important;
+ background-origin:padding-box!important;
+ background-clip:padding-box!important;
+ animation:none!important;
+ box-shadow:0 22px 74px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+.franklin-connect-card-v5::before,
+.franklin-connect-card-v5::after{
+ content:none!important;
+ display:none!important;
+ animation:none!important;
+ background:none!important;
+ box-shadow:none!important;
+ filter:none!important;
+}
+.franklin-shell-launcher[data-state="connecting"]::before,
+.franklin-shell-launcher[data-state="connecting"]::after{
+ content:none!important;
+ display:none!important;
+ animation:none!important;
+ background:none!important;
+ box-shadow:none!important;
+ filter:none!important;
+}

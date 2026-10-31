@@ -16,22 +16,57 @@ export async function onRequest(context){
   if(request.method==='POST'){
    if(!sameOrigin(request))return json({error:'origin_not_allowed'},403);
    let body={};try{body=await request.json()}catch{return json({error:'invalid_json'},400)}
-   const eventId=clean(body.eventId,120),downloadUrl=clean(body.downloadUrl,1800),fallbackTitle=clean(body.title,160);
+   const eventId=clean(body.eventId,120),downloadUrl=clean(body.downloadUrl,1800),requestedModId=clean(body.modId,120),fallbackTitle=clean(body.title,160);
    if(!eventId||!downloadUrl)return json({error:'missing_fields'},400);
    let mod=null;
-   try{mod=await env.VISITS_DB.prepare(`SELECT id,title FROM project_mods WHERE download_url=? AND published=1 LIMIT 1`).bind(downloadUrl).first()}catch{}
-   const modId=clean(mod?.id||body.modId||fallbackTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'unknown',120);
+   try{
+    if(requestedModId)mod=await env.VISITS_DB.prepare(`SELECT id,title FROM project_mods WHERE id=? AND published=1 LIMIT 1`).bind(requestedModId).first();
+    if(!mod)mod=await env.VISITS_DB.prepare(`SELECT id,title FROM project_mods WHERE download_url=? AND published=1 LIMIT 1`).bind(downloadUrl).first();
+   }catch{}
+   const modId=clean(mod?.id||requestedModId||fallbackTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'unknown',120);
    const modTitle=clean(mod?.title||fallbackTitle||'Unknown mod',160);
    await env.VISITS_DB.prepare(`INSERT OR IGNORE INTO mod_download_events(event_id,mod_id,mod_title,created_at) VALUES(?,?,?,CURRENT_TIMESTAMP)`).bind(eventId,modId,modTitle).run();
-   return json({ok:true});
+   return json({ok:true,modId,modTitle});
   }
 
   if(!(await isAdmin(request)))return json({error:'unauthorized'},401);
   const total=await env.VISITS_DB.prepare(`SELECT COUNT(*) AS n FROM mod_download_events`).first();
   const today=await env.VISITS_DB.prepare(`SELECT COUNT(*) AS n FROM mod_download_events WHERE date(created_at)=date('now')`).first();
   const seven=await env.VISITS_DB.prepare(`SELECT COUNT(*) AS n FROM mod_download_events WHERE datetime(created_at)>=datetime('now','-7 days')`).first();
-  const perMod=await env.VISITS_DB.prepare(`SELECT mod_id,MAX(mod_title) AS title,COUNT(*) AS downloads,SUM(CASE WHEN date(created_at)=date('now') THEN 1 ELSE 0 END) AS today FROM mod_download_events GROUP BY mod_id ORDER BY downloads DESC, title ASC LIMIT 100`).all();
+
+  let catalog={results:[]};
+  try{
+   catalog=await env.VISITS_DB.prepare(`
+    SELECT
+     m.id AS mod_id,
+     m.title AS title,
+     m.category AS category,
+     m.created_at AS created_at,
+     COUNT(e.event_id) AS downloads,
+     SUM(CASE WHEN date(e.created_at)=date('now') THEN 1 ELSE 0 END) AS today
+    FROM project_mods m
+    LEFT JOIN mod_download_events e ON e.mod_id=m.id
+    WHERE m.published=1
+    GROUP BY m.id,m.title,m.category,m.created_at
+    ORDER BY downloads DESC,datetime(m.created_at) DESC,title ASC
+   `).all();
+  }catch{}
+
+  const catalogIds=new Set((catalog.results||[]).map(x=>String(x.mod_id)));
+  const legacy=await env.VISITS_DB.prepare(`
+   SELECT mod_id,MAX(mod_title) AS title,COUNT(*) AS downloads,
+    SUM(CASE WHEN date(created_at)=date('now') THEN 1 ELSE 0 END) AS today
+   FROM mod_download_events
+   GROUP BY mod_id
+   ORDER BY downloads DESC,title ASC
+   LIMIT 200
+  `).all();
+  const perMod=[
+   ...(catalog.results||[]).map(x=>({id:x.mod_id,title:x.title||x.mod_id,category:x.category||'',createdAt:x.created_at||'',downloads:Number(x.downloads||0),today:Number(x.today||0),published:true})),
+   ...(legacy.results||[]).filter(x=>!catalogIds.has(String(x.mod_id))).map(x=>({id:x.mod_id,title:x.title||x.mod_id,category:'legacy',createdAt:'',downloads:Number(x.downloads||0),today:Number(x.today||0),published:false}))
+  ].sort((a,b)=>b.downloads-a.downloads||Number(b.published)-Number(a.published)||String(b.createdAt).localeCompare(String(a.createdAt))||a.title.localeCompare(b.title));
+
   const daily=await env.VISITS_DB.prepare(`SELECT date(created_at) AS day,COUNT(*) AS downloads FROM mod_download_events WHERE datetime(created_at)>=datetime('now','-13 days') GROUP BY date(created_at) ORDER BY day ASC`).all();
-  return json({total:Number(total?.n||0),today:Number(today?.n||0),last7Days:Number(seven?.n||0),perMod:(perMod.results||[]).map(x=>({id:x.mod_id,title:x.title||x.mod_id,downloads:Number(x.downloads||0),today:Number(x.today||0)})),daily:(daily.results||[]).map(x=>({day:x.day,downloads:Number(x.downloads||0)}))});
- }catch(error){return json({error:'server_error'},500)}
+  return json({total:Number(total?.n||0),today:Number(today?.n||0),last7Days:Number(seven?.n||0),catalogCount:(catalog.results||[]).length,perMod,daily:(daily.results||[]).map(x=>({day:x.day,downloads:Number(x.downloads||0)}))});
+ }catch(error){console.error('mod downloads api error',error);return json({error:'server_error'},500)}
 }

@@ -39,7 +39,7 @@
    addStyle('home-intro-sidebar-scope-v1.css?v=20261029intro-nav1','home-intro-sidebar-scope-v1-style');
    addStyle('community-welcome-v3.css?v=20261028communitywelcome4','community-welcome-v3-style');
    addStyle('home-sound-icon-v1.css?v=20261029soundicon1','home-sound-icon-v1-style');
-   addScript('home-intro-v4.js?v=20261028homeintro4r4','home-intro-v4-script');
+   addScript('home-intro-v4.js?v=20261031homeintro4r5','home-intro-v4-script');
    window.__storyST5=true;
    addStyle('story-scrolltrigger-v3.css?v=20261031st8','story-scrolltrigger-v3-style');
    addScript('story-scrolltrigger-v3.js?v=20261031st8','story-scrolltrigger-v3-script');

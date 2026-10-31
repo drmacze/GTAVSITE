@@ -1,29 +1,41 @@
 (()=>{
 'use strict';
-if(window.__franklinReleaseStateV2)return;
-window.__franklinReleaseStateV2=true;
-/* Block the obsolete cached latest-KB v1 before Franklin starts. The new
-   29-Oct KB uses its own v2 guard and still loads normally. */
+if(window.__franklinReleaseStateV3)return;
+window.__franklinReleaseStateV3=true;
+/* Block obsolete cached latest wrappers before Franklin starts. */
 window.__gtavFranklinLatestKBV1=true;
 
-const CURRENT={
- key:'release-20261029-ios',
- uuid:'',
- label:'29 Oct release',
- platform:'iOS / iPadOS',
- compat:'',
- line:'29 Oct 2026 public iPhone/iPad release. GTA5 UUID and compat timestamp are not asserted unless present in a user log or verified release metadata.'
-};
+const CURRENT=[
+ {
+  key:'release-20261030-ios',
+  uuid:'',
+  label:'30 Oct release',
+  platform:'iOS / iPadOS',
+  compat:'',
+  line:'30 Oct 2026 public iPhone/iPad release. GTA5 UUID and compat timestamp are not asserted unless present in a user log or verified release metadata.'
+ },
+ {
+  key:'release-20261030-macos',
+  uuid:'',
+  label:'30 Oct release',
+  platform:'macOS',
+  compat:'',
+  line:'30 Oct 2026 public Mac release. GTA5 UUID and compat timestamp are not asserted unless present in a user log or verified release metadata.'
+ }
+];
 let catalogPatched=false;
 let rerendered=false;
 
-function hasCurrent(list){return Array.isArray(list)&&list.some(item=>item?.key===CURRENT.key||/\b29\s+Oct\b/i.test(item?.label||''));}
+function buildKey(item){return item?.key||item?.uuid||'';}
+function hasItem(list,item){return Array.isArray(list)&&list.some(entry=>buildKey(entry)===item.key);}
 function addCurrent(list){
- if(!Array.isArray(list)||hasCurrent(list))return false;
- list.push({...CURRENT});
- catalogPatched=true;
- return true;
+ if(!Array.isArray(list))return false;
+ let changed=false;
+ CURRENT.forEach(item=>{if(!hasItem(list,item)){list.push({...item});changed=true;}});
+ if(changed)catalogPatched=true;
+ return changed;
 }
+function hasCurrent(list){return CURRENT.every(item=>hasItem(list,item));}
 function blockOldLatestWrapper(){
  const kb=window.FranklinDeveloperKB;
  if(!kb)return false;
@@ -39,7 +51,7 @@ function refreshSetup(){
 }
 function patchContext(){
  const ctx=window.FranklinSupportContext;
- if(!ctx||ctx.__releaseStateV2||typeof ctx.load!=='function')return false;
+ if(!ctx||ctx.__releaseStateV3||typeof ctx.load!=='function')return false;
  const originalLoad=ctx.load.bind(ctx);
  ctx.load=async()=>{
   const list=await originalLoad();
@@ -47,7 +59,7 @@ function patchContext(){
   if(changed)queueMicrotask(refreshSetup);
   return list;
  };
- ctx.__releaseStateV2=true;
+ ctx.__releaseStateV3=true;
  originalLoad().then(list=>{
   if(addCurrent(list))refreshSetup();
   else if(hasCurrent(list))catalogPatched=true;
@@ -56,7 +68,7 @@ function patchContext(){
 }
 
 const nativeAppend=document.head?.append?.bind(document.head);
-if(nativeAppend&&!document.head.__releaseStateV2AppendPatched){
+if(nativeAppend&&!document.head.__releaseStateV3AppendPatched){
  document.head.append=(...nodes)=>{
   for(const node of nodes){
    if(!(node instanceof HTMLScriptElement))continue;
@@ -66,7 +78,7 @@ if(nativeAppend&&!document.head.__releaseStateV2AppendPatched){
   }
   return nativeAppend(...nodes);
  };
- document.head.__releaseStateV2AppendPatched=true;
+ document.head.__releaseStateV3AppendPatched=true;
 }
 
 document.addEventListener('franklin-connected',()=>{blockOldLatestWrapper();patchContext();});
@@ -79,7 +91,9 @@ blockOldLatestWrapper();
 patchContext();
 
 window.FranklinReleaseStateV2={
- current:{...CURRENT},
- status:()=>({catalogPatched,currentKey:CURRENT.key,currentLabel:'29 Oct 2026',staleLatestBlocked:!!window.FranklinDeveloperKB?.__latestWrapped})
+ current:{...CURRENT[0]},
+ currentMobile:{...CURRENT[0]},
+ currentMac:{...CURRENT[1]},
+ status:()=>({catalogPatched,currentKey:CURRENT[0].key,currentLabel:'30 Oct 2026',macKey:CURRENT[1].key,staleLatestBlocked:!!window.FranklinDeveloperKB?.__latestWrapped})
 };
 })();

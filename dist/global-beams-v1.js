@@ -1,14 +1,14 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV11)return;
-window.__gtavGlobalBeamsV11=true;
+if(window.__gtavGlobalBeamsV12)return;
+window.__gtavGlobalBeamsV12=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
 const HOME_DETAIL_HREF='home-rockstar-detail-v1.css?v=20261031homeDetail2';
 const HOME_DETAIL_ID='home-rockstar-detail-v1-style';
-const RELEASE30_SRC='release30-site-v1.js?v=20261031release30site1';
-const RELEASE30_ID='release30-site-v1-loader';
+const RELEASE30_SRC='release30-site-v1.js?v=20261031release30site2';
+const RELEASE30_ID='release30-site-v2-loader';
 const APP_DOWNLOAD_SRC='app-download-discord-v1.js?v=20261031discordapps1';
 const APP_DOWNLOAD_ID='app-download-discord-v1-loader';
 const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods2';
@@ -57,7 +57,7 @@ const ensureAppDownloadRouting=()=>ensureScript(APP_DOWNLOAD_ID,APP_DOWNLOAD_SRC
 const ensureRelease30Mods=()=>{if(document.body?.dataset.page==='downloads')ensureScript(RELEASE30_MODS_ID,RELEASE30_MODS_SRC)};
 const ensureFranklin30=()=>{
   if(document.body?.dataset.page!=='home')return;
-  ensureScript('franklin-release-state-v3-direct','franklin-release-state-v2.js?v=20261031release30state2');
+  ensureScript('franklin-release-state-v4-direct','franklin-release-state-v2.js?v=20261031release30state4');
   ensureScript('franklin-latest-kb-v3-direct','franklin-latest-kb-v1.js?v=20261031latest30v2');
   ensureScript('franklin-release29-v3-direct','franklin-release29-knowledge-v1.js?v=20261031release29knowledge3');
   ensureScript('franklin-release30-v1-direct','franklin-release30-knowledge-v1.js?v=20261031release30knowledge1');

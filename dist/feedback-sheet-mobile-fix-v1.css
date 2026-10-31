@@ -1,0 +1,22 @@
+/* Hard mobile positioning guard for Feedback & Issues.
+   Avoids left:50% + translateX conflicts with older drawer rules on iOS Safari. */
+@media(max-width:760px){
+ body[data-page="feedback"] .feedback-sheet.feedback-gta-sheet{
+  box-sizing:border-box!important;
+  left:0!important;
+  right:0!important;
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  transform:translateY(calc(100% + 36px))!important;
+ }
+ body[data-page="feedback"] .feedback-sheet.feedback-gta-sheet.is-open{
+  transform:translateY(var(--feedback-mobile-drag-y,0px))!important;
+ }
+ body[data-page="feedback"] .feedback-sheet.feedback-gta-sheet.is-open:not(.is-dragging){
+  --feedback-mobile-drag-y:0px;
+ }
+ body[data-page="feedback"] .feedback-sheet.feedback-gta-sheet.is-dragging{
+  transform:translateY(var(--feedback-mobile-drag-y,0px))!important;
+ }
+}

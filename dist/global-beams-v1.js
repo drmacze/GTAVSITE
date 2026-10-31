@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV14)return;
-window.__gtavGlobalBeamsV14=true;
+if(window.__gtavGlobalBeamsV15)return;
+window.__gtavGlobalBeamsV15=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
@@ -13,13 +13,13 @@ const APP_DOWNLOAD_SRC='app-download-discord-v1.js?v=20261031discordapps1';
 const APP_DOWNLOAD_ID='app-download-discord-v1-loader';
 const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods2';
 const RELEASE30_MODS_ID='release30-mods-v1-loader';
-const MODS_CLEANUP_SRC='mods-card-cleanup-v1.js?v=20261031modscard2';
-const MODS_CLEANUP_ID='mods-card-cleanup-v1-loader';
+const MODS_CLEANUP_SRC='mods-card-cleanup-v1.js?v=20261031modscard3';
+const MODS_CLEANUP_ID='mods-card-cleanup-v3-loader';
 
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
   let icon=document.head.querySelector('link[rel="icon"]');
-  if(!icon){icon=document.createElement('link');icon.rel='icon';document.head.append(icon)}
+  if(!icon){icon=document.createElement('link');icon.id='site-icon';icon.rel='icon';document.head.append(icon)}
   icon.type='image/png';icon.sizes='512x512';icon.href=href;
   let apple=document.head.querySelector('link[rel="apple-touch-icon"]');
   if(!apple){apple=document.createElement('link');apple.rel='apple-touch-icon';document.head.append(apple)}

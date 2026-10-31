@@ -3,6 +3,22 @@
 if(window.__gtavHomeIntroV4)return;window.__gtavHomeIntroV4=true;
 if(document.body?.dataset.page!=='home')return;
 
+try{
+ const u=new URL(location.href);
+ const navigation=performance.getEntriesByType?.('navigation')?.[0];
+ const navType=navigation?.type||'';
+ const explicitIntro=u.searchParams.get('intro')==='1';
+ if(!location.hash&&(explicitIntro||navType==='reload'||navType==='navigate')){
+  history.scrollRestoration='manual';
+  scrollTo({top:0,left:0,behavior:'auto'});
+  requestAnimationFrame(()=>scrollTo({top:0,left:0,behavior:'auto'}));
+ }
+ if(explicitIntro){
+  u.searchParams.delete('intro');
+  history.replaceState(null,'',u.pathname+(u.searchParams.toString()?`?${u.searchParams}`:'')+u.hash);
+ }
+}catch{}
+
 const ASSETS=[
  'assets/gameplay/preview-4.webp','assets/avatars/gas-mask.jpg','assets/gameplay/preview-2.webp',
  'assets/avatars/franklin.jpg','assets/gameplay/preview-3.webp','assets/gameplay/preview-1.webp','assets/gameplay/preview-5.webp',
@@ -65,8 +81,15 @@ section.querySelector('.home-intro-v4-account')?.addEventListener('click',()=>{c
 section.querySelector('.home-intro-v4-menu')?.addEventListener('click',()=>document.querySelector('.menu-toggle')?.click());
 const rstar=section.querySelector('.rockstar-logo');if(rstar){rstar.addEventListener('load',()=>rstar.closest('.rockstar-wrap')?.classList.add('has-logo'));rstar.addEventListener('error',()=>rstar.remove())}
 
-const reveal=()=>{if(document.body.classList.contains('intro4-revealed'))return;requestAnimationFrame(()=>document.body.classList.add('intro4-revealed'))};
+let revealFallback=0;
+const reveal=()=>{
+ if(document.body.classList.contains('intro4-revealed'))return;
+ if(revealFallback){clearTimeout(revealFallback);revealFallback=0}
+ requestAnimationFrame(()=>document.body.classList.add('intro4-revealed'));
+};
 if(window.__gtavIntroLoaderComplete)setTimeout(reveal,180);else window.addEventListener('gtav:intro-loader-complete',()=>setTimeout(reveal,180),{once:true});
+// Never leave the Home stage transparent if a transition event is missed by Safari/BFCache.
+revealFallback=setTimeout(reveal,1400);
 
 const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
 const smoother=t=>{t=clamp(t);return t*t*t*(t*(t*6-15)+10)};
@@ -112,7 +135,13 @@ function scrub(){
 }
 function schedule(){computeTarget();if(!raf)raf=requestAnimationFrame(scrub)}
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});
-try{const u=new URL(location.href);if(u.searchParams.get('intro')==='1'&&!location.hash){history.scrollRestoration='manual';scrollTo(0,0);u.searchParams.delete('intro');history.replaceState(null,'',u.pathname+(u.searchParams.toString()?`?${u.searchParams}`:'')+u.hash)}}catch{}
 computeTarget();currentProgress=targetProgress;requestAnimationFrame(()=>paint(currentProgress));
-addEventListener('pagehide',()=>{removeEventListener('scroll',schedule);removeEventListener('resize',schedule);if(raf)cancelAnimationFrame(raf)},{once:true});
+addEventListener('pageshow',event=>{
+ if(event.persisted&&!location.hash){
+  history.scrollRestoration='manual';
+  scrollTo({top:0,left:0,behavior:'auto'});
+  requestAnimationFrame(()=>{computeTarget();currentProgress=targetProgress;paint(currentProgress);reveal()});
+ }
+},{passive:true});
+addEventListener('pagehide',()=>{removeEventListener('scroll',schedule);removeEventListener('resize',schedule);if(raf)cancelAnimationFrame(raf);if(revealFallback)clearTimeout(revealFallback)},{once:true});
 })();

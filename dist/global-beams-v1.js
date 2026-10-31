@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV15)return;
-window.__gtavGlobalBeamsV15=true;
+if(window.__gtavGlobalBeamsV16)return;
+window.__gtavGlobalBeamsV16=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
@@ -15,6 +15,26 @@ const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods2';
 const RELEASE30_MODS_ID='release30-mods-v1-loader';
 const MODS_CLEANUP_SRC='mods-card-cleanup-v1.js?v=20261031modscard3';
 const MODS_CLEANUP_ID='mods-card-cleanup-v3-loader';
+
+const retireFeedbackFeature=()=>{
+  const path=location.pathname.replace(/\/+$/,'').toLowerCase();
+  if(path.endsWith('/feedback')||path.endsWith('/feedback.html')){
+    location.replace('home.html');
+    return false;
+  }
+  document.querySelectorAll('a[href]').forEach(link=>{
+    let href='';
+    try{href=new URL(link.getAttribute('href')||'',location.href).pathname.toLowerCase()}catch{}
+    if(href.endsWith('/feedback')||href.endsWith('/feedback.html')){
+      const item=link.closest('li');
+      if(item&&item.children.length===1)item.remove();
+      else link.remove();
+    }
+  });
+  document.querySelectorAll('.feedback-sheet,.feedback-sheet-backdrop,.feedback-sheet-dock,.mods-feedback-gate').forEach(el=>el.remove());
+  document.documentElement.classList.remove('feedback-sheet-open','mods-feedback-open');
+  return true;
+};
 
 const applySiteIcon=()=>{
   const href='/api/site-icon?v=20261029siteicon1';
@@ -79,12 +99,13 @@ const mount=()=>{
 const syncVisibility=()=>{if(document.body)document.body.dataset.beamsPaused=document.hidden?'true':'false'};
 
 const init=()=>{
+  if(!retireFeedbackFeature())return;
   applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();mount();syncVisibility();
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('visibilitychange',syncVisibility,{passive:true});
 new MutationObserver(applyChromeTint).observe(document.documentElement,{attributes:true,attributeFilter:['data-mode','data-theme']});
-window.addEventListener('load',()=>{applyChromeTint();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();promoteEffectsCss()},{once:true});
-window.addEventListener('pageshow',()=>{applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();mount();syncVisibility();promoteEffectsCss()},{passive:true});
+window.addEventListener('load',()=>{if(!retireFeedbackFeature())return;applyChromeTint();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();promoteEffectsCss()},{once:true});
+window.addEventListener('pageshow',()=>{if(!retireFeedbackFeature())return;applySiteIcon();applyChromeTint();ensureEffectsCss();ensureHomeDetailCss();ensureRelease30();ensureAppDownloadRouting();ensureRelease30Mods();ensureModsCleanup();ensureFranklin30();mount();syncVisibility();promoteEffectsCss()},{passive:true});
 window.addEventListener('gtav:site-icon-updated',applySiteIcon);
 })();

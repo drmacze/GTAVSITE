@@ -1,13 +1,18 @@
 (()=>{
 'use strict';
-if(window.__gtavUiStabilityV1)return;
-window.__gtavUiStabilityV1=true;
+if(window.__gtavUiStabilityV2)return;
+window.__gtavUiStabilityV2=true;
 
 const mobile=()=>matchMedia('(max-width:760px)').matches;
 const ios=/iP(?:hone|ad|od)/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
 const safari=/Safari/i.test(navigator.userAgent)&&!/CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
 if(ios&&safari)document.documentElement.dataset.mobileSafari='true';
 document.documentElement.dataset.uiStable='true';
+
+function promoteCss(){
+ const link=document.querySelector('link[data-ui-stability-v1]');
+ if(link?.isConnected)document.head.append(link);
+}
 
 function restoreFeedbackPage(){
  if(document.body?.dataset.page!=='feedback'||!mobile())return;
@@ -23,7 +28,7 @@ function restoreFeedbackPage(){
   for(const prop of ['transform','top','bottom','height','max-height','will-change'])sheet.style.removeProperty(prop);
  }
  document.querySelectorAll('.feedback-sheet-dock').forEach(node=>node.remove());
- if(savedTop<0&&Math.abs(window.scrollY)<2)requestAnimationFrame(()=>scrollTo({top:-savedTop,behavior:'instant'}));
+ if(savedTop<0&&Math.abs(window.scrollY)<2)requestAnimationFrame(()=>scrollTo({top:-savedTop,behavior:'auto'}));
 }
 
 function stabilizeFeedback(){
@@ -36,7 +41,6 @@ function stabilizeFeedback(){
  const mq=matchMedia('(max-width:760px)');
  mq.addEventListener?.('change',()=>requestAnimationFrame(restoreFeedbackPage));
  window.addEventListener('pageshow',()=>requestAnimationFrame(restoreFeedbackPage),{passive:true});
- window.addEventListener('resize',()=>requestAnimationFrame(restoreFeedbackPage),{passive:true});
  setTimeout(restoreFeedbackPage,0);
  setTimeout(restoreFeedbackPage,180);
 }
@@ -47,9 +51,7 @@ function compactUpdates(){
   document.querySelectorAll('.managed-update-details').forEach(details=>{details.open=false});
   document.querySelectorAll('.release-list .release-card').forEach(details=>{details.open=false});
  };
- apply();
- requestAnimationFrame(apply);
- setTimeout(apply,250);
+ apply();requestAnimationFrame(apply);setTimeout(apply,250);
 }
 
 function stabilizeAnimations(){
@@ -65,14 +67,14 @@ function stabilizeAnimations(){
    });
   }
  };
- document.addEventListener('visibilitychange',sync,{passive:true});
- sync();
+ document.addEventListener('visibilitychange',sync,{passive:true});sync();
 }
 
 function boot(){
- stabilizeFeedback();
- compactUpdates();
- stabilizeAnimations();
+ promoteCss();stabilizeFeedback();compactUpdates();stabilizeAnimations();
+ requestAnimationFrame(()=>requestAnimationFrame(promoteCss));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+window.addEventListener('load',()=>requestAnimationFrame(promoteCss),{once:true});
+window.addEventListener('pageshow',()=>requestAnimationFrame(promoteCss),{passive:true});
 })();

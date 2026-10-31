@@ -71,10 +71,12 @@
  }
  if(document.body?.dataset.page==='faq')addStyle('faq-glass-v1.css?v=20261029faqglass1','faq-glass-v1-style');
  if(document.body?.dataset.page==='feedback'){
-   if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261031feedbacksheet1';l.dataset.feedbackFixes='true';document.head.append(l)}
-   addScript('feedback-fixes.js?v=20261031feedbacksheet1','feedback-fixes-loader');
-   addStyle('feedback-sheet-gta-v1.css?v=20261031feedbacksheet1','feedback-sheet-gta-v1-style');
-   addScript('feedback-sheet-gta-v1.js?v=20261031feedbacksheet1','feedback-sheet-gta-v1-script');
+   if(!document.querySelector('link[data-feedback-fixes]')){const l=document.createElement('link');l.id='feedback-fixes-style';l.rel='stylesheet';l.href='feedback-fixes.css?v=20261031feedbacksheet2';l.dataset.feedbackFixes='true';document.head.append(l)}
+   addScript('feedback-fixes.js?v=20261031feedbacksheet2','feedback-fixes-loader');
+   addStyle('feedback-sheet-gta-v1.css?v=20261031feedbacksheet2','feedback-sheet-gta-v1-style');
+   addScript('feedback-sheet-gta-v1.js?v=20261031feedbacksheet2','feedback-sheet-gta-v1-script');
+   addStyle('feedback-sheet-mobile-fix-v1.css?v=20261031feedbackmobile1','feedback-sheet-mobile-fix-v1-style');
+   addScript('feedback-sheet-mobile-fix-v1.js?v=20261031feedbackmobile1','feedback-sheet-mobile-fix-v1-script');
  }
  addStyle('global-beams-v1.css?v=20261031beams4','global-beams-v1-style');
  addScript('global-beams-v1.js?v=20261031beams5','global-beams-v1-script');

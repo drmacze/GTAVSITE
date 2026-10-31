@@ -1,13 +1,18 @@
 (()=>{
 'use strict';
-if(window.__release30ModsV1||document.body?.dataset.page!=='downloads')return;
-window.__release30ModsV1=true;
+if(window.__release30ModsV2||document.body?.dataset.page!=='downloads')return;
+window.__release30ModsV2=true;
 const DISCORD='https://discord.gg/HgcbPjcyJ';
+
+document.title='Mods | GTA V iOS Community';
+const description=document.querySelector('meta[name="description"]');
+if(description)description.content='Community Mod Packs 1–3, GTA Online DLC archives, graphics mods, clothing mods, and language packs for the GTA V iOS launcher.';
 
 function mount(){
  const main=document.querySelector('.mods-studio');
  const languages=main?.querySelector('.mods-languages');
  if(!main||!languages)return false;
+ const heading=main.querySelector('.mods-heading p');if(heading)heading.textContent='Community mods, DLC archives and translations for the current launcher.';
  if(!main.querySelector('.mods-release30')){
   const section=document.createElement('section');
   section.className='mods-dlc mods-release30';

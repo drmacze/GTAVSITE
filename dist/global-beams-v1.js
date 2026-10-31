@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-if(window.__gtavGlobalBeamsV10)return;
-window.__gtavGlobalBeamsV10=true;
+if(window.__gtavGlobalBeamsV11)return;
+window.__gtavGlobalBeamsV11=true;
 
 const EFFECTS_HREF='rockstar-black-yellow-v1.css?v=20261031rockstar2';
 const EFFECTS_ID='rockstar-black-yellow-v1-style';
@@ -11,7 +11,7 @@ const RELEASE30_SRC='release30-site-v1.js?v=20261031release30site1';
 const RELEASE30_ID='release30-site-v1-loader';
 const APP_DOWNLOAD_SRC='app-download-discord-v1.js?v=20261031discordapps1';
 const APP_DOWNLOAD_ID='app-download-discord-v1-loader';
-const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods1';
+const RELEASE30_MODS_SRC='release30-mods-v1.js?v=20261031release30mods2';
 const RELEASE30_MODS_ID='release30-mods-v1-loader';
 
 const applySiteIcon=()=>{

@@ -112,6 +112,25 @@ html[data-mobile-safari="true"] .gta-online-menu-dock{
  backdrop-filter:blur(18px) saturate(1.06)!important;
 }
 
+/* Chrome on macOS: avoid the fixed-filter combination that caused compositor flicker in developer testing. */
+html[data-chrome-mac="true"] .global-beams-bg::before,
+html[data-chrome-mac="true"] .global-beams-bg::after{
+ animation:none!important;will-change:auto!important;transform:none!important;opacity:.62!important
+}
+html[data-chrome-mac="true"] .feedback-sheet::before,
+html[data-chrome-mac="true"] .gta-online-menu-dock::before,
+html[data-chrome-mac="true"] .gta-online-menu-promo::before{
+ animation-duration:8s!important;filter:none!important
+}
+html[data-chrome-mac="true"] .ask-franklin-panel,
+html[data-chrome-mac="true"] #site-menu .menu-panel,
+html[data-chrome-mac="true"] .feedback-sheet,
+html[data-chrome-mac="true"] .gta-online-menu-promo,
+html[data-chrome-mac="true"] .gta-online-menu-dock{
+ -webkit-backdrop-filter:blur(22px) saturate(1.08)!important;
+ backdrop-filter:blur(22px) saturate(1.08)!important;
+}
+
 @media(prefers-reduced-motion:reduce){
  .page-transition,.page-transition-mark{transition:none!important}
  .global-beams-bg::before,.global-beams-bg::after,

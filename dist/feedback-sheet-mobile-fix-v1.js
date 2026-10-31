@@ -3,7 +3,7 @@
 if(window.__feedbackSheetMobileFixV1||document.body?.dataset.page!=='feedback')return;
 window.__feedbackSheetMobileFixV1=true;
 
-const sheet=document.querySelector('.feedback-sheet.feedback-gta-sheet');
+const sheet=document.querySelector('.feedback-sheet');
 if(!sheet)return;
 const mq=matchMedia('(max-width:760px)');
 const handles=[sheet.querySelector('.sheet-grip'),sheet.querySelector('.sheet-top')].filter(Boolean);
